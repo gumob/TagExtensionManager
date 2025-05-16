@@ -27,11 +27,12 @@
 body {
   width: 480px;
   margin: 0;
-  padding: 16px;
+  padding: 16px 16px 0 16px;
   border-radius: 16px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   background-color: var(--background-color);
   color: var(--text-color);
+  overflow: hidden;
 }
 
 header {
@@ -106,10 +107,12 @@ h1 {
 }
 
 .extensions-list {
-  max-height: 400px;
+  height: 400px;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--scrollbar-thumb-color) var(--scrollbar-track-color);
+  margin-right: -16px;
+  padding-right: 16px;
 }
 
 /* Webkit (Chrome, Safari, Edge) scrollbar styles */
@@ -121,6 +124,7 @@ h1 {
 .extensions-list::-webkit-scrollbar-thumb {
   background-color: var(--scrollbar-thumb-color);
   border-radius: 4px;
+  min-height: 40px;
 }
 
 .extensions-list::-webkit-scrollbar-thumb:hover {
