@@ -17,6 +17,7 @@ export class ExtensionManager {
           enabled: ext.enabled,
           iconUrl: ext.icons?.[0]?.url || '',
         }));
+        formattedExtensions.sort((a, b) => a.name.localeCompare(b.name));
         resolve(formattedExtensions);
       });
     });
