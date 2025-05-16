@@ -9,6 +9,9 @@
   --scrollbar-thumb-color: #cccccc;
   --scrollbar-thumb-hover-color: #999999;
   --icon-color: #666666;
+  --switch-track-color: #e0e0e0;
+  --switch-thumb-color: #ffffff;
+  --switch-active-color: #1a73e8;
 }
 
 [data-theme='dark'] {
@@ -22,6 +25,9 @@
   --scrollbar-thumb-color: #444444;
   --scrollbar-thumb-hover-color: #666666;
   --icon-color: #999999;
+  --switch-track-color: #444444;
+  --switch-thumb-color: #ffffff;
+  --switch-active-color: #8ab4f8;
 }
 
 body {
@@ -167,4 +173,73 @@ h1 {
 
 .extension-toggle {
   margin-left: 12px;
+}
+
+.extension-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: 12px;
+}
+
+/* Custom Switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 28px;
+  height: 16px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch-track {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--switch-track-color);
+  transition: .2s;
+  border-radius: 20px;
+}
+
+.switch-thumb {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 12px;
+  left: 2px;
+  bottom: 2px;
+  background-color: var(--switch-thumb-color);
+  transition: .2s;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+input:checked + .switch-track {
+  background-color: var(--switch-active-color);
+}
+
+input:checked + .switch-track + .switch-thumb {
+  transform: translateX(12px);
+}
+
+/* Settings Icon */
+.settings-icon {
+  color: var(--icon-color);
+  cursor: pointer;
+  font-family: 'Material Icons';
+  font-size: 20px;
+  padding: 4px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.settings-icon:hover {
+  background-color: var(--border-color);
 } 

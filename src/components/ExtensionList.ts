@@ -55,21 +55,64 @@ export class ExtensionList {
     description.className = 'extension-description';
     description.textContent = extension.description;
 
-    const toggle = document.createElement('input');
-    toggle.type = 'checkbox';
-    toggle.className = 'extension-toggle';
-    toggle.checked = extension.enabled;
-    toggle.addEventListener('change', () => {
+    const controls = document.createElement('div');
+    controls.className = 'extension-controls';
+
+    // Custom Switch
+    const switchContainer = document.createElement('label');
+    switchContainer.className = 'switch';
+    
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = extension.enabled;
+    checkbox.addEventListener('change', () => {
       if (this.onToggleCallback) {
-        this.onToggleCallback(extension.id, toggle.checked);
+        this.onToggleCallback(extension.id, checkbox.checked);
       }
     });
+
+    const switchTrack = document.createElement('span');
+    switchTrack.className = 'switch-track';
+
+    const switchThumb = document.createElement('span');
+    switchThumb.className = 'switch-thumb';
+
+    switchContainer.appendChild(checkbox);
+    switchContainer.appendChild(switchTrack);
+    switchContainer.appendChild(switchThumb);
+
+    // Settings Icon
+    const settingsIcon = document.createElement('span');
+    settingsIcon.className = 'settings-icon';
+    settingsIcon.textContent = 'settings';
+    settingsIcon.title = 'Extension Settings';
+    settingsIcon.addEventListener('click', () => {
+      // Get the current browser's extension management URL
+      const browser = navigator.userAgent.toLowerCase();
+      let baseUrl = 'chrome://extensions';
+      
+      if (browser.includes('brave')) {
+        baseUrl = 'brave://extensions';
+      } else if (browser.includes('edg')) {
+        baseUrl = 'edge://extensions';
+      } else if (browser.includes('opera')) {
+        baseUrl = 'opera://extensions';
+      } else if (browser.includes('vivaldi')) {
+        baseUrl = 'vivaldi://extensions';
+      }
+
+      // Open the extension details page
+      chrome.tabs.create({ url: `${baseUrl}/?id=${extension.id}` });
+    });
+
+    controls.appendChild(switchContainer);
+    controls.appendChild(settingsIcon);
 
     info.appendChild(name);
     info.appendChild(description);
     div.appendChild(icon);
     div.appendChild(info);
-    div.appendChild(toggle);
+    div.appendChild(controls);
 
     return div;
   }

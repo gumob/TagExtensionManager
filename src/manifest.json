@@ -5,7 +5,8 @@
   "description": "A Chrome extension to manage other extensions",
   "permissions": [
     "management",
-    "storage"
+    "storage",
+    "tabs"
   ],
   "action": {
     "default_popup": "popup.html",
