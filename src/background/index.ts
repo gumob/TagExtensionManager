@@ -1,4 +1,4 @@
 // Background script for extension management
 chrome.runtime.onInstalled.addListener(() => {
-  console.log('Extension Manager installed');
+  console.debug('[Extension Manager] Extension Manager installed');
 }); 

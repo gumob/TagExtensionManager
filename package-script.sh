@@ -10,7 +10,6 @@ fi
 
 local option_list=(
 	"dev"
-	"dev:watch"
 	"build"
 	" "
 	"pnpm format-check"
@@ -34,9 +33,6 @@ case "$selected_option" in
 	;;
 "dev")
 	pnpm dev
-	;;
-"dev:watch")
-	pnpm dev:watch
 	;;
 "pnpm clean-install-modules")
 	rm -rf .next node_modules && pnpm clean-install-modules

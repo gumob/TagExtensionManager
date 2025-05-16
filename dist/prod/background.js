@@ -1,1 +1,1 @@
-(()=>{"use strict";chrome.runtime.onInstalled.addListener((()=>{console.log("Extension Manager installed")}))})();
+(()=>{"use strict";chrome.runtime.onInstalled.addListener((()=>{console.debug("Extension Manager installed")}))})();

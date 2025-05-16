@@ -42,6 +42,11 @@ const config: Configuration = {
       ],
     }),
   ],
+  devtool: isDev ? 'source-map' : false,
+  mode: isDev ? 'development' : 'production',
+  optimization: {
+    minimize: !isDev,
+  },
 };
 
 export default config; 

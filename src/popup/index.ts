@@ -16,9 +16,20 @@ class Popup {
   }
 
   private async initialize() {
-    this.extensions = await this.extensionManager.getAllExtensions();
-    this.extensionList.render(this.extensions);
-    this.setupEventListeners();
+    try {
+      console.debug('[Extension Manager] Fetching extensions...');
+      this.extensions = await this.extensionManager.getAllExtensions();
+      console.debug('[Extension Manager] Fetched extensions:', this.extensions);
+      
+      if (this.extensions.length === 0) {
+        console.warn('[Extension Manager] No extensions found');
+      }
+      
+      this.extensionList.render(this.extensions);
+      this.setupEventListeners();
+    } catch (error) {
+      console.error('[Extension Manager] Error initializing popup:', error);
+    }
   }
 
   private setupEventListeners() {
@@ -28,9 +39,13 @@ class Popup {
     });
 
     this.extensionList.onToggleExtension(async (extensionId: string, enabled: boolean) => {
-      await this.extensionManager.toggleExtension(extensionId, enabled);
-      this.extensions = await this.extensionManager.getAllExtensions();
-      this.extensionList.render(this.extensions);
+      try {
+        await this.extensionManager.toggleExtension(extensionId, enabled);
+        this.extensions = await this.extensionManager.getAllExtensions();
+        this.extensionList.render(this.extensions);
+      } catch (error) {
+        console.error('[Extension Manager] Error toggling extension:', error);
+      }
     });
   }
 }
