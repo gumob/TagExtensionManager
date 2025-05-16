@@ -5,8 +5,8 @@
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
-    "dev": "NODE_OPTIONS=\"--loader ts-node/esm\" webpack --config webpack.config.ts --mode development --watch",
-    "build": "NODE_OPTIONS=\"--loader ts-node/esm\" webpack --config webpack.config.ts --mode production",
+    "dev": "NODE_ENV=development NODE_OPTIONS=\"--loader ts-node/esm\" webpack --config webpack.config.ts --mode development --watch",
+    "build": "NODE_ENV=production NODE_OPTIONS=\"--loader ts-node/esm\" webpack --config webpack.config.ts --mode production",
     "lint": "eslint . --ext .ts",
     "format": "prettier --write \"src/**/*.ts\"",
     "type-check": "tsc --noEmit"

@@ -6,6 +6,8 @@ import type { Configuration } from 'webpack';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const isDev = process.env.NODE_ENV === 'development';
+
 const config: Configuration = {
   entry: {
     popup: './src/popup/index.ts',
@@ -13,7 +15,7 @@ const config: Configuration = {
     content: './src/content/index.ts',
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, isDev ? 'dist/dev' : 'dist/prod'),
     filename: '[name].js',
   },
   module: {
