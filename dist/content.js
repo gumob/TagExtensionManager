@@ -1,0 +1,1 @@
+(()=>{"use strict";console.log("Extension Manager content script loaded")})();

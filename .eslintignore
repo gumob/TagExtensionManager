@@ -1,0 +1,13 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Build outputs
+dist
+.next
+out
+build
+
+# Ignore the Tampermonkey user script
+glancebrief.user.js
