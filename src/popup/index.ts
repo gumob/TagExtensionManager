@@ -1,17 +1,20 @@
 import { ExtensionManager } from '../services/ExtensionManager';
 import { ExtensionList } from '../components/ExtensionList';
 import { SearchBar } from '../components/SearchBar';
+import { ThemeToggle } from '../components/ThemeToggle';
 
 class Popup {
   private extensionManager: ExtensionManager;
   private extensionList: ExtensionList;
   private searchBar: SearchBar;
+  private themeToggle: ThemeToggle;
   private extensions: any[] = [];
 
   constructor() {
     this.extensionManager = new ExtensionManager();
     this.extensionList = new ExtensionList();
     this.searchBar = new SearchBar();
+    this.themeToggle = new ThemeToggle();
     this.initialize();
   }
 
@@ -27,6 +30,7 @@ class Popup {
       
       this.extensionList.render(this.extensions);
       this.setupEventListeners();
+      this.setupThemeToggle();
     } catch (error) {
       console.error('[Extension Manager] Error initializing popup:', error);
     }
@@ -47,6 +51,13 @@ class Popup {
         console.error('[Extension Manager] Error toggling extension:', error);
       }
     });
+  }
+
+  private setupThemeToggle() {
+    const header = document.querySelector('header');
+    if (header) {
+      this.themeToggle.render(header);
+    }
   }
 }
 
