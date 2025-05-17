@@ -31,9 +31,9 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
           <p className="text-sm text-gray-500 dark:text-gray-400">
             {extension.version}
           </p>
-          <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+          {/* <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
             {extension.description}
-          </p>
+          </p> */}
         </div>
         <div className="flex flex-col space-y-2">
           <button

@@ -1,15 +1,8 @@
 /// <reference path="../types/chrome.d.ts" />
 import React, { useEffect, useState } from 'react';
 import { ExtensionCard } from '@/components/ExtensionCard';
-
-interface Extension {
-  id: string;
-  name: string;
-  version: string;
-  enabled: boolean;
-  description: string;
-  iconUrl: string;
-}
+import { Extension } from '@/types/extension';
+import { getAllExtensions, toggleExtension } from '@/utils/extensionUtils';
 
 interface ExtensionListProps {
   extensions: Extension[];
@@ -19,30 +12,19 @@ export function ExtensionList({ extensions }: ExtensionListProps) {
   const [localExtensions, setLocalExtensions] = useState<Extension[]>(extensions);
 
   useEffect(() => {
-    if (typeof chrome !== 'undefined' && chrome.management) {
-      chrome.management.getAll((extensions) => {
-        const formattedExtensions = extensions.map((ext) => ({
-          id: ext.id,
-          name: ext.name,
-          version: ext.version || '',
-          enabled: ext.enabled,
-          description: ext.description || '',
-          iconUrl: ext.icons?.[0]?.url || '',
-        }));
-        setLocalExtensions(formattedExtensions);
-      });
-    }
+    getAllExtensions().then(setLocalExtensions);
   }, []);
 
-  const toggleExtension = (id: string, enabled: boolean) => {
-    if (typeof chrome !== 'undefined' && chrome.management) {
-      chrome.management.setEnabled(id, enabled, () => {
-        setLocalExtensions((prev) =>
-          prev.map((ext) =>
-            ext.id === id ? { ...ext, enabled } : ext
-          )
-        );
-      });
+  const handleToggle = async (id: string, enabled: boolean) => {
+    try {
+      await toggleExtension(id, enabled);
+      setLocalExtensions((prev) =>
+        prev.map((ext) =>
+          ext.id === id ? { ...ext, enabled } : ext
+        )
+      );
+    } catch (error) {
+      console.error('Failed to toggle extension:', error);
     }
   };
 
@@ -69,7 +51,7 @@ export function ExtensionList({ extensions }: ExtensionListProps) {
         <ExtensionCard 
           key={extension.id} 
           extension={extension} 
-          onToggle={toggleExtension}
+          onToggle={handleToggle}
           onSettingsClick={handleSettingsClick}
         />
       ))}

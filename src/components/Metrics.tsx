@@ -1,18 +1,16 @@
 import React, { FC, useEffect, useState } from 'react';
+import { Extension } from '@/types/extension';
+import { getAllExtensions } from '@/utils/extensionUtils';
 
 interface MetricsProps {
-  extensions?: Array<{ enabled: boolean }>;
+  extensions?: Extension[];
 }
 
 const Metrics: FC<MetricsProps> = ({ extensions = [] }) => {
   const [localExtensions, setLocalExtensions] = useState(extensions);
 
   useEffect(() => {
-    if (typeof chrome !== 'undefined' && chrome.management) {
-      chrome.management.getAll((extensions) => {
-        setLocalExtensions(extensions);
-      });
-    }
+    getAllExtensions().then(setLocalExtensions);
   }, []);
 
   const total = localExtensions.length;
