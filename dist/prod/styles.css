@@ -31,10 +31,9 @@
 }
 
 body {
-  width: 480px;
+  width: 420px;
   margin: 0;
-  padding: 16px 16px 0 16px;
-  border-radius: 16px;
+  padding: 12px 12px 0 12px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   background-color: var(--background-color);
   color: var(--text-color);
@@ -49,7 +48,7 @@ header {
 }
 
 h1 {
-  font-size: 20px;
+  font-size: 16px;
   margin: 0;
   color: var(--text-color);
 }
@@ -93,8 +92,8 @@ h1 {
   width: 100%;
   padding: 8px 8px 8px 36px;
   border: none;
-  border-radius: 12px;
-  font-size: 14px;
+  border-radius: 16px;
+  font-size: 12px;
   background-color: var(--input-background-color);
   color: var(--text-color);
   box-sizing: border-box;
@@ -134,8 +133,19 @@ h1 {
 .extension-item {
   display: flex;
   align-items: center;
-  padding: 8px;
+  padding: 8px 0;
   border-bottom: 1px solid var(--border-color);
+  gap: 8px;
+}
+
+.extension-item.disabled .extension-icon,
+.extension-item.disabled .extension-name {
+  opacity: 0.5;
+}
+
+.extension-item.enabled .extension-icon,
+.extension-item.enabled .extension-name {
+  opacity: 1;
 }
 
 .extension-item:last-child {
@@ -143,20 +153,28 @@ h1 {
 }
 
 .extension-icon {
-  width: 16px;
-  height: 16px;
-  margin-right: 8px;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  transition: opacity 0.3s ease;
 }
 
 .extension-info {
   flex: 1;
+  min-width: 0;
+  margin-right: 8px;
 }
 
 .extension-name {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
   margin: 0;
   color: var(--text-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 320px;
+  transition: opacity 0.3s ease;
 }
 
 .extension-description {
@@ -172,8 +190,8 @@ h1 {
 .extension-controls {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-left: 12px;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 /* Custom Switch */
@@ -182,6 +200,7 @@ h1 {
   display: inline-block;
   width: 28px;
   height: 16px;
+  flex-shrink: 0;
 }
 
 .switch input {
@@ -232,8 +251,44 @@ input:checked + .switch-track + .switch-thumb {
   padding: 4px;
   border-radius: 50%;
   transition: background-color 0.3s;
+  flex-shrink: 0;
 }
 
 .settings-icon:hover {
   background-color: var(--border-color);
-} 
+}
+
+/* === Extension Metrics Styles === */
+.metrics-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--metrics-container-margin-bottom, 12px);
+  gap: var(--metrics-item-gap, 24px);
+}
+.metrics-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 1 0;
+}
+.metrics-title {
+  font-size: var(--metrics-title-font-size, 9px);
+  font-weight: var(--metrics-title-font-weight, 500);
+  color: var(--metrics-title-color, #888);
+  margin-bottom: var(--metrics-title-margin-bottom, 2px);
+}
+.metrics-value {
+  font-size: var(--metrics-value-font-size, 18px);
+  font-weight: var(--metrics-value-font-weight, 600);
+  color: var(--metrics-value-color, #222);
+}
+
+[data-theme='dark'] .metrics-title {
+  color: var(--metrics-title-color-dark, #aaa);
+}
+[data-theme='dark'] .metrics-value {
+  color: var(--metrics-value-color-dark, #fff);
+}
+/* === End Extension Metrics Styles === */ 

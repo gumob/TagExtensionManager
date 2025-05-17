@@ -4,11 +4,14 @@
 
 - TypeScript: ^5.8.3
 - Node.js: ^20.17.47
+- Next.js: ^14.1.0
+- React: ^18.2.0
 
 ## Frontend
 
-- Chrome Extension with TypeScript
-- Vanilla JavaScript for DOM manipulation
+- Next.js with TypeScript
+- React for UI components
+- Tailwind CSS for styling
 
 ## Development Tools
 
@@ -20,22 +23,20 @@
 
 ### Build System
 
-- Webpack: ^5.99.8
-- webpack-cli: ^5.1.4
+- Next.js Build System
 - pnpm: 10.11.0
 
-### Build Tools & Loaders
+### Styling
 
-- ts-loader: ^9.5.2
-- css-loader: ^7.1.2
-- style-loader: ^4.0.0
-- copy-webpack-plugin: ^12.0.2
-- ts-node: ^10.9.2
+- Tailwind CSS: ^4.1.7
+- PostCSS: ^8.5.3
+- Autoprefixer: ^10.4.21
 
 ### Type Definitions
 
 - @types/node: ^20.17.47
-- @types/chrome: ^0.0.323
+- @types/react: ^18.2.55
+- @types/react-dom: ^18.2.19
 - @types/uuid: ^10.0.0
 
 ## Dependencies
@@ -52,15 +53,17 @@
 
 ### Code Organization
 
+- Next.js App Router architecture
+- React Server Components
 - Modular component architecture
 - Strict TypeScript type checking
 - ESLint and Prettier for code style enforcement
 
 ### Build Process
 
-- Chrome extension is built from TypeScript source
-- DOM elements are created with vanilla JavaScript
-- Style definitions are bundled inline for extension compatibility
+- Next.js static export for Chrome extension
+- Optimized production builds
+- Type checking and linting in CI/CD pipeline
 
 ### Development Workflow
 

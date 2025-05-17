@@ -1,8 +1,9 @@
 interface Extension {
   id: string;
   name: string;
-  description: string;
+  version: string;
   enabled: boolean;
+  description: string;
   iconUrl: string;
 }
 
@@ -23,30 +24,38 @@ export class ExtensionManager {
 
   async getAllExtensions(): Promise<Extension[]> {
     return new Promise((resolve) => {
-      chrome.management.getAll((extensions) => {
-        console.debug('[Extension Manager] Fetched extensions:', extensions);
-        const formattedExtensions = extensions.map((ext) => ({
-          id: ext.id,
-          name: ext.name,
-          description: ext.description || '',
-          enabled: ext.enabled,
-          iconUrl: this.getBestIconUrl(ext.icons),
-        }));
-        formattedExtensions.sort((a, b) => a.name.localeCompare(b.name));
-        resolve(formattedExtensions);
-      });
+      if (typeof chrome !== 'undefined' && chrome.management) {
+        chrome.management.getAll((extensions) => {
+          const formattedExtensions = extensions.map((ext) => ({
+            id: ext.id,
+            name: ext.name,
+            version: ext.version || '',
+            enabled: ext.enabled,
+            description: ext.description || '',
+            iconUrl: ext.icons?.[0]?.url || '',
+          }));
+          formattedExtensions.sort((a, b) => a.name.localeCompare(b.name));
+          resolve(formattedExtensions);
+        });
+      } else {
+        resolve([]);
+      }
     });
   }
 
-  async toggleExtension(extensionId: string, enabled: boolean): Promise<void> {
+  async toggleExtension(id: string, enabled: boolean): Promise<void> {
     return new Promise((resolve, reject) => {
-      chrome.management.setEnabled(extensionId, enabled, () => {
-        if (chrome.runtime.lastError) {
-          reject(chrome.runtime.lastError);
-        } else {
-          resolve();
-        }
-      });
+      if (typeof chrome !== 'undefined' && chrome.management) {
+        chrome.management.setEnabled(id, enabled, () => {
+          if (chrome.runtime.lastError) {
+            reject(chrome.runtime.lastError);
+          } else {
+            resolve();
+          }
+        });
+      } else {
+        reject(new Error('Chrome management API not available'));
+      }
     });
   }
 
