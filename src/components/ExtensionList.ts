@@ -51,9 +51,9 @@ export class ExtensionList {
     name.className = 'extension-name';
     name.textContent = extension.name;
 
-    const description = document.createElement('p');
-    description.className = 'extension-description';
-    description.textContent = extension.description;
+    // const description = document.createElement('p');
+    // description.className = 'extension-description';
+    // description.textContent = extension.description;
 
     const controls = document.createElement('div');
     controls.className = 'extension-controls';
@@ -109,7 +109,7 @@ export class ExtensionList {
     controls.appendChild(settingsIcon);
 
     info.appendChild(name);
-    info.appendChild(description);
+    // info.appendChild(description);
     div.appendChild(icon);
     div.appendChild(info);
     div.appendChild(controls);
