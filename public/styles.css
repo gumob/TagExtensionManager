@@ -61,7 +61,7 @@ h1 {
   cursor: pointer;
   padding: 4px 8px;
   border-radius: 4px;
-  transition: background-color 0.2s;
+  transition: background-color 0.3s;
   color: var(--icon-color);
   font-family: 'Material Icons';
 }
@@ -204,7 +204,7 @@ h1 {
   right: 0;
   bottom: 0;
   background-color: var(--switch-track-color);
-  transition: .2s;
+  transition: 0.3s;
   border-radius: 20px;
 }
 
@@ -216,7 +216,7 @@ h1 {
   left: 2px;
   bottom: 2px;
   background-color: var(--switch-thumb-color);
-  transition: .2s;
+  transition: 0.3s;
   border-radius: 50%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -237,7 +237,7 @@ input:checked + .switch-track + .switch-thumb {
   font-size: 20px;
   padding: 4px;
   border-radius: 50%;
-  transition: background-color 0.2s;
+  transition: background-color 0.3s;
 }
 
 .settings-icon:hover {
