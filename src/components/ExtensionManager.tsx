@@ -9,7 +9,7 @@ export const ExtensionManager: React.FC = () => {
   const { extensions, filteredExtensions, setSearchQuery, updateExtensionState } = useExtensions();
 
   return (
-    <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <main className="min-h-screen">
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-xl font-bold text-gray-900 dark:text-white">
