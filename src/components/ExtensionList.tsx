@@ -2,27 +2,24 @@
 import React, { useEffect, useState } from 'react';
 import { ExtensionCard } from '@/components/ExtensionCard';
 import { Extension } from '@/types/extension';
-import { getAllExtensions, toggleExtension } from '@/utils/extensionUtils';
+import { toggleExtension } from '@/utils/extensionUtils';
 
 interface ExtensionListProps {
   extensions: Extension[];
+  onExtensionStateChange: (id: string, enabled: boolean) => void;
 }
 
-export function ExtensionList({ extensions }: ExtensionListProps) {
+export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionListProps) {
   const [localExtensions, setLocalExtensions] = useState<Extension[]>(extensions);
 
   useEffect(() => {
-    getAllExtensions().then(setLocalExtensions);
-  }, []);
+    setLocalExtensions(extensions);
+  }, [extensions]);
 
   const handleToggle = async (id: string, enabled: boolean) => {
     try {
       await toggleExtension(id, enabled);
-      setLocalExtensions((prev) =>
-        prev.map((ext) =>
-          ext.id === id ? { ...ext, enabled } : ext
-        )
-      );
+      onExtensionStateChange(id, enabled);
     } catch (error) {
       console.error('Failed to toggle extension:', error);
     }

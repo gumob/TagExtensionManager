@@ -10,8 +10,8 @@ const Metrics: FC<MetricsProps> = ({ extensions = [] }) => {
   const [localExtensions, setLocalExtensions] = useState(extensions);
 
   useEffect(() => {
-    getAllExtensions().then(setLocalExtensions);
-  }, []);
+    setLocalExtensions(extensions);
+  }, [extensions]);
 
   const total = localExtensions.length;
   const enabled = localExtensions.filter((ext) => ext.enabled).length;

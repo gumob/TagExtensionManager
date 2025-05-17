@@ -6,7 +6,7 @@ import { SearchBar } from '@/components/SearchBar';
 import { useExtensions } from '@/hooks/useExtensions';
 
 export const ExtensionManager: React.FC = () => {
-  const { extensions, filteredExtensions, setSearchQuery } = useExtensions();
+  const { extensions, filteredExtensions, setSearchQuery, updateExtensionState } = useExtensions();
 
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -26,7 +26,10 @@ export const ExtensionManager: React.FC = () => {
           <SearchBar onSearch={setSearchQuery} />
         </div>
 
-        <ExtensionList extensions={filteredExtensions} />
+        <ExtensionList 
+          extensions={filteredExtensions} 
+          onExtensionStateChange={updateExtensionState}
+        />
       </div>
     </main>
   );

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Extension } from '@/types/extension';
 import { getAllExtensions } from '@/utils/extensionUtils';
 
@@ -21,18 +21,36 @@ export const useExtensions = () => {
   const [extensions, setExtensions] = useState<Extension[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
+  const refreshExtensions = async () => {
+    const updatedExtensions = await getAllExtensions();
+    setExtensions(updatedExtensions);
+  };
+
   useEffect(() => {
-    getAllExtensions().then(setExtensions);
+    refreshExtensions();
   }, []);
 
-  const filteredExtensions = extensions.filter((ext) =>
-    ext.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredExtensions = useMemo(() => 
+    extensions.filter((ext) =>
+      ext.name.toLowerCase().includes(searchQuery.toLowerCase())
+    ),
+    [extensions, searchQuery]
   );
+
+  const updateExtensionState = (id: string, enabled: boolean) => {
+    setExtensions(prev => 
+      prev.map(ext => 
+        ext.id === id ? { ...ext, enabled } : ext
+      )
+    );
+  };
 
   return {
     extensions,
     filteredExtensions,
     searchQuery,
     setSearchQuery,
+    refreshExtensions,
+    updateExtensionState,
   };
 }; 
