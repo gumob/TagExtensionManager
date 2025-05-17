@@ -55,23 +55,17 @@ h1 {
 }
 
 .theme-toggle {
+  height: 32px;
+  width: 32px;
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: 24px;
   cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 4px;
+  padding: 4px 4px;
+  border-radius: 50%;
   transition: background-color 0.3s;
   color: var(--icon-color);
-  font-family: 'Material Icons';
-}
-
-.theme-toggle::before {
-  content: 'dark_mode';
-}
-
-[data-theme='dark'] .theme-toggle::before {
-  content: 'light_mode';
+  font-family: 'Material Icons Outlined';
 }
 
 .theme-toggle:hover {
@@ -85,7 +79,7 @@ h1 {
 
 .search-container::before {
   content: 'search';
-  font-family: 'Material Icons';
+  font-family: 'Material Icons Outlined';
   position: absolute;
   left: 12px;
   top: 60%;
@@ -233,7 +227,7 @@ input:checked + .switch-track + .switch-thumb {
 .settings-icon {
   color: var(--icon-color);
   cursor: pointer;
-  font-family: 'Material Icons';
+  font-family: 'Material Icons Outlined';
   font-size: 20px;
   padding: 4px;
   border-radius: 50%;

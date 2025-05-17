@@ -21,7 +21,7 @@ export class ThemeToggle {
   }
 
   private initialize() {
-    this.button.innerHTML = this.isDarkMode ? '🌞' : '🌙';
+    this.button.innerHTML = this.isDarkMode ? '<span class="material-icons-outlined">dark_mode</span>' : '<span class="material-icons-outlined">light_mode</span>';
     this.button.title = this.isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode';
     this.button.addEventListener('click', () => this.toggleTheme());
     this.applyTheme();
@@ -29,7 +29,7 @@ export class ThemeToggle {
 
   private toggleTheme() {
     this.isDarkMode = !this.isDarkMode;
-    this.button.innerHTML = this.isDarkMode ? '🌞' : '🌙';
+    this.button.innerHTML = this.isDarkMode ? '<span class="material-icons-outlined">dark_mode</span>' : '<span class="material-icons-outlined">light_mode</span>';
     this.button.title = this.isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode';
     this.applyTheme();
     localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
