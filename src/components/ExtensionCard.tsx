@@ -17,7 +17,7 @@ interface ExtensionCardProps {
 
 export function ExtensionCard({ extension, onToggle, onSettingsClick }: ExtensionCardProps) {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
+    <div className="bg-white dark:bg-gray-800 rounded-lg p-4">
       <div className="flex items-start space-x-4">
         <img
           src={extension.iconUrl}
