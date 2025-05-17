@@ -1,4 +1,6 @@
 import React from 'react';
+import { Switch } from '@headlessui/react';
+import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
 
 interface Extension {
   id: string;
@@ -35,22 +37,25 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
             {extension.description}
           </p> */}
         </div>
-        <div className="flex flex-col space-y-2">
-          <button
-            onClick={() => onToggle(extension.id, !extension.enabled)}
-            className={`px-3 py-1 rounded-full text-2xs font-medium ${
-              extension.enabled
-                ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-                : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
-            }`}
+        <div className="flex items-center space-x-3">
+          <Switch
+            checked={extension.enabled}
+            onChange={(checked) => onToggle(extension.id, checked)}
+            className={`${
+              extension.enabled ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'
+            } relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none`}
           >
-            {extension.enabled ? 'Enabled' : 'Disabled'}
-          </button>
+            <span
+              className={`${
+                extension.enabled ? 'translate-x-5' : 'translate-x-1'
+              } inline-block h-3 w-3 transform rounded-full bg-white transition-transform`}
+            />
+          </Switch>
           <button
             onClick={() => onSettingsClick(extension.id)}
-            className="px-3 py-1 rounded-full text-2xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+            className="p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
           >
-            Settings
+            <EllipsisVerticalIcon className="h-5 w-5" />
           </button>
         </div>
       </div>
