@@ -3,7 +3,7 @@ import { Extension } from '@/types/extension';
 export const findOptimalIcon = (icons: chrome.management.IconInfo[] | undefined): string => {
   if (!icons || icons.length === 0) return '';
   
-  const preferredSizes = [48, 36, 32, 24, 16];
+  const preferredSizes = [48, 128, 36, 32, 24, 16];
   
   for (const size of preferredSizes) {
     const icon = icons.find(icon => icon.size === size);
