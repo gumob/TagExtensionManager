@@ -22,28 +22,28 @@ const Metrics: FC<MetricsProps> = ({ extensions = [] }) => {
   return (
     <>
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        <h3 className="text-xs font-semibold text-gray-900 dark:text-white mb-4">
           Total Extensions
         </h3>
-        <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+        <p className="text-lg font-bold text-blue-600 dark:text-blue-400">
           {total}
         </p>
       </div>
 
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        <h3 className="text-xs font-semibold text-gray-900 dark:text-white mb-4">
           Enabled
         </h3>
-        <p className="text-3xl font-bold text-green-600 dark:text-green-400">
+        <p className="text-lg font-bold text-green-600 dark:text-green-400">
           {enabled}
         </p>
       </div>
 
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        <h3 className="text-xs font-semibold text-gray-900 dark:text-white mb-4">
           Disabled
         </h3>
-        <p className="text-3xl font-bold text-red-600 dark:text-red-400">
+        <p className="text-lg font-bold text-red-600 dark:text-red-400">
           {disabled}
         </p>
       </div>

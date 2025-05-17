@@ -55,7 +55,13 @@ const config: Configuration = {
   plugins: [
     new CopyPlugin({
       patterns: [
-        { from: 'public', to: '.' },
+        { 
+          from: 'public',
+          to: '.',
+          globOptions: {
+            ignore: ['**/*.sketch']
+          }
+        },
         { from: 'manifest.json', to: '.' },
       ],
     }),
