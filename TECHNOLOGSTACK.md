@@ -2,42 +2,45 @@
 
 ## Core Technologies
 
-- TypeScript: ^5
-- Node.js: ^20.17.31
+- TypeScript: ^5.8.3
+- Node.js: ^20.17.47
 
 ## Frontend
 
-- Vanilla JavaScript with TypeScript
-- DOM Manipulation API
-- Tampermonkey API
+- Chrome Extension with TypeScript
+- Vanilla JavaScript for DOM manipulation
 
 ## Development Tools
 
 ### Code Quality
 
-- ESLint: ^9
+- ESLint: ^9.27.0
 - Prettier: ^3.5.3
-- TypeScript ESLint Parser
+- TypeScript ESLint Parser: ^8.32.1
 
 ### Build System
 
-- Webpack: ^5.91.0
-- webpack-dev-server: ^5.2.1
-- webpack-monkey: ^0.2.1
-- pnpm: 10.9.0
+- Webpack: ^5.99.8
+- webpack-cli: ^5.1.4
+- pnpm: 10.11.0
 
 ### Build Tools & Loaders
 
-- babel-loader: ^9.1.3
-- css-loader: ^6.10.0
-- style-loader: ^3.3.4
-- terser-webpack-plugin: ^5.3.10
 - ts-loader: ^9.5.2
+- css-loader: ^7.1.2
+- style-loader: ^4.0.0
+- copy-webpack-plugin: ^12.0.2
+- ts-node: ^10.9.2
 
 ### Type Definitions
 
-- @types/node: ^20.17.31
-- @types/tampermonkey: ^5.0.4
+- @types/node: ^20.17.47
+- @types/chrome: ^0.0.323
+- @types/uuid: ^10.0.0
+
+## Dependencies
+
+- uuid: ^11.1.0
 
 ## Development Environment
 
@@ -55,12 +58,12 @@
 
 ### Build Process
 
-- Tampermonkey user script is built from TypeScript source
+- Chrome extension is built from TypeScript source
 - DOM elements are created with vanilla JavaScript
-- Style definitions are bundled inline for userscript compatibility
+- Style definitions are bundled inline for extension compatibility
 
-### AI Integration
+### Development Workflow
 
-- Uses built-in AI capabilities
-- No external API keys required
-- Custom prompt template support
+- Development mode with hot reloading
+- Production build optimization
+- Type checking and linting in CI/CD pipeline
