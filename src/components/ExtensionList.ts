@@ -20,7 +20,7 @@ export class ExtensionList {
   }
 
   render(extensions: Extension[]) {
-    console.debug('[Extension Manager] Rendering extensions:', extensions);
+    // console.debug('[Extension Manager] Rendering extensions:', extensions);
     if (!this.container) {
       console.error('[Extension Manager] Cannot render: container element not found');
       return;
@@ -30,12 +30,12 @@ export class ExtensionList {
     extensions.forEach((extension) => {
       const element = this.createExtensionElement(extension);
       this.container.appendChild(element);
-      console.debug('[Extension Manager] Added extension element:', extension.name);
+      // console.debug('[Extension Manager] Added extension element:', extension.name);
     });
   }
 
   private createExtensionElement(extension: Extension): HTMLElement {
-    console.debug('[Extension Manager] Creating element for extension:', extension.name);
+    // console.debug('[Extension Manager] Creating element for extension:', extension.name);
     const div = document.createElement('div');
     div.className = 'extension-item';
 

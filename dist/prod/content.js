@@ -1,1 +1,1 @@
-(()=>{"use strict";console.debug("Extension Manager content script loaded")})();
+(()=>{"use strict";console.debug("[Extension Manager] Extension Manager content script loaded")})();
