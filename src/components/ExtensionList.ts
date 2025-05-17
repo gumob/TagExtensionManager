@@ -84,7 +84,7 @@ export class ExtensionList {
     // Settings Icon
     const settingsIcon = document.createElement('span');
     settingsIcon.className = 'settings-icon';
-    settingsIcon.textContent = 'settings';
+    settingsIcon.textContent = 'more_vert';
     settingsIcon.title = 'Extension Settings';
     settingsIcon.addEventListener('click', () => {
       // Get the current browser's extension management URL
