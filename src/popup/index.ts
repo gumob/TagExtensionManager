@@ -2,12 +2,14 @@ import { ExtensionManager } from '../services/ExtensionManager';
 import { ExtensionList } from '../components/ExtensionList';
 import { SearchBar } from '../components/SearchBar';
 import { ThemeToggle } from '../components/ThemeToggle';
+import { Metrics } from '../components/Metrics';
 
 class Popup {
   private extensionManager: ExtensionManager;
   private extensionList: ExtensionList;
   private searchBar: SearchBar;
   private themeToggle: ThemeToggle;
+  private metrics: Metrics;
   private extensions: any[] = [];
 
   constructor() {
@@ -15,6 +17,7 @@ class Popup {
     this.extensionList = new ExtensionList();
     this.searchBar = new SearchBar();
     this.themeToggle = new ThemeToggle();
+    this.metrics = new Metrics();
     this.initialize();
   }
 
@@ -28,6 +31,11 @@ class Popup {
         console.warn('[Extension Manager] No extensions found');
       }
       
+      const main = document.querySelector('main');
+      if (main) {
+        this.metrics.render(main);
+      }
+      this.metrics.update(this.extensions);
       this.extensionList.render(this.extensions);
       this.setupEventListeners();
       this.setupThemeToggle();
@@ -40,6 +48,7 @@ class Popup {
     this.searchBar.onSearch((query: string) => {
       const filteredExtensions = this.extensionManager.filterExtensions(query, this.extensions);
       this.extensionList.render(filteredExtensions);
+      this.metrics.update(filteredExtensions);
     });
 
     this.extensionList.onToggleExtension(async (extensionId: string, enabled: boolean) => {
@@ -47,6 +56,7 @@ class Popup {
         await this.extensionManager.toggleExtension(extensionId, enabled);
         this.extensions = await this.extensionManager.getAllExtensions();
         this.extensionList.render(this.extensions);
+        this.metrics.update(this.extensions);
       } catch (error) {
         console.error('[Extension Manager] Error toggling extension:', error);
       }

@@ -37,7 +37,7 @@ export class ExtensionList {
   private createExtensionElement(extension: Extension): HTMLElement {
     // console.debug('[Extension Manager] Creating element for extension:', extension.name);
     const div = document.createElement('div');
-    div.className = 'extension-item';
+    div.className = `extension-item ${extension.enabled ? 'enabled' : 'disabled'}`;
 
     const icon = document.createElement('img');
     icon.className = 'extension-icon';

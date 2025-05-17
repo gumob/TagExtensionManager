@@ -138,6 +138,16 @@ h1 {
   gap: 8px;
 }
 
+.extension-item.disabled .extension-icon,
+.extension-item.disabled .extension-name {
+  opacity: 0.5;
+}
+
+.extension-item.enabled .extension-icon,
+.extension-item.enabled .extension-name {
+  opacity: 1;
+}
+
 .extension-item:last-child {
   border-bottom: none;
 }
@@ -146,6 +156,7 @@ h1 {
   width: 24px;
   height: 24px;
   flex-shrink: 0;
+  transition: opacity 0.3s ease;
 }
 
 .extension-info {
@@ -163,6 +174,7 @@ h1 {
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 320px;
+  transition: opacity 0.3s ease;
 }
 
 .extension-description {
@@ -244,4 +256,39 @@ input:checked + .switch-track + .switch-thumb {
 
 .settings-icon:hover {
   background-color: var(--border-color);
-} 
+}
+
+/* === Extension Metrics Styles === */
+.metrics-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--metrics-container-margin-bottom, 12px);
+  gap: var(--metrics-item-gap, 24px);
+}
+.metrics-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 1 0;
+}
+.metrics-title {
+  font-size: var(--metrics-title-font-size, 9px);
+  font-weight: var(--metrics-title-font-weight, 500);
+  color: var(--metrics-title-color, #888);
+  margin-bottom: var(--metrics-title-margin-bottom, 2px);
+}
+.metrics-value {
+  font-size: var(--metrics-value-font-size, 18px);
+  font-weight: var(--metrics-value-font-weight, 600);
+  color: var(--metrics-value-color, #222);
+}
+
+[data-theme='dark'] .metrics-title {
+  color: var(--metrics-title-color-dark, #aaa);
+}
+[data-theme='dark'] .metrics-value {
+  color: var(--metrics-value-color-dark, #fff);
+}
+/* === End Extension Metrics Styles === */ 
