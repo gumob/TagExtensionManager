@@ -1,5 +1,6 @@
 import { ExtensionList } from '@/components/ExtensionList';
 import { Metrics } from '@/components/Metrics';
+import { ProfileManager } from '@/components/ProfileManager';
 import { SearchBar } from '@/components/SearchBar';
 import { useExtensions } from '@/hooks/useExtensions';
 import React from 'react';
@@ -21,6 +22,10 @@ export const ExtensionManager: React.FC = () => {
 
           <div className="mb-3">
             <SearchBar onSearch={setSearchQuery} />
+          </div>
+
+          <div className="mb-3">
+            <ProfileManager />
           </div>
         </div>
 

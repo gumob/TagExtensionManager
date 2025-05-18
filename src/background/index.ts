@@ -35,9 +35,36 @@ const initializeIcon = async () => {
 /**
  * Listen for extension installation
  */
-chrome.runtime.onInstalled.addListener(async () => {
-  console.debug('[Extension Manager][background] Extension installed');
+chrome.runtime.onInstalled.addListener(async details => {
+  console.debug('[Extension Manager][background] Extension installed', details);
   await initializeIcon();
+
+  // Create Default profile only on fresh install
+  if (details.reason === 'install') {
+    console.debug('[Extension Manager][background] Creating Default profile');
+    chrome.management.getAll(extensions => {
+      const defaultExtensions = extensions.map(ext => ({
+        id: ext.id,
+        enabled: ext.enabled,
+      }));
+      const now = new Date().toISOString();
+      const defaultProfile = {
+        profiles: [
+          {
+            id: crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2),
+            name: 'Default',
+            extensions: defaultExtensions,
+            createdAt: now,
+            updatedAt: now,
+          },
+        ],
+        currentProfileId: null,
+      };
+      chrome.storage.local.set({ 'extension-manager-profiles': defaultProfile }, () => {
+        console.debug('[Extension Manager][background] Default profile saved to storage');
+      });
+    });
+  }
 });
 
 /**
@@ -65,6 +92,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       message.isDarkMode ? 'dark' : 'light'
     );
     updateExtensionIcon(message.isDarkMode);
+    sendResponse({ success: true });
+  } else if (message.type === 'CREATE_DEFAULT_PROFILE') {
+    console.debug('[Extension Manager][background] Creating Default profile');
+    chrome.management.getAll(extensions => {
+      const defaultExtensions = extensions.map(ext => ({
+        id: ext.id,
+        enabled: ext.enabled,
+      }));
+      chrome.runtime.sendMessage({
+        type: 'CREATE_DEFAULT_PROFILE',
+        extensions: defaultExtensions,
+      });
+    });
     sendResponse({ success: true });
   }
   return true;
