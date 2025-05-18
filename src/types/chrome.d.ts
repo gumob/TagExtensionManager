@@ -1,29 +1,15 @@
 /// <reference types="chrome"/>
 
-declare namespace chrome {
-  export namespace runtime {
-    export const onInstalled: {
-      addListener(callback: () => void): void;
-    };
+declare namespace chrome.offscreen {
+  type Reason = 'AUDIO_PLAYBACK' | 'BLOBS' | 'CLIPBOARD' | 'DOM_PARSER' | 'DOM_SCRAPING' | 'IFRAME_SCRIPTING' | 'TESTING' | 'WORKERS';
+
+  interface CreateDocumentOptions {
+    url: string;
+    reasons: Reason[];
+    justification: string;
   }
 
-  export namespace management {
-    export function getAll(callback: (extensions: chrome.management.ExtensionInfo[]) => void): void;
-    export function setEnabled(id: string, enabled: boolean, callback?: () => void): void;
-  }
-
-  export namespace tabs {
-    export function create(createProperties: { url: string }): void;
-  }
-
-  export namespace management {
-    export interface ExtensionInfo {
-      id: string;
-      name: string;
-      version?: string;
-      enabled: boolean;
-      description?: string;
-      icons?: Array<{ url: string }>;
-    }
-  }
+  function createDocument(options: CreateDocumentOptions): Promise<void>;
+  function hasDocument(): Promise<boolean>;
+  function closeDocument(): Promise<void>;
 } 

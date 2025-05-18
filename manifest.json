@@ -6,7 +6,14 @@
   "permissions": [
     "management",
     "storage",
-    "tabs"
+    "tabs",
+    "scripting",
+    "activeTab",
+    "offscreen",
+    "settings"
+  ],
+  "host_permissions": [
+    "<all_urls>"
   ],
   "action": {
     "default_popup": "popup.html",
@@ -22,12 +29,11 @@
     "128": "icons/light/icon128.png"
   },
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.js",
+    "type": "module"
   },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
-    }
-  ]
+  "offscreen": {
+    "page": "offscreen.html",
+    "reasons": ["DOM_PARSER"]
+  }
 } 

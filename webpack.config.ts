@@ -15,7 +15,7 @@ const config: Configuration = {
   entry: {
     popup: './src/popup/index.tsx',
     background: './src/background/index.ts',
-    content: './src/content/index.ts',
+    offscreen: './src/offscreen/index.ts',
   },
   output: {
     path: path.resolve(__dirname, isDev ? 'dist/dev' : 'dist/prod'),

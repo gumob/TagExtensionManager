@@ -4,7 +4,7 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
     "./public/**/*.html",
   ],
-  darkMode: 'class',
+  darkMode: 'media',
   theme: {
     extend: {
       fontSize: {

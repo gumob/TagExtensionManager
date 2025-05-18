@@ -1,7 +1,6 @@
 import React from 'react';
 import { ExtensionList } from '@/components/ExtensionList';
 import { Metrics } from '@/components/Metrics';
-import { ThemeToggle } from '@/components/ThemeToggle';
 import { SearchBar } from '@/components/SearchBar';
 import { useExtensions } from '@/hooks/useExtensions';
 
@@ -15,7 +14,6 @@ export const ExtensionManager: React.FC = () => {
           <h1 className="text-xl font-bold text-gray-900 dark:text-white">
             Extension Manager
           </h1>
-          <ThemeToggle />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">

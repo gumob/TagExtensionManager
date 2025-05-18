@@ -1,4 +1,3 @@
-/// <reference path="../types/chrome.d.ts" />
 import React, { useEffect, useState } from 'react';
 import { ExtensionCard } from '@/components/ExtensionCard';
 import { Extension } from '@/types/extension';
