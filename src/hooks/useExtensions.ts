@@ -1,10 +1,10 @@
-import { useState, useEffect, useMemo } from 'react';
 import { Extension } from '@/types/extension';
 import { getAllExtensions } from '@/utils/extensionUtils';
+import { useEffect, useMemo, useState } from 'react';
 
 const findOptimalIcon = (icons: chrome.management.IconInfo[] | undefined): string => {
   if (!icons || icons.length === 0) return '';
-  
+
   // 48pxのアイコンを探す
   let targetSize = 48;
   while (targetSize > 0) {
@@ -12,7 +12,7 @@ const findOptimalIcon = (icons: chrome.management.IconInfo[] | undefined): strin
     if (icon) return icon.url;
     targetSize -= 2;
   }
-  
+
   // 適切なサイズが見つからない場合は最初のアイコンを使用
   return icons[0].url;
 };
@@ -30,19 +30,13 @@ export const useExtensions = () => {
     refreshExtensions();
   }, []);
 
-  const filteredExtensions = useMemo(() => 
-    extensions.filter((ext) =>
-      ext.name.toLowerCase().includes(searchQuery.toLowerCase())
-    ),
+  const filteredExtensions = useMemo(
+    () => extensions.filter(ext => ext.name.toLowerCase().includes(searchQuery.toLowerCase())),
     [extensions, searchQuery]
   );
 
   const updateExtensionState = (id: string, enabled: boolean) => {
-    setExtensions(prev => 
-      prev.map(ext => 
-        ext.id === id ? { ...ext, enabled } : ext
-      )
-    );
+    setExtensions(prev => prev.map(ext => (ext.id === id ? { ...ext, enabled } : ext)));
   };
 
   return {
@@ -53,4 +47,4 @@ export const useExtensions = () => {
     refreshExtensions,
     updateExtensionState,
   };
-}; 
+};

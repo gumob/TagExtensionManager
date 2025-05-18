@@ -1,5 +1,5 @@
-import React, { FC, useState } from 'react';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import React, { FC, useState } from 'react';
 
 interface SearchBarProps {
   onSearch?: (query: string) => void;
@@ -30,4 +30,4 @@ const SearchBar: FC<SearchBarProps> = ({ onSearch }) => {
   );
 };
 
-export { SearchBar }; 
+export { SearchBar };

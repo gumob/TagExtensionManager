@@ -17,7 +17,10 @@ export const isDarkMode = (): boolean => {
  */
 export const detectThemeOnOffscreen = () => {
   const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  console.debug('[Extension Manager][themeDetector] Theme detected:', isDarkMode ? 'dark' : 'light');
+  console.debug(
+    '[Extension Manager][themeDetector] Theme detected:',
+    isDarkMode ? 'dark' : 'light'
+  );
   chrome.runtime.sendMessage({
     type: 'COLOR_SCHEME_CHANGED',
     isDarkMode: isDarkMode,
@@ -30,10 +33,10 @@ export const detectThemeOnOffscreen = () => {
  * @returns A cleanup function
  */
 export const setupColorSchemeListener = (onChange: (isDarkMode: boolean) => void) => {
-  // Notify the initial state
+  /** Notify the initial state */
   onChange(isDarkMode());
 
-  // Listen for color scheme changes
+  /** Listen for color scheme changes */
   const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
   const handleChange = (e: MediaQueryListEvent) => {
     onChange(e.matches);
@@ -41,7 +44,7 @@ export const setupColorSchemeListener = (onChange: (isDarkMode: boolean) => void
 
   mediaQuery.addEventListener('change', handleChange);
 
-  // Return a cleanup function
+  /** Return a cleanup function */
   return () => {
     mediaQuery.removeEventListener('change', handleChange);
   };
@@ -52,7 +55,10 @@ export const setupColorSchemeListener = (onChange: (isDarkMode: boolean) => void
  * @param isDarkMode - Whether the color scheme is dark
  */
 export const updateExtensionIcon = async (isDarkMode: boolean) => {
-  console.debug('[Extension Manager][background] Updating extension icon to ', isDarkMode ? 'dark' : 'light');
+  console.debug(
+    '[Extension Manager][background] Updating extension icon to ',
+    isDarkMode ? 'dark' : 'light'
+  );
   const iconPath = isDarkMode ? '/icons/dark/' : '/icons/light/';
   try {
     await chrome.action.setIcon({
@@ -62,7 +68,9 @@ export const updateExtensionIcon = async (isDarkMode: boolean) => {
         128: `${iconPath}icon128.png`,
       },
     });
-    console.debug(`[Extension Manager][background] Icon updated to ${isDarkMode ? 'dark' : 'light'} mode`);
+    console.debug(
+      `[Extension Manager][background] Icon updated to ${isDarkMode ? 'dark' : 'light'} mode`
+    );
   } catch (error) {
     console.error('[Extension Manager][background] Failed to update extension icon:', error);
   }
@@ -80,4 +88,4 @@ export const useTheme = () => {
   }, []);
 
   return isDark;
-}; 
+};

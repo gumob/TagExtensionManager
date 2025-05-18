@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
 import { ExtensionCard } from '@/components/ExtensionCard';
 import { Extension } from '@/types/extension';
 import { toggleExtension } from '@/utils/extensionUtils';
+import React, { useEffect, useState } from 'react';
 
 interface ExtensionListProps {
   extensions: Extension[];
@@ -27,7 +27,7 @@ export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionL
   const handleSettingsClick = (extensionId: string) => {
     const browser = navigator.userAgent.toLowerCase();
     let baseUrl = 'chrome://extensions';
-    
+
     if (browser.includes('brave')) {
       baseUrl = 'brave://extensions';
     } else if (browser.includes('edg')) {
@@ -43,14 +43,14 @@ export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionL
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {localExtensions.map((extension) => (
-        <ExtensionCard 
-          key={extension.id} 
-          extension={extension} 
+      {localExtensions.map(extension => (
+        <ExtensionCard
+          key={extension.id}
+          extension={extension}
           onToggle={handleToggle}
           onSettingsClick={handleSettingsClick}
         />
       ))}
     </div>
   );
-} 
+}

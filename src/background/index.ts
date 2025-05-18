@@ -1,4 +1,4 @@
-import { updateExtensionIcon } from "@/utils/themeUtils";
+import { updateExtensionIcon } from '@/utils/themeUtils';
 
 /** Background script for extension management */
 console.debug('[Extension Manager][background] Starting background script');

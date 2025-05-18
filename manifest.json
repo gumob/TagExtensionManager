@@ -12,9 +12,7 @@
     "offscreen",
     "settings"
   ],
-  "host_permissions": [
-    "<all_urls>"
-  ],
+  "host_permissions": ["<all_urls>"],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
@@ -36,4 +34,4 @@
     "page": "offscreen.html",
     "reasons": ["DOM_PARSER"]
   }
-} 
+}

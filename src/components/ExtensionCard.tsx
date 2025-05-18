@@ -1,6 +1,6 @@
-import React from 'react';
 import { Switch } from '@headlessui/react';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
+import React from 'react';
 
 interface Extension {
   id: string;
@@ -21,18 +21,10 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg p-4">
       <div className="flex items-start space-x-4">
-        <img
-          src={extension.iconUrl}
-          alt={extension.name}
-          className="w-6 h-6 rounded"
-        />
+        <img src={extension.iconUrl} alt={extension.name} className="w-6 h-6 rounded" />
         <div className="flex-1">
-          <h3 className="text-xs font-semibold text-gray-900 dark:text-white">
-            {extension.name}
-          </h3>
-          <p className="text-2xs text-gray-500 dark:text-gray-400">
-            {extension.version}
-          </p>
+          <h3 className="text-xs font-semibold text-gray-900 dark:text-white">{extension.name}</h3>
+          <p className="text-2xs text-gray-500 dark:text-gray-400">{extension.version}</p>
           {/* <p className="mt-2 text-xs text-gray-600 dark:text-gray-300">
             {extension.description}
           </p> */}
@@ -40,7 +32,7 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
         <div className="flex items-center space-x-3">
           <Switch
             checked={extension.enabled}
-            onChange={(checked) => onToggle(extension.id, checked)}
+            onChange={checked => onToggle(extension.id, checked)}
             className={`${
               extension.enabled ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'
             } relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none`}
@@ -61,4 +53,4 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
       </div>
     </div>
   );
-} 
+}
