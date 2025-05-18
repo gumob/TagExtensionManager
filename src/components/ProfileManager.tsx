@@ -99,7 +99,7 @@ export const ProfileManager = () => {
     <div className="flex items-center gap-2">
       <Menu as="div" className="relative">
         <Menu.Button
-          className={`inline-flex items-center gap-2 rounded-md bg-zinc-50 dark:bg-zinc-800 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-inset ring-zinc-300 dark:ring-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700 ${profiles.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className={`inline-flex items-center gap-2 rounded-xl bg-zinc-50 dark:bg-zinc-800 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-inset ring-zinc-300 dark:ring-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700 ${profiles.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
           disabled={profiles.length === 0}
         >
           Profiles
@@ -114,7 +114,7 @@ export const ProfileManager = () => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="absolute left-0 z-10 mt-2 w-56 origin-top-left rounded-md bg-zinc-50 dark:bg-zinc-700 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <Menu.Items className="absolute left-0 z-10 mt-2 w-56 origin-top-left rounded-xl bg-zinc-50 dark:bg-zinc-700 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
             <div className="py-1">
               {profiles.length === 0 ? (
                 <div className="px-4 py-2 text-zinc-400 text-sm">No profiles available</div>
@@ -124,7 +124,7 @@ export const ProfileManager = () => {
                     {({ active }) => (
                       <div className="flex items-center justify-between px-4 py-2">
                         <button
-                          className={`flex-1 text-left px-2 py-1.5 rounded-md ${active ? 'bg-zinc-100 dark:bg-zinc-700' : ''} ${
+                          className={`flex-1 text-left px-2 py-1.5 rounded-xl ${active ? 'bg-zinc-100 dark:bg-zinc-700' : ''} ${
                             currentProfileId === profile.id ? 'font-bold' : ''
                           } text-zinc-900 dark:text-zinc-100`}
                           onClick={() => setCurrentProfile(profile.id)}
@@ -164,7 +164,7 @@ export const ProfileManager = () => {
 
       <button
         onClick={() => setIsCreateDialogOpen(true)}
-        className="inline-flex items-center gap-2 rounded-md bg-zinc-50 dark:bg-zinc-800 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-inset ring-zinc-300 dark:ring-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700"
+        className="inline-flex items-center gap-2 rounded-xl bg-zinc-50 dark:bg-zinc-800 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-inset ring-zinc-300 dark:ring-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700"
         title="Create a new profile"
       >
         <PlusIcon className="h-5 w-5" />
@@ -172,7 +172,7 @@ export const ProfileManager = () => {
 
       <button
         onClick={handleExportProfiles}
-        className="inline-flex items-center gap-2 rounded-md bg-zinc-50 dark:bg-zinc-800 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-inset ring-zinc-300 dark:ring-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700"
+        className="inline-flex items-center gap-2 rounded-xl bg-zinc-50 dark:bg-zinc-800 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-inset ring-zinc-300 dark:ring-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700"
         title="Export profiles"
       >
         <ArrowUpTrayIcon className="h-5 w-5" />
@@ -180,7 +180,7 @@ export const ProfileManager = () => {
 
       <button
         onClick={() => fileInputRef.current?.click()}
-        className="inline-flex items-center gap-2 rounded-md bg-zinc-50 dark:bg-zinc-800 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-inset ring-zinc-300 dark:ring-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700"
+        className="inline-flex items-center gap-2 rounded-xl bg-zinc-50 dark:bg-zinc-800 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-inset ring-zinc-300 dark:ring-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700"
         title="Import profiles"
       >
         <ArrowDownTrayIcon className="h-5 w-5" />
@@ -204,7 +204,7 @@ export const ProfileManager = () => {
       >
         <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="mx-auto max-w-md rounded-md bg-zinc-50 dark:bg-zinc-800 p-6">
+          <Dialog.Panel className="mx-auto max-w-md rounded-xl bg-zinc-50 dark:bg-zinc-800 p-6">
             <Dialog.Title className="text-lg font-medium leading-6 text-zinc-900 dark:text-zinc-100">
               Create New Profile
             </Dialog.Title>
@@ -213,7 +213,12 @@ export const ProfileManager = () => {
                 type="text"
                 value={newProfileName}
                 onChange={e => setNewProfileName(e.target.value)}
-                className="mt-1 block w-full rounded-md border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 shadow-sm focus:outline-none focus:ring-1 focus:ring-zinc-200 dark:focus:ring-zinc-500 sm:text-sm px-4 py-2.5"
+                onKeyDown={e => {
+                  if (e.key === 'Enter' && newProfileName.trim()) {
+                    handleCreateProfile();
+                  }
+                }}
+                className="mt-1 block w-full rounded-xl border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 shadow-sm focus:outline-none focus:ring-1 focus:ring-zinc-200 dark:focus:ring-zinc-500 sm:text-sm px-4 py-2.5 min-w-[300px]"
                 placeholder="Enter profile name"
                 autoFocus
               />
@@ -221,7 +226,7 @@ export const ProfileManager = () => {
             <div className="mt-4 flex justify-end gap-2">
               <button
                 type="button"
-                className="inline-flex justify-center rounded-md border border-transparent bg-zinc-100 dark:bg-zinc-700 px-4 py-2 text-sm font-medium text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-600"
+                className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-100 dark:bg-zinc-700 px-4 py-2 text-sm font-medium text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-600"
                 onClick={() => {
                   setIsCreateDialogOpen(false);
                   setNewProfileName('');
@@ -231,7 +236,7 @@ export const ProfileManager = () => {
               </button>
               <button
                 type="button"
-                className="inline-flex justify-center rounded-md border border-transparent bg-zinc-600 dark:bg-zinc-500 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:hover:bg-zinc-400"
+                className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-600 dark:bg-zinc-500 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:hover:bg-zinc-400"
                 onClick={handleCreateProfile}
               >
                 Create
@@ -249,7 +254,7 @@ export const ProfileManager = () => {
       >
         <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="mx-auto max-w-sm rounded-md bg-zinc-50 dark:bg-zinc-800 p-6">
+          <Dialog.Panel className="mx-auto max-w-sm rounded-xl bg-zinc-50 dark:bg-zinc-800 p-6">
             <Dialog.Title className="text-lg font-medium leading-6 text-zinc-900 dark:text-zinc-100">
               Import Profiles
             </Dialog.Title>
@@ -261,14 +266,14 @@ export const ProfileManager = () => {
             <div className="mt-4 flex justify-end gap-2">
               <button
                 type="button"
-                className="inline-flex justify-center rounded-md border border-transparent bg-zinc-100 dark:bg-zinc-700 px-4 py-2 text-sm font-medium text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-600"
+                className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-100 dark:bg-zinc-700 px-4 py-2 text-sm font-medium text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-600"
                 onClick={() => setIsImportDialogOpen(false)}
               >
                 Cancel
               </button>
               <button
                 type="button"
-                className="inline-flex justify-center rounded-md border border-transparent bg-zinc-600 dark:bg-zinc-500 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:hover:bg-zinc-400"
+                className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-600 dark:bg-zinc-500 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:hover:bg-zinc-400"
                 onClick={() => setIsImportDialogOpen(false)}
               >
                 Import
@@ -286,7 +291,7 @@ export const ProfileManager = () => {
       >
         <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="mx-auto max-w-md rounded-md bg-zinc-50 dark:bg-zinc-800 p-6">
+          <Dialog.Panel className="mx-auto max-w-md rounded-xl bg-zinc-50 dark:bg-zinc-800 p-6">
             <Dialog.Title className="text-lg font-medium leading-6 text-zinc-900 dark:text-zinc-100">
               Rename Profile
             </Dialog.Title>
@@ -295,21 +300,26 @@ export const ProfileManager = () => {
                 type="text"
                 value={newProfileName}
                 onChange={e => setNewProfileName(e.target.value)}
-                className="mt-1 block w-full rounded-md border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 shadow-sm focus:outline-none focus:ring-1 focus:ring-zinc-200 dark:focus:ring-zinc-500 sm:text-sm px-4 py-2.5"
+                onKeyDown={e => {
+                  if (e.key === 'Enter' && newProfileName.trim()) {
+                    handleRenameProfile();
+                  }
+                }}
+                className="mt-1 block w-full rounded-xl border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 shadow-sm focus:outline-none focus:ring-1 focus:ring-zinc-200 dark:focus:ring-zinc-500 sm:text-sm px-4 py-2.5 min-w-[300px]"
                 placeholder="Enter new profile name"
               />
             </div>
             <div className="mt-4 flex justify-end gap-2">
               <button
                 type="button"
-                className="inline-flex justify-center rounded-md border border-transparent bg-zinc-100 dark:bg-zinc-700 px-4 py-2 text-sm font-medium text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-600"
+                className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-100 dark:bg-zinc-700 px-4 py-2 text-sm font-medium text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-600"
                 onClick={() => setIsRenameDialogOpen(false)}
               >
                 Cancel
               </button>
               <button
                 type="button"
-                className="inline-flex justify-center rounded-md border border-transparent bg-zinc-600 dark:bg-zinc-500 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:hover:bg-zinc-400"
+                className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-600 dark:bg-zinc-500 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:hover:bg-zinc-400"
                 onClick={handleRenameProfile}
               >
                 Rename
@@ -327,7 +337,7 @@ export const ProfileManager = () => {
       >
         <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="mx-auto max-w-sm rounded-md bg-zinc-50 dark:bg-zinc-800 p-6">
+          <Dialog.Panel className="mx-auto max-w-sm rounded-xl bg-zinc-50 dark:bg-zinc-800 p-6">
             <Dialog.Title className="text-lg font-medium leading-6 text-zinc-900 dark:text-zinc-100">
               Delete Profile
             </Dialog.Title>
@@ -339,14 +349,14 @@ export const ProfileManager = () => {
             <div className="mt-4 flex justify-end gap-2">
               <button
                 type="button"
-                className="inline-flex justify-center rounded-md border border-transparent bg-zinc-100 dark:bg-zinc-700 px-4 py-2 text-sm font-medium text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-600"
+                className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-100 dark:bg-zinc-700 px-4 py-2 text-sm font-medium text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-600"
                 onClick={() => setIsDeleteDialogOpen(false)}
               >
                 Cancel
               </button>
               <button
                 type="button"
-                className="inline-flex justify-center rounded-md border border-transparent bg-red-600 dark:bg-red-500 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 dark:hover:bg-red-400"
+                className="inline-flex justify-center rounded-xl border border-transparent bg-red-600 dark:bg-red-500 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 dark:hover:bg-red-400"
                 onClick={handleDeleteProfile}
               >
                 Delete
