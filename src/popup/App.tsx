@@ -47,7 +47,14 @@ const App: React.FC = () => {
   return (
     <>
       <ExtensionManager />
-      <Toaster position="top-right" />
+      <Toaster
+        position="top-center"
+        containerClassName="!top-5"
+        toastOptions={{
+          className:
+            '!bg-zinc-300 !text-zinc-900 dark:!bg-zinc-700 dark:!text-zinc-100 !rounded-xl !shadow-lg',
+        }}
+      />
     </>
   );
 };

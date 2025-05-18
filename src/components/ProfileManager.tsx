@@ -99,7 +99,7 @@ export const ProfileManager = () => {
     <div className="flex items-center gap-2">
       <Menu as="div" className="relative">
         <Menu.Button
-          className={`inline-flex items-center gap-2 rounded-xl bg-zinc-50 dark:bg-zinc-800 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-inset ring-zinc-300 dark:ring-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700 ${profiles.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className={`inline-flex items-center gap-2 rounded-xl bg-zinc-50 dark:bg-zinc-700 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-inset ring-zinc-300 dark:ring-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700 ${profiles.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
           disabled={profiles.length === 0}
         >
           Profiles
@@ -164,7 +164,7 @@ export const ProfileManager = () => {
 
       <button
         onClick={() => setIsCreateDialogOpen(true)}
-        className="inline-flex items-center gap-2 rounded-xl bg-zinc-50 dark:bg-zinc-800 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-inset ring-zinc-300 dark:ring-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700"
+        className="inline-flex items-center gap-2 rounded-xl bg-zinc-50 dark:bg-zinc-700 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-inset ring-zinc-300 dark:ring-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700"
         title="Create a new profile"
       >
         <PlusIcon className="h-5 w-5" />
@@ -172,7 +172,7 @@ export const ProfileManager = () => {
 
       <button
         onClick={handleExportProfiles}
-        className="inline-flex items-center gap-2 rounded-xl bg-zinc-50 dark:bg-zinc-800 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-inset ring-zinc-300 dark:ring-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700"
+        className="inline-flex items-center gap-2 rounded-xl bg-zinc-50 dark:bg-zinc-700 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-inset ring-zinc-300 dark:ring-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700"
         title="Export profiles"
       >
         <ArrowUpTrayIcon className="h-5 w-5" />
@@ -180,7 +180,7 @@ export const ProfileManager = () => {
 
       <button
         onClick={() => fileInputRef.current?.click()}
-        className="inline-flex items-center gap-2 rounded-xl bg-zinc-50 dark:bg-zinc-800 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-inset ring-zinc-300 dark:ring-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700"
+        className="inline-flex items-center gap-2 rounded-xl bg-zinc-50 dark:bg-zinc-700 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-inset ring-zinc-300 dark:ring-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700"
         title="Import profiles"
       >
         <ArrowDownTrayIcon className="h-5 w-5" />
