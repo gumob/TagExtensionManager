@@ -7,7 +7,7 @@
     "dev": "NODE_ENV=development node --loader ts-node/esm node_modules/webpack/bin/webpack.js --config webpack.config.ts --mode=development --watch",
     "build": "NODE_ENV=production node --loader ts-node/esm node_modules/webpack/bin/webpack.js --config webpack.config.ts --mode=production",
     "start": "NODE_ENV=development node --loader ts-node/esm node_modules/webpack/bin/webpack.js --config webpack.config.ts --mode=development",
-    "lint": "next lint",
+    "lint": "eslint .",
     "format-fix": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css,scss}\"",
     "format-check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,css,scss}\"",
     "type-check": "tsc --noEmit"
@@ -16,7 +16,6 @@
     "chrome-extension",
     "extension-manager",
     "typescript",
-    "nextjs",
     "react"
   ],
   "author": "",
@@ -24,7 +23,6 @@
   "dependencies": {
     "@headlessui/react": "^2.2.3",
     "@heroicons/react": "^2.2.0",
-    "next": "^14.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "uuid": "^11.1.0"
@@ -45,7 +43,6 @@
     "copy-webpack-plugin": "^13.0.0",
     "css-loader": "^7.1.2",
     "eslint": "^9.27.0",
-    "eslint-config-next": "^14.1.0",
     "postcss": "^8.5.3",
     "postcss-loader": "^8.1.1",
     "prettier": "^3.5.3",
