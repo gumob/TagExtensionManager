@@ -17,14 +17,14 @@ const SearchBar: FC<SearchBarProps> = ({ onSearch }) => {
   return (
     <div className="relative">
       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-        <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+        <MagnifyingGlassIcon className="h-5 w-5 text-zinc-400" aria-hidden="true" />
       </div>
       <input
         type="text"
         placeholder="Search extensions..."
         value={searchTerm}
         onChange={handleSearch}
-        className="w-full h-10 px-4 pl-10 rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-gray-200"
+        className="w-full h-10 px-4 pl-10 rounded-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-zinc-200"
       />
     </div>
   );

@@ -11,7 +11,7 @@ export const ExtensionManager: React.FC = () => {
     <main className="min-h-screen">
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center mb-3">
-          <h1 className="text-lg font-bold text-gray-900 dark:text-white">Extension Manager</h1>
+          <h1 className="text-lg font-bold text-zinc-900 dark:text-white">Extension Manager</h1>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-3">

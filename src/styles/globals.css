@@ -3,43 +3,45 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-rgb: 255, 255, 255;
-  --scrollbar-thumb: #cbd5e1;
-  --scrollbar-track: transparent;
+  --foreground-color: oklch(27.4% 0.006 286.033);
+  --background-color: oklch(96.7% 0.001 286.375);
+  --scrollbar-track-color: transparent;
+  --scrollbar-thumb-color: oklch(55.2% 0.016 285.938);
+  --scrollbar-thumb-hover-color: oklch(70.5% 0.015 286.067);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-rgb: 17, 24, 39;
-    --scrollbar-thumb: #4b5563;
-    --scrollbar-track: transparent;
+    --foreground-color: oklch(96.7% 0.001 286.375);
+    --background-color: oklch(27.4% 0.006 286.033);
+    --scrollbar-track-color: transparent;
+    --scrollbar-thumb-color: oklch(55.2% 0.016 285.938);
+    --scrollbar-thumb-hover-color: oklch(70.5% 0.015 286.067);
   }
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-rgb));
+  color: var(--foreground-color);
+  background: var(--background-color);
   min-width: 400px;
   min-height: 500px;
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--scrollbar-track);
+  background: var(--scrollbar-track-color);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--scrollbar-thumb);
-  border-radius: 4px;
+  background: var(--scrollbar-thumb-color);
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--scrollbar-thumb);
+  background: var(--scrollbar-thumb-hover-color);
   opacity: 0.8;
 }

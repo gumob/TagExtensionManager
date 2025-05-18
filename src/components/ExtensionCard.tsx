@@ -19,17 +19,17 @@ interface ExtensionCardProps {
 
 export function ExtensionCard({ extension, onToggle, onSettingsClick }: ExtensionCardProps) {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl p-3">
+    <div className="bg-white dark:bg-zinc-700 rounded-xl p-3">
       <div className="flex items-start space-x-2">
         <img src={extension.iconUrl} alt={extension.name} className="w-6 h-6 rounded" />
         <div className="flex-1 min-w-0">
-          <h3 className="text-xs font-semibold truncate select-none text-gray-900 dark:text-white">
+          <h3 className="text-xs font-semibold truncate select-none text-zinc-900 dark:text-white">
             {extension.name}
           </h3>
-          <p className="text-2xs select-none text-gray-500 dark:text-gray-400">
+          <p className="text-2xs select-none text-zinc-500 dark:text-zinc-400">
             {extension.version}
           </p>
-          {/* <p className="mt-2 text-xs text-gray-600 dark:text-gray-300">
+          {/* <p className="mt-2 text-xs text-zinc-600 dark:text-zinc-300">
             {extension.description}
           </p> */}
         </div>
@@ -38,7 +38,7 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
             checked={extension.enabled}
             onChange={checked => onToggle(extension.id, checked)}
             className={`${
-              extension.enabled ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'
+              extension.enabled ? 'bg-green-500' : 'bg-zinc-300 dark:bg-zinc-600'
             } relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none`}
           >
             <span
@@ -49,7 +49,7 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
           </Switch>
           <button
             onClick={() => onSettingsClick(extension.id)}
-            className="p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+            className="p-1 text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
           >
             <EllipsisVerticalIcon className="h-5 w-5" />
           </button>
