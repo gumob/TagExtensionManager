@@ -37,7 +37,9 @@ export const ProfileManager = () => {
   const [newProfileName, setNewProfileName] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Initialize profiles on mount
+  /**
+   * Initialize profiles on mount
+   */
   useEffect(() => {
     console.debug('[Extension Manager][ProfileManager] Initializing profiles');
     initialize();
@@ -67,7 +69,7 @@ export const ProfileManager = () => {
    */
   const handleCreateProfile = async () => {
     if (newProfileName.trim()) {
-      // 現在の拡張機能の状態を取得
+      /** Get the current extension states */
       const currentExtensions = await refreshExtensions();
       const extensionStates = currentExtensions.map(ext => ({
         id: ext.id,
@@ -148,14 +150,14 @@ export const ProfileManager = () => {
     try {
       console.debug('Switching to profile:', profileId);
 
-      // 手動更新フラグを設定
+      /** Set the manual refresh flag  */
       setIsManualRefresh(true);
 
-      // 新しいプロファイルを適用
+      /** Apply the new profile */
       console.debug('Applying new profile');
       await setCurrentProfile(profileId);
 
-      // 拡張機能の状態を更新してUIを反映
+      /** Refresh the extension states and update the UI */
       console.debug('Refreshing extension states');
       await refreshExtensions();
 
