@@ -360,7 +360,7 @@ export const ProfileManager = () => {
             <div className="mt-4 flex justify-end gap-2">
               <button
                 type="button"
-                className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-100 dark:bg-zinc-700 px-4 py-2 text-sm font-medium text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-600"
+                className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-400 dark:bg-zinc-700 px-4 py-2 text-sm font-medium text-white dark:text-zinc-100 hover:bg-zinc-300 dark:hover:bg-zinc-600"
                 onClick={() => {
                   setIsCreateDialogOpen(false);
                   setNewProfileName('');
@@ -408,7 +408,7 @@ export const ProfileManager = () => {
             <div className="mt-4 flex justify-end gap-2">
               <button
                 type="button"
-                className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-100 dark:bg-zinc-700 px-4 py-2 text-sm font-medium text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-600"
+                className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-400 dark:bg-zinc-700 px-4 py-2 text-sm font-medium text-white dark:text-zinc-100 hover:bg-zinc-300 dark:hover:bg-zinc-600"
                 onClick={() => setIsImportDialogOpen(false)}
               >
                 Cancel
@@ -454,7 +454,7 @@ export const ProfileManager = () => {
             <div className="mt-4 flex justify-end gap-2">
               <button
                 type="button"
-                className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-100 dark:bg-zinc-700 px-4 py-2 text-sm font-medium text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-600"
+                className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-400 dark:bg-zinc-700 px-4 py-2 text-sm font-medium text-white dark:text-zinc-100 hover:bg-zinc-300 dark:hover:bg-zinc-600"
                 onClick={() => setIsRenameDialogOpen(false)}
               >
                 Cancel
@@ -491,7 +491,7 @@ export const ProfileManager = () => {
             <div className="mt-4 flex justify-end gap-2">
               <button
                 type="button"
-                className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-100 dark:bg-zinc-700 px-4 py-2 text-sm font-medium text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-600"
+                className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-400 dark:bg-zinc-700 px-4 py-2 text-sm font-medium text-white dark:text-zinc-100 hover:bg-zinc-300 dark:hover:bg-zinc-600"
                 onClick={() => setIsDeleteDialogOpen(false)}
               >
                 Cancel
@@ -552,7 +552,7 @@ export const ProfileManager = () => {
                 <div className="mt-4 flex justify-end gap-2">
                   <button
                     type="button"
-                    className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-100 dark:bg-zinc-700 px-4 py-2 text-sm font-medium text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-600"
+                    className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-400 dark:bg-zinc-700 px-4 py-2 text-sm font-medium text-white dark:text-zinc-100 hover:bg-zinc-300 dark:hover:bg-zinc-600"
                     onClick={() => {
                       console.debug('[ProfileManager] Cancel overwrite');
                       setIsOverwriteDialogOpen(false);
