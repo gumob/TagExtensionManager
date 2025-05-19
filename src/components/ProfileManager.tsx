@@ -116,7 +116,7 @@ export const ProfileManager = () => {
     <div className="flex items-center gap-2">
       <Menu as="div" className="relative">
         <Menu.Button
-          className={`inline-flex items-center gap-2 rounded-xl bg-white dark:bg-zinc-700 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-600 ${profiles.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className={`inline-flex items-center gap-2 rounded-xl bg-white dark:bg-zinc-700 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-500 ${profiles.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
           disabled={profiles.length === 0}
         >
           Profiles
@@ -146,7 +146,7 @@ export const ProfileManager = () => {
                         {({ active }) => (
                           <div className="flex items-center justify-between px-4 py-2">
                             <button
-                              className={`flex-1 text-left px-2 py-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-600 ${
+                              className={`flex-1 text-left px-2 py-1.5 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-500 ${
                                 currentProfileId === profile.id ? 'font-bold' : ''
                               } text-zinc-900 dark:text-zinc-100`}
                               title={`Activate this profile`}
@@ -161,7 +161,7 @@ export const ProfileManager = () => {
                                   setNewProfileName(profile.name);
                                   setIsRenameDialogOpen(true);
                                 }}
-                                className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-600 px-2 py-2 rounded-lg text-zinc-600 dark:text-zinc-400"
+                                className="p-1 hover:bg-zinc-200 dark:hover:bg-zinc-500 px-2 py-2 rounded-lg text-zinc-600 dark:text-zinc-400"
                                 title="Rename this profile"
                               >
                                 <PencilIcon className="h-4 w-4" />
@@ -171,7 +171,7 @@ export const ProfileManager = () => {
                                   setSelectedProfile({ id: profile.id, name: profile.name });
                                   setIsDeleteDialogOpen(true);
                                 }}
-                                className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-600 px-2 py-2 rounded-lg text-zinc-600 dark:text-zinc-400"
+                                className="p-1 hover:bg-zinc-200 dark:hover:bg-zinc-500 px-2 py-2 rounded-lg text-zinc-600 dark:text-zinc-400"
                                 title="Delete this profile"
                               >
                                 <TrashIcon className="h-4 w-4" />
@@ -194,7 +194,7 @@ export const ProfileManager = () => {
           setNewProfileName('');
           setIsCreateDialogOpen(true);
         }}
-        className="inline-flex items-center gap-2 rounded-xl bg-white dark:bg-zinc-700 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-600"
+        className="inline-flex items-center gap-2 rounded-xl bg-white dark:bg-zinc-700 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-500"
         title="Create a new profile"
       >
         <PlusIcon className="h-5 w-5" />
@@ -202,7 +202,7 @@ export const ProfileManager = () => {
 
       <button
         onClick={handleExportProfiles}
-        className="inline-flex items-center gap-2 rounded-xl bg-white dark:bg-zinc-700 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-600"
+        className="inline-flex items-center gap-2 rounded-xl bg-white dark:bg-zinc-700 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-500"
         title="Export profiles"
       >
         <ArrowUpTrayIcon className="h-5 w-5" />
@@ -210,7 +210,7 @@ export const ProfileManager = () => {
 
       <button
         onClick={() => fileInputRef.current?.click()}
-        className="inline-flex items-center gap-2 rounded-xl bg-white dark:bg-zinc-700 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-600"
+        className="inline-flex items-center gap-2 rounded-xl bg-white dark:bg-zinc-700 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-500"
         title="Import profiles"
       >
         <ArrowDownTrayIcon className="h-5 w-5" />
@@ -234,7 +234,7 @@ export const ProfileManager = () => {
       >
         <div className="fixed inset-0 bg-black/30 dark:bg-black/30" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="mx-auto max-w-md rounded-xl bg-zinc-50 dark:bg-zinc-800 p-6">
+          <Dialog.Panel className="mx-auto max-w-md rounded-xl bg-zinc-100 dark:bg-zinc-800 p-6">
             <Dialog.Title className="text-lg font-medium leading-6 text-zinc-900 dark:text-zinc-100">
               Create New Profile
             </Dialog.Title>
@@ -284,7 +284,7 @@ export const ProfileManager = () => {
       >
         <div className="fixed inset-0 bg-black/30 dark:bg-black/30" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="mx-auto max-w-sm rounded-xl bg-zinc-50 dark:bg-zinc-800 p-6">
+          <Dialog.Panel className="mx-auto max-w-sm rounded-xl bg-zinc-100 dark:bg-zinc-800 p-6">
             <Dialog.Title className="text-lg font-medium leading-6 text-zinc-900 dark:text-zinc-100">
               Import Profiles
             </Dialog.Title>
@@ -321,7 +321,7 @@ export const ProfileManager = () => {
       >
         <div className="fixed inset-0 bg-black/30 dark:bg-black/30" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="mx-auto max-w-md rounded-xl bg-zinc-50 dark:bg-zinc-800 p-6">
+          <Dialog.Panel className="mx-auto max-w-md rounded-xl bg-zinc-100 dark:bg-zinc-800 p-6">
             <Dialog.Title className="text-lg font-medium leading-6 text-zinc-900 dark:text-zinc-100">
               Rename Profile
             </Dialog.Title>
@@ -367,7 +367,7 @@ export const ProfileManager = () => {
       >
         <div className="fixed inset-0 bg-black/30 dark:bg-black/30" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="mx-auto max-w-sm rounded-xl bg-zinc-50 dark:bg-zinc-800 p-6">
+          <Dialog.Panel className="mx-auto max-w-sm rounded-xl bg-zinc-100 dark:bg-zinc-800 p-6">
             <Dialog.Title className="text-lg font-medium leading-6 text-zinc-900 dark:text-zinc-100">
               Delete Profile
             </Dialog.Title>
