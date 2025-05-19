@@ -1,4 +1,4 @@
-# Extension Manager
+# Stylish Extension Manager
 
 A tool for efficiently managing Chrome extensions. Group multiple extensions and easily enable/disable them based on your needs.
 
@@ -38,17 +38,20 @@ A tool for efficiently managing Chrome extensions. Group multiple extensions and
 ### Development Setup
 
 1. Install required tools
+
    - [Node.js](https://nodejs.org/) (v18 or higher)
    - [pnpm](https://pnpm.io/) (v8 or higher)
    - [mise](https://mise.jdx.dev/) (Development environment manager)
 
 2. Clone the repository
+
    ```bash
    git clone https://github.com/yourusername/ExtensionManager.git
    cd ExtensionManager
    ```
 
 3. Install dependencies
+
    ```bash
    pnpm install
    ```
@@ -69,11 +72,13 @@ For detailed technology stack information, please refer to [TECHNOLOGSTACK.md](.
 ### Development Guidelines
 
 1. Code Style
+
    - Use ESLint and Prettier
    - Run `pnpm lint` before committing
    - Run `pnpm format` before committing
 
 2. Branch Strategy
+
    - `main`: Production branch
    - `develop`: Development branch
    - Feature development: `feature/feature-name`
@@ -118,4 +123,4 @@ This project is licensed under the [MIT License](./LICENSE).
 
 ## 📮 Contact
 
-For bug reports and feature requests, please use [Issues](https://github.com/yourusername/ExtensionManager/issues). 
+For bug reports and feature requests, please use [Issues](https://github.com/yourusername/ExtensionManager/issues).

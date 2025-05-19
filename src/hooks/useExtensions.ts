@@ -70,7 +70,7 @@ export const useExtensions = () => {
     /** Watch for extension updates */
     const handleExtensionUpdate = (details: chrome.runtime.InstalledDetails) => {
       if (details.reason === 'update') {
-        console.debug('[Extension Manager] Extension updated:', details);
+        console.debug('[SEM] Extension updated:', details);
         setIsManualRefresh(true);
         refreshExtensions();
       }

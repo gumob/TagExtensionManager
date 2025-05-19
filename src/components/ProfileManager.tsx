@@ -42,7 +42,7 @@ export const ProfileManager = () => {
    * Initialize profiles on mount
    */
   useEffect(() => {
-    console.debug('[Extension Manager][ProfileManager] Initializing profiles');
+    console.debug('[SEM][ProfileManager] Initializing profiles');
     initialize();
   }, [initialize]);
 

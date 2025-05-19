@@ -58,7 +58,9 @@ export const ExtensionManager: React.FC = () => {
       <div className="container mx-auto flex flex-col h-full">
         <div className="flex-none px-4 pt-4 pb-0">
           <div className="flex justify-between items-center mb-3">
-            <h1 className="text-lg font-bold text-zinc-900 dark:text-white">Extension Manager</h1>
+            <h1 className="text-lg font-bold text-zinc-900 dark:text-white">
+              Stylish Extension Manager
+            </h1>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-3">

@@ -36,14 +36,11 @@ export const useProfileStore = create<ProfileStore>()(
           const result = await chrome.storage.local.get('extension-manager-profiles');
           const storedData = result['extension-manager-profiles'];
           if (storedData && storedData.profiles) {
-            console.debug(
-              '[Extension Manager][ProfileStore] Loading profiles from storage:',
-              storedData
-            );
+            console.debug('[SEM][ProfileStore] Loading profiles from storage:', storedData);
             set({ profiles: storedData.profiles });
           }
         } catch (error) {
-          console.error('[Extension Manager][ProfileStore] Failed to load profiles:', error);
+          console.error('[SEM][ProfileStore] Failed to load profiles:', error);
         }
       },
 
@@ -181,15 +178,15 @@ export const useProfileStore = create<ProfileStore>()(
         getItem: async name => {
           const result = await chrome.storage.local.get(name);
           const data = result[name];
-          console.debug('[Extension Manager][ProfileStore] Loading from storage:', { name, data });
+          console.debug('[SEM][ProfileStore] Loading from storage:', { name, data });
           return data;
         },
         setItem: async (name, value) => {
-          console.debug('[Extension Manager][ProfileStore] Saving to storage:', { name, value });
+          console.debug('[SEM][ProfileStore] Saving to storage:', { name, value });
           await chrome.storage.local.set({ [name]: value });
         },
         removeItem: async name => {
-          console.debug('[Extension Manager][ProfileStore] Removing from storage:', name);
+          console.debug('[SEM][ProfileStore] Removing from storage:', name);
           await chrome.storage.local.remove(name);
         },
       },

@@ -1,6 +1,6 @@
 import { detectThemeOnOffscreen } from '@/utils/themeUtils';
 
-console.debug('[Extension Manager][offscreen] Starting offscreen document');
+console.debug('[SEM][offscreen] Starting offscreen document');
 /**
  * Initial detection
  */
