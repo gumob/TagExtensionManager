@@ -50,11 +50,11 @@ export const ExtensionManager: React.FC = () => {
           </div>
 
           <div className="mb-3">
-            <SearchBar onSearch={setSearchQuery} />
+            <ProfileManager />
           </div>
 
           <div className="mb-3">
-            <ProfileManager />
+            <SearchBar onSearch={setSearchQuery} />
           </div>
         </div>
 
