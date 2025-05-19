@@ -1,4 +1,4 @@
-# Stylish Extension Manager
+# Clean Extension Manager
 
 A tool for efficiently managing Chrome extensions. Group multiple extensions and easily enable/disable them based on your needs.
 

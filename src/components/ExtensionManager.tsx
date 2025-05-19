@@ -59,7 +59,7 @@ export const ExtensionManager: React.FC = () => {
         <div className="flex-none px-4 pt-4 pb-0">
           <div className="flex justify-between items-center mb-3">
             <h1 className="text-lg font-bold text-zinc-900 dark:text-white">
-              Stylish Extension Manager
+              Clean Extension Manager
             </h1>
           </div>
 
