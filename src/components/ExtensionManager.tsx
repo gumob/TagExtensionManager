@@ -3,10 +3,39 @@ import { Metrics } from '@/components/Metrics';
 import { ProfileManager } from '@/components/ProfileManager';
 import { SearchBar } from '@/components/SearchBar';
 import { useExtensions } from '@/hooks/useExtensions';
-import React from 'react';
+import React, { useCallback } from 'react';
 
 export const ExtensionManager: React.FC = () => {
-  const { extensions, filteredExtensions, setSearchQuery, updateExtensionState } = useExtensions();
+  const { extensions, filteredExtensions, setSearchQuery, refreshExtensions, setIsManualRefresh } =
+    useExtensions();
+
+  const handleExtensionStateChange = useCallback(
+    async (id: string, enabled: boolean) => {
+      try {
+        // 手動更新フラグを設定
+        setIsManualRefresh(true);
+
+        // Chrome APIを使用して拡張機能の状態を更新
+        await new Promise<void>((resolve, reject) => {
+          chrome.management.setEnabled(id, enabled, () => {
+            if (chrome.runtime.lastError) {
+              reject(chrome.runtime.lastError);
+            } else {
+              resolve();
+            }
+          });
+        });
+
+        // 状態更新後に拡張機能の状態を再取得
+        await refreshExtensions();
+      } catch (error) {
+        console.error('Failed to update extension state:', error);
+        // エラーが発生した場合は状態を再取得
+        await refreshExtensions();
+      }
+    },
+    [refreshExtensions, setIsManualRefresh]
+  );
 
   return (
     <main className="h-screen flex flex-col overflow-hidden">
@@ -33,7 +62,7 @@ export const ExtensionManager: React.FC = () => {
           <div className="h-full">
             <ExtensionList
               extensions={filteredExtensions}
-              onExtensionStateChange={updateExtensionState}
+              onExtensionStateChange={handleExtensionStateChange}
             />
           </div>
         </div>

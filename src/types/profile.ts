@@ -11,5 +11,4 @@ export interface Profile {
 
 export interface ProfileState {
   profiles: Profile[];
-  currentProfileId: string | null;
 }

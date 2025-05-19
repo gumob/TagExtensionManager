@@ -21,6 +21,7 @@ export const useExtensions = () => {
   const [extensions, setExtensions] = useState<Extension[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isManualRefresh, setIsManualRefresh] = useState(false);
 
   const refreshExtensions = useCallback(async () => {
     try {
@@ -44,6 +45,11 @@ export const useExtensions = () => {
 
     // 拡張機能の状態変更を監視
     const handleExtensionStateChange = () => {
+      // 手動更新の場合は自動更新をスキップ
+      if (isManualRefresh) {
+        setIsManualRefresh(false);
+        return;
+      }
       refreshExtensions();
     };
 
@@ -60,40 +66,11 @@ export const useExtensions = () => {
       chrome.management.onInstalled.removeListener(handleExtensionStateChange);
       chrome.management.onUninstalled.removeListener(handleExtensionStateChange);
     };
-  }, [refreshExtensions]);
+  }, [refreshExtensions, isManualRefresh]);
 
   const filteredExtensions = useMemo(
     () => extensions.filter(ext => ext.name.toLowerCase().includes(searchQuery.toLowerCase())),
     [extensions, searchQuery]
-  );
-
-  const updateExtensionState = useCallback(
-    async (id: string, enabled: boolean) => {
-      try {
-        setIsLoading(true);
-        console.log('Updating extension state:', id, enabled);
-
-        // Chrome APIを使用して拡張機能の状態を更新
-        await new Promise<void>((resolve, reject) => {
-          chrome.management.setEnabled(id, enabled, () => {
-            if (chrome.runtime.lastError) {
-              reject(chrome.runtime.lastError);
-            } else {
-              resolve();
-            }
-          });
-        });
-
-        // 状態更新後に拡張機能の状態を再取得
-        await refreshExtensions();
-      } catch (error) {
-        console.error('Failed to update extension state:', error);
-        throw error;
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    [refreshExtensions]
   );
 
   const getCurrentExtensionStates = useCallback(() => {
@@ -108,9 +85,9 @@ export const useExtensions = () => {
     filteredExtensions,
     searchQuery,
     setSearchQuery,
-    refreshExtensions,
-    updateExtensionState,
-    getCurrentExtensionStates,
     isLoading,
+    refreshExtensions,
+    getCurrentExtensionStates,
+    setIsManualRefresh,
   };
 };

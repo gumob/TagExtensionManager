@@ -13,10 +13,13 @@ import toast from 'react-hot-toast';
 import { useExtensions } from '../hooks/useExtensions';
 import { useProfileStore } from '../stores/profileStore';
 
+/**
+ * The component for managing profiles.
+ * @returns
+ */
 export const ProfileManager = () => {
   const {
     profiles,
-    currentProfileId,
     addProfile,
     updateProfile,
     deleteProfile,
@@ -24,7 +27,7 @@ export const ProfileManager = () => {
     importProfiles,
     exportProfiles,
   } = useProfileStore();
-  const { extensions, refreshExtensions } = useExtensions();
+  const { refreshExtensions, setIsManualRefresh } = useExtensions();
   const [isImportDialogOpen, setIsImportDialogOpen] = useState(false);
   const [isRenameDialogOpen, setIsRenameDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -32,8 +35,10 @@ export const ProfileManager = () => {
   const [selectedProfile, setSelectedProfile] = useState<{ id: string; name: string } | null>(null);
   const [newProfileName, setNewProfileName] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const deleteDialogRef = useRef<HTMLDivElement>(null);
 
+  /**
+   * Handle the delete profile event.
+   */
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (isDeleteDialogOpen && e.key === 'Enter') {
@@ -50,6 +55,9 @@ export const ProfileManager = () => {
     };
   }, [isDeleteDialogOpen]);
 
+  /**
+   * Handle the create profile event.
+   */
   const handleCreateProfile = async () => {
     if (newProfileName.trim()) {
       // 現在の拡張機能の状態を取得
@@ -66,6 +74,9 @@ export const ProfileManager = () => {
     }
   };
 
+  /**
+   * Handle the export profiles event.
+   */
   const handleExportProfiles = () => {
     const profiles = exportProfiles();
     const blob = new Blob([JSON.stringify(profiles, null, 2)], { type: 'application/json' });
@@ -81,6 +92,9 @@ export const ProfileManager = () => {
     toast.success('Profiles exported successfully');
   };
 
+  /**
+   * Handle the import profiles event.
+   */
   const handleImportProfiles = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -98,6 +112,9 @@ export const ProfileManager = () => {
     reader.readAsText(file);
   };
 
+  /**
+   * Handle the rename profile event.
+   */
   const handleRenameProfile = () => {
     if (selectedProfile && newProfileName.trim()) {
       updateProfile(selectedProfile.id, newProfileName.trim());
@@ -106,6 +123,9 @@ export const ProfileManager = () => {
     }
   };
 
+  /**
+   * Handle the delete profile event.
+   */
   const handleDeleteProfile = () => {
     if (selectedProfile) {
       deleteProfile(selectedProfile.id);
@@ -114,24 +134,15 @@ export const ProfileManager = () => {
     }
   };
 
+  /**
+   * Handle the profile select event.
+   */
   const handleProfileSelect = async (profileId: string) => {
     try {
       console.log('Switching to profile:', profileId);
 
-      // 現在のプロファイルの状態を保存
-      const currentExtensions = await refreshExtensions();
-      console.log('Current extensions state:', currentExtensions);
-
-      const currentProfile = profiles.find(p => p.id === currentProfileId);
-      if (currentProfile) {
-        console.log('Saving current profile state:', currentProfile);
-        const extensionStates = currentExtensions.map(ext => ({
-          id: ext.id,
-          enabled: ext.enabled,
-        }));
-        // 現在のプロファイルの状態を更新
-        updateProfile(currentProfile.id, currentProfile.name, extensionStates);
-      }
+      // 手動更新フラグを設定
+      setIsManualRefresh(true);
 
       // 新しいプロファイルを適用
       console.log('Applying new profile');
@@ -182,9 +193,7 @@ export const ProfileManager = () => {
                         {({ active }) => (
                           <div className="flex items-center justify-between px-4 py-2">
                             <button
-                              className={`flex-1 text-left px-2 py-1.5 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-500 ${
-                                currentProfileId === profile.id ? 'font-bold' : ''
-                              } text-zinc-900 dark:text-zinc-100`}
+                              className={`flex-1 text-left px-2 py-1.5 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-500 text-zinc-900 dark:text-zinc-100`}
                               title={`Activate this profile`}
                               onClick={() => handleProfileSelect(profile.id)}
                             >
@@ -312,7 +321,7 @@ export const ProfileManager = () => {
         </div>
       </Dialog>
 
-      {/* Import Confirmation Dialog */}
+      {/* Import Dialog */}
       <Dialog
         open={isImportDialogOpen}
         onClose={() => setIsImportDialogOpen(false)}
@@ -395,7 +404,7 @@ export const ProfileManager = () => {
         </div>
       </Dialog>
 
-      {/* Delete Confirmation Dialog */}
+      {/* Delete Dialog */}
       <Dialog
         open={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
@@ -409,7 +418,7 @@ export const ProfileManager = () => {
             </Dialog.Title>
             <div className="mt-2">
               <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                Are you sure you want to delete {selectedProfile?.name}?
+                Are you sure you want to delete this profile? This action cannot be undone.
               </p>
             </div>
             <div className="mt-4 flex justify-end gap-2">
@@ -422,7 +431,7 @@ export const ProfileManager = () => {
               </button>
               <button
                 type="button"
-                className="inline-flex justify-center rounded-xl border border-transparent bg-red-600 dark:bg-red-500 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 dark:hover:bg-red-400"
+                className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-600 dark:bg-zinc-500 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:hover:bg-zinc-400"
                 onClick={handleDeleteProfile}
               >
                 Delete

@@ -21,7 +21,6 @@ export const useProfileStore = create<ProfileStore>()(
   persist(
     (set, get) => ({
       profiles: [],
-      currentProfileId: null,
 
       addProfile: (name, extensions) => {
         const { profiles } = get();
@@ -70,12 +69,9 @@ export const useProfileStore = create<ProfileStore>()(
       },
 
       deleteProfile: id => {
-        const { profiles, currentProfileId } = get();
+        const { profiles } = get();
         const updatedProfiles = profiles.filter(p => p.id !== id);
-        set({
-          profiles: updatedProfiles,
-          currentProfileId: currentProfileId === id ? null : currentProfileId,
-        });
+        set({ profiles: updatedProfiles });
       },
 
       setCurrentProfile: async (id: string) => {
@@ -133,13 +129,10 @@ export const useProfileStore = create<ProfileStore>()(
 
             await Promise.all(updatePromises);
             console.log('All extension updates completed');
-            set({ currentProfileId: id });
           } catch (error) {
             console.error('Failed to update extension states:', error);
             throw error;
           }
-        } else {
-          set({ currentProfileId: id });
         }
       },
 
