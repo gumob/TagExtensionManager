@@ -53,11 +53,21 @@ export const useExtensions = () => {
       refreshExtensions();
     };
 
+    // 拡張機能の更新を監視
+    const handleExtensionUpdate = (details: chrome.runtime.InstalledDetails) => {
+      if (details.reason === 'update') {
+        console.debug('[Extension Manager] Extension updated:', details);
+        setIsManualRefresh(true);
+        refreshExtensions();
+      }
+    };
+
     // イベントリスナーの登録
     chrome.management.onEnabled.addListener(handleExtensionStateChange);
     chrome.management.onDisabled.addListener(handleExtensionStateChange);
     chrome.management.onInstalled.addListener(handleExtensionStateChange);
     chrome.management.onUninstalled.addListener(handleExtensionStateChange);
+    chrome.runtime.onInstalled.addListener(handleExtensionUpdate);
 
     // クリーンアップ
     return () => {
@@ -65,6 +75,7 @@ export const useExtensions = () => {
       chrome.management.onDisabled.removeListener(handleExtensionStateChange);
       chrome.management.onInstalled.removeListener(handleExtensionStateChange);
       chrome.management.onUninstalled.removeListener(handleExtensionStateChange);
+      chrome.runtime.onInstalled.removeListener(handleExtensionUpdate);
     };
   }, [refreshExtensions, isManualRefresh]);
 

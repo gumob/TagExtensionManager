@@ -82,23 +82,26 @@ chrome.runtime.onInstalled.addListener(async details => {
   await initializeIcon();
 
   try {
-    console.debug('[Extension Manager][background] Starting storage clear');
-    await new Promise<void>((resolve, reject) => {
-      chrome.storage.local.clear(() => {
-        if (chrome.runtime.lastError) {
-          console.error(
-            '[Extension Manager][background] Error clearing storage:',
-            chrome.runtime.lastError
-          );
-          reject(chrome.runtime.lastError);
-        } else {
-          console.debug('[Extension Manager][background] Storage cleared');
-          resolve();
-        }
+    // 初回インストール時のみストレージをクリア
+    if (details.reason === 'install') {
+      console.debug('[Extension Manager][background] Starting storage clear');
+      await new Promise<void>((resolve, reject) => {
+        chrome.storage.local.clear(() => {
+          if (chrome.runtime.lastError) {
+            console.error(
+              '[Extension Manager][background] Error clearing storage:',
+              chrome.runtime.lastError
+            );
+            reject(chrome.runtime.lastError);
+          } else {
+            console.debug('[Extension Manager][background] Storage cleared');
+            resolve();
+          }
+        });
       });
-    });
 
-    await createDefaultProfile();
+      await createDefaultProfile();
+    }
     console.debug('[Extension Manager][background] Installation process completed');
   } catch (error) {
     console.error('[Extension Manager][background] Error during installation:', error);
