@@ -191,7 +191,7 @@ export const ProfileManager = () => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="absolute left-0 z-10 mt-2 w-56 origin-top-left rounded-xl bg-white dark:bg-zinc-700 shadow-lg focus:outline-none">
+          <Menu.Items className="absolute left-0 z-10 mt-2 w-80 origin-top-left rounded-xl bg-white dark:bg-zinc-700 shadow-xl shadow-zinc-900 dark:shadow-zinc-900 focus:outline-none">
             <div className="py-1">
               {profiles.length === 0 ? (
                 <div className="px-4 py-2 text-zinc-400 text-sm">No profiles available</div>
@@ -206,7 +206,7 @@ export const ProfileManager = () => {
                         {({ active }) => (
                           <div className="flex items-center justify-between px-4 py-2">
                             <button
-                              className={`flex-1 text-left px-2 py-1.5 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-500 text-zinc-900 dark:text-zinc-100`}
+                              className={`flex-1 text-left px-2 py-1.5 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-500 text-zinc-900 dark:text-zinc-100`}
                               title={`Activate this profile`}
                               onClick={() => handleProfileSelect(profile.id)}
                             >
@@ -219,7 +219,7 @@ export const ProfileManager = () => {
                                   setNewProfileName(profile.name);
                                   setIsRenameDialogOpen(true);
                                 }}
-                                className="p-1 hover:bg-zinc-200 dark:hover:bg-zinc-500 px-2 py-2 rounded-lg text-zinc-600 dark:text-zinc-400"
+                                className="p-1 hover:bg-zinc-200 dark:hover:bg-zinc-500 px-2 py-2 rounded-md text-zinc-900 dark:text-zinc-100"
                                 title="Rename this profile"
                               >
                                 <PencilIcon className="h-4 w-4" />
@@ -229,7 +229,7 @@ export const ProfileManager = () => {
                                   setSelectedProfile({ id: profile.id, name: profile.name });
                                   setIsDeleteDialogOpen(true);
                                 }}
-                                className="p-1 hover:bg-zinc-200 dark:hover:bg-zinc-500 px-2 py-2 rounded-lg text-zinc-600 dark:text-zinc-400"
+                                className="p-1 hover:bg-zinc-200 dark:hover:bg-zinc-500 px-2 py-2 rounded-md text-zinc-900 dark:text-zinc-100"
                                 title="Delete this profile"
                               >
                                 <TrashIcon className="h-4 w-4" />
