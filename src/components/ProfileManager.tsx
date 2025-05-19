@@ -10,7 +10,7 @@ import {
 import { Fragment, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 
-import { useExtensionStore } from '../stores/extensionStore';
+import { useExtensions } from '../hooks/useExtensions';
 import { useProfileStore } from '../stores/profileStore';
 
 export const ProfileManager = () => {
@@ -24,7 +24,7 @@ export const ProfileManager = () => {
     importProfiles,
     exportProfiles,
   } = useProfileStore();
-  const { extensions } = useExtensionStore();
+  const { extensions, refreshExtensions } = useExtensions();
   const [isImportDialogOpen, setIsImportDialogOpen] = useState(false);
   const [isRenameDialogOpen, setIsRenameDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -50,14 +50,16 @@ export const ProfileManager = () => {
     };
   }, [isDeleteDialogOpen]);
 
-  const handleCreateProfile = () => {
+  const handleCreateProfile = async () => {
     if (newProfileName.trim()) {
-      const currentExtensions = extensions.map(ext => ({
+      // 現在の拡張機能の状態を取得
+      const currentExtensions = await refreshExtensions();
+      const extensionStates = currentExtensions.map(ext => ({
         id: ext.id,
         enabled: ext.enabled,
       }));
 
-      addProfile(newProfileName.trim(), currentExtensions);
+      addProfile(newProfileName.trim(), extensionStates);
       setNewProfileName('');
       setIsCreateDialogOpen(false);
       toast.success('Profile created successfully');
@@ -112,6 +114,40 @@ export const ProfileManager = () => {
     }
   };
 
+  const handleProfileSelect = async (profileId: string) => {
+    try {
+      console.log('Switching to profile:', profileId);
+
+      // 現在のプロファイルの状態を保存
+      const currentExtensions = await refreshExtensions();
+      console.log('Current extensions state:', currentExtensions);
+
+      const currentProfile = profiles.find(p => p.id === currentProfileId);
+      if (currentProfile) {
+        console.log('Saving current profile state:', currentProfile);
+        const extensionStates = currentExtensions.map(ext => ({
+          id: ext.id,
+          enabled: ext.enabled,
+        }));
+        // 現在のプロファイルの状態を更新
+        updateProfile(currentProfile.id, currentProfile.name, extensionStates);
+      }
+
+      // 新しいプロファイルを適用
+      console.log('Applying new profile');
+      await setCurrentProfile(profileId);
+
+      // 拡張機能の状態を更新してUIを反映
+      console.log('Refreshing extension states');
+      await refreshExtensions();
+
+      toast.success('Profile activated successfully');
+    } catch (error) {
+      console.error('Failed to activate profile:', error);
+      toast.error('Failed to activate profile');
+    }
+  };
+
   return (
     <div className="flex items-center gap-2">
       <Menu as="div" className="relative">
@@ -150,7 +186,7 @@ export const ProfileManager = () => {
                                 currentProfileId === profile.id ? 'font-bold' : ''
                               } text-zinc-900 dark:text-zinc-100`}
                               title={`Activate this profile`}
-                              onClick={() => setCurrentProfile(profile.id)}
+                              onClick={() => handleProfileSelect(profile.id)}
                             >
                               {profile.name}
                             </button>

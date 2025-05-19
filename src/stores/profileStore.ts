@@ -6,7 +6,11 @@ import { Profile, ProfileState } from '../types/profile';
 
 interface ProfileStore extends ProfileState {
   addProfile: (name: string, extensions: { id: string; enabled: boolean }[]) => void;
-  updateProfile: (id: string, name: string) => void;
+  updateProfile: (
+    id: string,
+    name: string,
+    extensions?: { id: string; enabled: boolean }[]
+  ) => void;
   deleteProfile: (id: string) => void;
   setCurrentProfile: (id: string) => void;
   importProfiles: (profiles: Profile[]) => void;
@@ -46,13 +50,18 @@ export const useProfileStore = create<ProfileStore>()(
         }
       },
 
-      updateProfile: (id, name) => {
+      updateProfile: (
+        id: string,
+        name: string,
+        extensions?: { id: string; enabled: boolean }[]
+      ) => {
         const { profiles } = get();
         const updatedProfiles = profiles.map(p =>
           p.id === id
             ? {
                 ...p,
                 name,
+                ...(extensions && { extensions }),
                 updatedAt: new Date().toISOString(),
               }
             : p
@@ -69,8 +78,69 @@ export const useProfileStore = create<ProfileStore>()(
         });
       },
 
-      setCurrentProfile: id => {
-        set({ currentProfileId: id });
+      setCurrentProfile: async (id: string) => {
+        const { profiles } = get();
+        const selectedProfile = profiles.find(p => p.id === id);
+        if (selectedProfile) {
+          try {
+            console.log('Selected profile:', selectedProfile);
+
+            // 現在の拡張機能の状態を取得
+            const currentExtensions = await new Promise<chrome.management.ExtensionInfo[]>(
+              resolve => {
+                chrome.management.getAll(extensions => resolve(extensions));
+              }
+            );
+            console.log('Current extensions:', currentExtensions);
+
+            // プロファイルに含まれる拡張機能の状態を更新
+            const updatePromises = currentExtensions.map(ext => {
+              const profileExtension = selectedProfile.extensions.find(e => e.id === ext.id);
+              console.log(
+                'Extension:',
+                ext.name,
+                'Profile state:',
+                profileExtension?.enabled,
+                'Current state:',
+                ext.enabled
+              );
+
+              // プロファイルに含まれる拡張機能のみ状態を更新
+              if (profileExtension) {
+                return new Promise<void>((resolve, reject) => {
+                  chrome.management.setEnabled(ext.id, profileExtension.enabled, () => {
+                    if (chrome.runtime.lastError) {
+                      console.error(
+                        'Failed to update extension:',
+                        ext.name,
+                        chrome.runtime.lastError
+                      );
+                      reject(chrome.runtime.lastError);
+                    } else {
+                      console.log(
+                        'Successfully updated extension:',
+                        ext.name,
+                        'to:',
+                        profileExtension.enabled
+                      );
+                      resolve();
+                    }
+                  });
+                });
+              }
+              return Promise.resolve();
+            });
+
+            await Promise.all(updatePromises);
+            console.log('All extension updates completed');
+            set({ currentProfileId: id });
+          } catch (error) {
+            console.error('Failed to update extension states:', error);
+            throw error;
+          }
+        } else {
+          set({ currentProfileId: id });
+        }
       },
 
       importProfiles: profiles => {
