@@ -136,43 +136,50 @@ export const ProfileManager = () => {
               {profiles.length === 0 ? (
                 <div className="px-4 py-2 text-zinc-400 text-sm">No profiles available</div>
               ) : (
-                profiles.map(profile => (
-                  <Menu.Item key={profile.id}>
-                    {({ active }) => (
-                      <div className="flex items-center justify-between px-4 py-2">
-                        <button
-                          className={`flex-1 text-left px-2 py-1.5 rounded-xl ${active ? 'bg-zinc-100 dark:bg-zinc-700' : ''} ${
-                            currentProfileId === profile.id ? 'font-bold' : ''
-                          } text-zinc-900 dark:text-zinc-100`}
-                          onClick={() => setCurrentProfile(profile.id)}
-                        >
-                          {profile.name}
-                        </button>
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => {
-                              setSelectedProfile({ id: profile.id, name: profile.name });
-                              setNewProfileName(profile.name);
-                              setIsRenameDialogOpen(true);
-                            }}
-                            className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-600 rounded text-zinc-600 dark:text-zinc-400"
-                          >
-                            <PencilIcon className="h-4 w-4" />
-                          </button>
-                          <button
-                            onClick={() => {
-                              setSelectedProfile({ id: profile.id, name: profile.name });
-                              setIsDeleteDialogOpen(true);
-                            }}
-                            className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-600 rounded text-zinc-600 dark:text-zinc-400"
-                          >
-                            <TrashIcon className="h-4 w-4" />
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </Menu.Item>
-                ))
+                <>
+                  {profiles.map((profile, index) => (
+                    <Fragment key={profile.id}>
+                      {index > 0 && (
+                        <div className="mx-2 border-t border-zinc-200 dark:border-zinc-600" />
+                      )}
+                      <Menu.Item>
+                        {({ active }) => (
+                          <div className="flex items-center justify-between px-4 py-2">
+                            <button
+                              className={`flex-1 text-left px-2 py-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-600 ${
+                                currentProfileId === profile.id ? 'font-bold' : ''
+                              } text-zinc-900 dark:text-zinc-100`}
+                              onClick={() => setCurrentProfile(profile.id)}
+                            >
+                              {profile.name}
+                            </button>
+                            <div className="flex gap-0">
+                              <button
+                                onClick={() => {
+                                  setSelectedProfile({ id: profile.id, name: profile.name });
+                                  setNewProfileName(profile.name);
+                                  setIsRenameDialogOpen(true);
+                                }}
+                                className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-600 px-2 py-2 rounded-lg text-zinc-600 dark:text-zinc-400"
+                              >
+                                <PencilIcon className="h-4 w-4" />
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setSelectedProfile({ id: profile.id, name: profile.name });
+                                  setIsDeleteDialogOpen(true);
+                                }}
+                                className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-600 px-2 py-2 rounded-lg text-zinc-600 dark:text-zinc-400"
+                              >
+                                <TrashIcon className="h-4 w-4" />
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </Menu.Item>
+                    </Fragment>
+                  ))}
+                </>
               )}
             </div>
           </Menu.Items>
