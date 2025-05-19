@@ -5,17 +5,29 @@ import { SearchBar } from '@/components/SearchBar';
 import { useExtensions } from '@/hooks/useExtensions';
 import React, { useCallback } from 'react';
 
+/**
+ * The component for managing extensions.
+ * @returns
+ */
 export const ExtensionManager: React.FC = () => {
+  /**
+   * The extensions and filtered extensions.
+   */
   const { extensions, filteredExtensions, setSearchQuery, refreshExtensions, setIsManualRefresh } =
     useExtensions();
 
+  /**
+   * Handle the extension state change.
+   * @param id
+   * @param enabled
+   */
   const handleExtensionStateChange = useCallback(
     async (id: string, enabled: boolean) => {
       try {
-        // 手動更新フラグを設定
+        /** Set the manual refresh flag */
         setIsManualRefresh(true);
 
-        // Chrome APIを使用して拡張機能の状態を更新
+        /** Update the extension state using Chrome API */
         await new Promise<void>((resolve, reject) => {
           chrome.management.setEnabled(id, enabled, () => {
             if (chrome.runtime.lastError) {
@@ -26,17 +38,21 @@ export const ExtensionManager: React.FC = () => {
           });
         });
 
-        // 状態更新後に拡張機能の状態を再取得
+        /** Refresh the extension states after the update */
         await refreshExtensions();
       } catch (error) {
         console.error('Failed to update extension state:', error);
-        // エラーが発生した場合は状態を再取得
+        /** If an error occurs, refresh the extension states */
         await refreshExtensions();
       }
     },
     [refreshExtensions, setIsManualRefresh]
   );
 
+  /**
+   * The main component.
+   * @returns
+   */
   return (
     <main className="h-screen flex flex-col overflow-hidden">
       <div className="container mx-auto flex flex-col h-full">

@@ -2,10 +2,15 @@ import { Extension } from '@/types/extension';
 import { getAllExtensions } from '@/utils/extensionUtils';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
+/**
+ * Find the optimal icon from the given icons.
+ * @param icons
+ * @returns
+ */
 const findOptimalIcon = (icons: chrome.management.IconInfo[] | undefined): string => {
   if (!icons || icons.length === 0) return '';
 
-  // 48pxのアイコンを探す
+  /** Search for the optimal icon */
   let targetSize = 48;
   while (targetSize > 0) {
     const icon = icons.find(icon => icon.size === targetSize);
@@ -13,16 +18,23 @@ const findOptimalIcon = (icons: chrome.management.IconInfo[] | undefined): strin
     targetSize -= 2;
   }
 
-  // 適切なサイズが見つからない場合は最初のアイコンを使用
+  /** If no appropriate size is found, use the first icon */
   return icons[0].url;
 };
 
+/**
+ * The hook for managing extensions.
+ * @returns
+ */
 export const useExtensions = () => {
   const [extensions, setExtensions] = useState<Extension[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isManualRefresh, setIsManualRefresh] = useState(false);
 
+  /**
+   * Refresh the extensions.
+   */
   const refreshExtensions = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -38,14 +50,16 @@ export const useExtensions = () => {
     }
   }, []);
 
-  // 拡張機能の状態変更を監視
+  /**
+   * Watch for extension state changes.
+   */
   useEffect(() => {
-    // 初期状態の取得
+    /** Get the initial state */
     refreshExtensions();
 
-    // 拡張機能の状態変更を監視
+    /** Watch for extension state changes */
     const handleExtensionStateChange = () => {
-      // 手動更新の場合は自動更新をスキップ
+      /** If manual refresh is enabled, skip automatic refresh */
       if (isManualRefresh) {
         setIsManualRefresh(false);
         return;
@@ -53,7 +67,7 @@ export const useExtensions = () => {
       refreshExtensions();
     };
 
-    // 拡張機能の更新を監視
+    /** Watch for extension updates */
     const handleExtensionUpdate = (details: chrome.runtime.InstalledDetails) => {
       if (details.reason === 'update') {
         console.debug('[Extension Manager] Extension updated:', details);
@@ -62,14 +76,14 @@ export const useExtensions = () => {
       }
     };
 
-    // イベントリスナーの登録
+    /** Register event listeners */
     chrome.management.onEnabled.addListener(handleExtensionStateChange);
     chrome.management.onDisabled.addListener(handleExtensionStateChange);
     chrome.management.onInstalled.addListener(handleExtensionStateChange);
     chrome.management.onUninstalled.addListener(handleExtensionStateChange);
     chrome.runtime.onInstalled.addListener(handleExtensionUpdate);
 
-    // クリーンアップ
+    /** Cleanup */
     return () => {
       chrome.management.onEnabled.removeListener(handleExtensionStateChange);
       chrome.management.onDisabled.removeListener(handleExtensionStateChange);
@@ -79,11 +93,18 @@ export const useExtensions = () => {
     };
   }, [refreshExtensions, isManualRefresh]);
 
+  /**
+   * The filtered extensions.
+   */
   const filteredExtensions = useMemo(
     () => extensions.filter(ext => ext.name.toLowerCase().includes(searchQuery.toLowerCase())),
     [extensions, searchQuery]
   );
 
+  /**
+   * Get the current extension states.
+   * @returns
+   */
   const getCurrentExtensionStates = useCallback(() => {
     return extensions.map(ext => ({
       id: ext.id,

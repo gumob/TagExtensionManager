@@ -36,16 +36,16 @@ export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionL
    */
   const handleToggle = async (id: string, enabled: boolean) => {
     try {
-      // ローカルの状態を即座に更新
+      /** Update the local extensions immediately */
       setLocalExtensions(prevExtensions =>
         prevExtensions.map(ext => (ext.id === id ? { ...ext, enabled } : ext))
       );
 
-      // 親コンポーネントに通知
+      /** Notify the parent component */
       onExtensionStateChange(id, enabled);
     } catch (error) {
       console.error('Failed to toggle extension:', error);
-      // エラーが発生した場合は元の状態に戻す
+      /** If an error occurs, revert to the original state */
       setLocalExtensions(extensions);
     }
   };

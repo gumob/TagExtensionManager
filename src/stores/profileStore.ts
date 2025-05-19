@@ -4,6 +4,9 @@ import { persist } from 'zustand/middleware';
 
 import { Profile, ProfileState } from '../types/profile';
 
+/**
+ * The profile store.
+ */
 interface ProfileStore extends ProfileState {
   addProfile: (name: string, extensions: { id: string; enabled: boolean }[]) => void;
   updateProfile: (
@@ -18,12 +21,16 @@ interface ProfileStore extends ProfileState {
   initialize: () => void;
 }
 
+/**
+ * The profile store.
+ * @returns
+ */
 export const useProfileStore = create<ProfileStore>()(
   persist(
     (set, get) => ({
       profiles: [],
 
-      // Initialize store with profiles from storage
+      /** Initialize store with profiles from storage */
       initialize: async () => {
         try {
           const result = await chrome.storage.local.get('extension-manager-profiles');
@@ -40,6 +47,7 @@ export const useProfileStore = create<ProfileStore>()(
         }
       },
 
+      /** Add a profile */
       addProfile: (name, extensions) => {
         const { profiles } = get();
         const existingProfile = profiles.find(p => p.name === name);
@@ -67,6 +75,7 @@ export const useProfileStore = create<ProfileStore>()(
         }
       },
 
+      /** Update a profile */
       updateProfile: (
         id: string,
         name: string,
@@ -86,12 +95,14 @@ export const useProfileStore = create<ProfileStore>()(
         set({ profiles: updatedProfiles });
       },
 
+      /** Delete a profile */
       deleteProfile: id => {
         const { profiles } = get();
         const updatedProfiles = profiles.filter(p => p.id !== id);
         set({ profiles: updatedProfiles });
       },
 
+      /** Set the current profile */
       setCurrentProfile: async (id: string) => {
         const { profiles } = get();
         const selectedProfile = profiles.find(p => p.id === id);
@@ -99,7 +110,7 @@ export const useProfileStore = create<ProfileStore>()(
           try {
             console.debug('Selected profile:', selectedProfile);
 
-            // 現在の拡張機能の状態を取得
+            /** Get the current extension states */
             const currentExtensions = await new Promise<chrome.management.ExtensionInfo[]>(
               resolve => {
                 chrome.management.getAll(extensions => resolve(extensions));
@@ -107,7 +118,7 @@ export const useProfileStore = create<ProfileStore>()(
             );
             console.debug('Current extensions:', currentExtensions);
 
-            // プロファイルに含まれる拡張機能の状態を更新
+            /** Update the extension states */
             const updatePromises = currentExtensions.map(ext => {
               const profileExtension = selectedProfile.extensions.find(e => e.id === ext.id);
               console.debug(
@@ -119,7 +130,7 @@ export const useProfileStore = create<ProfileStore>()(
                 ext.enabled
               );
 
-              // プロファイルに含まれる拡張機能のみ状態を更新
+              /** Update the extension states */
               if (profileExtension) {
                 return new Promise<void>((resolve, reject) => {
                   chrome.management.setEnabled(ext.id, profileExtension.enabled, () => {
@@ -154,10 +165,12 @@ export const useProfileStore = create<ProfileStore>()(
         }
       },
 
+      /** Import profiles */
       importProfiles: profiles => {
         set({ profiles });
       },
 
+      /** Export profiles */
       exportProfiles: () => {
         return get().profiles;
       },

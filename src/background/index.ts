@@ -82,7 +82,7 @@ chrome.runtime.onInstalled.addListener(async details => {
   await initializeIcon();
 
   try {
-    // 初回インストール時のみストレージをクリア
+    /** Clear storage on first installation */
     if (details.reason === 'install') {
       console.debug('[Extension Manager][background] Starting storage clear');
       await new Promise<void>((resolve, reject) => {
