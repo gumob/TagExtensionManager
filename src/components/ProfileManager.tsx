@@ -33,6 +33,7 @@ export const ProfileManager = () => {
   const [isRenameDialogOpen, setIsRenameDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [isOverwriteDialogOpen, setIsOverwriteDialogOpen] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState<{ id: string; name: string } | null>(null);
   const [newProfileName, setNewProfileName] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -69,6 +70,13 @@ export const ProfileManager = () => {
    */
   const handleCreateProfile = async () => {
     if (newProfileName.trim()) {
+      const existingProfile = profiles.find(p => p.name === newProfileName.trim());
+      if (existingProfile) {
+        setIsCreateDialogOpen(false);
+        setIsOverwriteDialogOpen(true);
+        return;
+      }
+
       /** Get the current extension states */
       const currentExtensions = await refreshExtensions();
       const extensionStates = currentExtensions.map(ext => ({
@@ -80,6 +88,25 @@ export const ProfileManager = () => {
       setNewProfileName('');
       setIsCreateDialogOpen(false);
       toast.success('Profile created successfully');
+    }
+  };
+
+  /**
+   * Handle the overwrite profile event.
+   */
+  const handleOverwriteProfile = async () => {
+    if (newProfileName.trim()) {
+      /** Get the current extension states */
+      const currentExtensions = await refreshExtensions();
+      const extensionStates = currentExtensions.map(ext => ({
+        id: ext.id,
+        enabled: ext.enabled,
+      }));
+
+      addProfile(newProfileName.trim(), extensionStates);
+      setNewProfileName('');
+      setIsOverwriteDialogOpen(false);
+      toast.success('Profile overwritten successfully');
     }
   };
 
@@ -450,6 +477,43 @@ export const ProfileManager = () => {
                 onClick={handleDeleteProfile}
               >
                 Delete
+              </button>
+            </div>
+          </Dialog.Panel>
+        </div>
+      </Dialog>
+
+      {/* Overwrite Confirmation Dialog */}
+      <Dialog
+        open={isOverwriteDialogOpen}
+        onClose={() => setIsOverwriteDialogOpen(false)}
+        className="relative z-50"
+      >
+        <div className="fixed inset-0 bg-black/30 dark:bg-black/30" aria-hidden="true" />
+        <div className="fixed inset-0 flex items-center justify-center p-4">
+          <Dialog.Panel className="mx-auto max-w-sm rounded-xl bg-zinc-100 dark:bg-zinc-800 p-6">
+            <Dialog.Title className="text-lg font-medium leading-6 text-zinc-900 dark:text-zinc-100">
+              Overwrite Profile
+            </Dialog.Title>
+            <div className="mt-2">
+              <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                A profile with the same name already exists. Do you want to overwrite it?
+              </p>
+            </div>
+            <div className="mt-4 flex justify-end gap-2">
+              <button
+                type="button"
+                className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-100 dark:bg-zinc-700 px-4 py-2 text-sm font-medium text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-600"
+                onClick={() => setIsOverwriteDialogOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-600 dark:bg-zinc-500 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:hover:bg-zinc-400"
+                onClick={handleOverwriteProfile}
+              >
+                Overwrite
               </button>
             </div>
           </Dialog.Panel>
