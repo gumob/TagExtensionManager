@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Extension Manager",
+  "name": "Smart Extension Manager",
   "version": "1.0.0",
   "description": "A Chrome extension to manage other extensions",
   "permissions": ["management", "storage", "tabs", "scripting", "activeTab", "offscreen"],
