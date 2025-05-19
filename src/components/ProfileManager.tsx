@@ -7,7 +7,7 @@ import {
   PlusIcon,
   TrashIcon,
 } from '@heroicons/react/24/outline';
-import { Fragment, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import { useExtensionStore } from '../stores/extensionStore';
@@ -32,6 +32,23 @@ export const ProfileManager = () => {
   const [selectedProfile, setSelectedProfile] = useState<{ id: string; name: string } | null>(null);
   const [newProfileName, setNewProfileName] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const deleteDialogRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (isDeleteDialogOpen && e.key === 'Enter') {
+        handleDeleteProfile();
+      }
+    };
+
+    if (isDeleteDialogOpen) {
+      document.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isDeleteDialogOpen]);
 
   const handleCreateProfile = () => {
     if (newProfileName.trim()) {
@@ -41,8 +58,8 @@ export const ProfileManager = () => {
       }));
 
       addProfile(newProfileName.trim(), currentExtensions);
-      setIsCreateDialogOpen(false);
       setNewProfileName('');
+      setIsCreateDialogOpen(false);
       toast.success('Profile created successfully');
     }
   };
@@ -99,7 +116,7 @@ export const ProfileManager = () => {
     <div className="flex items-center gap-2">
       <Menu as="div" className="relative">
         <Menu.Button
-          className={`inline-flex items-center gap-2 rounded-xl bg-zinc-50 dark:bg-zinc-700 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-inset ring-zinc-300 dark:ring-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700 ${profiles.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className={`inline-flex items-center gap-2 rounded-xl bg-zinc-50 dark:bg-zinc-700 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-inset ring-zinc-300 dark:ring-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-600 ${profiles.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
           disabled={profiles.length === 0}
         >
           Profiles
@@ -138,7 +155,7 @@ export const ProfileManager = () => {
                               setNewProfileName(profile.name);
                               setIsRenameDialogOpen(true);
                             }}
-                            className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded text-zinc-600 dark:text-zinc-400"
+                            className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-600 rounded text-zinc-600 dark:text-zinc-400"
                           >
                             <PencilIcon className="h-4 w-4" />
                           </button>
@@ -147,7 +164,7 @@ export const ProfileManager = () => {
                               setSelectedProfile({ id: profile.id, name: profile.name });
                               setIsDeleteDialogOpen(true);
                             }}
-                            className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded text-zinc-600 dark:text-zinc-400"
+                            className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-600 rounded text-zinc-600 dark:text-zinc-400"
                           >
                             <TrashIcon className="h-4 w-4" />
                           </button>
@@ -163,8 +180,11 @@ export const ProfileManager = () => {
       </Menu>
 
       <button
-        onClick={() => setIsCreateDialogOpen(true)}
-        className="inline-flex items-center gap-2 rounded-xl bg-zinc-50 dark:bg-zinc-700 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-inset ring-zinc-300 dark:ring-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700"
+        onClick={() => {
+          setNewProfileName('');
+          setIsCreateDialogOpen(true);
+        }}
+        className="inline-flex items-center gap-2 rounded-xl bg-zinc-50 dark:bg-zinc-700 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-inset ring-zinc-300 dark:ring-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-600"
         title="Create a new profile"
       >
         <PlusIcon className="h-5 w-5" />
@@ -172,7 +192,7 @@ export const ProfileManager = () => {
 
       <button
         onClick={handleExportProfiles}
-        className="inline-flex items-center gap-2 rounded-xl bg-zinc-50 dark:bg-zinc-700 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-inset ring-zinc-300 dark:ring-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700"
+        className="inline-flex items-center gap-2 rounded-xl bg-zinc-50 dark:bg-zinc-700 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-inset ring-zinc-300 dark:ring-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-600"
         title="Export profiles"
       >
         <ArrowUpTrayIcon className="h-5 w-5" />
@@ -180,7 +200,7 @@ export const ProfileManager = () => {
 
       <button
         onClick={() => fileInputRef.current?.click()}
-        className="inline-flex items-center gap-2 rounded-xl bg-zinc-50 dark:bg-zinc-700 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-inset ring-zinc-300 dark:ring-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700"
+        className="inline-flex items-center gap-2 rounded-xl bg-zinc-50 dark:bg-zinc-700 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 shadow-sm ring-1 ring-inset ring-zinc-300 dark:ring-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-600"
         title="Import profiles"
       >
         <ArrowDownTrayIcon className="h-5 w-5" />
@@ -236,7 +256,7 @@ export const ProfileManager = () => {
               </button>
               <button
                 type="button"
-                className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-600 dark:bg-zinc-500 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:hover:bg-zinc-400"
+                className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-600 dark:bg-zinc-500 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-600 dark:hover:bg-zinc-400"
                 onClick={handleCreateProfile}
               >
                 Create
@@ -273,7 +293,7 @@ export const ProfileManager = () => {
               </button>
               <button
                 type="button"
-                className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-600 dark:bg-zinc-500 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:hover:bg-zinc-400"
+                className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-600 dark:bg-zinc-500 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-600 dark:hover:bg-zinc-400"
                 onClick={() => setIsImportDialogOpen(false)}
               >
                 Import
@@ -319,7 +339,7 @@ export const ProfileManager = () => {
               </button>
               <button
                 type="button"
-                className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-600 dark:bg-zinc-500 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:hover:bg-zinc-400"
+                className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-600 dark:bg-zinc-500 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-600 dark:hover:bg-zinc-400"
                 onClick={handleRenameProfile}
               >
                 Rename
