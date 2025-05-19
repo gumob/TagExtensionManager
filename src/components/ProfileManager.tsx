@@ -26,6 +26,7 @@ export const ProfileManager = () => {
     setCurrentProfile,
     importProfiles,
     exportProfiles,
+    initialize,
   } = useProfileStore();
   const { refreshExtensions, setIsManualRefresh } = useExtensions();
   const [isImportDialogOpen, setIsImportDialogOpen] = useState(false);
@@ -35,6 +36,12 @@ export const ProfileManager = () => {
   const [selectedProfile, setSelectedProfile] = useState<{ id: string; name: string } | null>(null);
   const [newProfileName, setNewProfileName] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Initialize profiles on mount
+  useEffect(() => {
+    console.debug('[Extension Manager][ProfileManager] Initializing profiles');
+    initialize();
+  }, [initialize]);
 
   /**
    * Handle the delete profile event.
@@ -139,17 +146,17 @@ export const ProfileManager = () => {
    */
   const handleProfileSelect = async (profileId: string) => {
     try {
-      console.log('Switching to profile:', profileId);
+      console.debug('Switching to profile:', profileId);
 
       // 手動更新フラグを設定
       setIsManualRefresh(true);
 
       // 新しいプロファイルを適用
-      console.log('Applying new profile');
+      console.debug('Applying new profile');
       await setCurrentProfile(profileId);
 
       // 拡張機能の状態を更新してUIを反映
-      console.log('Refreshing extension states');
+      console.debug('Refreshing extension states');
       await refreshExtensions();
 
       toast.success('Profile activated successfully');
@@ -166,8 +173,14 @@ export const ProfileManager = () => {
           className={`inline-flex items-center gap-2 rounded-xl bg-white dark:bg-zinc-700 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-500 ${profiles.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
           disabled={profiles.length === 0}
         >
-          Profiles
-          <ChevronDownIcon className="h-4 w-4" />
+          {profiles.length === 0 ? (
+            'No Profile'
+          ) : (
+            <>
+              Profiles
+              <ChevronDownIcon className="h-4 w-4" />
+            </>
+          )}
         </Menu.Button>
         <Transition
           as={Fragment}

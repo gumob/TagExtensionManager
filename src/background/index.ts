@@ -33,16 +33,13 @@ const initializeIcon = async () => {
 };
 
 /**
- * Listen for extension installation
+ * Create Default profile
  */
-chrome.runtime.onInstalled.addListener(async details => {
-  console.debug('[Extension Manager][background] Extension installed', details);
-  await initializeIcon();
-
-  // Create Default profile only on fresh install
-  if (details.reason === 'install') {
-    console.debug('[Extension Manager][background] Creating Default profile');
+const createDefaultProfile = () => {
+  console.debug('[Extension Manager][background] Creating default profile');
+  return new Promise<void>((resolve, reject) => {
     chrome.management.getAll(extensions => {
+      console.debug('[Extension Manager][background] Got extensions:', extensions);
       const defaultExtensions = extensions.map(ext => ({
         id: ext.id,
         enabled: ext.enabled,
@@ -60,10 +57,51 @@ chrome.runtime.onInstalled.addListener(async details => {
         ],
         currentProfileId: null,
       };
+      console.debug('[Extension Manager][background] Setting default profile:', defaultProfile);
       chrome.storage.local.set({ 'extension-manager-profiles': defaultProfile }, () => {
-        console.debug('[Extension Manager][background] Default profile saved to storage');
+        if (chrome.runtime.lastError) {
+          console.error(
+            '[Extension Manager][background] Error saving default profile:',
+            chrome.runtime.lastError
+          );
+          reject(chrome.runtime.lastError);
+        } else {
+          console.debug('[Extension Manager][background] Default profile saved to storage');
+          resolve();
+        }
       });
     });
+  });
+};
+
+/**
+ * Listen for extension installation
+ */
+chrome.runtime.onInstalled.addListener(async details => {
+  console.debug('[Extension Manager][background] Extension installed', details);
+  await initializeIcon();
+
+  try {
+    console.debug('[Extension Manager][background] Starting storage clear');
+    await new Promise<void>((resolve, reject) => {
+      chrome.storage.local.clear(() => {
+        if (chrome.runtime.lastError) {
+          console.error(
+            '[Extension Manager][background] Error clearing storage:',
+            chrome.runtime.lastError
+          );
+          reject(chrome.runtime.lastError);
+        } else {
+          console.debug('[Extension Manager][background] Storage cleared');
+          resolve();
+        }
+      });
+    });
+
+    await createDefaultProfile();
+    console.debug('[Extension Manager][background] Installation process completed');
+  } catch (error) {
+    console.error('[Extension Manager][background] Error during installation:', error);
   }
 });
 
@@ -92,19 +130,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       message.isDarkMode ? 'dark' : 'light'
     );
     updateExtensionIcon(message.isDarkMode);
-    sendResponse({ success: true });
-  } else if (message.type === 'CREATE_DEFAULT_PROFILE') {
-    console.debug('[Extension Manager][background] Creating Default profile');
-    chrome.management.getAll(extensions => {
-      const defaultExtensions = extensions.map(ext => ({
-        id: ext.id,
-        enabled: ext.enabled,
-      }));
-      chrome.runtime.sendMessage({
-        type: 'CREATE_DEFAULT_PROFILE',
-        extensions: defaultExtensions,
-      });
-    });
     sendResponse({ success: true });
   }
   return true;

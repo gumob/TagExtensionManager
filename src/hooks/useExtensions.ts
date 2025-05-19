@@ -27,7 +27,7 @@ export const useExtensions = () => {
     try {
       setIsLoading(true);
       const updatedExtensions = await getAllExtensions();
-      console.log('Refreshing extensions state:', updatedExtensions);
+      console.debug('Refreshing extensions state:', updatedExtensions);
       setExtensions(updatedExtensions);
       return updatedExtensions;
     } catch (error) {

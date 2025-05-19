@@ -15,12 +15,30 @@ interface ProfileStore extends ProfileState {
   setCurrentProfile: (id: string) => void;
   importProfiles: (profiles: Profile[]) => void;
   exportProfiles: () => Profile[];
+  initialize: () => void;
 }
 
 export const useProfileStore = create<ProfileStore>()(
   persist(
     (set, get) => ({
       profiles: [],
+
+      // Initialize store with profiles from storage
+      initialize: async () => {
+        try {
+          const result = await chrome.storage.local.get('extension-manager-profiles');
+          const storedData = result['extension-manager-profiles'];
+          if (storedData && storedData.profiles) {
+            console.debug(
+              '[Extension Manager][ProfileStore] Loading profiles from storage:',
+              storedData
+            );
+            set({ profiles: storedData.profiles });
+          }
+        } catch (error) {
+          console.error('[Extension Manager][ProfileStore] Failed to load profiles:', error);
+        }
+      },
 
       addProfile: (name, extensions) => {
         const { profiles } = get();
@@ -79,7 +97,7 @@ export const useProfileStore = create<ProfileStore>()(
         const selectedProfile = profiles.find(p => p.id === id);
         if (selectedProfile) {
           try {
-            console.log('Selected profile:', selectedProfile);
+            console.debug('Selected profile:', selectedProfile);
 
             // 現在の拡張機能の状態を取得
             const currentExtensions = await new Promise<chrome.management.ExtensionInfo[]>(
@@ -87,12 +105,12 @@ export const useProfileStore = create<ProfileStore>()(
                 chrome.management.getAll(extensions => resolve(extensions));
               }
             );
-            console.log('Current extensions:', currentExtensions);
+            console.debug('Current extensions:', currentExtensions);
 
             // プロファイルに含まれる拡張機能の状態を更新
             const updatePromises = currentExtensions.map(ext => {
               const profileExtension = selectedProfile.extensions.find(e => e.id === ext.id);
-              console.log(
+              console.debug(
                 'Extension:',
                 ext.name,
                 'Profile state:',
@@ -113,7 +131,7 @@ export const useProfileStore = create<ProfileStore>()(
                       );
                       reject(chrome.runtime.lastError);
                     } else {
-                      console.log(
+                      console.debug(
                         'Successfully updated extension:',
                         ext.name,
                         'to:',
@@ -128,7 +146,7 @@ export const useProfileStore = create<ProfileStore>()(
             });
 
             await Promise.all(updatePromises);
-            console.log('All extension updates completed');
+            console.debug('All extension updates completed');
           } catch (error) {
             console.error('Failed to update extension states:', error);
             throw error;
@@ -146,6 +164,26 @@ export const useProfileStore = create<ProfileStore>()(
     }),
     {
       name: 'extension-manager-profiles',
+      storage: {
+        getItem: async name => {
+          const result = await chrome.storage.local.get(name);
+          const data = result[name];
+          console.debug('[Extension Manager][ProfileStore] Loading from storage:', { name, data });
+          return data;
+        },
+        setItem: async (name, value) => {
+          console.debug('[Extension Manager][ProfileStore] Saving to storage:', { name, value });
+          await chrome.storage.local.set({ [name]: value });
+        },
+        removeItem: async name => {
+          console.debug('[Extension Manager][ProfileStore] Removing from storage:', name);
+          await chrome.storage.local.remove(name);
+        },
+      },
+      partialize: (state: ProfileStore) =>
+        ({
+          profiles: state.profiles,
+        }) as ProfileState,
     }
   )
 );
