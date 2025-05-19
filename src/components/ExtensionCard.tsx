@@ -21,12 +21,20 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
   return (
     <div className="bg-white dark:bg-zinc-700 rounded-xl p-3">
       <div className="flex items-start space-x-2">
-        <img src={extension.iconUrl} alt={extension.name} className="w-6 h-6 rounded" />
+        <img
+          src={extension.iconUrl}
+          alt={extension.name}
+          className={`w-6 h-6 rounded transition-opacity ${!extension.enabled ? 'opacity-30' : ''}`}
+        />
         <div className="flex-1 min-w-0">
-          <h3 className="text-xs font-semibold truncate select-none text-zinc-900 dark:text-white">
+          <h3
+            className={`text-xs font-semibold truncate select-none text-zinc-900 dark:text-white transition-opacity ${!extension.enabled ? 'opacity-30' : ''}`}
+          >
             {extension.name}
           </h3>
-          <p className="text-2xs select-none text-zinc-500 dark:text-zinc-400">
+          <p
+            className={`text-2xs select-none text-zinc-500 dark:text-zinc-400 transition-opacity ${!extension.enabled ? 'opacity-30' : ''}`}
+          >
             {extension.version}
           </p>
           {/* <p className="mt-2 text-xs text-zinc-600 dark:text-zinc-300">
