@@ -51,29 +51,44 @@ export const ProfileManager = () => {
    */
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      console.debug('[ProfileManager] Key pressed:', e.key);
       if (isDeleteDialogOpen && e.key === 'Enter') {
         handleDeleteProfile();
       }
+      if (isOverwriteDialogOpen && e.key === 'Enter') {
+        console.debug('[ProfileManager] Enter pressed in overwrite dialog');
+        e.preventDefault();
+        e.stopPropagation();
+        handleOverwriteProfile();
+      }
     };
 
-    if (isDeleteDialogOpen) {
-      document.addEventListener('keydown', handleKeyDown);
+    if (isDeleteDialogOpen || isOverwriteDialogOpen) {
+      console.debug('[ProfileManager] Adding keydown listener');
+      document.addEventListener('keydown', handleKeyDown, true);
     }
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      console.debug('[ProfileManager] Removing keydown listener');
+      document.removeEventListener('keydown', handleKeyDown, true);
     };
-  }, [isDeleteDialogOpen]);
+  }, [isDeleteDialogOpen, isOverwriteDialogOpen]);
 
   /**
    * Handle the create profile event.
    */
   const handleCreateProfile = async () => {
     if (newProfileName.trim()) {
+      console.debug('[ProfileManager] Creating profile:', newProfileName.trim());
       const existingProfile = profiles.find(p => p.name === newProfileName.trim());
       if (existingProfile) {
+        console.debug('[ProfileManager] Found existing profile:', existingProfile);
         setIsCreateDialogOpen(false);
-        setIsOverwriteDialogOpen(true);
+        // Add a small delay to ensure the create dialog is closed before showing the overwrite dialog
+        setTimeout(() => {
+          setIsOverwriteDialogOpen(true);
+          console.debug('[ProfileManager] Set overwrite dialog to true');
+        }, 100);
         return;
       }
 
@@ -96,6 +111,7 @@ export const ProfileManager = () => {
    */
   const handleOverwriteProfile = async () => {
     if (newProfileName.trim()) {
+      console.debug('[ProfileManager] Overwriting profile:', newProfileName.trim());
       /** Get the current extension states */
       const currentExtensions = await refreshExtensions();
       const extensionStates = currentExtensions.map(ext => ({
@@ -220,7 +236,7 @@ export const ProfileManager = () => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="absolute left-0 z-10 mt-2 w-80 origin-top-left rounded-xl bg-white dark:bg-zinc-700 shadow-xl shadow-zinc-900 dark:shadow-zinc-900 focus:outline-none">
+          <Menu.Items className="absolute left-0 z-10 mt-2 w-80 origin-top-left rounded-xl bg-white dark:bg-zinc-700 shadow-xl shadow-zinc-400 dark:shadow-zinc-900 focus:outline-none">
             <div className="py-1">
               {profiles.length === 0 ? (
                 <div className="px-4 py-2 text-zinc-400 text-sm">No profiles available</div>
@@ -332,6 +348,7 @@ export const ProfileManager = () => {
                 onChange={e => setNewProfileName(e.target.value)}
                 onKeyDown={e => {
                   if (e.key === 'Enter' && newProfileName.trim()) {
+                    e.preventDefault();
                     handleCreateProfile();
                   }
                 }}
@@ -354,7 +371,15 @@ export const ProfileManager = () => {
               <button
                 type="button"
                 className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-600 dark:bg-zinc-500 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:hover:bg-zinc-400"
-                onClick={handleCreateProfile}
+                onClick={() => {
+                  const existingProfile = profiles.find(p => p.name === newProfileName.trim());
+                  if (existingProfile) {
+                    setIsCreateDialogOpen(false);
+                    setIsOverwriteDialogOpen(true);
+                  } else {
+                    handleCreateProfile();
+                  }
+                }}
               >
                 Create
               </button>
@@ -484,41 +509,73 @@ export const ProfileManager = () => {
       </Dialog>
 
       {/* Overwrite Confirmation Dialog */}
-      <Dialog
-        open={isOverwriteDialogOpen}
-        onClose={() => setIsOverwriteDialogOpen(false)}
-        className="relative z-50"
-      >
-        <div className="fixed inset-0 bg-black/30 dark:bg-black/30" aria-hidden="true" />
-        <div className="fixed inset-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="mx-auto max-w-sm rounded-xl bg-zinc-100 dark:bg-zinc-800 p-6">
-            <Dialog.Title className="text-lg font-medium leading-6 text-zinc-900 dark:text-zinc-100">
-              Overwrite Profile
-            </Dialog.Title>
-            <div className="mt-2">
-              <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                A profile with the same name already exists. Do you want to overwrite it?
-              </p>
-            </div>
-            <div className="mt-4 flex justify-end gap-2">
-              <button
-                type="button"
-                className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-100 dark:bg-zinc-700 px-4 py-2 text-sm font-medium text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-600"
-                onClick={() => setIsOverwriteDialogOpen(false)}
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-600 dark:bg-zinc-500 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:hover:bg-zinc-400"
-                onClick={handleOverwriteProfile}
-              >
-                Overwrite
-              </button>
-            </div>
-          </Dialog.Panel>
-        </div>
-      </Dialog>
+      <Transition.Root show={isOverwriteDialogOpen} as={Fragment}>
+        <Dialog
+          as="div"
+          className="relative z-50"
+          onClose={() => {
+            console.debug('[ProfileManager] Closing overwrite dialog');
+            setIsOverwriteDialogOpen(false);
+          }}
+        >
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black/30 dark:bg-black/30" aria-hidden="true" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 flex items-center justify-center p-4">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95"
+            >
+              <Dialog.Panel className="mx-auto max-w-sm rounded-xl bg-zinc-100 dark:bg-zinc-800 p-6">
+                <Dialog.Title className="text-lg font-medium leading-6 text-zinc-900 dark:text-zinc-100">
+                  Overwrite Profile
+                </Dialog.Title>
+                <div className="mt-2">
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                    A profile with the same name already exists. Do you want to overwrite it?
+                  </p>
+                </div>
+                <div className="mt-4 flex justify-end gap-2">
+                  <button
+                    type="button"
+                    className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-100 dark:bg-zinc-700 px-4 py-2 text-sm font-medium text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-600"
+                    onClick={() => {
+                      console.debug('[ProfileManager] Cancel overwrite');
+                      setIsOverwriteDialogOpen(false);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className="inline-flex justify-center rounded-xl border border-transparent bg-zinc-600 dark:bg-zinc-500 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:hover:bg-zinc-400"
+                    onClick={() => {
+                      console.debug('[ProfileManager] Confirm overwrite');
+                      handleOverwriteProfile();
+                    }}
+                  >
+                    Overwrite
+                  </button>
+                </div>
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
+        </Dialog>
+      </Transition.Root>
     </div>
   );
 };
