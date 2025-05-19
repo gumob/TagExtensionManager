@@ -149,6 +149,7 @@ export const ProfileManager = () => {
                               className={`flex-1 text-left px-2 py-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-600 ${
                                 currentProfileId === profile.id ? 'font-bold' : ''
                               } text-zinc-900 dark:text-zinc-100`}
+                              title={`Activate this profile`}
                               onClick={() => setCurrentProfile(profile.id)}
                             >
                               {profile.name}
@@ -161,6 +162,7 @@ export const ProfileManager = () => {
                                   setIsRenameDialogOpen(true);
                                 }}
                                 className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-600 px-2 py-2 rounded-lg text-zinc-600 dark:text-zinc-400"
+                                title="Rename this profile"
                               >
                                 <PencilIcon className="h-4 w-4" />
                               </button>
@@ -170,6 +172,7 @@ export const ProfileManager = () => {
                                   setIsDeleteDialogOpen(true);
                                 }}
                                 className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-600 px-2 py-2 rounded-lg text-zinc-600 dark:text-zinc-400"
+                                title="Delete this profile"
                               >
                                 <TrashIcon className="h-4 w-4" />
                               </button>
