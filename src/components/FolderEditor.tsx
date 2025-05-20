@@ -31,10 +31,10 @@ export const FolderEditor = ({ onClose }: FolderEditorProps) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/30 dark:bg-black/30 flex items-center justify-center z-50">
-      <div className="bg-white dark:bg-zinc-700 rounded-xl p-6 w-full max-w-md max-h-[80vh] flex flex-col">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">Folders</h2>
+    <div className="fixed inset-0 flex items-center justify-center z-50 bg-zinc-100 dark:bg-zinc-800">
+      <div className="h-full w-full flex flex-col">
+        <div className="flex justify-between items-center p-4 mb-4">
+          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">Manage Folders</h2>
           <button
             onClick={onClose}
             className="text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
@@ -43,7 +43,7 @@ export const FolderEditor = ({ onClose }: FolderEditorProps) => {
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto pr-2">
+        <div className="flex-1 overflow-y-auto px-4">
           <DragDropContext onDragEnd={handleDragEnd}>
             <Droppable droppableId="folders">
               {provided => (
@@ -54,37 +54,39 @@ export const FolderEditor = ({ onClose }: FolderEditorProps) => {
                         <div
                           ref={provided.innerRef}
                           {...provided.draggableProps}
-                          className="flex items-center gap-2 p-2 mb-2 bg-white dark:bg-zinc-600 rounded-xl shadow-sm"
+                          className="bg-white dark:bg-zinc-700 rounded-xl p-3 mb-2 shadow-sm"
                         >
-                          <div {...provided.dragHandleProps} className="cursor-grab">
-                            <svg
-                              className="w-5 h-5 text-zinc-400"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M4 8h16M4 16h16"
+                          <div className="flex items-center gap-2">
+                            <div {...provided.dragHandleProps} className="cursor-grab">
+                              <svg
+                                className="w-5 h-5 text-zinc-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M4 8h16M4 16h16"
+                                />
+                              </svg>
+                            </div>
+                            <div className="flex-1">
+                              <input
+                                type="text"
+                                value={folder.name}
+                                onChange={e => updateFolder(folder.id, e.target.value)}
+                                className="w-full px-3 py-1.5 rounded-xl bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 border border-zinc-200 dark:border-zinc-600 focus:outline-none focus:ring-1 focus:ring-zinc-200 dark:focus:ring-zinc-500"
                               />
-                            </svg>
+                            </div>
+                            <button
+                              onClick={() => deleteFolder(folder.id)}
+                              className="text-zinc-500 hover:text-red-500 dark:text-zinc-400 dark:hover:text-red-400"
+                            >
+                              <XMarkIcon className="w-5 h-5" />
+                            </button>
                           </div>
-                          <div className="flex-1">
-                            <input
-                              type="text"
-                              value={folder.name}
-                              onChange={e => updateFolder(folder.id, e.target.value)}
-                              className="w-full px-3 py-1.5 rounded-xl bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 border border-zinc-200 dark:border-zinc-600 focus:outline-none focus:ring-1 focus:ring-zinc-200 dark:focus:ring-zinc-500"
-                            />
-                          </div>
-                          <button
-                            onClick={() => deleteFolder(folder.id)}
-                            className="text-zinc-500 hover:text-red-500 dark:text-zinc-400 dark:hover:text-red-400"
-                          >
-                            <XMarkIcon className="w-5 h-5" />
-                          </button>
                         </div>
                       )}
                     </Draggable>
