@@ -1,4 +1,5 @@
 import { ExtensionList } from '@/components/ExtensionList';
+import { FolderList } from '@/components/FolderList';
 import { Metrics } from '@/components/Metrics';
 import { ProfileManager } from '@/components/ProfileManager';
 import { SearchBar } from '@/components/SearchBar';
@@ -67,8 +68,12 @@ export const ExtensionManager: React.FC = () => {
             <Metrics extensions={extensions} />
           </div>
 
-          <div className="mb-3">
+          {/* <div className="mb-3">
             <ProfileManager />
+          </div> */}
+
+          <div className="mb-3">
+            <FolderList />
           </div>
 
           <div className="mb-3">
