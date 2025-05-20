@@ -25,6 +25,7 @@
 
 - Next.js Build System
 - pnpm: 10.11.0
+- Webpack: ^5.90.3
 
 ### Styling
 
@@ -37,7 +38,6 @@
 - @types/node: ^20.17.47
 - @types/react: ^18.2.55
 - @types/react-dom: ^18.2.19
-- @types/uuid: ^10.0.0
 
 ## Dependencies
 

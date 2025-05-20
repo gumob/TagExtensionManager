@@ -7,11 +7,14 @@ Please follow the directory structure below for implementation:
 ├── src/                          # Source directory
 │   ├── background/               # Background script
 │   ├── components/               # UI Components
-│   ├── content/                  # Content scripts
+│   ├── hooks/                    # Custom React hooks
+│   ├── offscreen/               # Offscreen document
 │   ├── popup/                    # Popup UI
 │   ├── services/                 # Business logic services
-│   ├── utils/                    # Utility functions
-│   └── manifest.json            # Extension manifest
+│   ├── stores/                   # State management
+│   ├── styles/                   # Global styles
+│   ├── types/                    # TypeScript type definitions
+│   └── utils/                    # Utility functions
 ├── public/                       # Static assets
 ├── dist/                         # Output directory
 ├── node_modules/                 # Dependency packages
@@ -24,6 +27,8 @@ Please follow the directory structure below for implementation:
 ├── pnpm-lock.yaml               # Dependency lock file
 ├── tsconfig.json                # TypeScript settings
 ├── webpack.config.ts            # Webpack configuration
+├── postcss.config.js            # PostCSS configuration
+├── tailwind.config.js           # Tailwind CSS configuration
 ├── mise.toml                    # Development environment settings
 ├── TECHNOLOGSTACK.md            # Technology stack documentation
 ├── DIRECTORYSTRUCTURE.md        # Directory structure documentation
@@ -35,17 +40,22 @@ Please follow the directory structure below for implementation:
 #### Source Code (`src/`)
 - `background/`: Background script implementation
 - `components/`: UI component implementations
-- `content/`: Content script implementations
+- `hooks/`: Custom React hooks
+- `offscreen/`: Offscreen document implementation
 - `popup/`: Popup UI implementation
 - `services/`: Business logic and service implementations
+- `stores/`: State management implementations
+- `styles/`: Global style definitions
+- `types/`: TypeScript type definitions
 - `utils/`: General utility functions
-- `manifest.json`: Extension manifest configuration
 
 #### Configuration Files
 - `.prettierrc`: Prettier formatting rules
 - `.eslintignore`: ESLint ignore patterns
 - `tsconfig.json`: TypeScript compiler configuration
 - `webpack.config.ts`: Webpack build configuration
+- `postcss.config.js`: PostCSS configuration
+- `tailwind.config.js`: Tailwind CSS configuration
 
 #### Build and Dependencies
 - `dist/`: Compiled output files

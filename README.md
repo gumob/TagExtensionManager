@@ -39,8 +39,8 @@ A tool for efficiently managing Chrome extensions. Group multiple extensions and
 
 1. Install required tools
 
-   - [Node.js](https://nodejs.org/) (v18 or higher)
-   - [pnpm](https://pnpm.io/) (v8 or higher)
+   - [Node.js](https://nodejs.org/) (v20 or higher)
+   - [pnpm](https://pnpm.io/) (v10 or higher)
    - [mise](https://mise.jdx.dev/) (Development environment manager)
 
 2. Clone the repository
@@ -88,16 +88,6 @@ For detailed technology stack information, please refer to [TECHNOLOGSTACK.md](.
    - Clear title and description
    - Reference related issue numbers
    - Self-review before submission
-
-### Testing
-
-```bash
-# Run unit tests
-pnpm test
-
-# Run E2E tests
-pnpm test:e2e
-```
 
 ### Building
 
