@@ -62,10 +62,9 @@ export const ExtensionManager: React.FC = () => {
             <h1 className="text-lg font-bold text-zinc-900 dark:text-white">
               Clean Extension Manager
             </h1>
-          </div>
-
-          <div className="mb-3">
-            <ProfileManager />
+            <div className="mb-3">
+              <ProfileManager />
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-3">

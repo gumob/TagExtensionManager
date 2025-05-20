@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import toast from 'react-hot-toast';
 
 import { useExtensions } from '../hooks/useExtensions';
+import { useExtensionStore } from '../stores/extensionStore';
 import { useFolderStore } from '../stores/folderStore';
 
 /**
@@ -12,6 +13,7 @@ import { useFolderStore } from '../stores/folderStore';
 export const ProfileManager = () => {
   const { refreshExtensions } = useExtensions();
   const { folders, extensions: folderExtensions, exportFolders, importFolders } = useFolderStore();
+  const { importExtensionStates } = useExtensionStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   /**
@@ -71,8 +73,11 @@ export const ProfileManager = () => {
         // Import folder structure
         importFolders(importedProfile.folders, importedProfile.folderExtensions);
 
-        // TODO: Implement extension state import logic
-        // This will be implemented in the extension store
+        // Import extension states
+        importExtensionStates(importedProfile.extensions);
+
+        // Refresh extension states
+        await refreshExtensions();
 
         toast.success('Profile imported successfully');
       } catch (error) {
@@ -84,21 +89,21 @@ export const ProfileManager = () => {
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1">
       <button
         onClick={handleExportProfile}
-        className="inline-flex items-center gap-2 rounded-xl bg-white dark:bg-zinc-700 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-500"
-        title="Export current profile"
+        className="inline-flex items-center gap-2 rounded-lg bg-white dark:bg-zinc-700 px-1 py-1 text-sm font-semibold text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-500"
+        title="Export profile"
       >
-        <ArrowUpTrayIcon className="h-5 w-5" />
+        <ArrowUpTrayIcon className="h-3 w-3" />
       </button>
 
       <button
         onClick={() => fileInputRef.current?.click()}
-        className="inline-flex items-center gap-2 rounded-xl bg-white dark:bg-zinc-700 px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-500"
+        className="inline-flex items-center gap-2 rounded-lg bg-white dark:bg-zinc-700 px-1 py-1 text-sm font-semibold text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-500"
         title="Import profile"
       >
-        <ArrowDownTrayIcon className="h-5 w-5" />
+        <ArrowDownTrayIcon className="h-3 w-3" />
       </button>
       <input
         type="file"
