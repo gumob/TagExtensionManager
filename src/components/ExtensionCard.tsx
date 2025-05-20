@@ -47,17 +47,6 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
   const handleMoveToFolder = (folderId: string | null) => {
     console.debug('[SEM][ExtensionCard] Moving extension to folder:', folderId);
     moveExtension(extension.id, folderId);
-    setIsFolderDialogOpen(false);
-  };
-
-  /**
-   * Handle open folder dialog.
-   */
-  const handleOpenFolderDialog = () => {
-    console.debug('[SEM][ExtensionCard] Opening folder dialog');
-    setTimeout(() => {
-      setIsFolderDialogOpen(true);
-    }, 0);
   };
 
   /**
@@ -101,7 +90,7 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
           <div className="relative">
             <ExtensionCardMenu
               buttonRef={buttonRef}
-              onMoveToFolder={handleOpenFolderDialog}
+              onMoveToFolder={() => setIsFolderDialogOpen(true)}
               onManageExtension={() => onSettingsClick(extension.id)}
             />
           </div>
