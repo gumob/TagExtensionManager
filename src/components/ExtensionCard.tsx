@@ -1,6 +1,6 @@
 import { Switch } from '@headlessui/react';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useFolderStore } from '../stores/folderStore';
 import { Folder } from '../types/folder';
@@ -24,11 +24,50 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isFolderDialogOpen, setIsFolderDialogOpen] = useState(false);
   const { folders, moveExtension } = useFolderStore();
+  const menuRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const handleMoveToFolder = (folderId: string | null) => {
     moveExtension(extension.id, folderId);
     setIsFolderDialogOpen(false);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    if (isMenuOpen && menuRef.current && buttonRef.current) {
+      const buttonRect = buttonRef.current.getBoundingClientRect();
+      const menuRect = menuRef.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - buttonRect.bottom;
+      const spaceAbove = buttonRect.top;
+
+      if (spaceBelow < menuRect.height && spaceAbove > menuRect.height) {
+        menuRef.current.style.top = 'auto';
+        menuRef.current.style.bottom = '100%';
+        menuRef.current.style.marginTop = '0';
+        menuRef.current.style.marginBottom = '0.5rem';
+      } else {
+        menuRef.current.style.top = '100%';
+        menuRef.current.style.bottom = 'auto';
+        menuRef.current.style.marginTop = '0.5rem';
+        menuRef.current.style.marginBottom = '0';
+      }
+    }
+  }, [isMenuOpen]);
 
   return (
     <div className="bg-white dark:bg-zinc-700 rounded-xl p-3">
@@ -69,20 +108,25 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
           </Switch>
           <div className="relative">
             <button
+              ref={buttonRef}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-1 text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
             >
               <EllipsisVerticalIcon className="h-5 w-5" />
             </button>
             {isMenuOpen && (
-              <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-zinc-700 ring-1 ring-black ring-opacity-5">
+              <div
+                ref={menuRef}
+                className="absolute right-0 w-36 rounded-lg shadow-[0_0_8px_0] shadow-zinc-500/20 dark:shadow-zinc-900/20 bg-white dark:bg-zinc-700 ring-1 ring-black ring-opacity-5 z-50"
+                style={{ marginTop: '0.5rem' }}
+              >
                 <div className="py-1">
                   <button
                     onClick={() => {
                       setIsMenuOpen(false);
                       setIsFolderDialogOpen(true);
                     }}
-                    className="block w-full text-left px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-600"
+                    className="block w-full text-left px-3 py-2 text-2xs text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-600"
                   >
                     Move to Folder
                   </button>
@@ -91,7 +135,7 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
                       setIsMenuOpen(false);
                       onSettingsClick(extension.id);
                     }}
-                    className="block w-full text-left px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-600"
+                    className="block w-full text-left px-3 py-2 text-2xs text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-600"
                   >
                     Manage Extension
                   </button>

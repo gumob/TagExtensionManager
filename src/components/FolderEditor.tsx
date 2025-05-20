@@ -1,5 +1,5 @@
 import { DragDropContext, Draggable, DropResult, Droppable } from '@hello-pangea/dnd';
-import { PlusIcon, TagIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { EllipsisVerticalIcon, PlusIcon, TagIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 
 import { useFolderStore } from '../stores/folderStore';
@@ -33,7 +33,7 @@ export const FolderEditor = ({ onClose }: FolderEditorProps) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-zinc-100 dark:bg-zinc-800">
       <div className="h-full w-full flex flex-col">
-        <div className="flex justify-between items-center p-4 mb-4">
+        <div className="flex justify-between items-center p-4 mb-0">
           {/* Title */}
           <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">Manage Folders</h2>
           {/* Close button */}
@@ -84,21 +84,13 @@ export const FolderEditor = ({ onClose }: FolderEditorProps) => {
                             {...provided.draggableProps}
                             className="bg-white dark:bg-zinc-700 rounded-xl p-3 mb-2 shadow-sm"
                           >
-                            <div className="flex items-center gap-2">
-                              <div {...provided.dragHandleProps} className="cursor-grab">
-                                <svg
-                                  className="w-5 h-5 text-zinc-400"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M4 8h16M4 16h16"
-                                  />
-                                </svg>
+                            <div className="flex items-center gap-1">
+                              <div
+                                {...provided.dragHandleProps}
+                                className="cursor-grab flex items-center"
+                              >
+                                <EllipsisVerticalIcon className="w-4 h-4 text-zinc-900 dark:text-zinc-100 -mr-3" />
+                                <EllipsisVerticalIcon className="w-4 h-4 text-zinc-900 dark:text-zinc-100" />
                               </div>
                               <div className="flex-1">
                                 <input
