@@ -99,6 +99,7 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
 
       {isFolderDialogOpen && (
         <FolderSelectionDialog
+          isOpen={isFolderDialogOpen}
           folders={folders}
           currentFolderId={currentFolderId}
           onClose={() => setIsFolderDialogOpen(false)}
