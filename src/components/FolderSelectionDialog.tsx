@@ -19,7 +19,7 @@ export function FolderSelectionDialog({
   onSelectFolder,
 }: FolderSelectionDialogProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
-  useOnClickOutside(dialogRef, () => onClose());
+  // useOnClickOutside(dialogRef, () => onClose());
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-zinc-100 dark:bg-zinc-800">

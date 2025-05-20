@@ -32,7 +32,6 @@ interface ExtensionCardProps {
  * @returns
  */
 export function ExtensionCard({ extension, onToggle, onSettingsClick }: ExtensionCardProps) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isFolderDialogOpen, setIsFolderDialogOpen] = useState(false);
   const { folders, extensions: folderExtensions, moveExtension } = useFolderStore();
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -57,7 +56,6 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
    */
   const handleOpenFolderDialog = () => {
     console.debug('[SEM][ExtensionCard] Opening folder dialog');
-    setIsMenuOpen(false);
     setTimeout(() => {
       setIsFolderDialogOpen(true);
     }, 0);
@@ -102,28 +100,11 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
             />
           </Switch>
           <div className="relative">
-            <button
-              ref={buttonRef}
-              onClick={() => {
-                if (!isFolderDialogOpen) {
-                  setIsMenuOpen(!isMenuOpen);
-                }
-              }}
-              className="p-1 text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
-            >
-              <EllipsisVerticalIcon className="h-5 w-5" />
-            </button>
-            {isMenuOpen && (
-              <ExtensionCardMenu
-                buttonRef={buttonRef}
-                onMoveToFolder={handleOpenFolderDialog}
-                onManageExtension={() => {
-                  setIsMenuOpen(false);
-                  onSettingsClick(extension.id);
-                }}
-                onCloseMenu={() => setIsMenuOpen(false)}
-              />
-            )}
+            <ExtensionCardMenu
+              buttonRef={buttonRef}
+              onMoveToFolder={handleOpenFolderDialog}
+              onManageExtension={() => onSettingsClick(extension.id)}
+            />
           </div>
         </div>
       </div>
