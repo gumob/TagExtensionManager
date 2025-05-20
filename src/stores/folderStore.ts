@@ -9,6 +9,7 @@ export const useFolderStore = create<FolderStore>()(
     (set, get) => ({
       folders: [],
       extensions: [],
+      visibleFolderId: null,
 
       /** Initialize store with folders from storage */
       initialize: async () => {
@@ -17,11 +18,25 @@ export const useFolderStore = create<FolderStore>()(
           const storedData = result['extension-manager-folders'];
           if (storedData) {
             console.debug('[SEM][FolderStore] Loading folders from storage:', storedData);
-            set({ folders: storedData.folders, extensions: storedData.extensions });
+            set({
+              folders: storedData.folders,
+              extensions: storedData.extensions,
+              visibleFolderId: null,
+            });
           }
         } catch (error) {
           console.error('[SEM][FolderStore] Failed to load folders:', error);
         }
+      },
+
+      /** Set visible folder */
+      setVisibleFolder: (folderId: string | null) => {
+        set({ visibleFolderId: folderId });
+      },
+
+      /** Show all folders */
+      showAllFolders: () => {
+        set({ visibleFolderId: null });
       },
 
       /** Add a folder */

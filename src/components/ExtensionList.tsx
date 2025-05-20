@@ -23,7 +23,7 @@ interface ExtensionListProps {
  */
 export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionListProps) {
   const [localExtensions, setLocalExtensions] = useState<Extension[]>(extensions);
-  const { folders, extensions: folderExtensions } = useFolderStore();
+  const { folders, extensions: folderExtensions, visibleFolderId } = useFolderStore();
 
   /**
    * Use effect for updating the local extensions.
@@ -93,10 +93,14 @@ export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionL
     ext => !folderExtensions.find(fe => fe.id === ext.id && fe.folderId !== null)
   );
 
+  // 表示するフォルダーをフィルタリング
+  const visibleFolders =
+    visibleFolderId === null ? folders : folders.filter(folder => folder.id === visibleFolderId);
+
   return (
     <div className="space-y-4 pb-4 pl-4 pr-3">
       {/* フォルダごとの拡張グループ */}
-      {folders.map(folder => {
+      {visibleFolders.map(folder => {
         const folderExts = groupedExtensions[folder.id];
         if (!folderExts) return null;
 
@@ -127,7 +131,7 @@ export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionL
       })}
 
       {/* Unsortedの拡張 */}
-      {unsortedExtensions.length > 0 && (
+      {visibleFolderId === null && unsortedExtensions.length > 0 && (
         <div className="space-y-2">
           <ExtensionHeader
             folder={{ id: 'unsorted', name: 'Unsorted', order: -1, createdAt: '', updatedAt: '' }}

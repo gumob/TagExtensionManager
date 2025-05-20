@@ -14,6 +14,7 @@ export interface ExtensionInFolder {
 export interface FolderState {
   folders: Folder[];
   extensions: ExtensionInFolder[];
+  visibleFolderId: string | null; // nullの場合は全て表示
 }
 
 export interface FolderStore extends FolderState {
@@ -25,4 +26,6 @@ export interface FolderStore extends FolderState {
   importFolders: (folders: Folder[], extensions: ExtensionInFolder[]) => void;
   exportFolders: () => { folders: Folder[]; extensions: ExtensionInFolder[] };
   initialize: () => void;
+  setVisibleFolder: (folderId: string | null) => void;
+  showAllFolders: () => void;
 }
