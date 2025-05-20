@@ -45,11 +45,16 @@ export const useFolderStore = create<FolderStore>()(
         const newFolder: Folder = {
           id: uuidv4(),
           name,
-          order: folders.length,
+          order: 0,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         };
-        set({ folders: [...folders, newFolder] });
+        const updatedFolders = folders.map(folder => ({
+          ...folder,
+          order: folder.order + 1,
+          updatedAt: new Date().toISOString(),
+        }));
+        set({ folders: [newFolder, ...updatedFolders] });
       },
 
       /** Update a folder */
