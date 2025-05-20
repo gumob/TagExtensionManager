@@ -1,4 +1,3 @@
-import { useOnClickOutside } from '@/hooks/useOnClickOutside';
 import { Folder } from '@/types/folder';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { TagIcon } from '@heroicons/react/24/outline';

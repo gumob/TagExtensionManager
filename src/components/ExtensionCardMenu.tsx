@@ -1,6 +1,6 @@
 import { Menu } from '@headlessui/react';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 /**
  * Extension menu props.
@@ -21,6 +21,43 @@ export function ExtensionCardMenu({
   onMoveToFolder,
   onManageExtension,
 }: ExtensionCardMenuProps) {
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!buttonRef.current || !menuRef.current) return;
+
+    const updatePosition = () => {
+      const buttonRect = buttonRef.current!.getBoundingClientRect();
+      const menuRect = menuRef.current!.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - buttonRect.bottom;
+      const spaceAbove = buttonRect.top;
+
+      if (spaceBelow < menuRect.height && spaceAbove > menuRect.height) {
+        menuRef.current!.style.top = 'auto';
+        menuRef.current!.style.bottom = '100%';
+        menuRef.current!.style.marginTop = '0';
+        menuRef.current!.style.marginBottom = '0.25rem';
+      } else {
+        menuRef.current!.style.top = '100%';
+        menuRef.current!.style.bottom = 'auto';
+        menuRef.current!.style.marginTop = '0.25rem';
+        menuRef.current!.style.marginBottom = '0';
+      }
+    };
+
+    // Initial position update
+    updatePosition();
+
+    // Update position on scroll and resize
+    window.addEventListener('scroll', updatePosition, true);
+    window.addEventListener('resize', updatePosition);
+
+    return () => {
+      window.removeEventListener('scroll', updatePosition, true);
+      window.removeEventListener('resize', updatePosition);
+    };
+  }, [buttonRef]);
+
   return (
     <Menu as="div" className="relative">
       <Menu.Button
@@ -30,7 +67,10 @@ export function ExtensionCardMenu({
         <EllipsisVerticalIcon className="h-5 w-5" />
       </Menu.Button>
 
-      <Menu.Items className="absolute right-0 w-36 mt-1 bg-white dark:bg-zinc-700 rounded-lg shadow-xxl ring-1 ring-black ring-opacity-5 focus:outline-none z-[100]">
+      <Menu.Items
+        ref={menuRef}
+        className="absolute right-0 w-36 bg-white dark:bg-zinc-700 rounded-lg shadow-xxl ring-1 ring-black ring-opacity-5 focus:outline-none z-[100]"
+      >
         <div className="py-1">
           <Menu.Item>
             {({ active }) => (

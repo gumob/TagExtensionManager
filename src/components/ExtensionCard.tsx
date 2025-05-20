@@ -2,7 +2,6 @@ import { ExtensionCardMenu } from '@/components/ExtensionCardMenu';
 import { FolderSelectionDialog } from '@/components/FolderSelectionDialog';
 import { useFolderStore } from '@/stores/folderStore';
 import { Switch } from '@headlessui/react';
-import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
 import { useRef, useState } from 'react';
 
 /**
