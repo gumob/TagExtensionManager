@@ -65,7 +65,7 @@ export const TagEditor = ({ isOpen, onClose }: TagEditorProps) => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black/25 dark:bg-black/40" />
+          <div className="fixed inset-0 bg-black/90 dark:bg-black/90" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
@@ -79,7 +79,7 @@ export const TagEditor = ({ isOpen, onClose }: TagEditorProps) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white dark:bg-zinc-800 shadow-xl transition-all">
+              <Dialog.Panel className="w-full max-w-xs transform overflow-hidden rounded-2xl bg-white dark:bg-zinc-800 shadow-xl transition-all">
                 <div className="flex flex-col max-h-[80vh]">
                   {/* Fixed header */}
                   <div className="flex-none">
