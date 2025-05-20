@@ -16,8 +16,8 @@ export function TagChip({ tag }: TagChipProps) {
       onClick={() => setVisibleTag(isSelected ? null : tag.id)}
       className={`px-3 py-1 text-2xs font-medium rounded-full transition-colors ${
         isSelected
-          ? 'bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100'
-          : 'bg-zinc-200 dark:bg-zinc-600 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-500'
+          ? 'bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100'
+          : 'bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-300 dark:hover:bg-zinc-600 opacity-30'
       }`}
     >
       {tag.name}

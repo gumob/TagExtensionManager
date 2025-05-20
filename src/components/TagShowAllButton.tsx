@@ -5,12 +5,8 @@ export function TagShowAllButton() {
 
   return (
     <button
+      className="px-2 py-1 rounded-full text-2xs font-semibold bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-600"
       onClick={showAllTags}
-      className={`px-3 py-1 text-2xs font-medium rounded-full transition-colors ${
-        visibleTagId === null
-          ? 'bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100'
-          : 'bg-zinc-200 dark:bg-zinc-600 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-500'
-      }`}
     >
       All
     </button>
