@@ -131,7 +131,7 @@ export const TagEditor = ({ isOpen, onClose }: TagEditorProps) => {
                           <div
                             {...provided.droppableProps}
                             ref={provided.innerRef}
-                            className="flex flex-wrap gap-2"
+                            className="flex flex-col gap-2"
                           >
                             {tags
                               .sort((a, b) => a.order - b.order)
@@ -144,7 +144,6 @@ export const TagEditor = ({ isOpen, onClose }: TagEditorProps) => {
                                       className="relative group"
                                       style={{
                                         ...provided.draggableProps.style,
-                                        width: 'fit-content',
                                       }}
                                     >
                                       <div className="flex items-center gap-1">
