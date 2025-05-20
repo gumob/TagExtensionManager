@@ -7,42 +7,35 @@ import { Cog6ToothIcon, EllipsisVerticalIcon, TagIcon } from '@heroicons/react/2
  */
 interface ExtensionCardMenuProps {
   buttonRef: React.RefObject<HTMLButtonElement>;
-  onMoveToFolder: () => void;
+  onManageTags: () => void;
   onManageExtension: () => void;
 }
 
 /**
- * Extension menu component.
+ * Extension card menu component.
  * @param props
  * @returns
  */
 export function ExtensionCardMenu({
   buttonRef,
-  onMoveToFolder,
+  onManageTags,
   onManageExtension,
 }: ExtensionCardMenuProps) {
   const { refs, floatingStyles } = useFloating({
     elements: {
       reference: buttonRef.current,
     },
-    placement: 'bottom-end',
-    middleware: [
-      offset(4),
-      flip({
-        fallbackPlacements: ['top-end'],
-      }),
-      shift(),
-    ],
+    middleware: [offset(4), flip(), shift()],
     whileElementsMounted: autoUpdate,
   });
 
   return (
-    <Menu as="div" className="relative">
+    <Menu>
       <Menu.Button
         ref={buttonRef}
-        className="inline-flex items-center justify-center w-full px-2 py-2 text-sm font-medium text-zinc-900 dark:text-zinc-100 hover:text-zinc-700 dark:hover:text-zinc-200 focus:outline-none"
+        className="p-1 text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 rounded-lg transition-colors"
       >
-        <EllipsisVerticalIcon className="h-5 w-5" />
+        <EllipsisVerticalIcon className="w-5 h-5" />
       </Menu.Button>
 
       <Menu.Items
@@ -54,14 +47,14 @@ export function ExtensionCardMenu({
           <Menu.Item>
             {({ active }) => (
               <button
-                onClick={onMoveToFolder}
+                onClick={onManageTags}
                 className={`${
                   active ? 'bg-zinc-100 dark:bg-zinc-600' : ''
                 } block w-full text-left px-3 py-2 text-2xs text-zinc-700 dark:text-zinc-200 focus:outline-none`}
               >
                 <span className="flex items-center gap-2">
                   <TagIcon className="w-4 h-4" />
-                  Move to Folder
+                  Manage Tags
                 </span>
               </button>
             )}

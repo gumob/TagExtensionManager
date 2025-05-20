@@ -1,8 +1,8 @@
 import { ExtensionList } from '@/components/ExtensionList';
-import { FolderList } from '@/components/FolderList';
 import { Metrics } from '@/components/Metrics';
 import { ProfileManager } from '@/components/ProfileManager';
 import { SearchBar } from '@/components/SearchBar';
+import { TagList } from '@/components/TagList';
 import { useExtensions } from '@/hooks/useExtensions';
 import React, { useCallback } from 'react';
 
@@ -72,7 +72,7 @@ export const ExtensionManager: React.FC = () => {
           </div>
 
           <div className="mb-3">
-            <FolderList />
+            <TagList />
           </div>
 
           <div className="mb-3">

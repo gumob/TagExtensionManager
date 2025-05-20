@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 
 import { useExtensions } from '../hooks/useExtensions';
 import { useExtensionStore } from '../stores/extensionStore';
-import { useFolderStore } from '../stores/folderStore';
+import { useTagStore } from '../stores/tagStore';
 
 /**
  * The component for managing profile export/import.
@@ -12,7 +12,7 @@ import { useFolderStore } from '../stores/folderStore';
  */
 export const ProfileManager = () => {
   const { refreshExtensions } = useExtensions();
-  const { folders, extensions: folderExtensions, exportFolders, importFolders } = useFolderStore();
+  const { tags, extensionTags, exportTags, importTags } = useTagStore();
   const { importExtensionStates } = useExtensionStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -22,14 +22,14 @@ export const ProfileManager = () => {
   const handleExportProfile = async () => {
     try {
       const currentExtensions = await refreshExtensions();
-      const { folders, extensions } = exportFolders();
+      const { tags, extensionTags } = exportTags();
       const profile = {
         extensions: currentExtensions.map(ext => ({
           id: ext.id,
           enabled: ext.enabled,
         })),
-        folders,
-        folderExtensions: extensions,
+        tags,
+        extensionTags,
       };
 
       const blob = new Blob([JSON.stringify(profile, null, 2)], { type: 'application/json' });
@@ -52,65 +52,55 @@ export const ProfileManager = () => {
   /**
    * Handle the import profile event.
    */
-  const handleImportProfile = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImportProfile = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = async e => {
-      try {
-        const importedProfile = JSON.parse(e.target?.result as string);
-        if (!importedProfile.extensions || !Array.isArray(importedProfile.extensions)) {
-          throw new Error('Invalid profile format');
-        }
-        if (!importedProfile.folders || !Array.isArray(importedProfile.folders)) {
-          throw new Error('Invalid profile format: missing folders');
-        }
-        if (!importedProfile.folderExtensions || !Array.isArray(importedProfile.folderExtensions)) {
-          throw new Error('Invalid profile format: missing folder extensions');
-        }
+    try {
+      const text = await file.text();
+      const profile = JSON.parse(text);
 
-        // Import folder structure
-        importFolders(importedProfile.folders, importedProfile.folderExtensions);
-
-        // Import extension states
-        importExtensionStates(importedProfile.extensions);
-
-        // Refresh extension states
-        await refreshExtensions();
-
-        toast.success('Profile imported successfully');
-      } catch (error) {
-        console.error('Failed to import profile:', error);
-        toast.error('Failed to import profile');
+      if (!profile.extensions || !profile.tags || !profile.extensionTags) {
+        throw new Error('Invalid profile format');
       }
-    };
-    reader.readAsText(file);
+
+      importTags(profile.tags, profile.extensionTags);
+      importExtensionStates(profile.extensions);
+      await refreshExtensions();
+      toast.success('Profile imported successfully');
+    } catch (error) {
+      console.error('Failed to import profile:', error);
+      toast.error('Failed to import profile');
+    }
+
+    // Reset the file input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center space-x-2">
       <button
         onClick={handleExportProfile}
-        className="inline-flex items-center gap-2 rounded-lg bg-white dark:bg-zinc-700 px-1 py-1 text-sm font-semibold text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-500"
-        title="Export profile"
+        className="p-2 text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 rounded-lg transition-colors"
+        title="Export Profile"
       >
-        <ArrowUpTrayIcon className="h-3 w-3" />
+        <ArrowDownTrayIcon className="w-5 h-5" />
       </button>
-
       <button
         onClick={() => fileInputRef.current?.click()}
-        className="inline-flex items-center gap-2 rounded-lg bg-white dark:bg-zinc-700 px-1 py-1 text-sm font-semibold text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-500"
-        title="Import profile"
+        className="p-2 text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 rounded-lg transition-colors"
+        title="Import Profile"
       >
-        <ArrowDownTrayIcon className="h-3 w-3" />
+        <ArrowUpTrayIcon className="w-5 h-5" />
       </button>
       <input
-        type="file"
         ref={fileInputRef}
-        className="hidden"
+        type="file"
         accept=".json"
         onChange={handleImportProfile}
+        className="hidden"
       />
     </div>
   );

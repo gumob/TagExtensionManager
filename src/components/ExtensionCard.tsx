@@ -1,6 +1,6 @@
 import { ExtensionCardMenu } from '@/components/ExtensionCardMenu';
-import { FolderSelectionDialog } from '@/components/FolderSelectionDialog';
-import { useFolderStore } from '@/stores/folderStore';
+import { TagSelectionDialog } from '@/components/TagSelectionDialog';
+import { useTagStore } from '@/stores/tagStore';
 import { Switch } from '@headlessui/react';
 import { useRef, useState } from 'react';
 
@@ -22,7 +22,7 @@ interface Extension {
 interface ExtensionCardProps {
   extension: Extension;
   onToggle: (id: string, enabled: boolean) => void;
-  onSettingsClick: (extensionId: string) => void;
+  onSettingsClick: (id: string) => void;
 }
 
 /**
@@ -31,22 +31,34 @@ interface ExtensionCardProps {
  * @returns
  */
 export function ExtensionCard({ extension, onToggle, onSettingsClick }: ExtensionCardProps) {
-  const [isFolderDialogOpen, setIsFolderDialogOpen] = useState(false);
-  const { folders, extensions: folderExtensions, moveExtension } = useFolderStore();
+  const [isTagDialogOpen, setIsTagDialogOpen] = useState(false);
+  const { tags, extensionTags, addTagToExtension, removeTagFromExtension } = useTagStore();
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   /**
-   * Current folder id.
+   * Current tag ids.
    */
-  const currentFolderId = folderExtensions.find(ext => ext.id === extension.id)?.folderId ?? null;
+  const currentTagIds =
+    extensionTags.find(extTag => extTag.extensionId === extension.id)?.tagIds ?? [];
 
   /**
-   * Handle move to folder.
-   * @param folderId
+   * Handle tag selection.
+   * @param tagIds
    */
-  const handleMoveToFolder = (folderId: string | null) => {
-    console.debug('[SEM][ExtensionCard] Moving extension to folder:', folderId);
-    moveExtension(extension.id, folderId);
+  const handleTagSelection = (tagIds: string[]) => {
+    // Add new tags
+    tagIds.forEach(tagId => {
+      if (!currentTagIds.includes(tagId)) {
+        addTagToExtension(extension.id, tagId);
+      }
+    });
+
+    // Remove deselected tags
+    currentTagIds.forEach(tagId => {
+      if (!tagIds.includes(tagId)) {
+        removeTagFromExtension(extension.id, tagId);
+      }
+    });
   };
 
   /**
@@ -90,20 +102,20 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
           <div className="relative">
             <ExtensionCardMenu
               buttonRef={buttonRef}
-              onMoveToFolder={() => setIsFolderDialogOpen(true)}
+              onManageTags={() => setIsTagDialogOpen(true)}
               onManageExtension={() => onSettingsClick(extension.id)}
             />
           </div>
         </div>
       </div>
 
-      {isFolderDialogOpen && (
-        <FolderSelectionDialog
-          isOpen={isFolderDialogOpen}
-          folders={folders}
-          currentFolderId={currentFolderId}
-          onClose={() => setIsFolderDialogOpen(false)}
-          onSelectFolder={handleMoveToFolder}
+      {isTagDialogOpen && (
+        <TagSelectionDialog
+          isOpen={isTagDialogOpen}
+          tags={tags}
+          selectedTagIds={currentTagIds}
+          onClose={() => setIsTagDialogOpen(false)}
+          onSelectTags={handleTagSelection}
         />
       )}
     </div>

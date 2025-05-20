@@ -1,15 +1,15 @@
 import { Extension } from '../types/extension';
-import { Folder } from '../types/folder';
+import { Tag } from '../types/tag';
 
 interface ExtensionHeaderProps {
-  folder: Folder;
+  tag: Tag;
   extensionCount: number;
   onToggle: (enabled: boolean) => void;
   extensions: Extension[];
 }
 
 export const ExtensionHeader = ({
-  folder,
+  tag,
   extensionCount,
   onToggle,
   extensions,
@@ -20,7 +20,7 @@ export const ExtensionHeader = ({
   return (
     <div className="flex items-center justify-between p-1">
       <div className="flex items-center gap-2">
-        <h3 className="text-xs font-semibold text-zinc-900 dark:text-zinc-100">{folder.name}</h3>
+        <h3 className="text-xs font-semibold text-zinc-900 dark:text-zinc-100">{tag.name}</h3>
         {/* <span className="text-xs text-zinc-500 dark:text-zinc-400">({extensionCount})</span> */}
       </div>
       <div className="flex items-center gap-2">
