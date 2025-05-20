@@ -109,10 +109,10 @@ export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionL
             <ExtensionHeader
               folder={folder}
               extensionCount={folderExts.length}
-              isEnabled={folderExts.every(ext => ext.enabled)}
               onToggle={enabled => {
                 folderExts.forEach(ext => handleToggle(ext.id, enabled));
               }}
+              extensions={folderExts}
             />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
               {folderExts
@@ -136,10 +136,10 @@ export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionL
           <ExtensionHeader
             folder={{ id: 'unsorted', name: 'Unsorted', order: -1, createdAt: '', updatedAt: '' }}
             extensionCount={unsortedExtensions.length}
-            isEnabled={unsortedExtensions.every(ext => ext.enabled)}
             onToggle={enabled => {
               unsortedExtensions.forEach(ext => handleToggle(ext.id, enabled));
             }}
+            extensions={unsortedExtensions}
           />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
             {unsortedExtensions
