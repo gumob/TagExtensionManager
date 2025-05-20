@@ -24,7 +24,7 @@ export function TagChip({ tag }: TagChipProps) {
     >
       {tag.name}
       {extensionCount > 0 && (
-        <span className="ml-1 text-2xs text-zinc-500 dark:text-zinc-400">({extensionCount})</span>
+        <span className="ml-1 text-2xs text-zinc-500 dark:text-zinc-400">{extensionCount}</span>
       )}
     </button>
   );

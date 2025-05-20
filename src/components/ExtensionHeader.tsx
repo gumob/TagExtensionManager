@@ -21,10 +21,12 @@ export const ExtensionHeader = ({
     <div className="flex items-center justify-between p-1">
       <div className="flex items-center gap-2">
         <h3 className="text-xs font-semibold text-zinc-900 dark:text-zinc-100">{tag.name}</h3>
-        {/* <span className="text-xs text-zinc-500 dark:text-zinc-400">({extensionCount})</span> */}
+        <span className="text-xs text-zinc-500 dark:text-zinc-400">
+          {enabledCount}/{extensionCount} Enabled
+        </span>
       </div>
       <div className="flex items-center gap-2">
-        <div className="flex">
+        {/* <div className="flex">
           <div className="ps-3 pe-2 py-1 text-2xs font-medium bg-zinc-200 text-blue-600 dark:bg-zinc-600 dark:text-blue-400 rounded-l-full mr-[1px]">
             {extensionCount}
           </div>
@@ -34,7 +36,7 @@ export const ExtensionHeader = ({
           <div className="ps-2 pe-3 py-1 text-2xs font-medium bg-zinc-200 text-red-600 dark:bg-zinc-600 dark:text-red-400 rounded-r-full">
             {disabledCount}
           </div>
-        </div>
+        </div> */}
         <div className="flex">
           <button
             onClick={() => onToggle(true)}
