@@ -64,13 +64,13 @@ export const ExtensionManager: React.FC = () => {
             </h1>
           </div>
 
+          <div className="mb-3">
+            <ProfileManager />
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-3">
             <Metrics extensions={extensions} />
           </div>
-
-          {/* <div className="mb-3">
-            <ProfileManager />
-          </div> */}
 
           <div className="mb-3">
             <FolderList />
