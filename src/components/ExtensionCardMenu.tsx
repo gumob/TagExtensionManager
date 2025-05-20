@@ -1,3 +1,4 @@
+import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/react';
 import { Menu } from '@headlessui/react';
 import { Cog6ToothIcon, EllipsisVerticalIcon, TagIcon } from '@heroicons/react/24/outline';
 
@@ -20,6 +21,21 @@ export function ExtensionCardMenu({
   onMoveToFolder,
   onManageExtension,
 }: ExtensionCardMenuProps) {
+  const { refs, floatingStyles } = useFloating({
+    elements: {
+      reference: buttonRef.current,
+    },
+    placement: 'bottom-end',
+    middleware: [
+      offset(4),
+      flip({
+        fallbackPlacements: ['top-end'],
+      }),
+      shift(),
+    ],
+    whileElementsMounted: autoUpdate,
+  });
+
   return (
     <Menu as="div" className="relative">
       <Menu.Button
@@ -29,7 +45,11 @@ export function ExtensionCardMenu({
         <EllipsisVerticalIcon className="h-5 w-5" />
       </Menu.Button>
 
-      <Menu.Items className="absolute right-0 w-36 mt-1 bg-white dark:bg-zinc-700 rounded-lg shadow-xl shadow-zinc-900 ring-1 ring-black ring-opacity-5 focus:outline-none z-[100]">
+      <Menu.Items
+        ref={refs.setFloating}
+        style={floatingStyles}
+        className="w-36 bg-white dark:bg-zinc-700 rounded-lg shadow-xl shadow-zinc-900 ring-1 ring-black ring-opacity-5 focus:outline-none z-[100]"
+      >
         <div className="py-1">
           <Menu.Item>
             {({ active }) => (
