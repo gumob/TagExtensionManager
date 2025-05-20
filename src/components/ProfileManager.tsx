@@ -80,7 +80,7 @@ export const ProfileManager = () => {
   };
 
   return (
-    <div className="flex items-center space-x-2">
+    <div className="flex items-center space-x-0">
       <button
         onClick={handleExportProfile}
         className="p-2 text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 rounded-lg transition-colors"
