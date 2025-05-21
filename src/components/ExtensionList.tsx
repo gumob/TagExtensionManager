@@ -78,76 +78,60 @@ export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionL
     chrome.tabs.create({ url: `${baseUrl}/?id=${extensionId}` });
   };
 
-  // タグごとに拡張をグループ化
-  const groupedExtensions = tags.reduce(
+  // Filter extensions based on visibleTagId
+  const filteredExtensions = localExtensions.filter(extension => {
+    if (visibleTagId === 'enabled') {
+      return extension.enabled;
+    } else if (visibleTagId === 'disabled') {
+      return !extension.enabled;
+    } else if (visibleTagId === null) {
+      return true;
+    } else if (visibleTagId === 'untagged') {
+      return !extensionTags.find(
+        extTag => extTag.extensionId === extension.id && extTag.tagIds.length > 0
+      );
+    } else {
+      return extensionTags.find(
+        extTag => extTag.extensionId === extension.id && extTag.tagIds.includes(visibleTagId)
+      );
+    }
+  });
+
+  // Group extensions by tag
+  const extensionsByTag = tags.reduce(
     (acc, tag) => {
-      const tagExts = localExtensions.filter(ext =>
+      const tagExtensions = filteredExtensions.filter(extension =>
         extensionTags.find(
-          extTag => extTag.extensionId === ext.id && extTag.tagIds.includes(tag.id)
+          extTag => extTag.extensionId === extension.id && extTag.tagIds.includes(tag.id)
         )
       );
-      if (tagExts.length > 0) {
-        acc[tag.id] = tagExts;
+      if (tagExtensions.length > 0) {
+        acc[tag.id] = tagExtensions;
       }
       return acc;
     },
     {} as Record<string, Extension[]>
   );
 
-  // タグなしの拡張を取得
-  const untaggedExtensions = localExtensions.filter(
+  // Get untagged extensions
+  const untaggedExtensions = filteredExtensions.filter(
     ext => !extensionTags.find(extTag => extTag.extensionId === ext.id && extTag.tagIds.length > 0)
   );
 
-  // 表示するタグをフィルタリング
-  const visibleTags = visibleTagId === null ? tags : tags.filter(tag => tag.id === visibleTagId);
-
   return (
     <div className="space-y-4 pb-4 pl-4 pr-3">
-      {/* タグごとの拡張グループ */}
-      {visibleTags.map(tag => {
-        const tagExts = groupedExtensions[tag.id];
-        if (!tagExts) return null;
-
-        return (
-          <div key={tag.id} className="space-y-2">
-            <ExtensionHeader
-              tag={tag}
-              extensionCount={tagExts.length}
-              onToggle={enabled => {
-                tagExts.forEach(ext => handleToggle(ext.id, enabled));
-              }}
-              extensions={tagExts}
-            />
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-              {tagExts
-                .sort((a, b) => a.name.localeCompare(b.name))
-                .map(extension => (
-                  <ExtensionCard
-                    key={extension.id}
-                    extension={extension}
-                    onToggle={handleToggle}
-                    onSettingsClick={handleSettingsClick}
-                  />
-                ))}
-            </div>
-          </div>
-        );
-      })}
-
-      {/* タグなしの拡張 */}
-      {(visibleTagId === null || visibleTagId === 'untagged') && untaggedExtensions.length > 0 && (
-        <div className="space-y-2">
+      {Object.entries(extensionsByTag).map(([tagId, tagExtensions]) => (
+        <div key={tagId} className="space-y-2">
           <ExtensionHeader
-            tag={{ id: 'untagged', name: 'Untagged', order: -1, createdAt: '', updatedAt: '' }}
-            extensionCount={untaggedExtensions.length}
+            tag={tags.find(t => t.id === tagId)!}
+            extensionCount={tagExtensions.length}
             onToggle={enabled => {
-              untaggedExtensions.forEach(ext => handleToggle(ext.id, enabled));
+              tagExtensions.forEach(ext => handleToggle(ext.id, enabled));
             }}
-            extensions={untaggedExtensions}
+            extensions={tagExtensions}
           />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-            {untaggedExtensions
+            {tagExtensions
               .sort((a, b) => a.name.localeCompare(b.name))
               .map(extension => (
                 <ExtensionCard
@@ -159,7 +143,36 @@ export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionL
               ))}
           </div>
         </div>
-      )}
+      ))}
+
+      {(visibleTagId === null ||
+        visibleTagId === 'untagged' ||
+        visibleTagId === 'enabled' ||
+        visibleTagId === 'disabled') &&
+        untaggedExtensions.length > 0 && (
+          <div className="space-y-2">
+            <ExtensionHeader
+              tag={{ id: 'untagged', name: 'Untagged', order: -1, createdAt: '', updatedAt: '' }}
+              extensionCount={untaggedExtensions.length}
+              onToggle={enabled => {
+                untaggedExtensions.forEach(ext => handleToggle(ext.id, enabled));
+              }}
+              extensions={untaggedExtensions}
+            />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+              {untaggedExtensions
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map(extension => (
+                  <ExtensionCard
+                    key={extension.id}
+                    extension={extension}
+                    onToggle={handleToggle}
+                    onSettingsClick={handleSettingsClick}
+                  />
+                ))}
+            </div>
+          </div>
+        )}
     </div>
   );
 }

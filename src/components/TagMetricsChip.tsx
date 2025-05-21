@@ -8,7 +8,7 @@ interface TagMetricsChipProps {
 }
 
 export const TagMetricsChip: FC<TagMetricsChipProps> = ({ extensions = [] }) => {
-  const { showAllTags, visibleTagId, extensionTags } = useTagStore();
+  const { showAllTags, visibleTagId, extensionTags, setVisibleTag } = useTagStore();
   const [localExtensions, setLocalExtensions] = useState(extensions);
 
   useEffect(() => {
@@ -18,6 +18,14 @@ export const TagMetricsChip: FC<TagMetricsChipProps> = ({ extensions = [] }) => 
   const total = localExtensions.length;
   const enabled = localExtensions.filter(ext => ext.enabled).length;
   const disabled = total - enabled;
+
+  const showEnabledExtensions = () => {
+    setVisibleTag('enabled');
+  };
+
+  const showDisabledExtensions = () => {
+    setVisibleTag('disabled');
+  };
 
   return (
     <div className="flex flex-row w-auto gap-[1px]">
@@ -31,7 +39,7 @@ export const TagMetricsChip: FC<TagMetricsChipProps> = ({ extensions = [] }) => 
       </button>
       <button
         className="flex-1 pl-3 pr-2 py-1 rounded-none text-2xs bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-600 inline-flex items-center"
-        onClick={showAllTags}
+        onClick={showEnabledExtensions}
       >
         <ToggleRightIcon className="w-4 h-4 mr-1" />
         <span className="text-2xs text-zinc-900 dark:text-white mr-1">Enabled</span>
@@ -39,7 +47,7 @@ export const TagMetricsChip: FC<TagMetricsChipProps> = ({ extensions = [] }) => 
       </button>
       <button
         className="flex-1 pl-2 pr-3 py-1 rounded-r-full text-2xs bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-600 inline-flex items-center"
-        onClick={showAllTags}
+        onClick={showDisabledExtensions}
       >
         <ToggleLeftIcon className="w-4 h-4 mr-1" />
         <span className="text-2xs text-zinc-900 dark:text-white mr-1">Disabled</span>

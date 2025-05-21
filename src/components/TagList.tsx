@@ -13,24 +13,28 @@ export const TagList = ({ extensions }: { extensions: Extension[] }) => {
   );
 
   return (
-    <div className="flex flex-wrap gap-1">
-      <TagMetricsChip extensions={extensions} />
-      <TagEditChip />
-      {tags.map(tag => (
-        <TagChip key={tag.id} tag={tag} />
-      ))}
-      {untaggedExtensions.length > 0 && (
-        <TagChip
-          tag={{
-            id: 'untagged',
-            name: 'Untagged',
-            order: tags.length,
-            createdAt: '',
-            updatedAt: '',
-          }}
-          extensionCount={untaggedExtensions.length}
-        />
-      )}
-    </div>
+    <>
+      <div className="flex flex-wrap gap-1 mb-1">
+        <TagMetricsChip extensions={extensions} />
+        <TagEditChip />
+      </div>
+      <div className="flex flex-wrap gap-1">
+        {tags.map(tag => (
+          <TagChip key={tag.id} tag={tag} />
+        ))}
+        {untaggedExtensions.length > 0 && (
+          <TagChip
+            tag={{
+              id: 'untagged',
+              name: 'Untagged',
+              order: tags.length,
+              createdAt: '',
+              updatedAt: '',
+            }}
+            extensionCount={untaggedExtensions.length}
+          />
+        )}
+      </div>
+    </>
   );
 };
