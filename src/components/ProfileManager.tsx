@@ -80,20 +80,20 @@ export const ProfileManager = () => {
   };
 
   return (
-    <div className="flex items-center space-x-0">
+    <div className="flex items-center gap-1">
       <button
         onClick={handleExportProfile}
-        className="p-2 text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 rounded-lg transition-colors"
+        className="p-1 rounded-lg bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors"
         title="Export Profile"
       >
-        <ArrowDownTrayIcon className="w-5 h-5" />
+        <ArrowDownTrayIcon className="w-3 h-3" />
       </button>
       <button
         onClick={() => fileInputRef.current?.click()}
-        className="p-2 text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 rounded-lg transition-colors"
+        className="p-1 rounded-lg bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors"
         title="Import Profile"
       >
-        <ArrowUpTrayIcon className="w-5 h-5" />
+        <ArrowUpTrayIcon className="w-3 h-3" />
       </button>
       <input
         ref={fileInputRef}
