@@ -86,7 +86,7 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
    */
   return (
     <div className="bg-white dark:bg-zinc-700 rounded-xl px-3 py-2">
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center gap-2">
         <img
           src={extension.iconUrl}
           alt={extension.name}
@@ -104,7 +104,7 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
             {extension.version}
           </p>
         </div>
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-2">
           <Switch
             checked={extension.enabled}
             onChange={checked => onToggle(extension.id, checked)}
