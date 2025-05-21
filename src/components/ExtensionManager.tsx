@@ -69,9 +69,9 @@ export const ExtensionManager: React.FC = () => {
             <ProfileManager />
           </div>
 
-          <div className="mb-3">
+          {/* <div className="mb-3">
             <Metrics extensions={extensions} />
-          </div>
+          </div> */}
 
           <div className="mb-3">
             <TagList extensions={filteredExtensions} />

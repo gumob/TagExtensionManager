@@ -14,7 +14,7 @@ export const TagList = ({ extensions }: { extensions: Extension[] }) => {
 
   return (
     <div className="flex flex-wrap gap-1">
-      <TagMetricsChip />
+      <TagMetricsChip extensions={extensions} />
       <TagEditChip />
       {tags.map(tag => (
         <TagChip key={tag.id} tag={tag} />

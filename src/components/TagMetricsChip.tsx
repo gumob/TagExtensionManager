@@ -1,11 +1,22 @@
 import { useTagStore } from '@/stores/tagStore';
+import { Extension } from '@/types/extension';
 import { TagsIcon, ToggleLeftIcon, ToggleRightIcon } from 'lucide-react';
+import { FC, useEffect, useState } from 'react';
 
-export function TagMetricsChip() {
-  const { showAllTags, visibleTagId, tags, extensionTags } = useTagStore();
+interface TagMetricsChipProps {
+  extensions?: Extension[];
+}
 
-  const total = tags.length;
-  const enabled = extensionTags.filter(extTag => extTag.tagIds.length > 0).length;
+export const TagMetricsChip: FC<TagMetricsChipProps> = ({ extensions = [] }) => {
+  const { showAllTags, visibleTagId, extensionTags } = useTagStore();
+  const [localExtensions, setLocalExtensions] = useState(extensions);
+
+  useEffect(() => {
+    setLocalExtensions(extensions);
+  }, [extensions]);
+
+  const total = localExtensions.length;
+  const enabled = localExtensions.filter(ext => ext.enabled).length;
   const disabled = total - enabled;
 
   return (
@@ -36,4 +47,4 @@ export function TagMetricsChip() {
       </button>
     </div>
   );
-}
+};
