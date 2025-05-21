@@ -20,6 +20,17 @@ interface LogEntry {
   };
 }
 
+// 本番環境用のダミーロガー
+const dummyLogger = {
+  debug: () => {},
+  info: () => {},
+  warn: () => {},
+  error: () => {},
+  getLogs: () => [],
+  clearLogs: () => {},
+};
+
+// 開発環境用の実際のロガー
 class Logger {
   private static instance: Logger;
   private logs: LogEntry[] = [];
@@ -118,4 +129,5 @@ class Logger {
   }
 }
 
-export const logger = Logger.getInstance();
+// 環境に応じてロガーを選択
+export const logger = process.env.NODE_ENV === 'development' ? Logger.getInstance() : dummyLogger;
