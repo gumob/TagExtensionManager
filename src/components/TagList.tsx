@@ -1,9 +1,8 @@
 import { TagChip } from '@/components/TagChip';
 import { TagEditButton } from '@/components/TagEditButton';
 import { TagShowAllButton } from '@/components/TagShowAllButton';
+import { useTagStore } from '@/stores/tagStore';
 import { Extension } from '@/types/extension';
-
-import { useTagStore } from '../stores/tagStore';
 
 export const TagList = ({ extensions }: { extensions: Extension[] }) => {
   const { tags, extensionTags } = useTagStore();

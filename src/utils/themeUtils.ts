@@ -1,6 +1,5 @@
+import { logger } from '@/utils/logger';
 import React from 'react';
-
-import { logger } from './logger';
 
 /**
  * Utility functions for dark mode detection and monitoring

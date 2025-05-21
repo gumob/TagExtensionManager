@@ -1,12 +1,11 @@
+import { Tag } from '@/types/tag';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { TagIcon } from '@heroicons/react/24/outline';
 import { TagIcon as TagSolidIcon } from '@heroicons/react/24/solid';
 import { Fragment } from 'react';
 
-import { Tag } from '../types/tag';
-
-interface TagSelectionDialogProps {
+interface TagSelectorProps {
   isOpen: boolean;
   tags: Tag[];
   selectedTagIds: string[];
@@ -14,13 +13,13 @@ interface TagSelectionDialogProps {
   onSelectTags: (tagIds: string[]) => void;
 }
 
-export function TagSelectionDialog({
+export function TagSelector({
   isOpen,
   tags,
   selectedTagIds,
   onClose,
   onSelectTags,
-}: TagSelectionDialogProps) {
+}: TagSelectorProps) {
   const handleTagClick = (tagId: string) => {
     const newSelectedTagIds = selectedTagIds.includes(tagId)
       ? selectedTagIds.filter(id => id !== tagId)

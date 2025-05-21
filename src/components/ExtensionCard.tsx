@@ -1,5 +1,5 @@
 import { ExtensionCardMenu } from '@/components/ExtensionCardMenu';
-import { TagSelectionDialog } from '@/components/TagSelectionDialog';
+import { TagSelector } from '@/components/TagSelector';
 import { useExtensions } from '@/hooks/useExtensions';
 import { useTagStore } from '@/stores/tagStore';
 import { logger } from '@/utils/logger';
@@ -131,7 +131,7 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
       </div>
 
       {isTagDialogOpen && (
-        <TagSelectionDialog
+        <TagSelector
           isOpen={isTagDialogOpen}
           tags={tags}
           selectedTagIds={currentTagIds}

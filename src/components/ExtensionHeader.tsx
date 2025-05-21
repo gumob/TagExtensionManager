@@ -1,5 +1,5 @@
-import { Extension } from '../types/extension';
-import { Tag } from '../types/tag';
+import { Extension } from '@/types/extension';
+import { Tag } from '@/types/tag';
 
 interface ExtensionHeaderProps {
   tag: Tag;

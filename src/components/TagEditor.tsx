@@ -1,9 +1,8 @@
+import { useTagStore } from '@/stores/tagStore';
 import { Dialog, Transition } from '@headlessui/react';
 import { DragDropContext, Draggable, DropResult, Droppable } from '@hello-pangea/dnd';
 import { EllipsisVerticalIcon, TagIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Fragment, useState } from 'react';
-
-import { useTagStore } from '../stores/tagStore';
 
 interface TagEditorProps {
   isOpen: boolean;

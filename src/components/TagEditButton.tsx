@@ -1,7 +1,6 @@
+import { TagEditor } from '@/components/TagEditor';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
-
-import { TagEditor } from './TagEditor';
 
 export function TagEditButton() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);

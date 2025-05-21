@@ -1,4 +1,4 @@
-import { useTagStore } from '../stores/tagStore';
+import { useTagStore } from '@/stores/tagStore';
 
 export function TagShowAllButton() {
   const { showAllTags, visibleTagId } = useTagStore();

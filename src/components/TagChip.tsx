@@ -1,5 +1,5 @@
-import { useTagStore } from '../stores/tagStore';
-import { Tag } from '../types/tag';
+import { useTagStore } from '@/stores/tagStore';
+import { Tag } from '@/types/tag';
 
 interface TagChipProps {
   tag: Tag;

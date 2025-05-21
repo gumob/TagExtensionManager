@@ -1,11 +1,9 @@
+import { useExtensions } from '@/hooks/useExtensions';
+import { useExtensionStore } from '@/stores/extensionStore';
+import { useTagStore } from '@/stores/tagStore';
 import { logger } from '@/utils/logger';
 import { ArrowDownTrayIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline';
 import { useRef } from 'react';
-import toast from 'react-hot-toast';
-
-import { useExtensions } from '../hooks/useExtensions';
-import { useExtensionStore } from '../stores/extensionStore';
-import { useTagStore } from '../stores/tagStore';
 
 /**
  * The component for managing profile export/import.
