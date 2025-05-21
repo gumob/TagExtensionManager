@@ -1,4 +1,5 @@
 import { ExtensionManager } from '@/components/ExtensionManager';
+import { logger } from '@/utils/logger';
 import { setupColorSchemeListener } from '@/utils/themeUtils';
 import React, { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
@@ -12,13 +13,20 @@ const App: React.FC = () => {
    * Setup color scheme listener.
    */
   useEffect(() => {
-    return setupColorSchemeListener(isDarkMode => {
-      console.debug('[SEM][App] Color scheme changed:', isDarkMode ? 'dark' : 'light');
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (e: MediaQueryListEvent) => {
+      logger.debug('Color scheme changed', {
+        group: 'App',
+        persist: true,
+      });
       chrome.runtime.sendMessage({
         type: 'COLOR_SCHEME_CHANGED',
-        isDarkMode,
+        isDarkMode: e.matches,
       });
-    });
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
   /**

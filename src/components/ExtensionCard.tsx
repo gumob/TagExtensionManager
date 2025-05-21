@@ -2,6 +2,7 @@ import { ExtensionCardMenu } from '@/components/ExtensionCardMenu';
 import { TagSelectionDialog } from '@/components/TagSelectionDialog';
 import { useExtensions } from '@/hooks/useExtensions';
 import { useTagStore } from '@/stores/tagStore';
+import { logger } from '@/utils/logger';
 import { Switch } from '@headlessui/react';
 import { useRef, useState } from 'react';
 
@@ -72,7 +73,10 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
       // Refresh the extension list after uninstallation
       await refreshExtensions();
     } catch (error) {
-      console.error('Failed to uninstall extension:', error);
+      logger.error('Failed to uninstall extension', {
+        group: 'ExtensionCard',
+        persist: true,
+      });
     }
   };
 

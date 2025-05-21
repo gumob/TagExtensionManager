@@ -1,3 +1,4 @@
+import { logger } from '@/utils/logger';
 import { useEffect } from 'react';
 
 /**
@@ -14,28 +15,28 @@ export function useOnClickOutside<T extends HTMLElement>(
    * Add event listener.
    */
   useEffect(() => {
-    const listener = (event: MouseEvent) => {
-      if (!ref.current) return;
-      // Debug log for event target and ref
-      // eslint-disable-next-line no-console
-      console.log(
-        '[SEM][useOnClickOutside] event.target:',
-        event.target,
-        'ref.current:',
-        ref.current,
-        'contains:',
-        ref.current.contains(event.target as Node)
-      );
-      if (ref.current.contains(event.target as Node)) {
-        return;
+    const handleClickOutside = (event: MouseEvent) => {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        logger.debug('Click outside detected', {
+          group: 'useOnClickOutside',
+          persist: true,
+        });
+        handler(event);
       }
-      handler(event);
     };
-    console.log('[SEM][useOnClickOutside] Adding event listener');
-    document.addEventListener('mousedown', listener);
+
+    logger.debug('Adding event listener', {
+      group: 'useOnClickOutside',
+      persist: true,
+    });
+    document.addEventListener('mousedown', handleClickOutside);
+
     return () => {
-      console.log('[SEM][useOnClickOutside] Removing event listener');
-      document.removeEventListener('mousedown', listener);
+      logger.debug('Removing event listener', {
+        group: 'useOnClickOutside',
+        persist: true,
+      });
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [ref, handler]);
 }

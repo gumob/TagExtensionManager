@@ -1,3 +1,4 @@
+import { logger } from '@/utils/logger';
 import { ArrowDownTrayIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline';
 import { useRef } from 'react';
 import toast from 'react-hot-toast';
@@ -21,31 +22,20 @@ export const ProfileManager = () => {
    */
   const handleExportProfile = async () => {
     try {
-      const currentExtensions = await refreshExtensions();
-      const { tags, extensionTags } = exportTags();
-      const profile = {
-        extensions: currentExtensions.map(ext => ({
-          id: ext.id,
-          enabled: ext.enabled,
-        })),
-        tags,
-        extensionTags,
-      };
-
-      const blob = new Blob([JSON.stringify(profile, null, 2)], { type: 'application/json' });
+      const profiles = await chrome.storage.local.get('extension-manager-profiles');
+      const data = JSON.stringify(profiles['extension-manager-profiles'], null, 2);
+      const blob = new Blob([data], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
-      const date = new Date().toISOString().replace(/[:.]/g, '-');
       a.href = url;
-      a.download = `ExtensionManager-${date}.json`;
-      document.body.appendChild(a);
+      a.download = 'extension-manager-profiles.json';
       a.click();
-      document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      toast.success('Profile exported successfully');
     } catch (error) {
-      console.error('Failed to export profile:', error);
-      toast.error('Failed to export profile');
+      logger.error('Failed to export profile', {
+        group: 'ProfileManager',
+        persist: true,
+      });
     }
   };
 
@@ -53,29 +43,30 @@ export const ProfileManager = () => {
    * Handle the import profile event.
    */
   const handleImportProfile = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
     try {
-      const text = await file.text();
-      const profile = JSON.parse(text);
+      const file = event.target.files?.[0];
+      if (!file) return;
 
-      if (!profile.extensions || !profile.tags || !profile.extensionTags) {
-        throw new Error('Invalid profile format');
-      }
-
-      importTags(profile.tags, profile.extensionTags);
-      importExtensionStates(profile.extensions);
-      await refreshExtensions();
-      toast.success('Profile imported successfully');
+      const reader = new FileReader();
+      reader.onload = async e => {
+        try {
+          const content = e.target?.result as string;
+          const profiles = JSON.parse(content);
+          await chrome.storage.local.set({ 'extension-manager-profiles': profiles });
+          window.location.reload();
+        } catch (error) {
+          logger.error('Failed to import profile', {
+            group: 'ProfileManager',
+            persist: true,
+          });
+        }
+      };
+      reader.readAsText(file);
     } catch (error) {
-      console.error('Failed to import profile:', error);
-      toast.error('Failed to import profile');
-    }
-
-    // Reset the file input
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      logger.error('Failed to import profile', {
+        group: 'ProfileManager',
+        persist: true,
+      });
     }
   };
 

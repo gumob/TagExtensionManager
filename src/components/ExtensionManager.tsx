@@ -4,6 +4,7 @@ import { ProfileManager } from '@/components/ProfileManager';
 import { SearchBar } from '@/components/SearchBar';
 import { TagList } from '@/components/TagList';
 import { useExtensions } from '@/hooks/useExtensions';
+import { logger } from '@/utils/logger';
 import React, { useCallback } from 'react';
 
 /**
@@ -42,7 +43,10 @@ export const ExtensionManager: React.FC = () => {
         /** Refresh the extension states after the update */
         await refreshExtensions();
       } catch (error) {
-        console.error('Failed to update extension state:', error);
+        logger.error('Failed to update extension state', {
+          group: 'ExtensionManager',
+          persist: true,
+        });
         /** If an error occurs, refresh the extension states */
         await refreshExtensions();
       }

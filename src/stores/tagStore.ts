@@ -1,3 +1,4 @@
+import { logger } from '@/utils/logger';
 import { v4 as uuidv4 } from 'uuid';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
@@ -14,18 +15,23 @@ export const useTagStore = create<TagStore>()(
       /** Initialize store with tags from storage */
       initialize: async () => {
         try {
-          const result = await chrome.storage.local.get('extension-manager-tags');
-          const storedData = result['extension-manager-tags'];
-          if (storedData) {
-            console.debug('[SEM][TagStore] Loading tags from storage:', storedData);
+          const storedData = await chrome.storage.local.get('extension-manager-tags');
+          if (storedData['extension-manager-tags']) {
+            logger.debug('Loading tags from storage', {
+              group: 'TagStore',
+              persist: true,
+            });
             set({
-              tags: storedData.tags,
-              extensionTags: storedData.extensionTags,
+              tags: storedData['extension-manager-tags'].tags,
+              extensionTags: storedData['extension-manager-tags'].extensionTags,
               visibleTagId: null,
             });
           }
         } catch (error) {
-          console.error('[SEM][TagStore] Failed to load tags:', error);
+          logger.error('Failed to load tags', {
+            group: 'TagStore',
+            persist: true,
+          });
         }
       },
 
@@ -145,19 +151,50 @@ export const useTagStore = create<TagStore>()(
     {
       name: 'extension-manager-tags',
       storage: {
-        getItem: async name => {
-          const result = await chrome.storage.local.get(name);
-          const data = result[name];
-          console.debug('[SEM][TagStore] Loading from storage:', { name, data });
-          return data;
+        getItem: async (name: string) => {
+          try {
+            const result = await chrome.storage.local.get(name);
+            const data = result[name];
+            logger.debug('Loading from storage', {
+              group: 'TagStore',
+              persist: true,
+            });
+            return data;
+          } catch (error) {
+            logger.error('Failed to load from storage', {
+              group: 'TagStore',
+              persist: true,
+            });
+            return null;
+          }
         },
-        setItem: async (name, value) => {
-          console.debug('[SEM][TagStore] Saving to storage:', { name, value });
-          await chrome.storage.local.set({ [name]: value });
+        setItem: async (name: string, value: any) => {
+          try {
+            logger.debug('Saving to storage', {
+              group: 'TagStore',
+              persist: true,
+            });
+            await chrome.storage.local.set({ [name]: value });
+          } catch (error) {
+            logger.error('Failed to save to storage', {
+              group: 'TagStore',
+              persist: true,
+            });
+          }
         },
-        removeItem: async name => {
-          console.debug('[SEM][TagStore] Removing from storage:', name);
-          await chrome.storage.local.remove(name);
+        removeItem: async (name: string) => {
+          try {
+            logger.debug('Removing from storage', {
+              group: 'TagStore',
+              persist: true,
+            });
+            await chrome.storage.local.remove(name);
+          } catch (error) {
+            logger.error('Failed to remove from storage', {
+              group: 'TagStore',
+              persist: true,
+            });
+          }
         },
       },
       partialize: (state: TagStore) =>

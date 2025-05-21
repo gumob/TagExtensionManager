@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { logger } from './logger';
+
 /**
  * Utility functions for dark mode detection and monitoring
  */
@@ -17,7 +19,10 @@ export const isDarkMode = (): boolean => {
  */
 export const detectThemeOnOffscreen = () => {
   const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  console.debug('[SEM][themeDetector] Theme detected:', isDarkMode ? 'dark' : 'light');
+  logger.debug('Theme detected', {
+    group: 'themeDetector',
+    persist: true,
+  });
   chrome.runtime.sendMessage({
     type: 'COLOR_SCHEME_CHANGED',
     isDarkMode: isDarkMode,
@@ -52,9 +57,13 @@ export const setupColorSchemeListener = (onChange: (isDarkMode: boolean) => void
  * @param isDarkMode - Whether the color scheme is dark
  */
 export const updateExtensionIcon = async (isDarkMode: boolean) => {
-  console.debug('[SEM][background] Updating extension icon to ', isDarkMode ? 'dark' : 'light');
-  const iconPath = isDarkMode ? '/icons/dark/' : '/icons/light/';
+  logger.debug('Updating extension icon', {
+    group: 'background',
+    persist: true,
+  });
+
   try {
+    const iconPath = isDarkMode ? '/icons/dark/' : '/icons/light/';
     await chrome.action.setIcon({
       path: {
         16: `${iconPath}icon16.png`,
@@ -62,9 +71,15 @@ export const updateExtensionIcon = async (isDarkMode: boolean) => {
         128: `${iconPath}icon128.png`,
       },
     });
-    console.debug(`[SEM][background] Icon updated to ${isDarkMode ? 'dark' : 'light'} mode`);
+    logger.debug('Icon updated', {
+      group: 'background',
+      persist: true,
+    });
   } catch (error) {
-    console.error('[SEM][background] Failed to update extension icon:', error);
+    logger.error('Failed to update extension icon', {
+      group: 'background',
+      persist: true,
+    });
   }
 };
 

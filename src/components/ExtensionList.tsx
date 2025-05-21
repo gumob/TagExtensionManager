@@ -2,6 +2,7 @@ import { ExtensionCard } from '@/components/ExtensionCard';
 import { ExtensionHeader } from '@/components/ExtensionHeader';
 import { useTagStore } from '@/stores/tagStore';
 import { Extension } from '@/types/extension';
+import { logger } from '@/utils/logger';
 import React, { useEffect, useState } from 'react';
 
 /**
@@ -47,7 +48,10 @@ export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionL
       /** Notify the parent component */
       onExtensionStateChange(id, enabled);
     } catch (error) {
-      console.error('Failed to toggle extension:', error);
+      logger.error('Failed to toggle extension', {
+        group: 'ExtensionList',
+        persist: true,
+      });
       /** If an error occurs, revert to the original state */
       setLocalExtensions(extensions);
     }

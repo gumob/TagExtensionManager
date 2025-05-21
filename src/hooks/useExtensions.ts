@@ -1,5 +1,6 @@
 import { Extension } from '@/types/extension';
 import { getAllExtensions } from '@/utils/extensionUtils';
+import { logger } from '@/utils/logger';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 /**
@@ -39,11 +40,17 @@ export const useExtensions = () => {
     try {
       setIsLoading(true);
       const updatedExtensions = await getAllExtensions();
-      console.debug('[SEM][useExtensions] Refreshing extensions state:', updatedExtensions);
+      logger.debug('Refreshing extensions state', {
+        group: 'useExtensions',
+        persist: true,
+      });
       setExtensions(updatedExtensions);
       return updatedExtensions;
     } catch (error) {
-      console.error('[SEM][useExtensions] Failed to refresh extensions:', error);
+      logger.error('Failed to refresh extensions', {
+        group: 'useExtensions',
+        persist: true,
+      });
       throw error;
     } finally {
       setIsLoading(false);
@@ -70,7 +77,10 @@ export const useExtensions = () => {
     /** Watch for extension updates */
     const handleExtensionUpdate = (details: chrome.runtime.InstalledDetails) => {
       if (details.reason === 'update') {
-        console.debug('[SEM][useExtensions] Extension updated:', details);
+        logger.info('Extension updated', {
+          group: 'useExtensions',
+          persist: true,
+        });
         setIsManualRefresh(true);
         refreshExtensions();
       }

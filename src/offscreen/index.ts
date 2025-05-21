@@ -1,6 +1,10 @@
+import { logger } from '@/utils/logger';
 import { detectThemeOnOffscreen } from '@/utils/themeUtils';
 
-console.debug('[SEM][offscreen] Starting offscreen document');
+logger.debug('Starting offscreen document', {
+  group: 'offscreen',
+  persist: true,
+});
 /**
  * Initial detection
  */

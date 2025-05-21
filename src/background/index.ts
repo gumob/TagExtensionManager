@@ -1,7 +1,11 @@
+import { logger } from '@/utils/logger';
 import { updateExtensionIcon } from '@/utils/themeUtils';
 
 /** Background script for extension management */
-console.debug('[SEM][background] Starting background script');
+logger.debug('Starting background script', {
+  group: 'background',
+  persist: true,
+});
 
 /**
  * Create and manage offscreen document
@@ -17,11 +21,17 @@ const createOffscreenDocument = async () => {
     await chrome.offscreen.createDocument({
       url: 'offscreen.html',
       reasons: ['DOM_PARSER' as chrome.offscreen.Reason],
-      justification: 'Detect system theme changes',
+      justification: 'Detect system color scheme changes',
     });
-    console.debug('[SEM][background] Offscreen document created successfully');
+    logger.debug('Offscreen document created successfully', {
+      group: 'background',
+      persist: true,
+    });
   } catch (error) {
-    console.error('[SEM][background] Failed to create offscreen document:', error);
+    logger.error('Failed to create offscreen document', {
+      group: 'background',
+      persist: true,
+    });
   }
 };
 
@@ -36,10 +46,16 @@ const initializeIcon = async () => {
  * Create Default profile
  */
 const createDefaultProfile = () => {
-  console.debug('[SEM][background] Creating default profile');
+  logger.debug('Creating default profile', {
+    group: 'background',
+    persist: true,
+  });
   return new Promise<void>((resolve, reject) => {
     chrome.management.getAll(extensions => {
-      console.debug('[SEM][background] Got extensions:', extensions);
+      logger.debug('Got extensions', {
+        group: 'background',
+        persist: true,
+      });
       const defaultExtensions = extensions.map(ext => ({
         id: ext.id,
         enabled: ext.enabled,
@@ -57,16 +73,22 @@ const createDefaultProfile = () => {
         ],
         currentProfileId: null,
       };
-      console.debug('[SEM][background] Setting default profile:', defaultProfile);
+      logger.debug('Setting default profile', {
+        group: 'background',
+        persist: true,
+      });
       chrome.storage.local.set({ 'extension-manager-profiles': defaultProfile }, () => {
         if (chrome.runtime.lastError) {
-          console.error(
-            '[SEM][background] Error saving default profile:',
-            chrome.runtime.lastError
-          );
+          logger.error('Error saving default profile', {
+            group: 'background',
+            persist: true,
+          });
           reject(chrome.runtime.lastError);
         } else {
-          console.debug('[SEM][background] Default profile saved to storage');
+          logger.debug('Default profile saved to storage', {
+            group: 'background',
+            persist: true,
+          });
           resolve();
         }
       });
@@ -78,20 +100,32 @@ const createDefaultProfile = () => {
  * Listen for extension installation
  */
 chrome.runtime.onInstalled.addListener(async details => {
-  console.debug('[SEM][background] Extension installed', details);
+  logger.debug('Extension installed', {
+    group: 'background',
+    persist: true,
+  });
   await initializeIcon();
 
   try {
     /** Clear storage on first installation */
     if (details.reason === 'install') {
-      console.debug('[SEM][background] Starting storage clear');
+      logger.debug('Starting storage clear', {
+        group: 'background',
+        persist: true,
+      });
       await new Promise<void>((resolve, reject) => {
         chrome.storage.local.clear(() => {
           if (chrome.runtime.lastError) {
-            console.error('[SEM][background] Error clearing storage:', chrome.runtime.lastError);
+            logger.error('Error clearing storage', {
+              group: 'background',
+              persist: true,
+            });
             reject(chrome.runtime.lastError);
           } else {
-            console.debug('[SEM][background] Storage cleared');
+            logger.debug('Storage cleared', {
+              group: 'background',
+              persist: true,
+            });
             resolve();
           }
         });
@@ -99,9 +133,15 @@ chrome.runtime.onInstalled.addListener(async details => {
 
       await createDefaultProfile();
     }
-    console.debug('[SEM][background] Installation process completed');
+    logger.debug('Installation process completed', {
+      group: 'background',
+      persist: true,
+    });
   } catch (error) {
-    console.error('[SEM][background] Error during installation:', error);
+    logger.error('Error during installation', {
+      group: 'background',
+      persist: true,
+    });
   }
 });
 
@@ -109,23 +149,35 @@ chrome.runtime.onInstalled.addListener(async details => {
  * Listen for extension state changes
  */
 chrome.management.onEnabled.addListener(extension => {
-  console.debug(`[SEM][background] Extension enabled: ${extension.name}`);
+  logger.debug(`Extension enabled: ${extension.name}`, {
+    group: 'background',
+    persist: true,
+  });
 });
 
 /**
  * Listen for extension disabled
  */
 chrome.management.onDisabled.addListener(extension => {
-  console.debug(`[SEM][background] Extension disabled: ${extension.name}`);
+  logger.debug(`Extension disabled: ${extension.name}`, {
+    group: 'background',
+    persist: true,
+  });
 });
 
 /**
  * Listen for theme changes from offscreen document
  */
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  console.debug('[SEM][background] Received message:', message);
+  logger.debug('Received message', {
+    group: 'background',
+    persist: true,
+  });
   if (message.type === 'COLOR_SCHEME_CHANGED') {
-    console.debug('[SEM][background] Color scheme changed:', message.isDarkMode ? 'dark' : 'light');
+    logger.debug('Color scheme changed', {
+      group: 'background',
+      persist: true,
+    });
     updateExtensionIcon(message.isDarkMode);
     sendResponse({ success: true });
   }
