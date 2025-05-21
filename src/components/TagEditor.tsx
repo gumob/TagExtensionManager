@@ -65,7 +65,7 @@ export const TagEditor = ({ isOpen, onClose }: TagEditorProps) => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black/90 dark:bg-black/90" />
+          <div className="fixed inset-0 bg-black/70 dark:bg-black/70 backdrop-blur-sm" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">

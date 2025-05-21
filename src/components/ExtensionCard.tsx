@@ -1,5 +1,6 @@
 import { ExtensionCardMenu } from '@/components/ExtensionCardMenu';
 import { TagSelectionDialog } from '@/components/TagSelectionDialog';
+import { useExtensions } from '@/hooks/useExtensions';
 import { useTagStore } from '@/stores/tagStore';
 import { Switch } from '@headlessui/react';
 import { useRef, useState } from 'react';
@@ -33,6 +34,7 @@ interface ExtensionCardProps {
 export function ExtensionCard({ extension, onToggle, onSettingsClick }: ExtensionCardProps) {
   const [isTagDialogOpen, setIsTagDialogOpen] = useState(false);
   const { tags, extensionTags, addTagToExtension, removeTagFromExtension } = useTagStore();
+  const { refreshExtensions } = useExtensions();
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   /**
@@ -59,6 +61,19 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
         removeTagFromExtension(extension.id, tagId);
       }
     });
+  };
+
+  /**
+   * Handle uninstall.
+   */
+  const handleUninstall = async () => {
+    try {
+      await chrome.management.uninstall(extension.id);
+      // Refresh the extension list after uninstallation
+      await refreshExtensions();
+    } catch (error) {
+      console.error('Failed to uninstall extension:', error);
+    }
   };
 
   /**
@@ -104,6 +119,8 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
               buttonRef={buttonRef}
               onManageTags={() => setIsTagDialogOpen(true)}
               onManageExtension={() => onSettingsClick(extension.id)}
+              onUninstall={handleUninstall}
+              extensionName={extension.name}
             />
           </div>
         </div>
