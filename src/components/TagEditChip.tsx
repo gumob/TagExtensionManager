@@ -1,5 +1,5 @@
 import { TagEditor } from '@/components/TagEditor';
-import { PencilIcon, PlusIcon } from '@heroicons/react/24/outline';
+import { PencilIcon } from 'lucide-react';
 import { useState } from 'react';
 
 export function TagEditChip() {
@@ -11,7 +11,7 @@ export function TagEditChip() {
         onClick={() => setIsDialogOpen(true)}
         className="px-3 py-1 text-2xs font-medium rounded-full bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors"
       >
-        <PencilIcon className="w-3 h-3 inline-block mr-1" />
+        <PencilIcon className="w-3 h-3 inline-flex mr-1" />
         <span className="">Edit Tags</span>
       </button>
 

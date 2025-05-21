@@ -1,6 +1,6 @@
 import { useTagStore } from '@/stores/tagStore';
 import { Tag } from '@/types/tag';
-import { TagIcon } from '@heroicons/react/24/outline';
+import { TagIcon } from 'lucide-react';
 
 interface TagChipProps {
   tag: Tag;
@@ -27,7 +27,7 @@ export function TagChip({ tag, extensionCount }: TagChipProps) {
             : 'bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-300 dark:hover:bg-zinc-600 opacity-30'
       }`}
     >
-      <TagIcon className="w-3 h-3 inline-block mr-1" />
+      <TagIcon className="w-3 h-3 inline-flex mr-1" />
       <span className="text-2xs">{tag.name}</span>
       <span className="ml-1 text-2xs text-zinc-500 dark:text-zinc-400">{count}</span>
     </button>
