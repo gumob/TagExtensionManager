@@ -85,8 +85,8 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
    * @returns
    */
   return (
-    <div className="bg-white dark:bg-zinc-700 rounded-xl p-3">
-      <div className="flex items-start space-x-2">
+    <div className="bg-white dark:bg-zinc-700 rounded-xl px-3 py-2">
+      <div className="flex items-center space-x-2">
         <img
           src={extension.iconUrl}
           alt={extension.name}
@@ -94,12 +94,12 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
         />
         <div className="flex-1 min-w-0">
           <h3
-            className={`text-xs font-semibold truncate select-none text-zinc-900 dark:text-white transition-opacity ${!extension.enabled ? 'opacity-30' : ''}`}
+            className={`text-2xs select-none font-semibold truncate text-zinc-900 dark:text-white transition-opacity ${!extension.enabled ? 'opacity-30' : ''}`}
           >
             {extension.name}
           </h3>
           <p
-            className={`text-2xs select-none text-zinc-500 dark:text-zinc-400 transition-opacity ${!extension.enabled ? 'opacity-30' : ''}`}
+            className={`text-3xs select-none text-zinc-500 dark:text-zinc-400 transition-opacity ${!extension.enabled ? 'opacity-50' : ''}`}
           >
             {extension.version}
           </p>
@@ -110,12 +110,12 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
             onChange={checked => onToggle(extension.id, checked)}
             className={`${
               extension.enabled ? 'bg-green-500' : 'bg-zinc-300 dark:bg-zinc-600'
-            } relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none`}
+            } relative inline-flex h-4 w-7 items-center rounded-full transition-colors focus:outline-none`}
           >
             <span
               className={`${
-                extension.enabled ? 'translate-x-5' : 'translate-x-1'
-              } inline-block h-3 w-3 transform rounded-full bg-white transition-transform`}
+                extension.enabled ? 'translate-x-4' : 'translate-x-0.5'
+              } inline-block h-2.5 w-2.5 transform rounded-full bg-white transition-transform`}
             />
           </Switch>
           <div className="relative">

@@ -21,9 +21,9 @@ export const ExtensionHeader = ({
     <div className="flex items-center justify-between p-1">
       <div className="flex items-center gap-2">
         <h3 className="text-xs font-semibold text-zinc-900 dark:text-zinc-100">{tag.name}</h3>
-        <span className="text-xs text-zinc-500 dark:text-zinc-400">
+        {/* <span className="text-xs text-zinc-500 dark:text-zinc-400">
           {enabledCount}/{extensionCount} Enabled
-        </span>
+        </span> */}
       </div>
       <div className="flex items-center gap-2">
         {/* <div className="flex">
