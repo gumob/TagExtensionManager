@@ -134,6 +134,13 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
   };
 
   /**
+   * Handle controls click to prevent event propagation.
+   */
+  const handleControlsClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
+  /**
    * Render the extension card.
    * @returns
    */
@@ -172,6 +179,7 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
           className="flex items-center space-x-2"
           onMouseEnter={handleControlsMouseEnter}
           onMouseLeave={handleControlsMouseLeave}
+          onClick={handleControlsClick}
         >
           <Switch
             checked={extension.enabled}
