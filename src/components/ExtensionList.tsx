@@ -130,7 +130,7 @@ export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionL
             }}
             extensions={tagExtensions}
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+          <div className="grid grid-cols-2 gap-2">
             {tagExtensions
               .sort((a, b) => a.name.localeCompare(b.name))
               .map(extension => (
@@ -159,7 +159,7 @@ export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionL
               }}
               extensions={untaggedExtensions}
             />
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 gap-2">
               {untaggedExtensions
                 .sort((a, b) => a.name.localeCompare(b.name))
                 .map(extension => (

@@ -23,7 +23,7 @@
 body {
   color: var(--foreground-color);
   background: var(--background-color);
-  min-width: 480px;
+  min-width: 600px;
   min-height: 600px;
 }
 
