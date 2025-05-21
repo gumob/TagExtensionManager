@@ -78,14 +78,14 @@ export function TagSelector({
                         selectedTagIds.includes(tag.id)
                           ? 'bg-zinc-200 dark:bg-zinc-600 text-zinc-900 dark:text-zinc-100'
                           : 'bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-600'
-                      } flex items-center gap-2`}
+                      } flex items-center gap-1`}
                     >
                       {selectedTagIds.includes(tag.id) ? (
                         <TagSolidIcon className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
                       ) : (
                         <TagIcon className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
                       )}
-                      <span>{tag.name}</span>
+                      <span className="mr-2">{tag.name}</span>
                     </button>
                   ))}
                 </div>

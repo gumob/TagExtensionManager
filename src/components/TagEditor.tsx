@@ -108,6 +108,12 @@ export const TagEditor = ({ isOpen, onClose }: TagEditorProps) => {
                             type="text"
                             value={newTagName}
                             onChange={e => setNewTagName(e.target.value)}
+                            onKeyDown={e => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                handleAddTag();
+                              }
+                            }}
                             placeholder="Enter new tag name"
                             className="w-full h-10 pl-10 pr-3 py-1.5 rounded-full bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-zinc-200 dark:focus:ring-zinc-500"
                           />
