@@ -2,8 +2,9 @@ import { Tag } from '@/types/tag';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { TagIcon } from '@heroicons/react/24/outline';
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { TagIcon as TagSolidIcon } from '@heroicons/react/24/solid';
-import { Fragment } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 
 interface TagSelectorProps {
   isOpen: boolean;
@@ -20,12 +21,27 @@ export function TagSelector({
   onClose,
   onSelectTags,
 }: TagSelectorProps) {
+  const [searchQuery, setSearchQuery] = useState('');
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => {
+        searchInputRef.current?.focus();
+      }, 100);
+    }
+  }, [isOpen]);
+
   const handleTagClick = (tagId: string) => {
     const newSelectedTagIds = selectedTagIds.includes(tagId)
       ? selectedTagIds.filter(id => id !== tagId)
       : [...selectedTagIds, tagId];
     onSelectTags(newSelectedTagIds);
   };
+
+  const filteredTags = tags.filter(tag =>
+    tag.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -69,8 +85,24 @@ export function TagSelector({
                   </button>
                 </div>
 
+                <div className="mb-4">
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <MagnifyingGlassIcon className="h-5 w-5 text-zinc-400" aria-hidden="true" />
+                    </div>
+                    <input
+                      ref={searchInputRef}
+                      type="text"
+                      placeholder="Search tags..."
+                      value={searchQuery}
+                      onChange={e => setSearchQuery(e.target.value)}
+                      className="w-full h-10 pl-10 pr-4 rounded-full bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-zinc-200 dark:focus:ring-zinc-500"
+                    />
+                  </div>
+                </div>
+
                 <div className="flex flex-wrap gap-2">
-                  {tags.map(tag => (
+                  {filteredTags.map(tag => (
                     <button
                       key={tag.id}
                       onClick={() => handleTagClick(tag.id)}
