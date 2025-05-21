@@ -39,11 +39,11 @@ export const useExtensions = () => {
     try {
       setIsLoading(true);
       const updatedExtensions = await getAllExtensions();
-      console.debug('Refreshing extensions state:', updatedExtensions);
+      console.debug('[SEM][useExtensions] Refreshing extensions state:', updatedExtensions);
       setExtensions(updatedExtensions);
       return updatedExtensions;
     } catch (error) {
-      console.error('Failed to refresh extensions:', error);
+      console.error('[SEM][useExtensions] Failed to refresh extensions:', error);
       throw error;
     } finally {
       setIsLoading(false);
@@ -70,7 +70,7 @@ export const useExtensions = () => {
     /** Watch for extension updates */
     const handleExtensionUpdate = (details: chrome.runtime.InstalledDetails) => {
       if (details.reason === 'update') {
-        console.debug('[SEM] Extension updated:', details);
+        console.debug('[SEM][useExtensions] Extension updated:', details);
         setIsManualRefresh(true);
         refreshExtensions();
       }
