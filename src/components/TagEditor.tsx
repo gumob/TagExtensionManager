@@ -129,7 +129,7 @@ export const TagEditor = ({ isOpen, onClose }: TagEditorProps) => {
                   </div>
 
                   {/* Scrollable tag list */}
-                  <div className="flex-1 overflow-y-auto px-4 pt-0 pb-4">
+                  <div className="flex-1 overflow-y-auto overflow-x-hidden px-4 pt-0 pb-4">
                     <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
                       <Droppable droppableId="tags">
                         {provided => (
@@ -155,7 +155,7 @@ export const TagEditor = ({ isOpen, onClose }: TagEditorProps) => {
                                         <div className="flex items-center gap-1 px-2 py-1.5 rounded-full text-xs font-semibold bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100">
                                           <div
                                             {...provided.dragHandleProps}
-                                            className="cursor-grab"
+                                            className="cursor-grab active:cursor-grabbing"
                                           >
                                             <TagIcon className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
                                           </div>
