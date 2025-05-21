@@ -62,14 +62,12 @@ export const ExtensionManager: React.FC = () => {
             <h1 className="text-lg font-bold text-zinc-900 dark:text-white">
               Clean Extension Manager
             </h1>
-            <div className="">
-              <ProfileManager />
-            </div>
+            <ProfileManager />
           </div>
 
-          {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-3">
+          <div className="mb-3">
             <Metrics extensions={extensions} />
-          </div> */}
+          </div>
 
           <div className="mb-3">
             <TagList extensions={filteredExtensions} />

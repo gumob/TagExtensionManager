@@ -83,14 +83,14 @@ export const ProfileManager = () => {
     <div className="flex items-center gap-1">
       <button
         onClick={handleExportProfile}
-        className="p-1 rounded-lg bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors"
+        className="p-1 rounded-full bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors"
         title="Export Profile"
       >
         <ArrowDownTrayIcon className="w-3 h-3" />
       </button>
       <button
         onClick={() => fileInputRef.current?.click()}
-        className="p-1 rounded-lg bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors"
+        className="p-1 rounded-full bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors"
         title="Import Profile"
       >
         <ArrowUpTrayIcon className="w-3 h-3" />

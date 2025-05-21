@@ -115,7 +115,7 @@ export const TagEditor = ({ isOpen, onClose }: TagEditorProps) => {
                         </div>
                         <button
                           onClick={handleAddTag}
-                          className="px-4 py-1.5 bg-zinc-600 dark:bg-zinc-500 text-white rounded-xl hover:bg-zinc-700 dark:hover:bg-zinc-400"
+                          className="px-4 py-1.5 bg-zinc-600 dark:bg-zinc-500 text-white rounded-full hover:bg-zinc-700 dark:hover:bg-zinc-400"
                         >
                           Add
                         </button>
