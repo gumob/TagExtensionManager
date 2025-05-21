@@ -1,6 +1,6 @@
 import { TagChip } from '@/components/TagChip';
-import { TagEditButton } from '@/components/TagEditButton';
-import { TagShowAllButton } from '@/components/TagShowAllButton';
+import { TagEditChip } from '@/components/TagEditChip';
+import { TagMetricsChip } from '@/components/TagMetricsChip';
 import { useTagStore } from '@/stores/tagStore';
 import { Extension } from '@/types/extension';
 
@@ -14,7 +14,8 @@ export const TagList = ({ extensions }: { extensions: Extension[] }) => {
 
   return (
     <div className="flex flex-wrap gap-1">
-      <TagShowAllButton />
+      <TagMetricsChip />
+      <TagEditChip />
       {tags.map(tag => (
         <TagChip key={tag.id} tag={tag} />
       ))}
@@ -30,7 +31,6 @@ export const TagList = ({ extensions }: { extensions: Extension[] }) => {
           extensionCount={untaggedExtensions.length}
         />
       )}
-      <TagEditButton />
     </div>
   );
 };
