@@ -3,12 +3,16 @@ import { Tag } from '../types/tag';
 
 interface TagChipProps {
   tag: Tag;
+  extensionCount?: number;
 }
 
-export function TagChip({ tag }: TagChipProps) {
+export function TagChip({ tag, extensionCount }: TagChipProps) {
   const { tags, extensionTags, setVisibleTag, visibleTagId } = useTagStore();
 
-  const extensionCount = extensionTags.filter(extTag => extTag.tagIds.includes(tag.id)).length;
+  const count =
+    tag.id === 'untagged'
+      ? (extensionCount ?? 0)
+      : extensionTags.filter(extTag => extTag.tagIds.includes(tag.id)).length;
   const isSelected = visibleTagId === tag.id;
 
   return (
@@ -23,9 +27,7 @@ export function TagChip({ tag }: TagChipProps) {
       }`}
     >
       {tag.name}
-      {extensionCount > 0 && (
-        <span className="ml-1 text-2xs text-zinc-500 dark:text-zinc-400">{extensionCount}</span>
-      )}
+      <span className="ml-1 text-2xs text-zinc-500 dark:text-zinc-400">{count}</span>
     </button>
   );
 }

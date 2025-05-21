@@ -132,7 +132,7 @@ export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionL
       })}
 
       {/* タグなしの拡張 */}
-      {visibleTagId === null && untaggedExtensions.length > 0 && (
+      {(visibleTagId === null || visibleTagId === 'untagged') && untaggedExtensions.length > 0 && (
         <div className="space-y-2">
           <ExtensionHeader
             tag={{ id: 'untagged', name: 'Untagged', order: -1, createdAt: '', updatedAt: '' }}

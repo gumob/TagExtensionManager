@@ -72,7 +72,7 @@ export const ExtensionManager: React.FC = () => {
           </div>
 
           <div className="mb-3">
-            <TagList />
+            <TagList extensions={filteredExtensions} />
           </div>
 
           <div className="mb-3">
