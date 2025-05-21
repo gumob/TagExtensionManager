@@ -4,7 +4,7 @@ import { useExtensions } from '@/hooks/useExtensions';
 import { useTagStore } from '@/stores/tagStore';
 import { logger } from '@/utils/logger';
 import { Switch } from '@headlessui/react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 /**
  * Extension type.
@@ -34,9 +34,27 @@ interface ExtensionCardProps {
  */
 export function ExtensionCard({ extension, onToggle, onSettingsClick }: ExtensionCardProps) {
   const [isTagDialogOpen, setIsTagDialogOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [hasOptionsPage, setHasOptionsPage] = useState(false);
   const { tags, extensionTags, addTagToExtension, removeTagFromExtension } = useTagStore();
   const { refreshExtensions } = useExtensions();
   const buttonRef = useRef<HTMLButtonElement>(null);
+
+  // Check if extension has options page on mount
+  useEffect(() => {
+    const checkOptionsPage = async () => {
+      try {
+        const extensionInfo = await chrome.management.get(extension.id);
+        setHasOptionsPage(!!extensionInfo.optionsUrl);
+      } catch (error) {
+        logger.error('Failed to get extension info', {
+          group: 'ExtensionCard',
+          persist: true,
+        });
+      }
+    };
+    checkOptionsPage();
+  }, [extension.id]);
 
   /**
    * Current tag ids.
@@ -81,11 +99,57 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
   };
 
   /**
+   * Handle card click to open the extension.
+   */
+  const handleCardClick = async () => {
+    if (!extension.enabled || !hasOptionsPage) return;
+
+    try {
+      const extensionInfo = await chrome.management.get(extension.id);
+      if (extensionInfo.optionsUrl) {
+        await chrome.tabs.create({ url: extensionInfo.optionsUrl, active: true });
+      }
+    } catch (error) {
+      logger.error('Failed to launch extension', {
+        group: 'ExtensionCard',
+        persist: true,
+      });
+    }
+  };
+
+  /**
+   * Handle mouse enter on controls.
+   */
+  const handleControlsMouseEnter = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsHovered(false);
+  };
+
+  /**
+   * Handle mouse leave on controls.
+   */
+  const handleControlsMouseLeave = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsHovered(true);
+  };
+
+  /**
    * Render the extension card.
    * @returns
    */
   return (
-    <div className="bg-white dark:bg-zinc-700 rounded-xl px-3 py-2">
+    <div
+      className={`rounded-xl px-3 py-2 ${
+        extension.enabled && hasOptionsPage ? 'cursor-pointer' : ''
+      } ${
+        isHovered && extension.enabled && hasOptionsPage
+          ? 'bg-zinc-50 dark:bg-zinc-600'
+          : 'bg-white dark:bg-zinc-700'
+      } transition-colors`}
+      onClick={handleCardClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <div className="flex items-center gap-2">
         <img
           src={extension.iconUrl}
@@ -104,7 +168,11 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
             {extension.version}
           </p>
         </div>
-        <div className="flex items-center space-x-2">
+        <div
+          className="flex items-center space-x-2"
+          onMouseEnter={handleControlsMouseEnter}
+          onMouseLeave={handleControlsMouseLeave}
+        >
           <Switch
             checked={extension.enabled}
             onChange={checked => onToggle(extension.id, checked)}
