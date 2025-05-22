@@ -1,6 +1,6 @@
 import { ExtensionManager } from '@/components/ExtensionManager';
-import { logger } from '@/utils/logger';
-import { setupColorSchemeListener } from '@/utils/themeUtils';
+import { logger } from '@/utils/Logger';
+import { setupColorSchemeListener } from '@/utils/ThemeUtils';
 import React, { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 

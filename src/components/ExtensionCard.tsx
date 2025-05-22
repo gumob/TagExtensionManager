@@ -2,7 +2,7 @@ import { ExtensionCardMenu } from '@/components/ExtensionCardMenu';
 import { TagSelector } from '@/components/TagSelector';
 import { useExtensions } from '@/hooks/useExtensions';
 import { useTagStore } from '@/stores/tagStore';
-import { logger } from '@/utils/logger';
+import { logger } from '@/utils/Logger';
 import { Switch } from '@headlessui/react';
 import { LockClosedIcon } from '@heroicons/react/24/outline';
 import { useEffect, useRef, useState } from 'react';

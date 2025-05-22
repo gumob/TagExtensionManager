@@ -1,5 +1,5 @@
 import { useTagStore } from '@/stores/tagStore';
-import { logger } from '@/utils/logger';
+import { logger } from '@/utils/Logger';
 import { Dialog, Transition } from '@headlessui/react';
 import { EllipsisVerticalIcon, TagIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import React, { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';

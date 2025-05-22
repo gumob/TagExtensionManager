@@ -1,7 +1,7 @@
 import { useExtensions } from '@/hooks/useExtensions';
 import { useExtensionStore } from '@/stores/extensionStore';
 import { useTagStore } from '@/stores/tagStore';
-import { logger } from '@/utils/logger';
+import { logger } from '@/utils/Logger';
 import { ArrowDownTrayIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline';
 import { useRef } from 'react';
 

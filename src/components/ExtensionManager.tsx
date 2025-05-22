@@ -3,7 +3,7 @@ import { ProfileManager } from '@/components/ProfileManager';
 import { SearchBar } from '@/components/SearchBar';
 import { TagList } from '@/components/TagList';
 import { useExtensions } from '@/hooks/useExtensions';
-import { logger } from '@/utils/logger';
+import { logger } from '@/utils/Logger';
 import React, { useCallback } from 'react';
 
 /**

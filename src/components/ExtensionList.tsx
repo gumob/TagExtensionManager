@@ -3,7 +3,7 @@ import { ExtensionHeader } from '@/components/ExtensionHeader';
 import { useExtensionStore } from '@/stores/extensionStore';
 import { useTagStore } from '@/stores/tagStore';
 import { Extension } from '@/types/extension';
-import { logger } from '@/utils/logger';
+import { logger } from '@/utils/Logger';
 import React, { useEffect, useState } from 'react';
 
 /**

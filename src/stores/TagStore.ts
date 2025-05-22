@@ -1,5 +1,5 @@
 import { ExtensionTag, Tag, TagState, TagStore } from '@/types/tag';
-import { logger } from '@/utils/logger';
+import { logger } from '@/utils/Logger';
 import { v4 as uuidv4 } from 'uuid';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';

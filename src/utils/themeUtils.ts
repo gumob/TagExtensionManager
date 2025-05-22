@@ -1,4 +1,4 @@
-import { logger } from '@/utils/logger';
+import { logger } from '@/utils/Logger';
 import React from 'react';
 
 /**

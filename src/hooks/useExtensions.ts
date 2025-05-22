@@ -1,28 +1,8 @@
 import { useExtensionStore } from '@/stores/extensionStore';
 import { Extension } from '@/types/extension';
-import { getAllExtensions } from '@/utils/extensionUtils';
-import { logger } from '@/utils/logger';
+import { getAllExtensions } from '@/utils/ExtensionUtils';
+import { logger } from '@/utils/Logger';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-
-/**
- * Find the optimal icon from the given icons.
- * @param icons
- * @returns
- */
-const findOptimalIcon = (icons: chrome.management.IconInfo[] | undefined): string => {
-  if (!icons || icons.length === 0) return '';
-
-  /** Search for the optimal icon */
-  let targetSize = 48;
-  while (targetSize > 0) {
-    const icon = icons.find(icon => icon.size === targetSize);
-    if (icon) return icon.url;
-    targetSize -= 2;
-  }
-
-  /** If no appropriate size is found, use the first icon */
-  return icons[0].url;
-};
 
 /**
  * The hook for managing extensions.

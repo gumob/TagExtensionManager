@@ -1,20 +1,6 @@
+import { Extension } from '@/types/extension';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-
-/**
- * The extension type.
- *
- * @property id - The id of the extension.
- * @property name - The name of the extension.
- * @property enabled - Whether the extension is enabled.
- * @property locked - Whether the extension is locked.
- */
-export interface Extension {
-  id: string;
-  name: string;
-  enabled: boolean;
-  locked: boolean;
-}
 
 /**
  * The extension store type.
