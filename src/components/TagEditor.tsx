@@ -29,9 +29,18 @@ interface TagItemProps {
   isEditing: boolean;
   onEdit: (id: string, name: string) => void;
   onDelete: (id: string) => void;
+  onTagClick: (id: string) => void;
 }
 
-const TagItem = ({ tag, index, moveTag, isEditing, onEdit, onDelete }: TagItemProps) => {
+const TagItem = ({
+  tag,
+  index,
+  moveTag,
+  isEditing,
+  onEdit,
+  onDelete,
+  onTagClick,
+}: TagItemProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [{ isDragging }, drag] = useDrag({
     type: 'TAG',
@@ -101,13 +110,19 @@ const TagItem = ({ tag, index, moveTag, isEditing, onEdit, onDelete }: TagItemPr
                   value={tag.name}
                   onChange={e => onEdit(tag.id, e.target.value)}
                   onBlur={() => onEdit(tag.id, tag.name)}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      onEdit(tag.id, tag.name);
+                    }
+                  }}
                   size={Math.max(tag.name.length, 1)}
                   autoFocus
                   className="px-1 py-0.5 rounded-sm bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 focus:bg-zinc-100 dark:focus:bg-zinc-600 focus:outline-none"
                 />
               ) : (
                 <button
-                  onClick={() => onEdit(tag.id, tag.name)}
+                  onClick={() => onTagClick(tag.id)}
                   className="select-none px-1 py-0.5 text-zinc-900 dark:text-zinc-100"
                 >
                   {tag.name}
@@ -153,6 +168,7 @@ export const TagEditor = ({ isOpen, onClose }: TagEditorProps) => {
 
   const handleTagNameChange = (tagId: string, newName: string) => {
     updateTag(tagId, newName);
+    setEditingTagId(null);
   };
 
   const handleTagNameBlur = () => {
@@ -252,6 +268,7 @@ export const TagEditor = ({ isOpen, onClose }: TagEditorProps) => {
                               isEditing={editingTagId === tag.id}
                               onEdit={handleTagNameChange}
                               onDelete={handleDeleteClick}
+                              onTagClick={handleTagClick}
                             />
                           ))}
                       </div>
