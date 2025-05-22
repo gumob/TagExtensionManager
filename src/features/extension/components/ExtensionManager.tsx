@@ -3,8 +3,8 @@ import React, { useCallback } from 'react';
 import { ExtensionList, SearchBar } from '@/features/extension/components';
 import { ProfileManager } from '@/features/profile/components';
 import { TagList } from '@/features/tag/components';
-import { useExtensions } from '@/hooks';
-import { logger } from '@/utils';
+import { useExtensions } from '@/shared/hooks';
+import { logger } from '@/shared/utils';
 
 /**
  * The component for managing extensions.

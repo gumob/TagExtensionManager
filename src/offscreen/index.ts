@@ -1,5 +1,5 @@
-import { logger } from '@/utils/Logger';
-import { detectThemeOnOffscreen } from '@/utils/ThemeUtils';
+import { logger } from '@/shared/utils/Logger';
+import { detectThemeOnOffscreen } from '@/shared/utils/ThemeUtils';
 
 logger.debug('Starting offscreen document', {
   group: 'offscreen',

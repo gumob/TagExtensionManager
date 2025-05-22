@@ -3,7 +3,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 
 import App from '@/popup/App';
-import '@/styles/globals.css';
+import '@/shared/styles/globals.css';
 
 /**
  * The container element.

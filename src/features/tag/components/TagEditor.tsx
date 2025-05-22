@@ -7,8 +7,8 @@ import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { FixedSizeList } from 'react-window';
 
-import { useTagStore } from '@/stores/TagStore';
-import { logger } from '@/utils/Logger';
+import { useTagStore } from '@/shared/stores/TagStore';
+import { logger } from '@/shared/utils/Logger';
 
 /**
  * The props for the TagEditor component.

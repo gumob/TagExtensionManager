@@ -5,10 +5,10 @@ import { useEffect, useRef, useState } from 'react';
 
 import { ExtensionCardMenu } from '@/features/extension/components';
 import { TagSelector } from '@/features/tag/components';
-import { useExtensions } from '@/hooks';
-import { useTagStore } from '@/stores';
-import { Extension } from '@/types';
-import { logger } from '@/utils';
+import { useExtensions } from '@/shared/hooks';
+import { useTagStore } from '@/shared/stores';
+import { Extension } from '@/shared/types';
+import { logger } from '@/shared/utils';
 
 /**
  * Extension card props.

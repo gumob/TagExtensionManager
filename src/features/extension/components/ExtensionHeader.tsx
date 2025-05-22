@@ -1,4 +1,4 @@
-import { Extension, Tag } from '@/types';
+import { Extension, Tag } from '@/shared/types';
 
 /**
  * The props for the ExtensionHeader component.

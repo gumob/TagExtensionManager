@@ -2,8 +2,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { ExtensionTag, Tag, TagState, TagStore } from '@/types';
-import { logger } from '@/utils';
+import { ExtensionTag, Tag, TagState, TagStore } from '@/shared/types';
+import { logger } from '@/shared/utils';
 
 /**
  * Cache for storing loaded data.

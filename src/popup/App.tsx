@@ -3,8 +3,8 @@ import React, { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 
 import { ExtensionManager } from '@/features/extension/components/ExtensionManager';
-import { logger } from '@/utils/Logger';
-import { setupColorSchemeListener } from '@/utils/ThemeUtils';
+import { logger } from '@/shared/utils/Logger';
+import { setupColorSchemeListener } from '@/shared/utils/ThemeUtils';
 
 /**
  * The main component for the extension manager.

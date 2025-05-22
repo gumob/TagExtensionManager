@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 
 import { ExtensionCard } from '@/features/extension/components/ExtensionCard';
 import { ExtensionHeader } from '@/features/extension/components/ExtensionHeader';
-import { useTagStore } from '@/stores';
-import { useExtensionStore } from '@/stores';
-import { Extension } from '@/types';
-import { logger } from '@/utils';
+import { useTagStore } from '@/shared/stores';
+import { useExtensionStore } from '@/shared/stores';
+import { Extension } from '@/shared/types';
+import { logger } from '@/shared/utils';
 
 /**
  * The component for displaying a list of extensions.

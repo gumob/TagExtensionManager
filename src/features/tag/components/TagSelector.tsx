@@ -6,7 +6,7 @@ import { TagIcon as TagSolidIcon } from '@heroicons/react/24/solid';
 
 import { Fragment, useEffect, useRef, useState } from 'react';
 
-import { Tag } from '@/types/Tag';
+import { Tag } from '@/shared/types/Tag';
 
 /**
  * The props for the TagSelector component.
