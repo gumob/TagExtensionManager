@@ -32,7 +32,7 @@ interface TagItemProps {
 }
 
 const TagItem = ({ tag, index, moveTag, isEditing, onEdit, onDelete }: TagItemProps) => {
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
   const [{ isDragging }, drag] = useDrag({
     type: 'TAG',
     item: { id: tag.id, index },
@@ -54,6 +54,25 @@ const TagItem = ({ tag, index, moveTag, isEditing, onEdit, onDelete }: TagItemPr
         return;
       }
 
+      const hoverBoundingRect = ref.current.getBoundingClientRect();
+      const hoverMiddleX = (hoverBoundingRect.right - hoverBoundingRect.left) / 2;
+      const clientOffset = monitor.getClientOffset();
+
+      if (!clientOffset) {
+        return;
+      }
+
+      const hoverClientX = clientOffset.x - hoverBoundingRect.left;
+
+      // 左から右へのドラッグ
+      if (dragIndex < hoverIndex && hoverClientX < hoverMiddleX) {
+        return;
+      }
+      // 右から左へのドラッグ
+      if (dragIndex > hoverIndex && hoverClientX > hoverMiddleX) {
+        return;
+      }
+
       moveTag(dragIndex, hoverIndex);
       item.index = hoverIndex;
     },
@@ -67,6 +86,7 @@ const TagItem = ({ tag, index, moveTag, isEditing, onEdit, onDelete }: TagItemPr
       className={`relative group transition-all duration-200 ${
         isDragging ? 'opacity-50 scale-95' : ''
       }`}
+      style={{ width: 'fit-content' }}
     >
       <div className="flex items-center gap-1">
         <div className="flex items-center gap-1 px-2 py-1.5 rounded-full text-xs font-semibold bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 shadow-sm">
@@ -220,7 +240,7 @@ export const TagEditor = ({ isOpen, onClose }: TagEditorProps) => {
                     </div>
 
                     <div className="flex-1 overflow-y-auto overflow-x-hidden px-4 pt-0 pb-4">
-                      <div ref={tagListRef} className="flex flex-col gap-2">
+                      <div ref={tagListRef} className="flex flex-wrap gap-2">
                         {tags
                           .sort((a, b) => a.order - b.order)
                           .map((tag, index) => (
