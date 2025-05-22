@@ -1,10 +1,12 @@
-import { Tag } from '@/types/tag';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { TagIcon } from '@heroicons/react/24/outline';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { TagIcon as TagSolidIcon } from '@heroicons/react/24/solid';
-import React, { Fragment, useEffect, useRef, useState } from 'react';
+
+import { Fragment, useEffect, useRef, useState } from 'react';
+
+import { Tag } from '@/types/Tag';
 
 /**
  * The props for the TagSelector component.

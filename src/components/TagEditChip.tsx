@@ -1,6 +1,8 @@
-import { TagEditor } from '@/components/TagEditor';
 import { PencilIcon } from 'lucide-react';
+
 import { useState } from 'react';
+
+import { TagEditor } from '@/components/TagEditor';
 
 /**
  * The TagEditChip component.

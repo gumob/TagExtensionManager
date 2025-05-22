@@ -1,6 +1,7 @@
-import { useTagStore } from '@/stores/tagStore';
-import { Tag } from '@/types/tag';
 import { TagIcon } from 'lucide-react';
+
+import { useTagStore } from '@/stores/TagStore';
+import { Tag } from '@/types/Tag';
 
 /**
  * The props for the TagChip component.

@@ -1,7 +1,9 @@
-import { useTagStore } from '@/stores/tagStore';
-import { Extension } from '@/types/extension';
 import { TagsIcon, ToggleLeftIcon, ToggleRightIcon } from 'lucide-react';
+
 import { FC, useEffect, useState } from 'react';
+
+import { useTagStore } from '@/stores/TagStore';
+import { Extension } from '@/types/Extension';
 
 /**
  * The props for the TagMetricsChip component.

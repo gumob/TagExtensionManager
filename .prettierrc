@@ -7,7 +7,15 @@
   "bracketSpacing": true,
   "arrowParens": "avoid",
   "plugins": ["@trivago/prettier-plugin-sort-imports"],
-  "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
+  "importOrder": [
+    "^react$",
+    "^react-(.*)$",
+    "^@core/(.*)$",
+    "^@server/(.*)$",
+    "^@ui/(.*)$",
+    "^[./]",
+    "^@/(.*)$"
+  ],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true
 }

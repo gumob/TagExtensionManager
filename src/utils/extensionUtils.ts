@@ -1,5 +1,5 @@
-import { useExtensionStore } from '@/stores/extensionStore';
-import { Extension } from '@/types/extension';
+import { useExtensionStore } from '@/stores/ExtensionStore';
+import { Extension } from '@/types/Extension';
 
 /**
  * Find the optimal icon from the given icons.

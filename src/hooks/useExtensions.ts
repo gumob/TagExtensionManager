@@ -1,8 +1,9 @@
-import { useExtensionStore } from '@/stores/extensionStore';
-import { Extension } from '@/types/extension';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+
+import { useExtensionStore } from '@/stores/ExtensionStore';
+import { Extension } from '@/types/Extension';
 import { getAllExtensions } from '@/utils/ExtensionUtils';
 import { logger } from '@/utils/Logger';
-import { useCallback, useEffect, useMemo, useState } from 'react';
 
 /**
  * The hook for managing extensions.

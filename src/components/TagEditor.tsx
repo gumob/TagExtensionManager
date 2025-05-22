@@ -1,11 +1,14 @@
-import { useTagStore } from '@/stores/tagStore';
-import { logger } from '@/utils/Logger';
 import { Dialog, Transition } from '@headlessui/react';
 import { EllipsisVerticalIcon, TagIcon, XMarkIcon } from '@heroicons/react/24/outline';
+
 import React, { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { FixedSizeList } from 'react-window';
+
+import { useTagStore } from '@/stores/TagStore';
+import { logger } from '@/utils/Logger';
 
 /**
  * The props for the TagEditor component.

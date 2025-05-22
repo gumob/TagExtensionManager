@@ -1,6 +1,7 @@
-import { Extension } from '@/types/extension';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+
+import { Extension } from '@/types/Extension';
 
 /**
  * The extension store type.
