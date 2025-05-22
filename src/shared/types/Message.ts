@@ -14,10 +14,10 @@ export type MessageType =
  * @property type - The type of the message.
  * @property payload - The payload of the message.
  */
-export interface Message<T = any> {
+export type Message<T = any> = {
   type: MessageType;
   payload?: T;
-}
+};
 
 /**
  * The message response interface for Chrome extension messaging.
@@ -26,8 +26,8 @@ export interface Message<T = any> {
  * @property data - The response data.
  * @property error - The error message if the message processing failed.
  */
-export interface MessageResponse<T = any> {
+export type MessageResponse<T = any> = {
   success: boolean;
   data?: T;
   error?: string;
-}
+};
