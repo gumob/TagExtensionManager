@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { Extension } from '@/shared/models';
 import { useExtensionStore } from '@/shared/stores';
-import { Extension } from '@/shared/types';
 import { getAllExtensions, logger } from '@/shared/utils';
 
 /**

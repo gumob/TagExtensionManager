@@ -1,5 +1,5 @@
+import { Extension } from '@/shared/models';
 import { useExtensionStore } from '@/shared/stores';
-import { Extension } from '@/shared/types';
 
 /**
  * Find the optimal icon from the given icons.

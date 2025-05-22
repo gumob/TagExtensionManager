@@ -6,8 +6,8 @@ import { useEffect, useRef, useState } from 'react';
 import { ExtensionCardMenu } from '@/features/extension/components';
 import { TagSelector } from '@/features/tag/components';
 import { useExtensions } from '@/shared/hooks';
+import { Extension } from '@/shared/models';
 import { useTagStore } from '@/shared/stores';
-import { Extension } from '@/shared/types';
 import { logger } from '@/shared/utils';
 
 /**

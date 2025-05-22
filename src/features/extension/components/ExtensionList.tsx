@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 
 import { ExtensionCard } from '@/features/extension/components/ExtensionCard';
 import { ExtensionHeader } from '@/features/extension/components/ExtensionHeader';
+import { Extension } from '@/shared/models';
 import { useTagStore } from '@/shared/stores';
 import { useExtensionStore } from '@/shared/stores';
-import { Extension } from '@/shared/types';
 import { logger } from '@/shared/utils';
 
 /**
