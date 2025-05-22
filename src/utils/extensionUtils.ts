@@ -1,26 +1,41 @@
+import { useExtensionStore } from '@/stores/extensionStore';
 import { Extension } from '@/types/extension';
 
-export const findOptimalIcon = (icons: chrome.management.IconInfo[] | undefined): string => {
+/**
+ * Find the optimal icon from the given icons.
+ * @param icons
+ * @returns
+ */
+const findOptimalIcon = (icons: chrome.management.IconInfo[] | undefined): string => {
   if (!icons || icons.length === 0) return '';
 
-  const preferredSizes = [48, 128, 36, 32, 24, 16];
-
-  for (const size of preferredSizes) {
-    const icon = icons.find(icon => icon.size === size);
+  /** Search for the optimal icon */
+  let targetSize = 48;
+  while (targetSize > 0) {
+    const icon = icons.find(icon => icon.size === targetSize);
     if (icon) return icon.url;
+    targetSize -= 2;
   }
 
+  /** If no appropriate size is found, use the first icon */
   return icons[0].url;
 };
 
-export const formatExtension = (ext: chrome.management.ExtensionInfo): Extension => ({
-  id: ext.id,
-  name: ext.name,
-  version: ext.version || '',
-  enabled: ext.enabled,
-  description: ext.description || '',
-  iconUrl: findOptimalIcon(ext.icons),
-});
+export const formatExtension = (ext: chrome.management.ExtensionInfo): Extension => {
+  const { extensions } = useExtensionStore.getState();
+  const storedExtension = extensions.find(e => e.id === ext.id);
+  const isLocked = storedExtension?.locked ?? false;
+
+  return {
+    id: ext.id,
+    name: ext.name,
+    version: ext.version || '',
+    enabled: ext.enabled,
+    description: ext.description || '',
+    iconUrl: findOptimalIcon(ext.icons),
+    locked: isLocked,
+  };
+};
 
 export const getAllExtensions = (): Promise<Extension[]> => {
   return new Promise(resolve => {

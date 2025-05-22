@@ -4,6 +4,7 @@ import { useExtensions } from '@/hooks/useExtensions';
 import { useTagStore } from '@/stores/tagStore';
 import { logger } from '@/utils/logger';
 import { Switch } from '@headlessui/react';
+import { LockClosedIcon } from '@heroicons/react/24/outline';
 import { useEffect, useRef, useState } from 'react';
 
 /**
@@ -16,6 +17,7 @@ interface Extension {
   enabled: boolean;
   description: string;
   iconUrl: string;
+  locked: boolean;
 }
 
 /**
@@ -25,6 +27,7 @@ interface ExtensionCardProps {
   extension: Extension;
   onToggle: (id: string, enabled: boolean) => void;
   onSettingsClick: (id: string) => void;
+  onLockToggle: (id: string, locked: boolean) => void;
 }
 
 /**
@@ -32,7 +35,12 @@ interface ExtensionCardProps {
  * @param props
  * @returns
  */
-export function ExtensionCard({ extension, onToggle, onSettingsClick }: ExtensionCardProps) {
+export function ExtensionCard({
+  extension,
+  onToggle,
+  onSettingsClick,
+  onLockToggle,
+}: ExtensionCardProps) {
   const [isTagDialogOpen, setIsTagDialogOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [hasOptionsPage, setHasOptionsPage] = useState(false);
@@ -181,12 +189,18 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
           onMouseLeave={handleControlsMouseLeave}
           onClick={handleControlsClick}
         >
+          {extension.locked && (
+            <LockClosedIcon className="w-3 h-3 text-zinc-500 dark:text-zinc-400" />
+          )}
           <Switch
             checked={extension.enabled}
             onChange={checked => onToggle(extension.id, checked)}
+            disabled={extension.locked}
             className={`${
               extension.enabled ? 'bg-green-500' : 'bg-zinc-300 dark:bg-zinc-600'
-            } relative inline-flex h-4 w-7 items-center rounded-full transition-colors focus:outline-none`}
+            } relative inline-flex h-4 w-7 items-center rounded-full transition-colors focus:outline-none ${
+              extension.locked ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
           >
             <span
               className={`${
@@ -200,7 +214,9 @@ export function ExtensionCard({ extension, onToggle, onSettingsClick }: Extensio
               onManageTags={() => setIsTagDialogOpen(true)}
               onManageExtension={() => onSettingsClick(extension.id)}
               onUninstall={handleUninstall}
+              onLockToggle={() => onLockToggle(extension.id, !extension.locked)}
               extensionName={extension.name}
+              isLocked={extension.locked}
             />
           </div>
         </div>

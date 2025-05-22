@@ -1,5 +1,6 @@
 import { ExtensionCard } from '@/components/ExtensionCard';
 import { ExtensionHeader } from '@/components/ExtensionHeader';
+import { useExtensionStore } from '@/stores/extensionStore';
 import { useTagStore } from '@/stores/tagStore';
 import { Extension } from '@/types/extension';
 import { logger } from '@/utils/logger';
@@ -25,6 +26,7 @@ interface ExtensionListProps {
 export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionListProps) {
   const [localExtensions, setLocalExtensions] = useState<Extension[]>(extensions);
   const { tags, extensionTags, visibleTagId } = useTagStore();
+  const { toggleLock } = useExtensionStore();
 
   /**
    * Use effect for updating the local extensions.
@@ -49,6 +51,30 @@ export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionL
       onExtensionStateChange(id, enabled);
     } catch (error) {
       logger.error('Failed to toggle extension', {
+        group: 'ExtensionList',
+        persist: true,
+      });
+      /** If an error occurs, revert to the original state */
+      setLocalExtensions(extensions);
+    }
+  };
+
+  /**
+   * Handle the lock toggle event.
+   * @param id
+   * @param locked
+   */
+  const handleLockToggle = (id: string, locked: boolean) => {
+    try {
+      /** Update the local extensions immediately */
+      setLocalExtensions(prevExtensions =>
+        prevExtensions.map(ext => (ext.id === id ? { ...ext, locked } : ext))
+      );
+
+      /** Update the store */
+      toggleLock(id);
+    } catch (error) {
+      logger.error('Failed to toggle lock state', {
         group: 'ExtensionList',
         persist: true,
       });
@@ -125,8 +151,8 @@ export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionL
           <ExtensionHeader
             tag={tags.find(t => t.id === tagId)!}
             extensionCount={tagExtensions.length}
-            onToggle={enabled => {
-              tagExtensions.forEach(ext => handleToggle(ext.id, enabled));
+            onToggle={(enabled, extensions) => {
+              extensions.forEach(ext => handleToggle(ext.id, enabled));
             }}
             extensions={tagExtensions}
           />
@@ -139,6 +165,7 @@ export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionL
                   extension={extension}
                   onToggle={handleToggle}
                   onSettingsClick={handleSettingsClick}
+                  onLockToggle={handleLockToggle}
                 />
               ))}
           </div>
@@ -154,8 +181,8 @@ export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionL
             <ExtensionHeader
               tag={{ id: 'untagged', name: 'Untagged', order: -1, createdAt: '', updatedAt: '' }}
               extensionCount={untaggedExtensions.length}
-              onToggle={enabled => {
-                untaggedExtensions.forEach(ext => handleToggle(ext.id, enabled));
+              onToggle={(enabled, extensions) => {
+                extensions.forEach(ext => handleToggle(ext.id, enabled));
               }}
               extensions={untaggedExtensions}
             />
@@ -168,6 +195,7 @@ export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionL
                     extension={extension}
                     onToggle={handleToggle}
                     onSettingsClick={handleSettingsClick}
+                    onLockToggle={handleLockToggle}
                   />
                 ))}
             </div>

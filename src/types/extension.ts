@@ -5,4 +5,5 @@ export interface Extension {
   enabled: boolean;
   description: string;
   iconUrl: string;
+  locked: boolean;
 }

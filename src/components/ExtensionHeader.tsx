@@ -4,7 +4,7 @@ import { Tag } from '@/types/tag';
 interface ExtensionHeaderProps {
   tag: Tag;
   extensionCount: number;
-  onToggle: (enabled: boolean) => void;
+  onToggle: (enabled: boolean, extensions: Extension[]) => void;
   extensions: Extension[];
 }
 
@@ -16,6 +16,12 @@ export const ExtensionHeader = ({
 }: ExtensionHeaderProps) => {
   const enabledCount = extensions.filter(ext => ext.enabled).length;
   const disabledCount = extensionCount - enabledCount;
+
+  const handleToggle = (enabled: boolean) => {
+    // Lockされていない拡張機能のみをフィルタリング
+    const unlockedExtensions = extensions.filter(ext => !ext.locked);
+    onToggle(enabled, unlockedExtensions);
+  };
 
   return (
     <div className="flex items-center justify-between p-1">
@@ -39,13 +45,13 @@ export const ExtensionHeader = ({
         </div> */}
         <div className="flex">
           <button
-            onClick={() => onToggle(true)}
+            onClick={() => handleToggle(true)}
             className={`ps-3 pe-2 py-1 text-2xs font-medium bg-zinc-200 text-zinc-600 dark:bg-zinc-600 dark:text-zinc-300 rounded-l-full mr-[1px] hover:bg-zinc-300 dark:hover:bg-zinc-500 transition-colors`}
           >
             Enable All
           </button>
           <button
-            onClick={() => onToggle(false)}
+            onClick={() => handleToggle(false)}
             className={`ps-2 pe-3 py-1 text-2xs font-medium bg-zinc-200 text-zinc-600 dark:bg-zinc-600 dark:text-zinc-300 rounded-r-full hover:bg-zinc-300 dark:hover:bg-zinc-500 transition-colors`}
           >
             Disable All

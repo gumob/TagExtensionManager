@@ -25,7 +25,11 @@ export const ProfileManager = () => {
       const profiles = {
         tags,
         extensionTags,
-        extensions: extensions.map(ext => ({ id: ext.id, enabled: ext.enabled })),
+        extensions: extensions.map(ext => ({
+          id: ext.id,
+          enabled: ext.enabled,
+          locked: ext.locked,
+        })),
       };
       const data = JSON.stringify(profiles, null, 2);
       const blob = new Blob([data], { type: 'application/json' });
@@ -69,19 +73,14 @@ export const ProfileManager = () => {
           const content = e.target?.result as string;
           const profiles = JSON.parse(content);
 
-          // Import tags and extension tags
-          if (profiles.tags && profiles.extensionTags) {
-            importTags(profiles.tags, profiles.extensionTags);
-          }
+          /** Import tags and extension tags */
+          importTags(profiles.tags, profiles.extensionTags);
 
-          // Import extension states
-          if (profiles.extensions) {
-            importExtensionStates(profiles.extensions);
-          }
+          /** Import extension states */
+          importExtensionStates(profiles.extensions);
 
-          // Refresh extensions to reflect changes
+          /** Refresh the extension list */
           await refreshExtensions();
-          window.location.reload();
         } catch (error) {
           logger.error('Failed to import profile', {
             group: 'ProfileManager',

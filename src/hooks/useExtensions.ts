@@ -1,3 +1,4 @@
+import { useExtensionStore } from '@/stores/extensionStore';
 import { Extension } from '@/types/extension';
 import { getAllExtensions } from '@/utils/extensionUtils';
 import { logger } from '@/utils/logger';
@@ -32,6 +33,7 @@ export const useExtensions = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isManualRefresh, setIsManualRefresh] = useState(false);
+  const { setExtensions: setStoreExtensions } = useExtensionStore();
 
   /**
    * Refresh the extensions.
@@ -45,6 +47,8 @@ export const useExtensions = () => {
         persist: true,
       });
       setExtensions(updatedExtensions);
+      // Update the extension store with the current extensions
+      setStoreExtensions(updatedExtensions);
       return updatedExtensions;
     } catch (error) {
       logger.error('Failed to refresh extensions', {
@@ -55,7 +59,7 @@ export const useExtensions = () => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [setStoreExtensions]);
 
   /**
    * Watch for extension state changes.
@@ -119,6 +123,7 @@ export const useExtensions = () => {
     return extensions.map(ext => ({
       id: ext.id,
       enabled: ext.enabled,
+      locked: ext.locked,
     }));
   }, [extensions]);
 
