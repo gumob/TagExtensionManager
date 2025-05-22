@@ -2,9 +2,10 @@ import { useTagStore } from '@/stores/tagStore';
 import { logger } from '@/utils/logger';
 import { Dialog, Transition } from '@headlessui/react';
 import { EllipsisVerticalIcon, TagIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { Fragment, useEffect, useRef, useState } from 'react';
+import React, { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { FixedSizeList } from 'react-window';
 
 interface TagEditorProps {
   isOpen: boolean;
@@ -32,153 +33,177 @@ interface TagItemProps {
   onTagClick: (id: string) => void;
 }
 
-const TagItem = ({
-  tag,
-  index,
-  moveTag,
-  isEditing,
-  onEdit,
-  onDelete,
-  onTagClick,
-}: TagItemProps) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const [{ isDragging }, drag] = useDrag({
-    type: 'TAG',
-    item: { id: tag.id, index },
-    collect: monitor => ({
-      isDragging: monitor.isDragging(),
-    }),
-  });
+const TagItem = React.memo(
+  ({ tag, index, moveTag, isEditing, onEdit, onDelete, onTagClick }: TagItemProps) => {
+    const ref = useRef<HTMLDivElement>(null);
+    const [{ isDragging }, drag] = useDrag({
+      type: 'TAG',
+      item: { id: tag.id, index },
+      collect: monitor => ({
+        isDragging: monitor.isDragging(),
+      }),
+    });
 
-  const [, drop] = useDrop({
-    accept: 'TAG',
-    hover: (item: DragData, monitor) => {
-      if (!ref.current) {
-        return;
-      }
-      const dragIndex = item.index;
-      const hoverIndex = index;
+    const [, drop] = useDrop({
+      accept: 'TAG',
+      hover: (item: DragData, monitor) => {
+        if (!ref.current) {
+          return;
+        }
+        const dragIndex = item.index;
+        const hoverIndex = index;
 
-      if (dragIndex === hoverIndex) {
-        return;
-      }
+        if (dragIndex === hoverIndex) {
+          return;
+        }
 
-      const hoverBoundingRect = ref.current.getBoundingClientRect();
-      const hoverMiddleX = (hoverBoundingRect.right - hoverBoundingRect.left) / 2;
-      const clientOffset = monitor.getClientOffset();
+        const hoverBoundingRect = ref.current.getBoundingClientRect();
+        const hoverMiddleX = (hoverBoundingRect.right - hoverBoundingRect.left) / 2;
+        const clientOffset = monitor.getClientOffset();
 
-      if (!clientOffset) {
-        return;
-      }
+        if (!clientOffset) {
+          return;
+        }
 
-      const hoverClientX = clientOffset.x - hoverBoundingRect.left;
+        const hoverClientX = clientOffset.x - hoverBoundingRect.left;
 
-      // 左から右へのドラッグ
-      if (dragIndex < hoverIndex && hoverClientX < hoverMiddleX) {
-        return;
-      }
-      // 右から左へのドラッグ
-      if (dragIndex > hoverIndex && hoverClientX > hoverMiddleX) {
-        return;
-      }
+        if (dragIndex < hoverIndex && hoverClientX < hoverMiddleX) {
+          return;
+        }
+        if (dragIndex > hoverIndex && hoverClientX > hoverMiddleX) {
+          return;
+        }
 
-      moveTag(dragIndex, hoverIndex);
-      item.index = hoverIndex;
-    },
-  });
+        moveTag(dragIndex, hoverIndex);
+        item.index = hoverIndex;
+      },
+    });
 
-  drag(drop(ref));
+    drag(drop(ref));
 
-  return (
-    <div
-      ref={ref}
-      className={`relative group transition-all duration-200 ${
-        isDragging ? 'opacity-50 scale-95' : ''
-      }`}
-      style={{ width: 'fit-content' }}
-    >
-      <div className="flex items-center gap-1">
-        <div className="flex items-center gap-1 px-2 py-1.5 rounded-full text-xs font-semibold bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 shadow-sm">
-          <div className="flex items-center gap-1">
-            <div className="cursor-grab active:cursor-grabbing touch-none select-none">
-              <TagIcon className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
+    return (
+      <div
+        ref={ref}
+        className={`relative group transition-all duration-200 ${
+          isDragging ? 'opacity-50 scale-95' : ''
+        }`}
+        style={{ width: 'fit-content' }}
+      >
+        <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 px-2 py-1.5 rounded-full text-xs font-semibold bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 shadow-sm">
+            <div className="flex items-center gap-1">
+              <div className="cursor-grab active:cursor-grabbing touch-none select-none">
+                <TagIcon className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
+              </div>
+              <div>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={tag.name}
+                    onChange={e => onEdit(tag.id, e.target.value)}
+                    onBlur={() => onEdit(tag.id, tag.name)}
+                    onKeyDown={e => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        onEdit(tag.id, tag.name);
+                      }
+                    }}
+                    size={Math.max(tag.name.length, 1)}
+                    autoFocus
+                    className="px-1 py-0.5 rounded-sm bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 focus:bg-zinc-100 dark:focus:bg-zinc-600 focus:outline-none"
+                  />
+                ) : (
+                  <button
+                    onClick={() => onTagClick(tag.id)}
+                    className="select-none px-1 py-0.5 text-zinc-900 dark:text-zinc-100"
+                  >
+                    {tag.name}
+                  </button>
+                )}
+              </div>
+              <button
+                onClick={() => onDelete(tag.id)}
+                className="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-300"
+              >
+                <XMarkIcon className="w-4 h-4" />
+              </button>
             </div>
-            <div>
-              {isEditing ? (
-                <input
-                  type="text"
-                  value={tag.name}
-                  onChange={e => onEdit(tag.id, e.target.value)}
-                  onBlur={() => onEdit(tag.id, tag.name)}
-                  onKeyDown={e => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault();
-                      onEdit(tag.id, tag.name);
-                    }
-                  }}
-                  size={Math.max(tag.name.length, 1)}
-                  autoFocus
-                  className="px-1 py-0.5 rounded-sm bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 focus:bg-zinc-100 dark:focus:bg-zinc-600 focus:outline-none"
-                />
-              ) : (
-                <button
-                  onClick={() => onTagClick(tag.id)}
-                  className="select-none px-1 py-0.5 text-zinc-900 dark:text-zinc-100"
-                >
-                  {tag.name}
-                </button>
-              )}
-            </div>
-            <button
-              onClick={() => onDelete(tag.id)}
-              className="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-300"
-            >
-              <XMarkIcon className="w-4 h-4" />
-            </button>
           </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+);
+
+TagItem.displayName = 'TagItem';
 
 export const TagEditor = ({ isOpen, onClose }: TagEditorProps) => {
   const { tags, addTag, updateTag, deleteTag, reorderTags } = useTagStore();
   const [newTagName, setNewTagName] = useState('');
   const [editingTagId, setEditingTagId] = useState<string | null>(null);
   const tagListRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<FixedSizeList>(null);
 
-  const moveTag = (dragIndex: number, hoverIndex: number) => {
-    const items = Array.from(tags);
-    const [draggedItem] = items.splice(dragIndex, 1);
-    items.splice(hoverIndex, 0, draggedItem);
-    reorderTags(items.map(item => item.id));
-  };
+  const sortedTags = useMemo(() => {
+    return [...tags].sort((a, b) => a.order - b.order);
+  }, [tags]);
 
-  const handleAddTag = () => {
+  const moveTag = useCallback(
+    (dragIndex: number, hoverIndex: number) => {
+      const items = Array.from(sortedTags);
+      const [draggedItem] = items.splice(dragIndex, 1);
+      items.splice(hoverIndex, 0, draggedItem);
+      reorderTags(items.map(item => item.id));
+    },
+    [sortedTags, reorderTags]
+  );
+
+  const handleAddTag = useCallback(() => {
     if (newTagName.trim()) {
       addTag(newTagName.trim());
       setNewTagName('');
     }
-  };
+  }, [newTagName, addTag]);
 
-  const handleTagClick = (tagId: string) => {
+  const handleTagClick = useCallback((tagId: string) => {
     setEditingTagId(tagId);
-  };
+  }, []);
 
-  const handleTagNameChange = (tagId: string, newName: string) => {
-    updateTag(tagId, newName);
-    setEditingTagId(null);
-  };
+  const handleTagNameChange = useCallback(
+    (tagId: string, newName: string) => {
+      updateTag(tagId, newName);
+      setEditingTagId(null);
+    },
+    [updateTag]
+  );
 
-  const handleTagNameBlur = () => {
-    setEditingTagId(null);
-  };
+  const handleDeleteClick = useCallback(
+    (tagId: string) => {
+      setEditingTagId(null);
+      deleteTag(tagId);
+    },
+    [deleteTag]
+  );
 
-  const handleDeleteClick = (tagId: string) => {
-    setEditingTagId(null);
-    deleteTag(tagId);
-  };
+  const TagRow = useCallback(
+    ({ index, style }: { index: number; style: React.CSSProperties }) => {
+      const tag = sortedTags[index];
+      return (
+        <div style={style}>
+          <TagItem
+            tag={tag}
+            index={index}
+            moveTag={moveTag}
+            isEditing={editingTagId === tag.id}
+            onEdit={handleTagNameChange}
+            onDelete={handleDeleteClick}
+            onTagClick={handleTagClick}
+          />
+        </div>
+      );
+    },
+    [sortedTags, moveTag, editingTagId, handleTagNameChange, handleDeleteClick, handleTagClick]
+  );
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -256,21 +281,16 @@ export const TagEditor = ({ isOpen, onClose }: TagEditorProps) => {
                     </div>
 
                     <div className="flex-1 overflow-y-auto overflow-x-hidden px-4 pt-0 pb-4">
-                      <div ref={tagListRef} className="flex flex-wrap gap-2">
-                        {tags
-                          .sort((a, b) => a.order - b.order)
-                          .map((tag, index) => (
-                            <TagItem
-                              key={tag.id}
-                              tag={tag}
-                              index={index}
-                              moveTag={moveTag}
-                              isEditing={editingTagId === tag.id}
-                              onEdit={handleTagNameChange}
-                              onDelete={handleDeleteClick}
-                              onTagClick={handleTagClick}
-                            />
-                          ))}
+                      <div ref={tagListRef}>
+                        <FixedSizeList
+                          ref={listRef}
+                          height={400}
+                          width="100%"
+                          itemCount={sortedTags.length}
+                          itemSize={40}
+                        >
+                          {TagRow}
+                        </FixedSizeList>
                       </div>
                     </div>
                   </div>

@@ -4,33 +4,62 @@ import { v4 as uuidv4 } from 'uuid';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+// Cache for storing loaded data
+let dataCache: TagState | null = null;
+
 export const useTagStore = create<TagStore>()(
   persist(
     (set, get) => ({
       tags: [],
       extensionTags: [],
       visibleTagId: null,
+      isLoading: false,
 
       /** Initialize store with tags from storage */
       initialize: async () => {
         try {
+          set({ isLoading: true });
+
+          // Use cached data if available
+          if (dataCache) {
+            set({
+              tags: dataCache.tags,
+              extensionTags: dataCache.extensionTags,
+              visibleTagId: null,
+              isLoading: false,
+            });
+            return;
+          }
+
           const storedData = await chrome.storage.local.get('extension-manager-tags');
           if (storedData['extension-manager-tags']) {
             logger.debug('Loading tags from storage', {
               group: 'TagStore',
               persist: true,
             });
-            set({
+
+            // Cache the loaded data
+            dataCache = {
               tags: storedData['extension-manager-tags'].tags,
               extensionTags: storedData['extension-manager-tags'].extensionTags,
               visibleTagId: null,
-            });
+            };
+
+            if (dataCache) {
+              set({
+                tags: dataCache.tags,
+                extensionTags: dataCache.extensionTags,
+                visibleTagId: null,
+                isLoading: false,
+              });
+            }
           }
         } catch (error) {
           logger.error('Failed to load tags', {
             group: 'TagStore',
             persist: true,
           });
+          set({ isLoading: false });
         }
       },
 
@@ -59,7 +88,13 @@ export const useTagStore = create<TagStore>()(
           order: tag.order + 1,
           updatedAt: new Date().toISOString(),
         }));
-        set({ tags: [newTag, ...updatedTags] });
+        const newTags = [newTag, ...updatedTags];
+        set({ tags: newTags });
+
+        // Update cache
+        if (dataCache) {
+          dataCache.tags = newTags;
+        }
       },
 
       /** Update a tag */
@@ -152,12 +187,23 @@ export const useTagStore = create<TagStore>()(
       storage: {
         getItem: async (name: string) => {
           try {
+            // Use cached data if available
+            if (dataCache) {
+              return dataCache;
+            }
+
             const result = await chrome.storage.local.get(name);
             const data = result[name];
             logger.debug('Loading from storage', {
               group: 'TagStore',
               persist: true,
             });
+
+            // Cache the loaded data
+            if (data) {
+              dataCache = data;
+            }
+
             return data;
           } catch (error) {
             logger.error('Failed to load from storage', {
@@ -173,6 +219,10 @@ export const useTagStore = create<TagStore>()(
               group: 'TagStore',
               persist: true,
             });
+
+            // Update cache
+            dataCache = value;
+
             await chrome.storage.local.set({ [name]: value });
           } catch (error) {
             logger.error('Failed to save to storage', {
@@ -187,6 +237,10 @@ export const useTagStore = create<TagStore>()(
               group: 'TagStore',
               persist: true,
             });
+
+            // Clear cache
+            dataCache = null;
+
             await chrome.storage.local.remove(name);
           } catch (error) {
             logger.error('Failed to remove from storage', {

@@ -29,4 +29,5 @@ export interface TagStore extends TagState {
   initialize: () => void;
   setVisibleTag: (tagId: string | null) => void;
   showAllTags: () => void;
+  isLoading: boolean;
 }
