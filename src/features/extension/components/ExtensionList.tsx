@@ -187,7 +187,13 @@ export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionL
         untaggedExtensions.length > 0 && (
           <div className="space-y-2">
             <ExtensionHeader
-              tag={{ id: 'untagged', name: 'Untagged', order: -1, createdAt: '', updatedAt: '' }}
+              tag={{
+                id: 'untagged',
+                name: 'Untagged',
+                order: -1,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+              }}
               extensionCount={untaggedExtensions.length}
               onToggle={(enabled, extensions) => {
                 extensions.forEach(ext => handleToggle(ext.id, enabled));

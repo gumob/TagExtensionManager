@@ -11,8 +11,8 @@ export interface Tag {
   id: string;
   name: string;
   order: number;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 /**

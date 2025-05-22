@@ -48,7 +48,11 @@ export const useTagStore = create<TagStore>()(
 
             /** Cache the loaded data */
             dataCache = {
-              tags: storedData['extension-manager-tags'].tags,
+              tags: storedData['extension-manager-tags'].tags.map((tag: any) => ({
+                ...tag,
+                createdAt: new Date(tag.createdAt),
+                updatedAt: new Date(tag.updatedAt),
+              })),
               extensionTags: storedData['extension-manager-tags'].extensionTags,
               visibleTagId: null,
             };
@@ -88,13 +92,13 @@ export const useTagStore = create<TagStore>()(
           id: uuidv4(),
           name,
           order: 0,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
+          createdAt: new Date(),
+          updatedAt: new Date(),
         };
         const updatedTags = tags.map(tag => ({
           ...tag,
           order: tag.order + 1,
-          updatedAt: new Date().toISOString(),
+          updatedAt: new Date(),
         }));
         const newTags = [newTag, ...updatedTags];
         set({ tags: newTags });
@@ -113,7 +117,7 @@ export const useTagStore = create<TagStore>()(
             ? {
                 ...tag,
                 name,
-                updatedAt: new Date().toISOString(),
+                updatedAt: new Date(),
               }
             : tag
         );
@@ -141,7 +145,7 @@ export const useTagStore = create<TagStore>()(
             return {
               ...tag,
               order: index,
-              updatedAt: new Date().toISOString(),
+              updatedAt: new Date(),
             };
           })
           .filter((tag): tag is Tag => tag !== null);
@@ -199,22 +203,10 @@ export const useTagStore = create<TagStore>()(
             if (dataCache) {
               return dataCache;
             }
-
             const result = await chrome.storage.local.get(name);
-            const data = result[name];
-            logger.debug('Loading from storage', {
-              group: 'TagStore',
-              persist: true,
-            });
-
-            /** Cache the loaded data */
-            if (data) {
-              dataCache = data;
-            }
-
-            return data;
+            return result[name];
           } catch (error) {
-            logger.error('Failed to load from storage', {
+            logger.error('Failed to get item from storage', {
               group: 'TagStore',
               persist: true,
             });
@@ -223,17 +215,11 @@ export const useTagStore = create<TagStore>()(
         },
         setItem: async (name: string, value: any) => {
           try {
-            logger.debug('Saving to storage', {
-              group: 'TagStore',
-              persist: true,
-            });
-
+            await chrome.storage.local.set({ [name]: value });
             /** Update cache */
             dataCache = value;
-
-            await chrome.storage.local.set({ [name]: value });
           } catch (error) {
-            logger.error('Failed to save to storage', {
+            logger.error('Failed to set item in storage', {
               group: 'TagStore',
               persist: true,
             });
@@ -241,28 +227,17 @@ export const useTagStore = create<TagStore>()(
         },
         removeItem: async (name: string) => {
           try {
-            logger.debug('Removing from storage', {
-              group: 'TagStore',
-              persist: true,
-            });
-
+            await chrome.storage.local.remove(name);
             /** Clear cache */
             dataCache = null;
-
-            await chrome.storage.local.remove(name);
           } catch (error) {
-            logger.error('Failed to remove from storage', {
+            logger.error('Failed to remove item from storage', {
               group: 'TagStore',
               persist: true,
             });
           }
         },
       },
-      partialize: (state: TagStore) =>
-        ({
-          tags: state.tags,
-          extensionTags: state.extensionTags,
-        }) as TagState,
     }
   )
 );

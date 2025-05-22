@@ -41,8 +41,8 @@ export const TagList = ({ extensions }: { extensions: Extension[] }) => {
               id: 'untagged',
               name: 'Untagged',
               order: tags.length,
-              createdAt: '',
-              updatedAt: '',
+              createdAt: new Date(),
+              updatedAt: new Date(),
             }}
             extensionCount={untaggedExtensions.length}
           />
