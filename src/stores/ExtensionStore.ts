@@ -16,7 +16,7 @@ interface ExtensionStore {
   setExtensions: (extensions: Extension[]) => void;
   toggleExtension: (id: string) => void;
   toggleLock: (id: string) => void;
-  importExtensionStates: (extensions: { id: string; enabled: boolean; locked: boolean }[]) => void;
+  importExtensionStates: (extensions: Extension[]) => void;
 }
 
 /**
