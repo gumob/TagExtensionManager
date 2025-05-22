@@ -2,8 +2,33 @@ import { v4 as uuidv4 } from 'uuid';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { ExtensionTag, Tag, TagState, TagStore } from '@/shared/types';
+import { ExtensionTag, Tag, TagState } from '@/shared/types';
 import { logger } from '@/shared/utils';
+
+/**
+ * The tag store type.
+ *
+ * @property addTag - The add tag function.
+ * @property updateTag - The update tag function.
+ * @property deleteTag - The delete tag function.
+ * @property reorderTags - The reorder tags function.
+ * @property addTagToExtension - The add tag to extension function.
+ * @property removeTagFromExtension - The remove tag from extension function.
+ */
+export interface TagStore extends TagState {
+  addTag: (name: string) => void;
+  updateTag: (id: string, name: string) => void;
+  deleteTag: (id: string) => void;
+  reorderTags: (tagIds: string[]) => void;
+  addTagToExtension: (extensionId: string, tagId: string) => void;
+  removeTagFromExtension: (extensionId: string, tagId: string) => void;
+  importTags: (tags: Tag[], extensionTags: ExtensionTag[]) => void;
+  exportTags: () => { tags: Tag[]; extensionTags: ExtensionTag[] };
+  initialize: () => void;
+  setVisibleTag: (tagId: string | null) => void;
+  showAllTags: () => void;
+  isLoading: boolean;
+}
 
 /**
  * Cache for storing loaded data.
