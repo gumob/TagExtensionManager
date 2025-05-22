@@ -4,9 +4,16 @@ import { v4 as uuidv4 } from 'uuid';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-// Cache for storing loaded data
+/**
+ * Cache for storing loaded data.
+ */
 let dataCache: TagState | null = null;
 
+/**
+ * The tag store.
+ *
+ * @returns The tag store.
+ */
 export const useTagStore = create<TagStore>()(
   persist(
     (set, get) => ({
@@ -20,7 +27,7 @@ export const useTagStore = create<TagStore>()(
         try {
           set({ isLoading: true });
 
-          // Use cached data if available
+          /** Use cached data if available */
           if (dataCache) {
             set({
               tags: dataCache.tags,
@@ -38,7 +45,7 @@ export const useTagStore = create<TagStore>()(
               persist: true,
             });
 
-            // Cache the loaded data
+            /** Cache the loaded data */
             dataCache = {
               tags: storedData['extension-manager-tags'].tags,
               extensionTags: storedData['extension-manager-tags'].extensionTags,
@@ -91,7 +98,7 @@ export const useTagStore = create<TagStore>()(
         const newTags = [newTag, ...updatedTags];
         set({ tags: newTags });
 
-        // Update cache
+        /** Update cache */
         if (dataCache) {
           dataCache.tags = newTags;
         }
@@ -187,7 +194,7 @@ export const useTagStore = create<TagStore>()(
       storage: {
         getItem: async (name: string) => {
           try {
-            // Use cached data if available
+            /** Use cached data if available */
             if (dataCache) {
               return dataCache;
             }
@@ -199,7 +206,7 @@ export const useTagStore = create<TagStore>()(
               persist: true,
             });
 
-            // Cache the loaded data
+            /** Cache the loaded data */
             if (data) {
               dataCache = data;
             }
@@ -220,7 +227,7 @@ export const useTagStore = create<TagStore>()(
               persist: true,
             });
 
-            // Update cache
+            /** Update cache */
             dataCache = value;
 
             await chrome.storage.local.set({ [name]: value });
@@ -238,7 +245,7 @@ export const useTagStore = create<TagStore>()(
               persist: true,
             });
 
-            // Clear cache
+            /** Clear cache */
             dataCache = null;
 
             await chrome.storage.local.remove(name);

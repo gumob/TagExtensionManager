@@ -4,8 +4,11 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import { TagIcon } from '@heroicons/react/24/outline';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { TagIcon as TagSolidIcon } from '@heroicons/react/24/solid';
-import { Fragment, useEffect, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 
+/**
+ * The props for the TagSelector component.
+ */
 interface TagSelectorProps {
   isOpen: boolean;
   tags: Tag[];
@@ -14,6 +17,16 @@ interface TagSelectorProps {
   onSelectTags: (tagIds: string[]) => void;
 }
 
+/**
+ * The TagSelector component.
+ *
+ * @param isOpen - Whether the tag selector is open.
+ * @param tags - The tags to select from.
+ * @param selectedTagIds - The selected tag ids.
+ * @param onClose - The callback to close the tag selector.
+ * @param onSelectTags - The callback to select the tags.
+ * @returns The TagSelector component.
+ */
 export function TagSelector({
   isOpen,
   tags,
@@ -21,9 +34,19 @@ export function TagSelector({
   onClose,
   onSelectTags,
 }: TagSelectorProps) {
+  /**
+   * The search query.
+   */
   const [searchQuery, setSearchQuery] = useState('');
+
+  /**
+   * The search input ref.
+   */
   const searchInputRef = useRef<HTMLInputElement>(null);
 
+  /**
+   * The use effect for the tag selector.
+   */
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => {
@@ -32,6 +55,9 @@ export function TagSelector({
     }
   }, [isOpen]);
 
+  /**
+   * The handle tag click.
+   */
   const handleTagClick = (tagId: string) => {
     const newSelectedTagIds = selectedTagIds.includes(tagId)
       ? selectedTagIds.filter(id => id !== tagId)
@@ -39,10 +65,16 @@ export function TagSelector({
     onSelectTags(newSelectedTagIds);
   };
 
+  /**
+   * The filtered tags.
+   */
   const filteredTags = tags.filter(tag =>
     tag.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  /**
+   * The TagSelector component.
+   */
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={onClose}>

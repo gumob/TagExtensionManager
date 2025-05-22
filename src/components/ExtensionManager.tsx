@@ -1,5 +1,4 @@
 import { ExtensionList } from '@/components/ExtensionList';
-import { Metrics } from '@/components/Metrics';
 import { ProfileManager } from '@/components/ProfileManager';
 import { SearchBar } from '@/components/SearchBar';
 import { TagList } from '@/components/TagList';
@@ -68,10 +67,6 @@ export const ExtensionManager: React.FC = () => {
             </h1>
             <ProfileManager />
           </div>
-
-          {/* <div className="mb-3">
-            <Metrics extensions={extensions} />
-          </div> */}
 
           <div className="mb-3">
             <TagList extensions={filteredExtensions} />

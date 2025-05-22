@@ -7,22 +7,48 @@ import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { FixedSizeList } from 'react-window';
 
+/**
+ * The props for the TagEditor component.
+ * @param isOpen - Whether the tag editor is open.
+ * @param onClose - The callback to close the tag editor.
+ */
 interface TagEditorProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+/**
+ * The data for the drag and drop operation.
+ * @param id - The id of the tag.
+ * @param index - The index of the tag.
+ */
 interface DragData {
   id: string;
   index: number;
 }
 
+/**
+ * The tag data.
+ * @param id - The id of the tag.
+ * @param name - The name of the tag.
+ * @param order - The order of the tag.
+ */
 interface Tag {
   id: string;
   name: string;
   order: number;
 }
 
+/**
+ * The props for the TagItem component.
+ * @param tag - The tag data.
+ * @param index - The index of the tag.
+ * @param moveTag - The callback to move the tag.
+ * @param isEditing - Whether the tag is being edited.
+ * @param onEdit - The callback to edit the tag.
+ * @param onDelete - The callback to delete the tag.
+ * @param onTagClick - The callback to click the tag.
+ */
 interface TagItemProps {
   tag: Tag;
   index: number;
@@ -33,9 +59,27 @@ interface TagItemProps {
   onTagClick: (id: string) => void;
 }
 
+/**
+ * The TagItem component.
+ *
+ * @param tag - The tag data.
+ * @param index - The index of the tag.
+ * @param moveTag - The callback to move the tag.
+ * @param isEditing - Whether the tag is being edited.
+ * @param onEdit - The callback to edit the tag.
+ * @param onDelete - The callback to delete the tag.
+ * @param onTagClick - The callback to click the tag.
+ */
 const TagItem = React.memo(
   ({ tag, index, moveTag, isEditing, onEdit, onDelete, onTagClick }: TagItemProps) => {
+    /**
+     * The ref for the tag item.
+     */
     const ref = useRef<HTMLDivElement>(null);
+
+    /**
+     * The drag handler.
+     */
     const [{ isDragging }, drag] = useDrag({
       type: 'TAG',
       item: { id: tag.id, index },
@@ -44,6 +88,9 @@ const TagItem = React.memo(
       }),
     });
 
+    /**
+     * The drop handler.
+     */
     const [, drop] = useDrop({
       accept: 'TAG',
       hover: (item: DragData, monitor) => {
@@ -79,8 +126,14 @@ const TagItem = React.memo(
       },
     });
 
+    /**
+     * The drag and drop handler.
+     */
     drag(drop(ref));
 
+    /**
+     * The tag item.
+     */
     return (
       <div
         ref={ref}
@@ -137,6 +190,13 @@ const TagItem = React.memo(
 
 TagItem.displayName = 'TagItem';
 
+/**
+ * The TagEditor component.
+ *
+ * @param isOpen - Whether the tag editor is open.
+ * @param onClose - The callback to close the tag editor.
+ * @returns The TagEditor component.
+ */
 export const TagEditor = ({ isOpen, onClose }: TagEditorProps) => {
   const { tags, addTag, updateTag, deleteTag, reorderTags } = useTagStore();
   const [newTagName, setNewTagName] = useState('');
@@ -144,10 +204,16 @@ export const TagEditor = ({ isOpen, onClose }: TagEditorProps) => {
   const tagListRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<FixedSizeList>(null);
 
+  /**
+   * The sorted tags.
+   */
   const sortedTags = useMemo(() => {
     return [...tags].sort((a, b) => a.order - b.order);
   }, [tags]);
 
+  /**
+   * The move tag handler.
+   */
   const moveTag = useCallback(
     (dragIndex: number, hoverIndex: number) => {
       const items = Array.from(sortedTags);
@@ -158,6 +224,9 @@ export const TagEditor = ({ isOpen, onClose }: TagEditorProps) => {
     [sortedTags, reorderTags]
   );
 
+  /**
+   * The handle add tag handler.
+   */
   const handleAddTag = useCallback(() => {
     if (newTagName.trim()) {
       addTag(newTagName.trim());
@@ -165,10 +234,16 @@ export const TagEditor = ({ isOpen, onClose }: TagEditorProps) => {
     }
   }, [newTagName, addTag]);
 
+  /**
+   * The handle tag click handler.
+   */
   const handleTagClick = useCallback((tagId: string) => {
     setEditingTagId(tagId);
   }, []);
 
+  /**
+   * The handle tag name change handler.
+   */
   const handleTagNameChange = useCallback(
     (tagId: string, newName: string) => {
       updateTag(tagId, newName);
@@ -177,6 +252,9 @@ export const TagEditor = ({ isOpen, onClose }: TagEditorProps) => {
     [updateTag]
   );
 
+  /**
+   * The handle delete click handler.
+   */
   const handleDeleteClick = useCallback(
     (tagId: string) => {
       setEditingTagId(null);
@@ -185,6 +263,9 @@ export const TagEditor = ({ isOpen, onClose }: TagEditorProps) => {
     [deleteTag]
   );
 
+  /**
+   * The TagRow component.
+   */
   const TagRow = useCallback(
     ({ index, style }: { index: number; style: React.CSSProperties }) => {
       const tag = sortedTags[index];
@@ -205,6 +286,9 @@ export const TagEditor = ({ isOpen, onClose }: TagEditorProps) => {
     [sortedTags, moveTag, editingTagId, handleTagNameChange, handleDeleteClick, handleTagClick]
   );
 
+  /**
+   * The TagEditor component.
+   */
   return (
     <DndProvider backend={HTML5Backend}>
       <Transition appear show={isOpen} as={Fragment}>

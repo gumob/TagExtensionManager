@@ -2,20 +2,44 @@ import { useTagStore } from '@/stores/tagStore';
 import { Tag } from '@/types/tag';
 import { TagIcon } from 'lucide-react';
 
+/**
+ * The props for the TagChip component.
+ *
+ * @param tag - The tag to display.
+ * @param extensionCount - The number of extensions with the tag.
+ */
 interface TagChipProps {
   tag: Tag;
   extensionCount?: number;
 }
 
+/**
+ * The TagChip component.
+ *
+ * @param tag - The tag to display.
+ * @param extensionCount - The number of extensions with the tag.
+ * @returns The TagChip component.
+ */
 export function TagChip({ tag, extensionCount }: TagChipProps) {
+  /**
+   * The tag store.
+   */
   const { tags, extensionTags, setVisibleTag, visibleTagId } = useTagStore();
 
+  /**
+   * The count of extensions with the tag.
+   */
   const count =
     tag.id === 'untagged'
       ? (extensionCount ?? 0)
       : extensionTags.filter(extTag => extTag.tagIds.includes(tag.id)).length;
   const isSelected = visibleTagId === tag.id;
 
+  /**
+   * The TagChip component.
+   *
+   * @returns The TagChip component.
+   */
   return (
     <button
       onClick={() => setVisibleTag(isSelected ? null : tag.id)}

@@ -47,7 +47,7 @@ export const useExtensions = () => {
         persist: true,
       });
       setExtensions(updatedExtensions);
-      // Update the extension store with the current extensions
+      /** Update the extension store with the current extensions */
       setStoreExtensions(updatedExtensions);
       return updatedExtensions;
     } catch (error) {

@@ -9,6 +9,14 @@ import { useEffect, useRef, useState } from 'react';
 
 /**
  * Extension type.
+ *
+ * @param id - The id of the extension.
+ * @param name - The name of the extension.
+ * @param version - The version of the extension.
+ * @param enabled - Whether the extension is enabled.
+ * @param description - The description of the extension.
+ * @param iconUrl - The icon url of the extension.
+ * @param locked - Whether the extension is locked.
  */
 interface Extension {
   id: string;
@@ -22,6 +30,11 @@ interface Extension {
 
 /**
  * Extension card props.
+ *
+ * @param extension - The extension to display.
+ * @param onToggle - The callback to toggle the extension.
+ * @param onSettingsClick - The callback to open the settings page.
+ * @param onLockToggle - The callback to lock the extension.
  */
 interface ExtensionCardProps {
   extension: Extension;
@@ -32,8 +45,12 @@ interface ExtensionCardProps {
 
 /**
  * Extension card component.
- * @param props
- * @returns
+ *
+ * @param extension - The extension to display.
+ * @param onToggle - The callback to toggle the extension.
+ * @param onSettingsClick - The callback to open the settings page.
+ * @param onLockToggle - The callback to lock the extension.
+ * @returns The extension card component.
  */
 export function ExtensionCard({
   extension,
@@ -41,14 +58,34 @@ export function ExtensionCard({
   onSettingsClick,
   onLockToggle,
 }: ExtensionCardProps) {
+  /**
+   * The tag dialog open state.
+   */
   const [isTagDialogOpen, setIsTagDialogOpen] = useState(false);
+  /**
+   * The hovered state.
+   */
   const [isHovered, setIsHovered] = useState(false);
+  /**
+   * The has options page state.
+   */
   const [hasOptionsPage, setHasOptionsPage] = useState(false);
+  /**
+   * The has options page state.
+   */
   const { tags, extensionTags, addTagToExtension, removeTagFromExtension } = useTagStore();
+  /**
+   * The use extensions hook.
+   */
   const { refreshExtensions } = useExtensions();
+  /**
+   * The button ref.
+   */
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  // Check if extension has options page on mount
+  /**
+   * Check if extension has options page on mount.
+   */
   useEffect(() => {
     const checkOptionsPage = async () => {
       try {
@@ -75,14 +112,14 @@ export function ExtensionCard({
    * @param tagIds
    */
   const handleTagSelection = (tagIds: string[]) => {
-    // Add new tags
+    /** Add new tags */
     tagIds.forEach(tagId => {
       if (!currentTagIds.includes(tagId)) {
         addTagToExtension(extension.id, tagId);
       }
     });
 
-    // Remove deselected tags
+    /** Remove deselected tags */
     currentTagIds.forEach(tagId => {
       if (!tagIds.includes(tagId)) {
         removeTagFromExtension(extension.id, tagId);
@@ -96,7 +133,7 @@ export function ExtensionCard({
   const handleUninstall = async () => {
     try {
       await chrome.management.uninstall(extension.id);
-      // Refresh the extension list after uninstallation
+      /** Refresh the extension list after uninstallation */
       await refreshExtensions();
     } catch (error) {
       logger.error('Failed to uninstall extension', {
@@ -127,6 +164,8 @@ export function ExtensionCard({
 
   /**
    * Handle mouse enter on controls.
+   *
+   * @param e - The mouse event.
    */
   const handleControlsMouseEnter = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -135,6 +174,8 @@ export function ExtensionCard({
 
   /**
    * Handle mouse leave on controls.
+   *
+   * @param e - The mouse event.
    */
   const handleControlsMouseLeave = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -143,6 +184,8 @@ export function ExtensionCard({
 
   /**
    * Handle controls click to prevent event propagation.
+   *
+   * @param e - The mouse event.
    */
   const handleControlsClick = (e: React.MouseEvent) => {
     e.stopPropagation();

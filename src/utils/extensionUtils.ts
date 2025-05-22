@@ -21,6 +21,11 @@ const findOptimalIcon = (icons: chrome.management.IconInfo[] | undefined): strin
   return icons[0].url;
 };
 
+/**
+ * Format the extension.
+ * @param ext - The extension.
+ * @returns The formatted extension.
+ */
 export const formatExtension = (ext: chrome.management.ExtensionInfo): Extension => {
   const { extensions } = useExtensionStore.getState();
   const storedExtension = extensions.find(e => e.id === ext.id);
@@ -37,6 +42,10 @@ export const formatExtension = (ext: chrome.management.ExtensionInfo): Extension
   };
 };
 
+/**
+ * Get all extensions.
+ * @returns The extensions.
+ */
 export const getAllExtensions = (): Promise<Extension[]> => {
   return new Promise(resolve => {
     if (typeof chrome !== 'undefined' && chrome.management) {
@@ -51,6 +60,12 @@ export const getAllExtensions = (): Promise<Extension[]> => {
   });
 };
 
+/**
+ * Toggle the extension.
+ * @param id - The id of the extension.
+ * @param enabled - Whether the extension is enabled.
+ * @returns The promise.
+ */
 export const toggleExtension = (id: string, enabled: boolean): Promise<void> => {
   return new Promise((resolve, reject) => {
     if (typeof chrome !== 'undefined' && chrome.management) {

@@ -12,6 +12,14 @@ import { Fragment, useState } from 'react';
 
 /**
  * Extension menu props.
+ *
+ * @param buttonRef - The button ref.
+ * @param onManageTags - The callback to manage tags.
+ * @param onManageExtension - The callback to manage extension.
+ * @param onUninstall - The callback to uninstall extension.
+ * @param onLockToggle - The callback to lock toggle.
+ * @param extensionName - The name of the extension.
+ * @param isLocked - Whether the extension is locked.
  */
 interface ExtensionCardMenuProps {
   buttonRef: React.RefObject<HTMLButtonElement>;
@@ -25,8 +33,15 @@ interface ExtensionCardMenuProps {
 
 /**
  * Extension card menu component.
- * @param props
- * @returns
+ *
+ * @param buttonRef - The button ref.
+ * @param onManageTags - The callback to manage tags.
+ * @param onManageExtension - The callback to manage extension.
+ * @param onUninstall - The callback to uninstall extension.
+ * @param onLockToggle - The callback to lock toggle.
+ * @param extensionName - The name of the extension.
+ * @param isLocked - Whether the extension is locked.
+ * @returns The extension card menu component.
  */
 export function ExtensionCardMenu({
   buttonRef,
@@ -37,8 +52,14 @@ export function ExtensionCardMenu({
   extensionName,
   isLocked,
 }: ExtensionCardMenuProps) {
+  /**
+   * The uninstall dialog open state.
+   */
   const [isUninstallDialogOpen, setIsUninstallDialogOpen] = useState(false);
 
+  /**
+   * The use floating hook.
+   */
   const { refs, floatingStyles } = useFloating({
     elements: {
       reference: buttonRef.current,
@@ -47,10 +68,16 @@ export function ExtensionCardMenu({
     whileElementsMounted: autoUpdate,
   });
 
+  /**
+   * The handle uninstall click.
+   */
   const handleUninstallClick = () => {
     setIsUninstallDialogOpen(true);
   };
 
+  /**
+   * The handle confirm uninstall.
+   */
   const handleConfirmUninstall = () => {
     if (onUninstall) {
       onUninstall();
@@ -58,11 +85,21 @@ export function ExtensionCardMenu({
     setIsUninstallDialogOpen(false);
   };
 
+  /**
+   * The handle lock toggle.
+   *
+   * @param close - The close callback.
+   */
   const handleLockToggle = (close: () => void) => {
     onLockToggle();
     close();
   };
 
+  /**
+   * The extension card menu component.
+   *
+   * @returns The extension card menu component.
+   */
   return (
     <>
       <Menu>

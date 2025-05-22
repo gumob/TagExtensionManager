@@ -3,30 +3,66 @@ import { Extension } from '@/types/extension';
 import { TagsIcon, ToggleLeftIcon, ToggleRightIcon } from 'lucide-react';
 import { FC, useEffect, useState } from 'react';
 
+/**
+ * The props for the TagMetricsChip component.
+ *
+ * @param extensions - The extensions to display.
+ */
 interface TagMetricsChipProps {
   extensions?: Extension[];
 }
 
+/**
+ * The TagMetricsChip component.
+ *
+ * @param extensions - The extensions to display.
+ * @returns The TagMetricsChip component.
+ */
 export const TagMetricsChip: FC<TagMetricsChipProps> = ({ extensions = [] }) => {
   const { showAllTags, visibleTagId, extensionTags, setVisibleTag } = useTagStore();
   const [localExtensions, setLocalExtensions] = useState(extensions);
 
+  /**
+   * The use effect for the TagMetricsChip component.
+   */
   useEffect(() => {
     setLocalExtensions(extensions);
   }, [extensions]);
 
+  /**
+   * The total number of extensions.
+   */
   const total = localExtensions.length;
+
+  /**
+   * The number of enabled extensions.
+   */
   const enabled = localExtensions.filter(ext => ext.enabled).length;
+
+  /**
+   * The number of disabled extensions.
+   */
   const disabled = total - enabled;
 
+  /**
+   * The show enabled extensions handler.
+   */
   const showEnabledExtensions = () => {
     setVisibleTag('enabled');
   };
 
+  /**
+   * The show disabled extensions handler.
+   */
   const showDisabledExtensions = () => {
     setVisibleTag('disabled');
   };
 
+  /**
+   * The TagMetricsChip component.
+   *
+   * @returns The TagMetricsChip component.
+   */
   return (
     <div className="flex flex-row w-auto gap-[1px]">
       <button

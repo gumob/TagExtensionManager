@@ -10,9 +10,24 @@ import { useRef } from 'react';
  * @returns
  */
 export const ProfileManager = () => {
+  /**
+   * The use extensions hook.
+   */
   const { refreshExtensions } = useExtensions();
-  const { tags, extensionTags, exportTags, importTags } = useTagStore();
+
+  /**
+   * The tag store.
+   */
+  const { exportTags, importTags } = useTagStore();
+
+  /**
+   * The extension store.
+   */
   const { importExtensionStates } = useExtensionStore();
+
+  /**
+   * The file input ref.
+   */
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   /**
@@ -37,7 +52,9 @@ export const ProfileManager = () => {
       const a = document.createElement('a');
       a.href = url;
 
-      // Generate filename with current timestamp
+      /**
+       * Generate filename with current timestamp
+       */
       const now = new Date();
       const timestamp =
         now.getFullYear().toString() +
@@ -61,6 +78,8 @@ export const ProfileManager = () => {
 
   /**
    * Handle the import profile event.
+   *
+   * @param event - The change event.
    */
   const handleImportProfile = async (event: React.ChangeEvent<HTMLInputElement>) => {
     try {
@@ -97,6 +116,11 @@ export const ProfileManager = () => {
     }
   };
 
+  /**
+   * The ProfileManager component.
+   *
+   * @returns The ProfileManager component.
+   */
   return (
     <div className="flex items-center gap-1">
       <button

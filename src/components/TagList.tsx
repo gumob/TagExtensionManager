@@ -4,14 +4,29 @@ import { TagMetricsChip } from '@/components/TagMetricsChip';
 import { useTagStore } from '@/stores/tagStore';
 import { Extension } from '@/types/extension';
 
+/**
+ * The props for the TagList component.
+ *
+ * @param extensions - The extensions to display.
+ */
 export const TagList = ({ extensions }: { extensions: Extension[] }) => {
+  /**
+   * The tag store.
+   */
   const { tags, extensionTags } = useTagStore();
 
-  // ExtensionList.tsxと同じロジック
+  /**
+   * The untagged extensions.
+   */
   const untaggedExtensions = extensions.filter(
     ext => !extensionTags.find(extTag => extTag.extensionId === ext.id && extTag.tagIds.length > 0)
   );
 
+  /**
+   * The TagList component.
+   *
+   * @returns The TagList component.
+   */
   return (
     <>
       <div className="flex flex-wrap gap-1 mb-1">

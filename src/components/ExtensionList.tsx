@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react';
 
 /**
  * The component for displaying a list of extensions.
+ *
  * @param extensions
  * @param onExtensionStateChange
  * @returns
@@ -104,7 +105,9 @@ export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionL
     chrome.tabs.create({ url: `${baseUrl}/?id=${extensionId}` });
   };
 
-  // Filter extensions based on visibleTagId
+  /**
+   * Filter extensions based on visibleTagId
+   */
   const filteredExtensions = localExtensions.filter(extension => {
     if (visibleTagId === 'enabled') {
       return extension.enabled;
@@ -123,7 +126,9 @@ export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionL
     }
   });
 
-  // Group extensions by tag
+  /**
+   * Group extensions by tag
+   */
   const extensionsByTag = tags.reduce(
     (acc, tag) => {
       const tagExtensions = filteredExtensions.filter(extension =>
@@ -139,7 +144,9 @@ export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionL
     {} as Record<string, Extension[]>
   );
 
-  // Get untagged extensions
+  /**
+   * Get untagged extensions
+   */
   const untaggedExtensions = filteredExtensions.filter(
     ext => !extensionTags.find(extTag => extTag.extensionId === ext.id && extTag.tagIds.length > 0)
   );

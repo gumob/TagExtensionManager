@@ -1,6 +1,12 @@
 /// <reference types="chrome"/>
 
+/**
+ * The offscreen namespace.
+ */
 declare namespace chrome.offscreen {
+  /**
+   * The reason type.
+   */
   type Reason =
     | 'AUDIO_PLAYBACK'
     | 'BLOBS'
@@ -11,13 +17,23 @@ declare namespace chrome.offscreen {
     | 'TESTING'
     | 'WORKERS';
 
+  /**
+   * The create document options type.
+   */
   interface CreateDocumentOptions {
     url: string;
     reasons: Reason[];
     justification: string;
   }
 
+  /**
+   * The create document function.
+   */
   function createDocument(options: CreateDocumentOptions): Promise<void>;
+
+  /**
+   * The has document function.
+   */
   function hasDocument(): Promise<boolean>;
   function closeDocument(): Promise<void>;
 }

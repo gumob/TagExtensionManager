@@ -2,9 +2,22 @@ import { TagEditor } from '@/components/TagEditor';
 import { PencilIcon } from 'lucide-react';
 import { useState } from 'react';
 
+/**
+ * The TagEditChip component.
+ *
+ * @returns The TagEditChip component.
+ */
 export function TagEditChip() {
+  /**
+   * The state for the dialog.
+   */
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  /**
+   * The TagEditChip component.
+   *
+   * @returns The TagEditChip component.
+   */
   return (
     <>
       <button

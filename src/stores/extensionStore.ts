@@ -1,6 +1,14 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+/**
+ * The extension type.
+ *
+ * @property id - The id of the extension.
+ * @property name - The name of the extension.
+ * @property enabled - Whether the extension is enabled.
+ * @property locked - Whether the extension is locked.
+ */
 export interface Extension {
   id: string;
   name: string;
@@ -8,6 +16,15 @@ export interface Extension {
   locked: boolean;
 }
 
+/**
+ * The extension store type.
+ *
+ * @property extensions - The extensions.
+ * @property setExtensions - The set extensions.
+ * @property toggleExtension - The toggle extension.
+ * @property toggleLock - The toggle lock.
+ * @property importExtensionStates - The import extension states.
+ */
 interface ExtensionStore {
   extensions: Extension[];
   setExtensions: (extensions: Extension[]) => void;
@@ -16,6 +33,11 @@ interface ExtensionStore {
   importExtensionStates: (extensions: { id: string; enabled: boolean; locked: boolean }[]) => void;
 }
 
+/**
+ * The extension store.
+ *
+ * @returns The extension store.
+ */
 export const useExtensionStore = create<ExtensionStore>()(
   persist(
     set => ({

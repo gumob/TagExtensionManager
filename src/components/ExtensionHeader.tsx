@@ -1,6 +1,14 @@
 import { Extension } from '@/types/extension';
 import { Tag } from '@/types/tag';
 
+/**
+ * The props for the ExtensionHeader component.
+ *
+ * @param tag - The tag to display.
+ * @param extensionCount - The number of extensions.
+ * @param onToggle - The callback to toggle the extensions.
+ * @param extensions - The extensions to display.
+ */
 interface ExtensionHeaderProps {
   tag: Tag;
   extensionCount: number;
@@ -8,21 +16,47 @@ interface ExtensionHeaderProps {
   extensions: Extension[];
 }
 
+/**
+ * The ExtensionHeader component.
+ *
+ * @param tag - The tag to display.
+ * @param extensionCount - The number of extensions.
+ * @param onToggle - The callback to toggle the extensions.
+ * @param extensions - The extensions to display.
+ * @returns The ExtensionHeader component.
+ */
 export const ExtensionHeader = ({
   tag,
   extensionCount,
   onToggle,
   extensions,
 }: ExtensionHeaderProps) => {
+  /**
+   * The enabled count.
+   */
   const enabledCount = extensions.filter(ext => ext.enabled).length;
+
+  /**
+   * The disabled count.
+   */
   const disabledCount = extensionCount - enabledCount;
 
+  /**
+   * The handle toggle.
+   */
   const handleToggle = (enabled: boolean) => {
-    // Lockされていない拡張機能のみをフィルタリング
+    /** Filter the unlocked extensions */
     const unlockedExtensions = extensions.filter(ext => !ext.locked);
+
+    /** Toggle the extensions */
     onToggle(enabled, unlockedExtensions);
   };
 
+  /**
+   * The ExtensionHeader component.
+   *
+   * @returns The ExtensionHeader component.
+   */
   return (
     <div className="flex items-center justify-between p-1">
       <div className="flex items-center gap-2">
