@@ -7,28 +7,8 @@ import { ExtensionCardMenu } from '@/components/ExtensionCardMenu';
 import { TagSelector } from '@/components/TagSelector';
 import { useExtensions } from '@/hooks/useExtensions';
 import { useTagStore } from '@/stores/TagStore';
+import { Extension } from '@/types/Extension';
 import { logger } from '@/utils/Logger';
-
-/**
- * Extension type.
- *
- * @param id - The id of the extension.
- * @param name - The name of the extension.
- * @param version - The version of the extension.
- * @param enabled - Whether the extension is enabled.
- * @param description - The description of the extension.
- * @param iconUrl - The icon url of the extension.
- * @param locked - Whether the extension is locked.
- */
-interface Extension {
-  id: string;
-  name: string;
-  version: string;
-  enabled: boolean;
-  description: string;
-  iconUrl: string;
-  locked: boolean;
-}
 
 /**
  * Extension card props.
