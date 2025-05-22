@@ -54,7 +54,7 @@ interface TagItemProps {
   index: number;
   moveTag: (dragIndex: number, hoverIndex: number) => void;
   isEditing: boolean;
-  onEdit: (id: string, name: string) => void;
+  onEdit: (id: string, name: string, shouldCloseEdit: boolean) => void;
   onDelete: (id: string) => void;
   onTagClick: (id: string) => void;
 }
@@ -72,14 +72,9 @@ interface TagItemProps {
  */
 const TagItem = React.memo(
   ({ tag, index, moveTag, isEditing, onEdit, onDelete, onTagClick }: TagItemProps) => {
-    /**
-     * The ref for the tag item.
-     */
     const ref = useRef<HTMLDivElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
 
-    /**
-     * The drag handler.
-     */
     const [{ isDragging }, drag] = useDrag({
       type: 'TAG',
       item: { id: tag.id, index },
@@ -88,9 +83,6 @@ const TagItem = React.memo(
       }),
     });
 
-    /**
-     * The drop handler.
-     */
     const [, drop] = useDrop({
       accept: 'TAG',
       hover: (item: DragData, monitor) => {
@@ -126,10 +118,14 @@ const TagItem = React.memo(
       },
     });
 
-    /**
-     * The drag and drop handler.
-     */
     drag(drop(ref));
+
+    useEffect(() => {
+      if (isEditing && inputRef.current) {
+        inputRef.current.focus();
+        inputRef.current.select();
+      }
+    }, [isEditing]);
 
     /**
      * The tag item.
@@ -151,18 +147,18 @@ const TagItem = React.memo(
               <div>
                 {isEditing ? (
                   <input
+                    ref={inputRef}
                     type="text"
                     value={tag.name}
-                    onChange={e => onEdit(tag.id, e.target.value)}
-                    onBlur={() => onEdit(tag.id, tag.name)}
+                    onChange={e => onEdit(tag.id, e.target.value, false)}
+                    onBlur={() => onEdit(tag.id, tag.name, true)}
                     onKeyDown={e => {
                       if (e.key === 'Enter') {
                         e.preventDefault();
-                        onEdit(tag.id, tag.name);
+                        onEdit(tag.id, tag.name, true);
                       }
                     }}
                     size={Math.max(tag.name.length, 1)}
-                    autoFocus
                     className="px-1 py-0.5 rounded-sm bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 focus:bg-zinc-100 dark:focus:bg-zinc-600 focus:outline-none"
                   />
                 ) : (
@@ -245,9 +241,11 @@ export const TagEditor = ({ isOpen, onClose }: TagEditorProps) => {
    * The handle tag name change handler.
    */
   const handleTagNameChange = useCallback(
-    (tagId: string, newName: string) => {
+    (tagId: string, newName: string, shouldCloseEdit: boolean = false) => {
       updateTag(tagId, newName);
-      setEditingTagId(null);
+      if (shouldCloseEdit) {
+        setEditingTagId(null);
+      }
     },
     [updateTag]
   );
@@ -261,29 +259,6 @@ export const TagEditor = ({ isOpen, onClose }: TagEditorProps) => {
       deleteTag(tagId);
     },
     [deleteTag]
-  );
-
-  /**
-   * The TagRow component.
-   */
-  const TagRow = useCallback(
-    ({ index, style }: { index: number; style: React.CSSProperties }) => {
-      const tag = sortedTags[index];
-      return (
-        <div style={style}>
-          <TagItem
-            tag={tag}
-            index={index}
-            moveTag={moveTag}
-            isEditing={editingTagId === tag.id}
-            onEdit={handleTagNameChange}
-            onDelete={handleDeleteClick}
-            onTagClick={handleTagClick}
-          />
-        </div>
-      );
-    },
-    [sortedTags, moveTag, editingTagId, handleTagNameChange, handleDeleteClick, handleTagClick]
   );
 
   /**
@@ -365,16 +340,19 @@ export const TagEditor = ({ isOpen, onClose }: TagEditorProps) => {
                     </div>
 
                     <div className="flex-1 overflow-y-auto overflow-x-hidden px-4 pt-0 pb-4">
-                      <div ref={tagListRef}>
-                        <FixedSizeList
-                          ref={listRef}
-                          height={400}
-                          width="100%"
-                          itemCount={sortedTags.length}
-                          itemSize={40}
-                        >
-                          {TagRow}
-                        </FixedSizeList>
+                      <div ref={tagListRef} className="flex flex-wrap gap-2">
+                        {sortedTags.map((tag, index) => (
+                          <TagItem
+                            key={tag.id}
+                            tag={tag}
+                            index={index}
+                            moveTag={moveTag}
+                            isEditing={editingTagId === tag.id}
+                            onEdit={handleTagNameChange}
+                            onDelete={handleDeleteClick}
+                            onTagClick={handleTagClick}
+                          />
+                        ))}
                       </div>
                     </div>
                   </div>
