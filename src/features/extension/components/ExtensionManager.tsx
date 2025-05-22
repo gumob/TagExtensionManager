@@ -1,11 +1,10 @@
 import React, { useCallback } from 'react';
 
-import { ExtensionList } from '@/components/ExtensionList';
-import { ProfileManager } from '@/components/ProfileManager';
-import { SearchBar } from '@/components/SearchBar';
-import { TagList } from '@/components/TagList';
-import { useExtensions } from '@/hooks/useExtensions';
-import { logger } from '@/utils/Logger';
+import { ExtensionList, SearchBar } from '@/features/extension/components';
+import { ProfileManager } from '@/features/profile/components';
+import { TagList } from '@/features/tag/components';
+import { useExtensions } from '@/hooks';
+import { logger } from '@/utils';
 
 /**
  * The component for managing extensions.

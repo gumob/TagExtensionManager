@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { Extension } from '@/types/Extension';
+import { Extension } from '@/types';
 
 /**
  * The extension store type.

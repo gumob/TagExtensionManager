@@ -1,8 +1,6 @@
-import { TagChip } from '@/components/TagChip';
-import { TagEditChip } from '@/components/TagEditChip';
-import { TagMetricsChip } from '@/components/TagMetricsChip';
-import { useTagStore } from '@/stores/TagStore';
-import { Extension } from '@/types/Extension';
+import { TagChip, TagEditChip, TagMetricsChip } from '@/features/tag/components';
+import { useTagStore } from '@/stores';
+import { Extension } from '@/types';
 
 /**
  * The props for the TagList component.

@@ -2,7 +2,7 @@ import { PencilIcon } from 'lucide-react';
 
 import { useState } from 'react';
 
-import { TagEditor } from '@/components/TagEditor';
+import { TagEditor } from '@/features/tag/components';
 
 /**
  * The TagEditChip component.

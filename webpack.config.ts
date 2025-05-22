@@ -1,9 +1,9 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
-import CopyPlugin from 'copy-webpack-plugin';
-import type { Configuration } from 'webpack';
-import tailwindcss from 'tailwindcss';
 import autoprefixer from 'autoprefixer';
+import CopyPlugin from 'copy-webpack-plugin';
+import path from 'path';
+import tailwindcss from 'tailwindcss';
+import { fileURLToPath } from 'url';
+import type { Configuration } from 'webpack';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -55,12 +55,12 @@ const config: Configuration = {
   plugins: [
     new CopyPlugin({
       patterns: [
-        { 
+        {
           from: 'public',
           to: '.',
           globOptions: {
-            ignore: ['**/*.sketch']
-          }
+            ignore: ['**/*.sketch'],
+          },
         },
         { from: 'manifest.json', to: '.' },
       ],
@@ -72,4 +72,4 @@ const config: Configuration = {
   },
 };
 
-export default config; 
+export default config;

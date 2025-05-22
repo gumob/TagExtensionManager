@@ -3,12 +3,12 @@ import { LockClosedIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useRef, useState } from 'react';
 
-import { ExtensionCardMenu } from '@/components/ExtensionCardMenu';
-import { TagSelector } from '@/components/TagSelector';
-import { useExtensions } from '@/hooks/useExtensions';
-import { useTagStore } from '@/stores/TagStore';
-import { Extension } from '@/types/Extension';
-import { logger } from '@/utils/Logger';
+import { ExtensionCardMenu } from '@/features/extension/components';
+import { TagSelector } from '@/features/tag/components';
+import { useExtensions } from '@/hooks';
+import { useTagStore } from '@/stores';
+import { Extension } from '@/types';
+import { logger } from '@/utils';
 
 /**
  * Extension card props.
