@@ -37,13 +37,6 @@ const createOffscreenDocument = async () => {
 };
 
 /**
- * Initialize icon based on system color scheme
- */
-const initializeIcon = async () => {
-  await createOffscreenDocument();
-};
-
-/**
  * Listen for extension installation
  */
 chrome.runtime.onInstalled.addListener(async details => {
@@ -51,7 +44,7 @@ chrome.runtime.onInstalled.addListener(async details => {
     group: 'background',
     persist: true,
   });
-  await initializeIcon();
+  await createOffscreenDocument();
 });
 
 /**
