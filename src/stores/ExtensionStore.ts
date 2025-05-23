@@ -10,14 +10,14 @@ import { Extension } from '@/models';
  * @property setExtensions - The set extensions.
  * @property toggleExtension - The toggle extension.
  * @property toggleLock - The toggle lock.
- * @property importExtensionStates - The import extension states.
+ * @property importExtensions - The import extension states.
  */
 interface ExtensionStore {
   extensions: Extension[];
   setExtensions: (extensions: Extension[]) => void;
   toggleExtension: (id: string) => void;
   toggleLock: (id: string) => void;
-  importExtensionStates: (extensions: Extension[]) => void;
+  importExtensions: (extensions: Extension[]) => void;
 }
 
 /**
@@ -42,7 +42,7 @@ export const useExtensionStore = create<ExtensionStore>()(
             ext.id === id ? { ...ext, locked: !ext.locked } : ext
           ),
         })),
-      importExtensionStates: importedExtensions =>
+      importExtensions: importedExtensions =>
         set(state => ({
           extensions: state.extensions.map(ext => {
             const importedExt = importedExtensions.find(imp => imp.id === ext.id);

@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 
 import { chromeAPI } from '@/api/ChromeAPI';
 import { ExtensionList, SearchBar } from '@/features/extension/components';
-import { ProfileManager } from '@/features/profile/components';
+import { BackupManager } from '@/features/profile/components';
 import { TagList } from '@/features/tag/components';
 import { useExtensions } from '@/hooks';
 import { logger } from '@/utils';
@@ -49,7 +49,7 @@ export const ExtensionManager: React.FC = () => {
             <h1 className="text-lg font-bold text-zinc-900 dark:text-white">
               Clean Extension Manager
             </h1>
-            <ProfileManager />
+            <BackupManager />
           </div>
 
           <div className="mb-3">

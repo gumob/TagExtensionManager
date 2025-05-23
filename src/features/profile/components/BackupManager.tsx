@@ -2,14 +2,14 @@ import { ArrowDownTrayIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline'
 
 import { useRef } from 'react';
 
-import { useProfile } from '@/hooks';
+import { useBackup } from '@/hooks';
 
 /**
  * The component for managing profile export/import.
- * @returns The ProfileManager component
+ * @returns The BackupManager component
  */
-export const ProfileManager = () => {
-  const { exportProfile, importProfile } = useProfile();
+export const BackupManager = () => {
+  const { exportFile, importFile } = useBackup();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   /**
@@ -19,13 +19,13 @@ export const ProfileManager = () => {
   const handleImportProfile = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
-    await importProfile(file);
+    await importFile(file);
   };
 
   return (
     <div className="flex items-center gap-1">
       <button
-        onClick={exportProfile}
+        onClick={exportFile}
         className="pl-2 pr-3 py-1 rounded-full bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-400 dark:hover:bg-zinc-500 transition-colors"
         title="Export Profile"
       >
