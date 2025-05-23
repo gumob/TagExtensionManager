@@ -1,6 +1,6 @@
-import { useExtensions } from '@/shared/hooks';
-import { useExtensionStore, useTagStore } from '@/shared/stores';
-import { logger } from '@/shared/utils';
+import { useExtensions } from '@/hooks';
+import { useExtensionStore, useTagStore } from '@/stores';
+import { logger } from '@/utils';
 
 /**
  * Custom hook for profile management.

@@ -1,6 +1,6 @@
 import { Storage } from '@plasmohq/storage';
 
-import { Message, MessageResponse } from '@/shared/types';
+import { Message, MessageResponse } from '@/types';
 
 /**
  * The Chrome API class.

@@ -8,8 +8,8 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { FixedSizeList } from 'react-window';
 
 import { TagEditorItem } from '@/features/tag/components';
-import { Tag } from '@/shared/models';
-import { useTagStore } from '@/shared/stores';
+import { Tag } from '@/models';
+import { useTagStore } from '@/stores';
 
 /**
  * The props for the TagEditor component.

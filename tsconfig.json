@@ -29,7 +29,7 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    "src/shared/types",
+    "src/types",
     "webpack.config.ts"
   ],
   "exclude": [

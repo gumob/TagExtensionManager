@@ -4,8 +4,8 @@ import { createRoot } from 'react-dom/client';
 import { Toaster } from 'react-hot-toast';
 
 import { ExtensionManager } from '@/features/extension/components/ExtensionManager';
-import '@/shared/styles/globals.css';
-import { logger } from '@/shared/utils/Logger';
+import '@/styles/globals.css';
+import { logger } from '@/utils/Logger';
 
 /**
  * The main component for the extension manager.

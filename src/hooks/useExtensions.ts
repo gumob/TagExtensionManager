@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { Extension } from '@/shared/models';
-import { useExtensionStore } from '@/shared/stores';
-import { getAllExtensions, logger } from '@/shared/utils';
+import { Extension } from '@/models';
+import { useExtensionStore } from '@/stores';
+import { getAllExtensions, logger } from '@/utils';
 
 /**
  * The hook for managing extensions.

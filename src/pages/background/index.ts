@@ -1,5 +1,5 @@
-import { logger } from '@/shared/utils/Logger';
-import { updateExtensionIcon } from '@/shared/utils/ThemeUtils';
+import { logger } from '@/utils/Logger';
+import { updateExtensionIcon } from '@/utils/ThemeUtils';
 
 /** Background script for extension management */
 logger.debug('Starting background script', {
