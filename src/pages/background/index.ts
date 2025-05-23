@@ -44,60 +44,6 @@ const initializeIcon = async () => {
 };
 
 /**
- * Create Default profile
- */
-const createDefaultProfile = async () => {
-  logger.debug('Creating default profile', {
-    group: 'background',
-    persist: true,
-  });
-
-  try {
-    const extensions = await chromeAPI.getAllExtensions();
-    logger.debug('Got extensions', {
-      group: 'background',
-      persist: true,
-    });
-
-    const defaultExtensions = extensions.map(ext => ({
-      id: ext.id,
-      enabled: ext.enabled,
-    }));
-
-    const now = new Date().toISOString();
-    const defaultProfile = {
-      profiles: [
-        {
-          id: crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2),
-          name: 'Default',
-          extensions: defaultExtensions,
-          createdAt: now,
-          updatedAt: now,
-        },
-      ],
-      currentProfileId: null,
-    };
-
-    logger.debug('Setting default profile', {
-      group: 'background',
-      persist: true,
-    });
-
-    await chromeAPI.setLocalStorage({ 'extension-manager-profiles': defaultProfile });
-    logger.debug('Default profile saved to storage', {
-      group: 'background',
-      persist: true,
-    });
-  } catch (error) {
-    logger.error('Error saving default profile', {
-      group: 'background',
-      persist: true,
-    });
-    throw error;
-  }
-};
-
-/**
  * Listen for extension installation
  */
 chrome.runtime.onInstalled.addListener(async details => {
@@ -106,32 +52,6 @@ chrome.runtime.onInstalled.addListener(async details => {
     persist: true,
   });
   await initializeIcon();
-
-  try {
-    /** Clear storage on first installation */
-    if (details.reason === 'install') {
-      logger.debug('Starting storage clear', {
-        group: 'background',
-        persist: true,
-      });
-      await chromeAPI.clearLocalStorage();
-      logger.debug('Storage cleared', {
-        group: 'background',
-        persist: true,
-      });
-
-      await createDefaultProfile();
-    }
-    logger.debug('Installation process completed', {
-      group: 'background',
-      persist: true,
-    });
-  } catch (error) {
-    logger.error('Error during installation', {
-      group: 'background',
-      persist: true,
-    });
-  }
 });
 
 /**

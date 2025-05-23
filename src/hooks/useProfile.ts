@@ -12,7 +12,7 @@ export const useProfile = () => {
   const { importExtensionStates } = useExtensionStore();
 
   /**
-   * Export profile data to JSON file
+   * The function that exports profile data to a JSON file.
    */
   const exportProfile = async () => {
     try {
@@ -54,7 +54,7 @@ export const useProfile = () => {
   };
 
   /**
-   * Import profile data from JSON file
+   * The function that imports profile data from a JSON file.
    * @param file - The file to import
    */
   const importProfile = async (file: File) => {
