@@ -33,8 +33,10 @@ export interface TagStore extends TagState {
 
 /**
  * The tag store.
- *
- * @returns The tag store.
+ * This store manages all tag-related state and operations including:
+ * - Managing tags and their associations with extensions
+ * - Persisting tag data to Chrome storage
+ * - Handling tag visibility and filtering
  */
 export const useTagStore = create<TagStore>()(
   persist(
@@ -44,7 +46,17 @@ export const useTagStore = create<TagStore>()(
       visibleTagId: null,
       isLoading: false,
 
-      /** Initialize store with tags from storage */
+      /**
+       * Initializes the tag store by loading saved data from Chrome storage
+       * 
+       * This function:
+       * 1. Sets loading state to true
+       * 2. Attempts to load saved tag data from Chrome storage
+       * 3. If data exists, converts date strings back to Date objects
+       * 4. If no data exists, initializes with empty arrays
+       * 5. Updates the store state with loaded or empty data
+       * 6. Sets loading state back to false
+       */
       initialize: async () => {
         try {
           set({ isLoading: true });
@@ -73,7 +85,7 @@ export const useTagStore = create<TagStore>()(
               isLoading: false,
             });
           } else {
-            // Initialize with empty data if no stored data exists
+            /** Initialize with empty data if no stored data exists */
             set({
               tags: [],
               extensionTags: [],
@@ -90,17 +102,33 @@ export const useTagStore = create<TagStore>()(
         }
       },
 
-      /** Set visible tag */
+      /**
+       * Sets which tag's extensions should be visible in the UI
+       * When a tag ID is provided, only extensions with that tag will be shown
+       * When null is provided, this filter is cleared
+       */
       setVisibleTag: (tagId: string | null) => {
         set({ visibleTagId: tagId });
       },
 
-      /** Show all tags */
+      /**
+       * Clears the tag visibility filter by setting visibleTagId to null
+       * This causes all extensions to be shown regardless of their tags
+       */
       showAllTags: () => {
         set({ visibleTagId: null });
       },
 
-      /** Add a tag */
+      /**
+       * Creates a new tag and adds it to the beginning of the tags list
+       * 
+       * This function:
+       * 1. Creates a new tag object with a unique ID and the current timestamp
+       * 2. Increments the order of all existing tags by 1
+       * 3. Places the new tag at the start of the list
+       * 4. Updates the store state
+       * 5. Saves the updated tag list to Chrome storage
+       */
       addTag: (name: string) => {
         const { tags } = get();
         const newTag: Tag = {
@@ -118,7 +146,7 @@ export const useTagStore = create<TagStore>()(
         const newTags = [newTag, ...updatedTags];
         set({ tags: newTags });
 
-        // Save to storage immediately
+        /** Save to storage immediately */
         chromeAPI.setLocalStorage({
           'extension-manager-tags': {
             tags: newTags,
@@ -127,7 +155,15 @@ export const useTagStore = create<TagStore>()(
         });
       },
 
-      /** Update a tag */
+      /**
+       * Updates an existing tag's name
+       * 
+       * This function:
+       * 1. Finds the tag with the matching ID
+       * 2. Updates its name and updatedAt timestamp
+       * 3. Updates the store state
+       * 4. Saves the changes to Chrome storage
+       */
       updateTag: (id: string, name: string) => {
         const { tags } = get();
         const updatedTags = tags.map(tag =>
@@ -141,7 +177,7 @@ export const useTagStore = create<TagStore>()(
         );
         set({ tags: updatedTags });
 
-        // Save to storage immediately
+        /** Save to storage immediately */
         chromeAPI.setLocalStorage({
           'extension-manager-tags': {
             tags: updatedTags,
@@ -150,7 +186,15 @@ export const useTagStore = create<TagStore>()(
         });
       },
 
-      /** Delete a tag */
+      /**
+       * Deletes a tag and removes all its associations with extensions
+       * 
+       * This function:
+       * 1. Removes the tag from the tags list
+       * 2. Removes the tag ID from all extension tag associations
+       * 3. Updates the store state
+       * 4. Saves the changes to Chrome storage
+       */
       deleteTag: (id: string) => {
         const { tags, extensionTags } = get();
         const updatedTags = tags.filter(tag => tag.id !== id);
@@ -160,7 +204,7 @@ export const useTagStore = create<TagStore>()(
         }));
         set({ tags: updatedTags, extensionTags: updatedExtensionTags });
 
-        // Save to storage immediately
+        /** Save to storage immediately */
         chromeAPI.setLocalStorage({
           'extension-manager-tags': {
             tags: updatedTags,
@@ -169,7 +213,15 @@ export const useTagStore = create<TagStore>()(
         });
       },
 
-      /** Reorder tags */
+      /**
+       * Reorders tags based on a new order of tag IDs
+       * 
+       * This function:
+       * 1. Takes an array of tag IDs in their new desired order
+       * 2. Updates each tag's order property to match its new position
+       * 3. Updates their updatedAt timestamps
+       * 4. Updates the store state with the reordered tags
+       */
       reorderTags: (tagIds: string[]) => {
         const { tags } = get();
         const updatedTags = tagIds
@@ -186,7 +238,16 @@ export const useTagStore = create<TagStore>()(
         set({ tags: updatedTags });
       },
 
-      /** Add tag to extension */
+      /**
+       * Associates a tag with an extension
+       * 
+       * This function:
+       * 1. Checks if the extension already has any tags
+       * 2. If it does, adds the new tag ID to its existing tags
+       * 3. If it doesn't, creates a new extension-tag association
+       * 4. Updates the store state
+       * 5. Saves the changes to Chrome storage
+       */
       addTagToExtension: (extensionId: string, tagId: string) => {
         const { extensionTags } = get();
         const existingExtensionTag = extensionTags.find(
@@ -207,7 +268,7 @@ export const useTagStore = create<TagStore>()(
           set({ extensionTags: updatedExtensionTags });
         }
 
-        // Save to storage immediately
+        /** Save to storage immediately */
         if (updatedExtensionTags) {
           chromeAPI.setLocalStorage({
             'extension-manager-tags': {
@@ -218,7 +279,15 @@ export const useTagStore = create<TagStore>()(
         }
       },
 
-      /** Remove tag from extension */
+      /**
+       * Removes a tag association from an extension
+       * 
+       * This function:
+       * 1. Finds the extension's tag associations
+       * 2. Removes the specified tag ID from its list of tags
+       * 3. Updates the store state
+       * 4. Saves the changes to Chrome storage
+       */
       removeTagFromExtension: (extensionId: string, tagId: string) => {
         const { extensionTags } = get();
         const updatedExtensionTags = extensionTags.map(extTag =>
@@ -228,7 +297,7 @@ export const useTagStore = create<TagStore>()(
         );
         set({ extensionTags: updatedExtensionTags });
 
-        // Save to storage immediately
+        /** Save to storage immediately */
         chromeAPI.setLocalStorage({
           'extension-manager-tags': {
             tags: get().tags,
@@ -237,12 +306,18 @@ export const useTagStore = create<TagStore>()(
         });
       },
 
-      /** Import tags and extension tags */
+      /**
+       * Imports tags and their extension associations from external data
+       * This completely replaces the current tags and associations
+       */
       importTags: (tags: Tag[], extensionTags: ExtensionTag[]) => {
         set({ tags, extensionTags });
       },
 
-      /** Export tags and extension tags */
+      /**
+       * Exports all tags and their extension associations
+       * Returns the current state of tags and extension tag associations
+       */
       exportTags: () => {
         const { tags, extensionTags } = get();
         return { tags, extensionTags };
@@ -251,6 +326,10 @@ export const useTagStore = create<TagStore>()(
     {
       name: 'extension-manager-tags',
       storage: {
+        /**
+         * Custom storage getter that loads data from Chrome storage
+         * Handles errors and logs them appropriately
+         */
         getItem: async (name: string) => {
           try {
             const result = await chromeAPI.getLocalStorage(name);
@@ -263,6 +342,10 @@ export const useTagStore = create<TagStore>()(
             return null;
           }
         },
+        /**
+         * Custom storage setter that saves data to Chrome storage
+         * Handles errors and logs them appropriately
+         */
         setItem: async (name: string, value: any) => {
           try {
             await chromeAPI.setLocalStorage({ [name]: value });
@@ -277,6 +360,10 @@ export const useTagStore = create<TagStore>()(
             });
           }
         },
+        /**
+         * Custom storage remover that deletes data from Chrome storage
+         * Handles errors and logs them appropriately
+         */
         removeItem: async (name: string) => {
           try {
             await chromeAPI.removeLocalStorage(name);

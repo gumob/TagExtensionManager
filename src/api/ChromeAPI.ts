@@ -29,6 +29,10 @@ export class ChromeAPI {
     return ChromeAPI.instance;
   }
 
+  /************************************************
+   * Storage API
+   ************************************************/
+
   /**
    * The function that gets local storage.
    * @param key - The key.
@@ -96,6 +100,10 @@ export class ChromeAPI {
     }
   }
 
+  /************************************************
+   * Tab API
+   ************************************************/
+
   /**
    * The function that gets current tab.
    * @returns The current tab.
@@ -130,6 +138,10 @@ export class ChromeAPI {
     }
   }
 
+  /************************************************
+   * Message API
+   ************************************************/
+
   /**
    * The function that sends a message.
    * @param tabId - The tab id.
@@ -148,7 +160,10 @@ export class ChromeAPI {
     }
   }
 
-  // Runtime API
+  /************************************************
+   * Runtime API
+   ************************************************/
+
   /**
    * The function that sends a runtime message.
    * @param message - The message.
@@ -176,7 +191,10 @@ export class ChromeAPI {
     chrome.runtime.onMessage.addListener(callback);
   }
 
-  // Action API
+  /************************************************
+   * Action API
+   ************************************************/
+
   /**
    * The function that sets the extension icon.
    * @param icon - The icon details.
@@ -193,7 +211,10 @@ export class ChromeAPI {
     }
   }
 
-  // Management API
+  /************************************************
+   * Management API
+   ************************************************/
+
   /**
    * The function that gets all extensions.
    * @returns The extensions.
@@ -286,7 +307,10 @@ export class ChromeAPI {
     }
   }
 
-  // Offscreen API
+  /************************************************
+   * Offscreen API
+   ************************************************/
+
   /**
    * The function that checks if an offscreen document exists.
    * @returns Whether the offscreen document exists.
