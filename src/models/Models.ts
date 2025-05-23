@@ -52,10 +52,8 @@ export interface TagExtensionMapModel {
  *
  * @property tags - The tags.
  * @property extensionTags - The extension tags.
- * @property visibleTagId - The id of the visible tag.
  */
 export interface TagManagementModel {
   tags: TagModel[];
   extensionTags: TagExtensionMapModel[];
-  visibleTagId: string | null /** Show all tags if null */;
 }

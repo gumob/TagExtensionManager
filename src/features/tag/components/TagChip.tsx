@@ -8,10 +8,14 @@ import { useTagStore } from '@/stores';
  *
  * @param tag - The tag to display.
  * @param extensionCount - The number of extensions with the tag.
+ * @param visibleTagId - The id of the visible tag.
+ * @param setVisibleTag - The function to set the visible tag.
  */
 interface TagChipProps {
   tag: TagModel;
   extensionCount?: number;
+  visibleTagId: string | null;
+  setVisibleTag: (tagId: string | null) => void;
 }
 
 /**
@@ -19,13 +23,15 @@ interface TagChipProps {
  *
  * @param tag - The tag to display.
  * @param extensionCount - The number of extensions with the tag.
+ * @param visibleTagId - The id of the visible tag.
+ * @param setVisibleTag - The function to set the visible tag.
  * @returns The TagChip component.
  */
-export function TagChip({ tag, extensionCount }: TagChipProps) {
+export function TagChip({ tag, extensionCount, visibleTagId, setVisibleTag }: TagChipProps) {
   /**
    * The tag store.
    */
-  const { tags, extensionTags, setVisibleTag, visibleTagId } = useTagStore();
+  const { extensionTags } = useTagStore();
 
   /**
    * The count of extensions with the tag.

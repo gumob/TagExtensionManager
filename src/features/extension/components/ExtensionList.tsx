@@ -13,22 +13,33 @@ import { logger } from '@/utils';
  *
  * @param extensions
  * @param onExtensionStateChange
+ * @param visibleTagId
+ * @param setVisibleTag
  * @returns
  */
 interface ExtensionListProps {
   extensions: ExtensionModel[];
   onExtensionStateChange: (id: string, enabled: boolean) => void;
+  visibleTagId: string | null;
+  setVisibleTag: (tagId: string | null) => void;
 }
 
 /**
  * The component for displaying a list of extensions.
  * @param extensions
  * @param onExtensionStateChange
+ * @param visibleTagId
+ * @param setVisibleTag
  * @returns
  */
-export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionListProps) {
+export function ExtensionList({
+  extensions,
+  onExtensionStateChange,
+  visibleTagId,
+  setVisibleTag,
+}: ExtensionListProps) {
   const [localExtensions, setLocalExtensions] = useState<ExtensionModel[]>(extensions);
-  const { tags, extensionTags, visibleTagId } = useTagStore();
+  const { tags, extensionTags } = useTagStore();
   const { toggleLock } = useExtensionStore();
 
   /**

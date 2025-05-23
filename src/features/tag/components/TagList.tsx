@@ -6,8 +6,18 @@ import { useTagStore } from '@/stores';
  * The props for the TagList component.
  *
  * @param extensions - The extensions to display.
+ * @param visibleTagId - The id of the visible tag.
+ * @param setVisibleTag - The function to set the visible tag.
  */
-export const TagList = ({ extensions }: { extensions: ExtensionModel[] }) => {
+export const TagList = ({
+  extensions,
+  visibleTagId,
+  setVisibleTag,
+}: {
+  extensions: ExtensionModel[];
+  visibleTagId: string | null;
+  setVisibleTag: (tagId: string | null) => void;
+}) => {
   /**
    * The tag store.
    */
@@ -28,12 +38,12 @@ export const TagList = ({ extensions }: { extensions: ExtensionModel[] }) => {
   return (
     <>
       <div className="flex flex-wrap gap-1 mb-1">
-        <TagMetricsChip extensions={extensions} />
+        <TagMetricsChip extensions={extensions} visibleTagId={visibleTagId} setVisibleTag={setVisibleTag} />
         <TagEditChip />
       </div>
       <div className="flex flex-wrap gap-1">
         {tags.map(tag => (
-          <TagChip key={tag.id} tag={tag} />
+          <TagChip key={tag.id} tag={tag} visibleTagId={visibleTagId} setVisibleTag={setVisibleTag} />
         ))}
         {untaggedExtensions.length > 0 && (
           <TagChip
@@ -45,6 +55,8 @@ export const TagList = ({ extensions }: { extensions: ExtensionModel[] }) => {
               updatedAt: new Date(),
             }}
             extensionCount={untaggedExtensions.length}
+            visibleTagId={visibleTagId}
+            setVisibleTag={setVisibleTag}
           />
         )}
       </div>

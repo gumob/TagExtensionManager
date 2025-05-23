@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { chromeAPI } from '@/api/ChromeAPI';
 import { ExtensionList, SearchBar } from '@/features/extension/components';
@@ -17,6 +17,11 @@ export const ExtensionManager: React.FC = () => {
    */
   const { extensions, filteredExtensions, setSearchQuery, refreshExtensions, setIsManualRefresh } =
     useExtensions();
+
+  /**
+   * The visible tag id.
+   */
+  const [visibleTagId, setVisibleTagId] = useState<string | null>(null);
 
   /**
    * Handle the extension state change.
@@ -53,7 +58,11 @@ export const ExtensionManager: React.FC = () => {
           </div>
 
           <div className="mb-3">
-            <TagList extensions={filteredExtensions} />
+            <TagList
+              extensions={filteredExtensions}
+              visibleTagId={visibleTagId}
+              setVisibleTag={setVisibleTagId}
+            />
           </div>
 
           <div className="mb-3">
@@ -66,6 +75,8 @@ export const ExtensionManager: React.FC = () => {
             <ExtensionList
               extensions={filteredExtensions}
               onExtensionStateChange={handleExtensionStateChange}
+              visibleTagId={visibleTagId}
+              setVisibleTag={setVisibleTagId}
             />
           </div>
         </div>

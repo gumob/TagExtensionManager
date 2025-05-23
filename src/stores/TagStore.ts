@@ -26,8 +26,6 @@ export interface TagStore extends TagManagementModel {
   importTags: (tags: TagModel[], extensionTags: TagExtensionMapModel[]) => void;
   exportTags: () => { tags: TagModel[]; extensionTags: TagExtensionMapModel[] };
   initialize: () => Promise<void>;
-  setVisibleTag: (tagId: string | null) => void;
-  showAllTags: () => void;
   isLoading: boolean;
 }
 
@@ -36,14 +34,12 @@ export interface TagStore extends TagManagementModel {
  * This store manages all tag-related state and operations including:
  * - Managing tags and their associations with extensions
  * - Persisting tag data to Chrome storage
- * - Handling tag visibility and filtering
  */
 export const useTagStore = create<TagStore>()(
   persist(
     (set, get) => ({
       tags: [],
       extensionTags: [],
-      visibleTagId: null,
       isLoading: false,
 
       /**
@@ -75,13 +71,11 @@ export const useTagStore = create<TagStore>()(
                 updatedAt: new Date(tag.updatedAt),
               })),
               extensionTags: storedData['extension-manager-tags'].extensionTags,
-              visibleTagId: null,
             };
 
             set({
               tags: loadedData.tags,
               extensionTags: loadedData.extensionTags,
-              visibleTagId: null,
               isLoading: false,
             });
           } else {
@@ -89,7 +83,6 @@ export const useTagStore = create<TagStore>()(
             set({
               tags: [],
               extensionTags: [],
-              visibleTagId: null,
               isLoading: false,
             });
           }
@@ -100,23 +93,6 @@ export const useTagStore = create<TagStore>()(
           });
           set({ isLoading: false });
         }
-      },
-
-      /**
-       * Sets which tag's extensions should be visible in the UI
-       * When a tag ID is provided, only extensions with that tag will be shown
-       * When null is provided, this filter is cleared
-       */
-      setVisibleTag: (tagId: string | null) => {
-        set({ visibleTagId: tagId });
-      },
-
-      /**
-       * Clears the tag visibility filter by setting visibleTagId to null
-       * This causes all extensions to be shown regardless of their tags
-       */
-      showAllTags: () => {
-        set({ visibleTagId: null });
       },
 
       /**

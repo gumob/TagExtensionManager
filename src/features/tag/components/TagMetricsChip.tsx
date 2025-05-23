@@ -9,19 +9,24 @@ import { useTagStore } from '@/stores';
  * The props for the TagMetricsChip component.
  *
  * @param extensions - The extensions to display.
+ * @param visibleTagId - The id of the visible tag.
+ * @param setVisibleTag - The function to set the visible tag.
  */
 interface TagMetricsChipProps {
   extensions?: ExtensionModel[];
+  visibleTagId: string | null;
+  setVisibleTag: (tagId: string | null) => void;
 }
 
 /**
  * The TagMetricsChip component.
  *
  * @param extensions - The extensions to display.
+ * @param visibleTagId - The id of the visible tag.
+ * @param setVisibleTag - The function to set the visible tag.
  * @returns The TagMetricsChip component.
  */
-export const TagMetricsChip: FC<TagMetricsChipProps> = ({ extensions = [] }) => {
-  const { showAllTags, visibleTagId, extensionTags, setVisibleTag } = useTagStore();
+export const TagMetricsChip: FC<TagMetricsChipProps> = ({ extensions = [], visibleTagId, setVisibleTag }) => {
   const [localExtensions, setLocalExtensions] = useState(extensions);
 
   /**
@@ -61,6 +66,13 @@ export const TagMetricsChip: FC<TagMetricsChipProps> = ({ extensions = [] }) => 
   };
 
   /**
+   * The show all extensions handler.
+   */
+  const showAllExtensions = () => {
+    setVisibleTag(null);
+  };
+
+  /**
    * The TagMetricsChip component.
    *
    * @returns The TagMetricsChip component.
@@ -69,7 +81,7 @@ export const TagMetricsChip: FC<TagMetricsChipProps> = ({ extensions = [] }) => 
     <div className="flex flex-row w-auto gap-[1px]">
       <button
         className="flex-1 pl-3 pr-2 py-1 rounded-s-full text-2xs bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-600 inline-flex items-center"
-        onClick={showAllTags}
+        onClick={showAllExtensions}
       >
         <TagsIcon className="w-4 h-4 mr-1" strokeWidth={1} />
         <span className="text-2xs text-zinc-900 dark:text-white mr-1">Total</span>
