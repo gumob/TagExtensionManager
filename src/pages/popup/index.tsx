@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 
+import { createRoot } from 'react-dom/client';
 import { Toaster } from 'react-hot-toast';
 
 import { ExtensionManager } from '@/features/extension/components/ExtensionManager';
+import '@/shared/styles/globals.css';
 import { logger } from '@/shared/utils/Logger';
-import { setupColorSchemeListener } from '@/shared/utils/ThemeUtils';
 
 /**
  * The main component for the extension manager.
@@ -50,4 +51,19 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+/**
+ * The container element.
+ */
+const container = document.getElementById('app');
+
+/**
+ * The root element.
+ */
+if (container) {
+  const root = createRoot(container);
+  root.render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
+}

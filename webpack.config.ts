@@ -13,9 +13,9 @@ const isDev = process.env.NODE_ENV === 'development';
 const config: Configuration = {
   mode: isDev ? 'development' : 'production',
   entry: {
-    popup: './src/popup/index.tsx',
-    background: './src/background/index.ts',
-    offscreen: './src/offscreen/index.ts',
+    popup: './src/pages/popup/index.tsx',
+    background: './src/pages/background/index.ts',
+    offscreen: './src/pages/offscreen/index.ts',
   },
   output: {
     path: path.resolve(__dirname, isDev ? 'dist/dev' : 'dist/prod'),
