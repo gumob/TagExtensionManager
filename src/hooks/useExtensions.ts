@@ -101,16 +101,19 @@ export const useExtensions = () => {
     try {
       setIsLoading(true);
       const extensions = await chromeAPI.getAllExtensions();
-      const sortedExtensions = extensions.map(formatExtension);
-      sortedExtensions.sort((a, b) => a.name.localeCompare(b.name));
+      /** Format the extensions */
+      const formattedExtensions = extensions.map(formatExtension);
+      /** Sort the extensions */
+      formattedExtensions.sort((a, b) => a.name.localeCompare(b.name));
       logger.debug('Refreshing extensions state', {
         group: 'useExtensions',
         persist: true,
       });
-      setExtensions(sortedExtensions);
+      /** Update the local state with the current extensions */
+      setExtensions(formattedExtensions);
       /** Update the extension store with the current extensions */
-      setStoreExtensions(sortedExtensions);
-      return sortedExtensions;
+      setStoreExtensions(formattedExtensions);
+      return formattedExtensions;
     } catch (error) {
       logger.error('Failed to refresh extensions', {
         group: 'useExtensions',
