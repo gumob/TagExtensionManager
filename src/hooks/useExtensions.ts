@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { Extension } from '@/models';
+import { ExtensionModel } from '@/models';
 import { useExtensionStore } from '@/stores';
 import { getAllExtensions, logger } from '@/utils';
 
@@ -23,7 +23,7 @@ export const useExtensions = () => {
    * - isLoading: Tracks when extension data is being loaded/refreshed
    * - isManualRefresh: Controls whether extension updates trigger automatic refresh
    */
-  const [extensions, setExtensions] = useState<Extension[]>([]);
+  const [extensions, setExtensions] = useState<ExtensionModel[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isManualRefresh, setIsManualRefresh] = useState(false);
@@ -89,7 +89,7 @@ export const useExtensions = () => {
     /** Watch for extension updates */
     const handleExtensionUpdate = (details: chrome.runtime.InstalledDetails) => {
       if (details.reason === 'update') {
-        logger.info('Extension updated', {
+        logger.info('ExtensionModel updated', {
           group: 'useExtensions',
           persist: true,
         });

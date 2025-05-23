@@ -1,4 +1,4 @@
-import { Extension, Tag } from '@/models';
+import { ExtensionModel, TagModel } from '@/models';
 
 /**
  * The props for the ExtensionHeader component.
@@ -9,10 +9,10 @@ import { Extension, Tag } from '@/models';
  * @param extensions - The extensions to display.
  */
 interface ExtensionHeaderProps {
-  tag: Tag;
+  tag: TagModel;
   extensionCount: number;
-  onToggle: (enabled: boolean, extensions: Extension[]) => void;
-  extensions: Extension[];
+  onToggle: (enabled: boolean, extensions: ExtensionModel[]) => void;
+  extensions: ExtensionModel[];
 }
 
 /**

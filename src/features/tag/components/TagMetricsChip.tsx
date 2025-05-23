@@ -2,7 +2,7 @@ import { TagsIcon, ToggleLeftIcon, ToggleRightIcon } from 'lucide-react';
 
 import { FC, useEffect, useState } from 'react';
 
-import { Extension } from '@/models';
+import { ExtensionModel } from '@/models';
 import { useTagStore } from '@/stores';
 
 /**
@@ -11,7 +11,7 @@ import { useTagStore } from '@/stores';
  * @param extensions - The extensions to display.
  */
 interface TagMetricsChipProps {
-  extensions?: Extension[];
+  extensions?: ExtensionModel[];
 }
 
 /**

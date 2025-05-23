@@ -8,7 +8,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { FixedSizeList } from 'react-window';
 
 import { TagEditorItem } from '@/features/tag/components';
-import { Tag } from '@/models';
+import { TagModel } from '@/models';
 import { useTagStore } from '@/stores';
 
 /**

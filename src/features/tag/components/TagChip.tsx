@@ -1,6 +1,6 @@
 import { TagIcon } from 'lucide-react';
 
-import { Tag } from '@/models';
+import { TagModel } from '@/models';
 import { useTagStore } from '@/stores';
 
 /**
@@ -10,7 +10,7 @@ import { useTagStore } from '@/stores';
  * @param extensionCount - The number of extensions with the tag.
  */
 interface TagChipProps {
-  tag: Tag;
+  tag: TagModel;
   extensionCount?: number;
 }
 

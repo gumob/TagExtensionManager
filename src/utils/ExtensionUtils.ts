@@ -1,5 +1,5 @@
 import { chromeAPI } from '@/api/ChromeAPI';
-import { Extension } from '@/models';
+import { ExtensionModel } from '@/models';
 import { useExtensionStore } from '@/stores';
 
 /**
@@ -27,7 +27,7 @@ const findOptimalIcon = (icons: chrome.management.IconInfo[] | undefined): strin
  * @param ext - The extension.
  * @returns The formatted extension.
  */
-export const formatExtension = (ext: chrome.management.ExtensionInfo): Extension => {
+export const formatExtension = (ext: chrome.management.ExtensionInfo): ExtensionModel => {
   const { extensions } = useExtensionStore.getState();
   const storedExtension = extensions.find(e => e.id === ext.id);
   const isLocked = storedExtension?.locked ?? false;
@@ -47,7 +47,7 @@ export const formatExtension = (ext: chrome.management.ExtensionInfo): Extension
  * Get all extensions.
  * @returns The extensions.
  */
-export const getAllExtensions = async (): Promise<Extension[]> => {
+export const getAllExtensions = async (): Promise<ExtensionModel[]> => {
   const extensions = await chromeAPI.getAllExtensions();
   const formattedExtensions = extensions.map(formatExtension);
   formattedExtensions.sort((a, b) => a.name.localeCompare(b.name));

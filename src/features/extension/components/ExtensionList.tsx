@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { chromeAPI } from '@/api/ChromeAPI';
 import { ExtensionCard } from '@/features/extension/components/ExtensionCard';
 import { ExtensionHeader } from '@/features/extension/components/ExtensionHeader';
-import { Extension } from '@/models';
+import { ExtensionModel } from '@/models';
 import { useTagStore } from '@/stores';
 import { useExtensionStore } from '@/stores';
 import { logger } from '@/utils';
@@ -16,7 +16,7 @@ import { logger } from '@/utils';
  * @returns
  */
 interface ExtensionListProps {
-  extensions: Extension[];
+  extensions: ExtensionModel[];
   onExtensionStateChange: (id: string, enabled: boolean) => void;
 }
 
@@ -27,7 +27,7 @@ interface ExtensionListProps {
  * @returns
  */
 export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionListProps) {
-  const [localExtensions, setLocalExtensions] = useState<Extension[]>(extensions);
+  const [localExtensions, setLocalExtensions] = useState<ExtensionModel[]>(extensions);
   const { tags, extensionTags, visibleTagId } = useTagStore();
   const { toggleLock } = useExtensionStore();
 
@@ -125,7 +125,7 @@ export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionL
       }
       return acc;
     },
-    {} as Record<string, Extension[]>
+    {} as Record<string, ExtensionModel[]>
   );
 
   /**

@@ -1,5 +1,5 @@
 import { TagChip, TagEditChip, TagMetricsChip } from '@/features/tag/components';
-import { Extension } from '@/models';
+import { ExtensionModel } from '@/models';
 import { useTagStore } from '@/stores';
 
 /**
@@ -7,7 +7,7 @@ import { useTagStore } from '@/stores';
  *
  * @param extensions - The extensions to display.
  */
-export const TagList = ({ extensions }: { extensions: Extension[] }) => {
+export const TagList = ({ extensions }: { extensions: ExtensionModel[] }) => {
   /**
    * The tag store.
    */

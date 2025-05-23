@@ -7,7 +7,7 @@ import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { FixedSizeList } from 'react-window';
 
-import { Tag } from '@/models';
+import { TagModel } from '@/models';
 import { useTagStore } from '@/stores';
 
 /**
@@ -21,7 +21,7 @@ import { useTagStore } from '@/stores';
  * @param onTagClick - The callback to click the tag.
  */
 interface TagEditorItemProps {
-  tag: Tag;
+  tag: TagModel;
   index: number;
   moveTag: (dragIndex: number, hoverIndex: number) => void;
   isEditing: boolean;

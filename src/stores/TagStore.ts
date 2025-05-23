@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import { chromeAPI } from '@/api/ChromeAPI';
-import { ExtensionTag, Tag, TagState } from '@/models';
+import { TagExtensionMapModel, TagModel, TagManagementModel } from '@/models';
 import { logger } from '@/utils';
 
 /**
@@ -16,15 +16,15 @@ import { logger } from '@/utils';
  * @property addTagToExtension - The add tag to extension function.
  * @property removeTagFromExtension - The remove tag from extension function.
  */
-export interface TagStore extends TagState {
+export interface TagStore extends TagManagementModel {
   addTag: (name: string) => void;
   updateTag: (id: string, name: string) => void;
   deleteTag: (id: string) => void;
   reorderTags: (tagIds: string[]) => void;
   addTagToExtension: (extensionId: string, tagId: string) => void;
   removeTagFromExtension: (extensionId: string, tagId: string) => void;
-  importTags: (tags: Tag[], extensionTags: ExtensionTag[]) => void;
-  exportTags: () => { tags: Tag[]; extensionTags: ExtensionTag[] };
+  importTags: (tags: TagModel[], extensionTags: TagExtensionMapModel[]) => void;
+  exportTags: () => { tags: TagModel[]; extensionTags: TagExtensionMapModel[] };
   initialize: () => Promise<void>;
   setVisibleTag: (tagId: string | null) => void;
   showAllTags: () => void;
@@ -131,7 +131,7 @@ export const useTagStore = create<TagStore>()(
        */
       addTag: (name: string) => {
         const { tags } = get();
-        const newTag: Tag = {
+        const newTag: TagModel = {
           id: uuidv4(),
           name,
           order: 0,
@@ -234,7 +234,7 @@ export const useTagStore = create<TagStore>()(
               updatedAt: new Date(),
             };
           })
-          .filter((tag): tag is Tag => tag !== null);
+          .filter((tag): tag is TagModel => tag !== null);
         set({ tags: updatedTags });
       },
 
@@ -310,7 +310,7 @@ export const useTagStore = create<TagStore>()(
        * Imports tags and their extension associations from external data
        * This completely replaces the current tags and associations
        */
-      importTags: (tags: Tag[], extensionTags: ExtensionTag[]) => {
+      importTags: (tags: TagModel[], extensionTags: TagExtensionMapModel[]) => {
         set({ tags, extensionTags });
       },
 

@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { Extension } from '@/models';
+import { ExtensionModel } from '@/models';
 
 /**
  * The extension store type.
@@ -13,11 +13,11 @@ import { Extension } from '@/models';
  * @property importExtensions - The import extension states.
  */
 interface ExtensionStore {
-  extensions: Extension[];
-  setExtensions: (extensions: Extension[]) => void;
+  extensions: ExtensionModel[];
+  setExtensions: (extensions: ExtensionModel[]) => void;
   toggleExtension: (id: string) => void;
   toggleLock: (id: string) => void;
-  importExtensions: (extensions: Extension[]) => void;
+  importExtensions: (extensions: ExtensionModel[]) => void;
 }
 
 /**

@@ -7,7 +7,7 @@ import { chromeAPI } from '@/api/ChromeAPI';
 import { ExtensionCardMenu } from '@/features/extension/components';
 import { TagSelector } from '@/features/tag/components';
 import { useExtensions } from '@/hooks';
-import { Extension } from '@/models';
+import { ExtensionModel } from '@/models';
 import { useTagStore } from '@/stores';
 import { logger } from '@/utils';
 
@@ -20,7 +20,7 @@ import { logger } from '@/utils';
  * @param onLockToggle - The callback to lock the extension.
  */
 interface ExtensionCardProps {
-  extension: Extension;
+  extension: ExtensionModel;
   onToggle: (id: string, enabled: boolean) => void;
   onSettingsClick: (id: string) => void;
   onLockToggle: (id: string, locked: boolean) => void;

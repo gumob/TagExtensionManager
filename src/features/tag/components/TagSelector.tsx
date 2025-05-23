@@ -6,14 +6,14 @@ import { TagIcon as TagSolidIcon } from '@heroicons/react/24/solid';
 
 import { Fragment, useEffect, useRef, useState } from 'react';
 
-import { Tag } from '@/models';
+import { TagModel } from '@/models';
 
 /**
  * The props for the TagSelector component.
  */
 interface TagSelectorProps {
   isOpen: boolean;
-  tags: Tag[];
+  tags: TagModel[];
   selectedTagIds: string[];
   onClose: () => void;
   onSelectTags: (tagIds: string[]) => void;
