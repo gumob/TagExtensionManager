@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 
-import { chromeAPI } from '@/api/chrome';
+import { chromeAPI } from '@/api/ChromeAPI';
 import { ExtensionList, SearchBar } from '@/features/extension/components';
 import { ProfileManager } from '@/features/profile/components';
 import { TagList } from '@/features/tag/components';

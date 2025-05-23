@@ -3,7 +3,7 @@ import { LockClosedIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useRef, useState } from 'react';
 
-import { chromeAPI } from '@/api/chrome';
+import { chromeAPI } from '@/api/ChromeAPI';
 import { ExtensionCardMenu } from '@/features/extension/components';
 import { TagSelector } from '@/features/tag/components';
 import { useExtensions } from '@/hooks';

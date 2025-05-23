@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { chromeAPI } from '@/api/chrome';
+import { chromeAPI } from '@/api/ChromeAPI';
 import { ExtensionCard } from '@/features/extension/components/ExtensionCard';
 import { ExtensionHeader } from '@/features/extension/components/ExtensionHeader';
 import { Extension } from '@/models';

@@ -13,15 +13,9 @@ export class ChromeAPI {
   private static instance: ChromeAPI;
 
   /**
-   * The storage instance.
-   */
-  private storage: Storage;
-
-  /**
    * The constructor.
    */
   private constructor() {
-    this.storage = new Storage();
   }
 
   /**
@@ -35,16 +29,17 @@ export class ChromeAPI {
     return ChromeAPI.instance;
   }
 
-  // Storage API
   /**
-   * The get method.
+   * The function that gets local storage.
    * @param key - The key.
    * @returns The value.
    */
-  public async get<T>(key: string): Promise<T | null> {
+  public async getLocalStorage(
+    keys?: string | string[] | { [key: string]: any } | null
+  ): Promise<{ [key: string]: any }> {
     try {
-      const value = await this.storage.get<T>(key);
-      return value ?? null;
+      const result = await chrome.storage.local.get(keys);
+      return result;
     } catch (error) {
       logger.error('Failed to get value from storage', {
         group: 'ChromeAPI',
@@ -55,13 +50,12 @@ export class ChromeAPI {
   }
 
   /**
-   * The set method.
-   * @param key - The key.
-   * @param value - The value.
+   * The function that sets local storage.
+   * @param items - The items.
    */
-  public async set<T>(key: string, value: T): Promise<void> {
+  public async setLocalStorage(items: { [key: string]: any }): Promise<void> {
     try {
-      await this.storage.set(key, value);
+      await chrome.storage.local.set(items);
     } catch (error) {
       logger.error('Failed to set value in storage', {
         group: 'ChromeAPI',
@@ -72,12 +66,12 @@ export class ChromeAPI {
   }
 
   /**
-   * The remove method.
+   * The function that removes local storage.
    * @param key - The key.
    */
-  public async remove(key: string): Promise<void> {
+  public async removeLocalStorage(key: string): Promise<void> {
     try {
-      await this.storage.remove(key);
+      await chrome.storage.local.remove(key);
     } catch (error) {
       logger.error('Failed to remove value from storage', {
         group: 'ChromeAPI',
@@ -88,13 +82,13 @@ export class ChromeAPI {
   }
 
   /**
-   * The clear method.
+   * The function that clears local storage.
    */
-  public async clear(): Promise<void> {
+  public async clearLocalStorage(): Promise<void> {
     try {
-      await this.storage.clear();
+      await chrome.storage.local.clear();
     } catch (error) {
-      logger.error('Failed to clear storage', {
+      logger.error('Failed to clear local storage', {
         group: 'ChromeAPI',
         persist: true,
       });
@@ -102,9 +96,8 @@ export class ChromeAPI {
     }
   }
 
-  // Tabs API
   /**
-   * The get current tab method.
+   * The function that gets current tab.
    * @returns The current tab.
    */
   public async getCurrentTab(): Promise<chrome.tabs.Tab | null> {
@@ -121,7 +114,7 @@ export class ChromeAPI {
   }
 
   /**
-   * Create a new tab.
+   * The function that creates a new tab.
    * @param url - The URL to open.
    * @returns The created tab.
    */
@@ -138,7 +131,7 @@ export class ChromeAPI {
   }
 
   /**
-   * The send message method.
+   * The function that sends a message.
    * @param tabId - The tab id.
    * @param message - The message.
    * @returns The message response.
@@ -157,7 +150,7 @@ export class ChromeAPI {
 
   // Runtime API
   /**
-   * The send runtime message method.
+   * The function that sends a runtime message.
    * @param message - The message.
    * @returns The message response.
    */
@@ -174,7 +167,7 @@ export class ChromeAPI {
   }
 
   /**
-   * The add message listener method.
+   * The function that adds a message listener.
    * @param callback - The callback.
    */
   public addMessageListener(
@@ -185,7 +178,7 @@ export class ChromeAPI {
 
   // Action API
   /**
-   * Set the extension icon.
+   * The function that sets the extension icon.
    * @param icon - The icon details.
    */
   public async setIcon(icon: chrome.action.TabIconDetails): Promise<void> {
@@ -202,7 +195,7 @@ export class ChromeAPI {
 
   // Management API
   /**
-   * Get all extensions.
+   * The function that gets all extensions.
    * @returns The extensions.
    */
   public async getAllExtensions(): Promise<chrome.management.ExtensionInfo[]> {
@@ -220,7 +213,7 @@ export class ChromeAPI {
   }
 
   /**
-   * Get extension info.
+   * The function that gets extension info.
    * @param id - The extension id.
    * @returns The extension info.
    */
@@ -245,7 +238,7 @@ export class ChromeAPI {
   }
 
   /**
-   * Toggle extension state.
+   * The function that toggles the extension state.
    * @param id - The extension id.
    * @param enabled - Whether the extension is enabled.
    */
@@ -270,7 +263,7 @@ export class ChromeAPI {
   }
 
   /**
-   * Uninstall extension.
+   * The function that uninstalls an extension.
    * @param id - The extension id.
    */
   public async uninstallExtension(id: string): Promise<void> {
@@ -295,7 +288,7 @@ export class ChromeAPI {
 
   // Offscreen API
   /**
-   * Check if offscreen document exists.
+   * The function that checks if an offscreen document exists.
    * @returns Whether the offscreen document exists.
    */
   public async hasOffscreenDocument(): Promise<boolean> {
@@ -311,7 +304,7 @@ export class ChromeAPI {
   }
 
   /**
-   * Create offscreen document.
+   * The function that creates an offscreen document.
    * @param url - The URL.
    * @param reasons - The reasons.
    * @param justification - The justification.
@@ -337,7 +330,7 @@ export class ChromeAPI {
   }
 
   /**
-   * Close offscreen document.
+   * The function that closes an offscreen document.
    */
   public async closeOffscreenDocument(): Promise<void> {
     try {

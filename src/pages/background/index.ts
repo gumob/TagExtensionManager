@@ -1,4 +1,4 @@
-import { chromeAPI } from '@/api/chrome';
+import { chromeAPI } from '@/api/ChromeAPI';
 import { logger } from '@/utils/Logger';
 import { updateExtensionIcon } from '@/utils/ThemeUtils';
 
@@ -83,7 +83,7 @@ const createDefaultProfile = async () => {
       persist: true,
     });
 
-    await chromeAPI.set('extension-manager-profiles', defaultProfile);
+    await chromeAPI.setLocalStorage({ 'extension-manager-profiles': defaultProfile });
     logger.debug('Default profile saved to storage', {
       group: 'background',
       persist: true,
@@ -114,7 +114,7 @@ chrome.runtime.onInstalled.addListener(async details => {
         group: 'background',
         persist: true,
       });
-      await chromeAPI.clear();
+      await chromeAPI.clearLocalStorage();
       logger.debug('Storage cleared', {
         group: 'background',
         persist: true,

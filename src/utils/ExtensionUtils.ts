@@ -1,4 +1,4 @@
-import { chromeAPI } from '@/api/chrome';
+import { chromeAPI } from '@/api/ChromeAPI';
 import { Extension } from '@/models';
 import { useExtensionStore } from '@/stores';
 
