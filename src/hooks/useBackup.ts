@@ -23,7 +23,7 @@ export const useBackup = () => {
   const { importExtensions } = useExtensionStore();
 
   /**
-   * Exports the current profile configuration to a JSON file.
+   * The function that exports the current profile configuration to a JSON file.
    * 
    * Step-by-step process:
    * 1. Retrieves current tag data using exportTags()
@@ -91,7 +91,7 @@ export const useBackup = () => {
   };
 
   /**
-   * Imports a profile configuration from a JSON file.
+   * The function that imports a profile configuration from a JSON file.
    * 
    * Step-by-step process:
    * 1. Creates FileReader to read the JSON file

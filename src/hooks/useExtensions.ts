@@ -5,10 +5,24 @@ import { useExtensionStore } from '@/stores';
 import { getAllExtensions, logger } from '@/utils';
 
 /**
- * The hook for managing extensions.
- * @returns
+ * The custom React hook that manages browser extension states and operations.
+ * This hook provides functionality to:
+ * - Load and refresh extension data
+ * - Filter extensions by search query
+ * - Track loading states
+ * - Handle extension state changes (enable/disable/install/uninstall)
+ * - Manage manual vs automatic refresh behavior
+ * 
+ * @returns An object containing extension data and management functions
  */
 export const useExtensions = () => {
+  /**
+   * State Management:
+   * - extensions: Stores the list of all browser extensions
+   * - searchQuery: Stores the current search term for filtering extensions
+   * - isLoading: Tracks when extension data is being loaded/refreshed
+   * - isManualRefresh: Controls whether extension updates trigger automatic refresh
+   */
   const [extensions, setExtensions] = useState<Extension[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -16,7 +30,14 @@ export const useExtensions = () => {
   const { setExtensions: setStoreExtensions } = useExtensionStore();
 
   /**
-   * Refresh the extensions.
+   * The callback function that refreshes the list of extensions by:
+   * 1. Setting loading state to true
+   * 2. Fetching latest extension data from Chrome
+   * 3. Updating both local state and global store
+   * 4. Handling any errors during refresh
+   * 5. Setting loading state back to false
+   * 
+   * This function is memoized to prevent unnecessary re-renders
    */
   const refreshExtensions = useCallback(async () => {
     try {
@@ -42,7 +63,14 @@ export const useExtensions = () => {
   }, [setStoreExtensions]);
 
   /**
-   * Watch for extension state changes.
+   * The effect hook that:
+   * 1. Loads initial extension data when component mounts
+   * 2. Sets up event listeners for extension state changes:
+   *    - When extensions are enabled/disabled
+   *    - When extensions are installed/uninstalled
+   *    - When extensions are updated
+   * 3. Handles automatic vs manual refresh logic
+   * 4. Cleans up event listeners when component unmounts
    */
   useEffect(() => {
     /** Get the initial state */
@@ -88,7 +116,10 @@ export const useExtensions = () => {
   }, [refreshExtensions, isManualRefresh]);
 
   /**
-   * The filtered extensions.
+   * The memoized computation that filters extensions based on search query:
+   * - Converts both extension name and search query to lowercase for case-insensitive search
+   * - Returns only extensions whose names contain the search query
+   * - Updates automatically when extensions or search query change
    */
   const filteredExtensions = useMemo(
     () => extensions.filter(ext => ext.name.toLowerCase().includes(searchQuery.toLowerCase())),
@@ -96,8 +127,14 @@ export const useExtensions = () => {
   );
 
   /**
-   * Get the current extension states.
-   * @returns
+   * The function that returns a snapshot of current extension states:
+   * - Maps through all extensions
+   * - For each extension, returns an object with:
+   *   - id: The extension's unique identifier
+   *   - enabled: Whether the extension is currently active
+   *   - locked: Whether the extension can be modified
+   * 
+   * This function is memoized to prevent unnecessary recalculations
    */
   const getCurrentExtensionStates = useCallback(() => {
     return extensions.map(ext => ({
