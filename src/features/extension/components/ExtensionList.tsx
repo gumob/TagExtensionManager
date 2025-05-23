@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import { chromeAPI } from '@/api/chrome';
 import { ExtensionCard } from '@/features/extension/components/ExtensionCard';
 import { ExtensionHeader } from '@/features/extension/components/ExtensionHeader';
 import { Extension } from '@/models';
@@ -43,22 +44,13 @@ export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionL
    * @param enabled
    */
   const handleToggle = async (id: string, enabled: boolean) => {
-    try {
-      /** Update the local extensions immediately */
-      setLocalExtensions(prevExtensions =>
-        prevExtensions.map(ext => (ext.id === id ? { ...ext, enabled } : ext))
-      );
+    /** Update the local extensions immediately */
+    setLocalExtensions(prevExtensions =>
+      prevExtensions.map(ext => (ext.id === id ? { ...ext, enabled } : ext))
+    );
 
-      /** Notify the parent component */
-      onExtensionStateChange(id, enabled);
-    } catch (error) {
-      logger.error('Failed to toggle extension', {
-        group: 'ExtensionList',
-        persist: true,
-      });
-      /** If an error occurs, revert to the original state */
-      setLocalExtensions(extensions);
-    }
+    /** Notify the parent component */
+    onExtensionStateChange(id, enabled);
   };
 
   /**
@@ -67,29 +59,20 @@ export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionL
    * @param locked
    */
   const handleLockToggle = (id: string, locked: boolean) => {
-    try {
-      /** Update the local extensions immediately */
-      setLocalExtensions(prevExtensions =>
-        prevExtensions.map(ext => (ext.id === id ? { ...ext, locked } : ext))
-      );
+    /** Update the local extensions immediately */
+    setLocalExtensions(prevExtensions =>
+      prevExtensions.map(ext => (ext.id === id ? { ...ext, locked } : ext))
+    );
 
-      /** Update the store */
-      toggleLock(id);
-    } catch (error) {
-      logger.error('Failed to toggle lock state', {
-        group: 'ExtensionList',
-        persist: true,
-      });
-      /** If an error occurs, revert to the original state */
-      setLocalExtensions(extensions);
-    }
+    /** Update the store */
+    toggleLock(id);
   };
 
   /**
    * Handle the settings click event.
    * @param extensionId
    */
-  const handleSettingsClick = (extensionId: string) => {
+  const handleSettingsClick = async (extensionId: string) => {
     const browser = navigator.userAgent.toLowerCase();
     let baseUrl = 'chrome://extensions';
 
@@ -103,7 +86,7 @@ export function ExtensionList({ extensions, onExtensionStateChange }: ExtensionL
       baseUrl = 'vivaldi://extensions';
     }
 
-    chrome.tabs.create({ url: `${baseUrl}/?id=${extensionId}` });
+    await chromeAPI.createTab(`${baseUrl}/?id=${extensionId}`);
   };
 
   /**

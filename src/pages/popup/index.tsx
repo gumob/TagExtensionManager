@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Toaster } from 'react-hot-toast';
 
+import { chromeAPI } from '@/api/chrome';
 import { ExtensionManager } from '@/features/extension/components/ExtensionManager';
 import '@/styles/globals.css';
 import { logger } from '@/utils/Logger';
@@ -22,7 +23,7 @@ const App: React.FC = () => {
         group: 'App',
         persist: true,
       });
-      chrome.runtime.sendMessage({
+      chromeAPI.sendRuntimeMessage({
         type: 'COLOR_SCHEME_CHANGED',
         isDarkMode: e.matches,
       });

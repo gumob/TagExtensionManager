@@ -1,3 +1,4 @@
+import { chromeAPI } from '@/api/chrome';
 import { logger } from '@/utils/Logger';
 import { updateExtensionIcon } from '@/utils/ThemeUtils';
 
@@ -13,16 +14,16 @@ logger.debug('Starting background script', {
 const createOffscreenDocument = async () => {
   try {
     /** Close existing document */
-    if (await chrome.offscreen.hasDocument()) {
-      await chrome.offscreen.closeDocument();
+    if (await chromeAPI.hasOffscreenDocument()) {
+      await chromeAPI.closeOffscreenDocument();
     }
 
     /** Create new document */
-    await chrome.offscreen.createDocument({
-      url: 'offscreen.html',
-      reasons: ['DOM_PARSER' as chrome.offscreen.Reason],
-      justification: 'Detect system color scheme changes',
-    });
+    await chromeAPI.createOffscreenDocument(
+      'offscreen.html',
+      ['DOM_PARSER' as chrome.offscreen.Reason],
+      'Detect system color scheme changes'
+    );
     logger.debug('Offscreen document created successfully', {
       group: 'background',
       persist: true,
@@ -45,55 +46,55 @@ const initializeIcon = async () => {
 /**
  * Create Default profile
  */
-const createDefaultProfile = () => {
+const createDefaultProfile = async () => {
   logger.debug('Creating default profile', {
     group: 'background',
     persist: true,
   });
-  return new Promise<void>((resolve, reject) => {
-    chrome.management.getAll(extensions => {
-      logger.debug('Got extensions', {
-        group: 'background',
-        persist: true,
-      });
-      const defaultExtensions = extensions.map(ext => ({
-        id: ext.id,
-        enabled: ext.enabled,
-      }));
-      const now = new Date().toISOString();
-      const defaultProfile = {
-        profiles: [
-          {
-            id: crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2),
-            name: 'Default',
-            extensions: defaultExtensions,
-            createdAt: now,
-            updatedAt: now,
-          },
-        ],
-        currentProfileId: null,
-      };
-      logger.debug('Setting default profile', {
-        group: 'background',
-        persist: true,
-      });
-      chrome.storage.local.set({ 'extension-manager-profiles': defaultProfile }, () => {
-        if (chrome.runtime.lastError) {
-          logger.error('Error saving default profile', {
-            group: 'background',
-            persist: true,
-          });
-          reject(chrome.runtime.lastError);
-        } else {
-          logger.debug('Default profile saved to storage', {
-            group: 'background',
-            persist: true,
-          });
-          resolve();
-        }
-      });
+
+  try {
+    const extensions = await chromeAPI.getAllExtensions();
+    logger.debug('Got extensions', {
+      group: 'background',
+      persist: true,
     });
-  });
+
+    const defaultExtensions = extensions.map(ext => ({
+      id: ext.id,
+      enabled: ext.enabled,
+    }));
+
+    const now = new Date().toISOString();
+    const defaultProfile = {
+      profiles: [
+        {
+          id: crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2),
+          name: 'Default',
+          extensions: defaultExtensions,
+          createdAt: now,
+          updatedAt: now,
+        },
+      ],
+      currentProfileId: null,
+    };
+
+    logger.debug('Setting default profile', {
+      group: 'background',
+      persist: true,
+    });
+
+    await chromeAPI.set('extension-manager-profiles', defaultProfile);
+    logger.debug('Default profile saved to storage', {
+      group: 'background',
+      persist: true,
+    });
+  } catch (error) {
+    logger.error('Error saving default profile', {
+      group: 'background',
+      persist: true,
+    });
+    throw error;
+  }
 };
 
 /**
@@ -113,22 +114,10 @@ chrome.runtime.onInstalled.addListener(async details => {
         group: 'background',
         persist: true,
       });
-      await new Promise<void>((resolve, reject) => {
-        chrome.storage.local.clear(() => {
-          if (chrome.runtime.lastError) {
-            logger.error('Error clearing storage', {
-              group: 'background',
-              persist: true,
-            });
-            reject(chrome.runtime.lastError);
-          } else {
-            logger.debug('Storage cleared', {
-              group: 'background',
-              persist: true,
-            });
-            resolve();
-          }
-        });
+      await chromeAPI.clear();
+      logger.debug('Storage cleared', {
+        group: 'background',
+        persist: true,
       });
 
       await createDefaultProfile();

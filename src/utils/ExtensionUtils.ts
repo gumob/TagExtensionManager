@@ -1,3 +1,4 @@
+import { chromeAPI } from '@/api/chrome';
 import { Extension } from '@/models';
 import { useExtensionStore } from '@/stores';
 
@@ -46,18 +47,11 @@ export const formatExtension = (ext: chrome.management.ExtensionInfo): Extension
  * Get all extensions.
  * @returns The extensions.
  */
-export const getAllExtensions = (): Promise<Extension[]> => {
-  return new Promise(resolve => {
-    if (typeof chrome !== 'undefined' && chrome.management) {
-      chrome.management.getAll(extensions => {
-        const formattedExtensions = extensions.map(formatExtension);
-        formattedExtensions.sort((a, b) => a.name.localeCompare(b.name));
-        resolve(formattedExtensions);
-      });
-    } else {
-      resolve([]);
-    }
-  });
+export const getAllExtensions = async (): Promise<Extension[]> => {
+  const extensions = await chromeAPI.getAllExtensions();
+  const formattedExtensions = extensions.map(formatExtension);
+  formattedExtensions.sort((a, b) => a.name.localeCompare(b.name));
+  return formattedExtensions;
 };
 
 /**
@@ -66,18 +60,6 @@ export const getAllExtensions = (): Promise<Extension[]> => {
  * @param enabled - Whether the extension is enabled.
  * @returns The promise.
  */
-export const toggleExtension = (id: string, enabled: boolean): Promise<void> => {
-  return new Promise((resolve, reject) => {
-    if (typeof chrome !== 'undefined' && chrome.management) {
-      chrome.management.setEnabled(id, enabled, () => {
-        if (chrome.runtime.lastError) {
-          reject(chrome.runtime.lastError);
-        } else {
-          resolve();
-        }
-      });
-    } else {
-      reject(new Error('Chrome management API not available'));
-    }
-  });
+export const toggleExtension = async (id: string, enabled: boolean): Promise<void> => {
+  await chromeAPI.toggleExtension(id, enabled);
 };

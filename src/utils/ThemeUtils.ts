@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { chromeAPI } from '@/api/chrome';
 import { logger } from '@/utils';
 
 /**
@@ -23,7 +24,7 @@ export const detectThemeOnOffscreen = () => {
     group: 'themeDetector',
     persist: true,
   });
-  chrome.runtime.sendMessage({
+  chromeAPI.sendRuntimeMessage({
     type: 'COLOR_SCHEME_CHANGED',
     isDarkMode: isDarkMode,
   });
@@ -64,7 +65,7 @@ export const updateExtensionIcon = async (isDarkMode: boolean) => {
 
   try {
     const iconPath = isDarkMode ? '/icons/dark/' : '/icons/light/';
-    await chrome.action.setIcon({
+    await chromeAPI.setIcon({
       path: {
         16: `${iconPath}icon16.png`,
         48: `${iconPath}icon48.png`,

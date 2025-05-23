@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 
+import { chromeAPI } from '@/api/chrome';
 import { ExtensionList, SearchBar } from '@/features/extension/components';
 import { ProfileManager } from '@/features/profile/components';
 import { TagList } from '@/features/tag/components';
@@ -24,31 +25,14 @@ export const ExtensionManager: React.FC = () => {
    */
   const handleExtensionStateChange = useCallback(
     async (id: string, enabled: boolean) => {
-      try {
-        /** Set the manual refresh flag */
-        setIsManualRefresh(true);
+      /** Set the manual refresh flag */
+      setIsManualRefresh(true);
 
-        /** Update the extension state using Chrome API */
-        await new Promise<void>((resolve, reject) => {
-          chrome.management.setEnabled(id, enabled, () => {
-            if (chrome.runtime.lastError) {
-              reject(chrome.runtime.lastError);
-            } else {
-              resolve();
-            }
-          });
-        });
+      /** Update the extension state using Chrome API */
+      await chromeAPI.toggleExtension(id, enabled);
 
-        /** Refresh the extension states after the update */
-        await refreshExtensions();
-      } catch (error) {
-        logger.error('Failed to update extension state', {
-          group: 'ExtensionManager',
-          persist: true,
-        });
-        /** If an error occurs, refresh the extension states */
-        await refreshExtensions();
-      }
+      /** Refresh the extension states after the update */
+      await refreshExtensions();
     },
     [refreshExtensions, setIsManualRefresh]
   );

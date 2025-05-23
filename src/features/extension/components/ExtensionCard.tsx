@@ -3,6 +3,7 @@ import { LockClosedIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useRef, useState } from 'react';
 
+import { chromeAPI } from '@/api/chrome';
 import { ExtensionCardMenu } from '@/features/extension/components';
 import { TagSelector } from '@/features/tag/components';
 import { useExtensions } from '@/hooks';
@@ -70,15 +71,8 @@ export function ExtensionCard({
    */
   useEffect(() => {
     const checkOptionsPage = async () => {
-      try {
-        const extensionInfo = await chrome.management.get(extension.id);
-        setHasOptionsPage(!!extensionInfo.optionsUrl);
-      } catch (error) {
-        logger.error('Failed to get extension info', {
-          group: 'ExtensionCard',
-          persist: true,
-        });
-      }
+      const extensionInfo = await chromeAPI.getExtensionInfo(extension.id);
+      setHasOptionsPage(!!extensionInfo.optionsUrl);
     };
     checkOptionsPage();
   }, [extension.id]);
@@ -113,16 +107,9 @@ export function ExtensionCard({
    * Handle uninstall.
    */
   const handleUninstall = async () => {
-    try {
-      await chrome.management.uninstall(extension.id);
-      /** Refresh the extension list after uninstallation */
-      await refreshExtensions();
-    } catch (error) {
-      logger.error('Failed to uninstall extension', {
-        group: 'ExtensionCard',
-        persist: true,
-      });
-    }
+    await chromeAPI.uninstallExtension(extension.id);
+    /** Refresh the extension list after uninstallation */
+    await refreshExtensions();
   };
 
   /**
@@ -131,16 +118,9 @@ export function ExtensionCard({
   const handleCardClick = async () => {
     if (!extension.enabled || !hasOptionsPage) return;
 
-    try {
-      const extensionInfo = await chrome.management.get(extension.id);
-      if (extensionInfo.optionsUrl) {
-        await chrome.tabs.create({ url: extensionInfo.optionsUrl, active: true });
-      }
-    } catch (error) {
-      logger.error('Failed to launch extension', {
-        group: 'ExtensionCard',
-        persist: true,
-      });
+    const extensionInfo = await chromeAPI.getExtensionInfo(extension.id);
+    if (extensionInfo.optionsUrl) {
+      await chromeAPI.createTab(extensionInfo.optionsUrl);
     }
   };
 
