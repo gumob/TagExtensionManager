@@ -42,20 +42,16 @@ export function TagSelector({
   const [searchQuery, setSearchQuery] = useState('');
 
   /**
+   * The filtered tags.
+   */
+  const filteredTags = tags.filter(tag =>
+    tag.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  /**
    * The search input ref.
    */
   const searchInputRef = useRef<HTMLInputElement>(null);
-
-  /**
-   * The use effect for the tag selector.
-   */
-  useEffect(() => {
-    if (isOpen) {
-      setTimeout(() => {
-        searchInputRef.current?.focus();
-      }, 100);
-    }
-  }, [isOpen]);
 
   /**
    * The handle tag click.
@@ -68,11 +64,15 @@ export function TagSelector({
   };
 
   /**
-   * The filtered tags.
+   * The use effect for the tag selector.
    */
-  const filteredTags = tags.filter(tag =>
-    tag.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => {
+        searchInputRef.current?.focus();
+      }, 100);
+    }
+  }, [isOpen]);
 
   /**
    * The TagSelector component.
