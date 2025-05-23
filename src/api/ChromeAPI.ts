@@ -1,5 +1,3 @@
-import { Storage } from '@plasmohq/storage';
-
 import { Message, MessageResponse } from '@/types';
 import { logger } from '@/utils';
 
