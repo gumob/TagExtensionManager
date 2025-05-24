@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { chromeAPI } from '@/api/ChromeAPI';
 import { ExtensionList, SearchBar } from '@/features/extension/components';
@@ -15,8 +15,7 @@ export const ExtensionManager: React.FC = () => {
   /**
    * The extensions and filtered extensions.
    */
-  const { extensions, filteredExtensions, setSearchQuery, refreshExtensions, setIsManualRefresh } =
-    useExtensions();
+  const { filteredExtensions, setSearchQuery } = useExtensions();
 
   /**
    * The visible tag id.
@@ -28,19 +27,33 @@ export const ExtensionManager: React.FC = () => {
    * @param id
    * @param enabled
    */
-  const handleExtensionStateChange = useCallback(
-    async (id: string, enabled: boolean) => {
-      /** Set the manual refresh flag */
-      setIsManualRefresh(true);
+  const handleExtensionStateChange = useCallback(async (id: string, enabled: boolean) => {
+    logger.debug(`handleExtensionStateChange: ${id} ${enabled}`, {
+      group: 'ExtensionManager',
+      persist: true,
+    });
 
-      /** Update the extension state using Chrome API */
-      await chromeAPI.toggleExtension(id, enabled);
+    /** Update the extension state using Chrome API */
+    await chromeAPI.toggleExtension(id, enabled);
+  }, []);
 
-      /** Refresh the extension states after the update */
-      await refreshExtensions();
-    },
-    [refreshExtensions, setIsManualRefresh]
-  );
+  /*
+   * Debugging
+   */
+
+  useEffect(() => {
+    logger.debug(`filteredExtensions: ${filteredExtensions.length}`, {
+      group: 'ExtensionManager',
+      persist: true,
+    });
+  }, [filteredExtensions]);
+
+  useEffect(() => {
+    logger.debug(`visibleTagId: ${visibleTagId}`, {
+      group: 'ExtensionManager',
+      persist: true,
+    });
+  }, [visibleTagId]);
 
   /**
    * The main component.

@@ -12,7 +12,7 @@ import { logger } from '@/utils';
  * 2. Starts searching from size 48px and gradually decreases
  * 3. Returns the first matching icon URL at desired size
  * 4. If no ideal size found, falls back to the first available icon
- * 
+ *
  * @param icons - Array of available icons with different sizes
  * @returns The URL of the optimal icon
  */
@@ -40,7 +40,7 @@ const findOptimalIcon = (icons: chrome.management.IconInfo[] | undefined): strin
  *    - Basic info (id, name, version)
  *    - State info (enabled, locked)
  *    - Display info (description, icon)
- * 
+ *
  * @param ext - Raw Chrome extension information
  * @returns Formatted extension data for our app
  */
@@ -105,7 +105,7 @@ export const useExtensions = () => {
       const formattedExtensions = extensions.map(formatExtension);
       /** Sort the extensions */
       formattedExtensions.sort((a, b) => a.name.localeCompare(b.name));
-      logger.debug('Refreshing extensions state', {
+      logger.debug(`refreshExtensions`, {
         group: 'useExtensions',
         persist: true,
       });
@@ -138,12 +138,20 @@ export const useExtensions = () => {
    */
   useEffect(() => {
     /** Get the initial state */
+    logger.debug(`---Initialize---`, {
+      group: 'useExtensions',
+      persist: true,
+    });
     refreshExtensions();
 
     /** Watch for extension state changes */
     const handleExtensionStateChange = () => {
       /** If manual refresh is enabled, skip automatic refresh */
       if (isManualRefresh) {
+        logger.debug(`handleExtensionStateChange`, {
+          group: 'useExtensions',
+          persist: true,
+        });
         setIsManualRefresh(false);
         return;
       }
@@ -153,7 +161,7 @@ export const useExtensions = () => {
     /** Watch for extension updates */
     const handleExtensionUpdate = (details: chrome.runtime.InstalledDetails) => {
       if (details.reason === 'update') {
-        logger.info('ExtensionModel updated', {
+        logger.info('handleExtensionUpdate', {
           group: 'useExtensions',
           persist: true,
         });
@@ -177,7 +185,7 @@ export const useExtensions = () => {
       chrome.management.onUninstalled.removeListener(handleExtensionStateChange);
       chrome.runtime.onInstalled.removeListener(handleExtensionUpdate);
     };
-  }, [refreshExtensions, isManualRefresh]);
+  }, [refreshExtensions]);
 
   /**
    * This memoized computation filters extensions based on search text.
