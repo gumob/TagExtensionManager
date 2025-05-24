@@ -7,7 +7,11 @@ interface TagSelectorListProps {
   onTagClick: (tagId: string) => void;
 }
 
-export function TagSelectorList({ tags, selectedTagIds, onTagClick }: TagSelectorListProps) {
+export const TagSelectorList: React.FC<TagSelectorListProps> = ({
+  tags,
+  selectedTagIds,
+  onTagClick,
+}) => {
   return (
     <div className="flex flex-wrap gap-2">
       {tags.map(tag => (
@@ -20,4 +24,4 @@ export function TagSelectorList({ tags, selectedTagIds, onTagClick }: TagSelecto
       ))}
     </div>
   );
-}
+};

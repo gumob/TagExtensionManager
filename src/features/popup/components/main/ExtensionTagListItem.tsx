@@ -27,12 +27,12 @@ interface ExtensionTagListItemProps {
  * @param setVisibleTag - The function to set the visible tag.
  * @returns The ExtensionTagListItem component.
  */
-export function ExtensionTagListItem({
+export const ExtensionTagListItem: React.FC<ExtensionTagListItemProps> = ({
   tag,
   extensionCount,
   visibleTagId,
   setVisibleTag,
-}: ExtensionTagListItemProps) {
+}: ExtensionTagListItemProps) => {
   /**
    * The tag store.
    */
@@ -68,4 +68,4 @@ export function ExtensionTagListItem({
       <span className="ml-1 text-2xs text-zinc-500 dark:text-zinc-400">{count}</span>
     </button>
   );
-}
+};

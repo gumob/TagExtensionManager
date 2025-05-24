@@ -5,7 +5,7 @@ interface TagSelectorHeaderProps {
   onClose: () => void;
 }
 
-export function TagSelectorHeader({ onClose }: TagSelectorHeaderProps) {
+export const TagSelectorHeader: React.FC<TagSelectorHeaderProps> = ({ onClose }) => {
   return (
     <div className="flex justify-between items-center mb-4">
       <Dialog.Title as="h3" className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
@@ -19,4 +19,4 @@ export function TagSelectorHeader({ onClose }: TagSelectorHeaderProps) {
       </button>
     </div>
   );
-}
+};

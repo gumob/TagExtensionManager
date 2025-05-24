@@ -6,7 +6,7 @@ interface TagEditorSearchBarProps {
   onAddTag: (tagName: string) => void;
 }
 
-export const TagEditorSearchBar = ({ onAddTag }: TagEditorSearchBarProps) => {
+export const TagEditorSearchBar: React.FC<TagEditorSearchBarProps> = ({ onAddTag }) => {
   const [newTagName, setNewTagName] = useState('');
 
   const handleAddTag = useCallback(() => {

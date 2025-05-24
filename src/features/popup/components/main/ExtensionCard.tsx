@@ -9,7 +9,6 @@ import { TagSelectorMain } from '@/features/popup/components/selector';
 import { useExtensions } from '@/hooks';
 import { ExtensionModel } from '@/models';
 import { useTagStore } from '@/stores';
-import { logger } from '@/utils';
 
 /**
  * Extension card props.
@@ -35,12 +34,12 @@ interface ExtensionCardProps {
  * @param onLockToggle - The callback to lock the extension.
  * @returns The extension card component.
  */
-export function ExtensionCard({
+export const ExtensionCard: React.FC<ExtensionCardProps> = ({
   extension,
   onToggle,
   onSettingsClick,
   onLockToggle,
-}: ExtensionCardProps) {
+}) => {
   /**
    * The tag dialog open state.
    */
@@ -238,4 +237,4 @@ export function ExtensionCard({
       )}
     </div>
   );
-}
+};

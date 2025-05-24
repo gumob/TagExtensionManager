@@ -9,7 +9,7 @@ import { TagEditorMain } from '@/features/popup/components/editor';
  *
  * @returns The ExtensionTagListEditButton component.
  */
-export function ExtensionTagListEditButton() {
+export const ExtensionTagListEditButton: React.FC = () => {
   /**
    * The state for the dialog.
    */
@@ -33,4 +33,4 @@ export function ExtensionTagListEditButton() {
       <TagEditorMain isOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)} />
     </>
   );
-}
+};

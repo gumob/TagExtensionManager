@@ -30,13 +30,13 @@ interface TagSelectorMainProps {
  * @param onSelectTags - The callback to select the tags.
  * @returns The TagSelectorMain component.
  */
-export function TagSelectorMain({
+export const TagSelectorMain: React.FC<TagSelectorMainProps> = ({
   isOpen,
   tags,
   selectedTagIds,
   onClose,
   onSelectTags,
-}: TagSelectorMainProps) {
+}) => {
   /**
    * The search query.
    */
@@ -107,4 +107,4 @@ export function TagSelectorMain({
       </Dialog>
     </Transition>
   );
-}
+};

@@ -29,7 +29,7 @@ interface TagEditorMainProps {
  * @param onClose - The callback to close the tag editor.
  * @returns The TagEditorMain component.
  */
-export const TagEditorMain = ({ isOpen, onClose }: TagEditorMainProps) => {
+export const TagEditorMain: React.FC<TagEditorMainProps> = ({ isOpen, onClose }) => {
   const { tags, addTag, updateTag, deleteTag, reorderTags } = useTagStore();
   const [editingTagId, setEditingTagId] = useState<string | null>(null);
 

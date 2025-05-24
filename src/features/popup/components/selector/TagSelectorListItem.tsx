@@ -9,7 +9,11 @@ interface TagSelectorListItemProps {
   onClick: (tagId: string) => void;
 }
 
-export function TagSelectorListItem({ tag, isSelected, onClick }: TagSelectorListItemProps) {
+export const TagSelectorListItem: React.FC<TagSelectorListItemProps> = ({
+  tag,
+  isSelected,
+  onClick,
+}) => {
   return (
     <button
       onClick={() => onClick(tag.id)}
@@ -27,4 +31,4 @@ export function TagSelectorListItem({ tag, isSelected, onClick }: TagSelectorLis
       <span className="mr-2">{tag.name}</span>
     </button>
   );
-}
+};

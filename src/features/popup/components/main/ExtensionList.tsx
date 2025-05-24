@@ -3,9 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { chromeAPI } from '@/api/ChromeAPI';
 import { ExtensionCard, ExtensionListHeader } from '@/features/popup/components/main';
 import { ExtensionModel } from '@/models';
-import { useTagStore } from '@/stores';
-import { useExtensionStore } from '@/stores';
-import { logger } from '@/utils';
+import { useExtensionStore, useTagStore } from '@/stores';
 
 /**
  * The component for displaying a list of extensions.
@@ -31,12 +29,12 @@ interface ExtensionListProps {
  * @param setVisibleTag
  * @returns
  */
-export function ExtensionList({
+export const ExtensionList: React.FC<ExtensionListProps> = ({
   extensions,
   onExtensionStateChange,
   visibleTagId,
   setVisibleTag,
-}: ExtensionListProps) {
+}: ExtensionListProps) => {
   const [localExtensions, setLocalExtensions] = useState<ExtensionModel[]>(extensions);
   const { tags, extensionTags } = useTagStore();
   const { toggleLock } = useExtensionStore();
@@ -210,4 +208,4 @@ export function ExtensionList({
         )}
     </div>
   );
-}
+};

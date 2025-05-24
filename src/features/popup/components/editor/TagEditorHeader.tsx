@@ -5,7 +5,7 @@ interface TagEditorHeaderProps {
   onClose: () => void;
 }
 
-export const TagEditorHeader = ({ onClose }: TagEditorHeaderProps) => {
+export const TagEditorHeader: React.FC<TagEditorHeaderProps> = ({ onClose }) => {
   return (
     <div className="flex justify-between items-center p-4">
       <Dialog.Title as="h3" className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">

@@ -24,7 +24,7 @@ interface ExtensionListHeaderProps {
  * @param extensions - The extensions to display.
  * @returns The ExtensionListHeader component.
  */
-export const ExtensionListHeader = ({
+export const ExtensionListHeader: React.FC<ExtensionListHeaderProps> = ({
   tag,
   extensionCount,
   onToggle,

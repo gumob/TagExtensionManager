@@ -8,11 +8,11 @@ interface TagSelectorSearchBarProps {
   isOpen: boolean;
 }
 
-export function TagSelectorSearchBar({
+export const TagSelectorSearchBar: React.FC<TagSelectorSearchBarProps> = ({
   searchQuery,
   onSearchChange,
   isOpen,
-}: TagSelectorSearchBarProps) {
+}) => {
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -40,4 +40,4 @@ export function TagSelectorSearchBar({
       </div>
     </div>
   );
-}
+};

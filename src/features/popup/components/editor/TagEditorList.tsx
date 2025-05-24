@@ -12,7 +12,7 @@ interface TagEditorListProps {
   onTagClick: (tagId: string) => void;
 }
 
-export const TagEditorList = ({
+export const TagEditorList: React.FC<TagEditorListProps> = ({
   tags,
   moveTag,
   editingTagId,

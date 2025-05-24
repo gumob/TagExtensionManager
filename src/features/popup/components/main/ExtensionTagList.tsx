@@ -6,6 +6,12 @@ import {
 import { ExtensionModel } from '@/models';
 import { useTagStore } from '@/stores';
 
+type ExtensionTagListProps = {
+  extensions: ExtensionModel[];
+  visibleTagId: string | null;
+  setVisibleTag: (tagId: string | null) => void;
+};
+
 /**
  * The props for the ExtensionTagList component.
  *
@@ -13,15 +19,11 @@ import { useTagStore } from '@/stores';
  * @param visibleTagId - The id of the visible tag.
  * @param setVisibleTag - The function to set the visible tag.
  */
-export const ExtensionTagList = ({
+export const ExtensionTagList: React.FC<ExtensionTagListProps> = ({
   extensions,
   visibleTagId,
   setVisibleTag,
-}: {
-  extensions: ExtensionModel[];
-  visibleTagId: string | null;
-  setVisibleTag: (tagId: string | null) => void;
-}) => {
+}: ExtensionTagListProps) => {
   /**
    * The tag store.
    */

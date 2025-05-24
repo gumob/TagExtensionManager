@@ -37,7 +37,7 @@ interface TagEditorListItemProps {
  * @param onDelete - The callback to delete the tag.
  * @param onTagClick - The callback to click the tag.
  */
-export const TagEditorListItem = React.memo(
+export const TagEditorListItem: React.FC<TagEditorListItemProps> = React.memo(
   ({ tag, index, moveTag, isEditing, onEdit, onDelete, onTagClick }: TagEditorListItemProps) => {
     /**
      * The data for the drag and drop operation.

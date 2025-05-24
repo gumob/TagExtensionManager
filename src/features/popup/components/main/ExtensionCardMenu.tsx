@@ -44,7 +44,7 @@ interface ExtensionCardMenuProps {
  * @param isLocked - Whether the extension is locked.
  * @returns The extension card menu component.
  */
-export function ExtensionCardMenu({
+export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({
   buttonRef,
   onManageTags,
   onManageExtension,
@@ -52,7 +52,7 @@ export function ExtensionCardMenu({
   onLockToggle,
   extensionName,
   isLocked,
-}: ExtensionCardMenuProps) {
+}) => {
   /**
    * The uninstall dialog open state.
    */
@@ -250,4 +250,4 @@ export function ExtensionCardMenu({
       </Transition>
     </>
   );
-}
+};
