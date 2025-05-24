@@ -14,7 +14,7 @@ import { logger } from '@/utils';
  * The component for managing extensions.
  * @returns
  */
-export const ExtensionContainer: React.FC = () => {
+export const ExtensionMain: React.FC = () => {
   /**
    * The extensions and filtered extensions.
    */
@@ -32,7 +32,7 @@ export const ExtensionContainer: React.FC = () => {
    */
   const handleExtensionStateChange = useCallback(async (id: string, enabled: boolean) => {
     logger.debug(`👩‍💼🫱 handleExtensionStateChange: ${id} ${enabled}`, {
-      group: 'ExtensionContainer',
+      group: 'ExtensionMain',
       persist: true,
     });
 
@@ -46,14 +46,14 @@ export const ExtensionContainer: React.FC = () => {
 
   useEffect(() => {
     logger.debug(`👩‍💼🔍 filteredExtensions: ${filteredExtensions.length}`, {
-      group: 'ExtensionContainer',
+      group: 'ExtensionMain',
       persist: true,
     });
   }, [filteredExtensions]);
 
   useEffect(() => {
     logger.debug(`👩‍💼🔍 visibleTagId: ${visibleTagId}`, {
-      group: 'ExtensionContainer',
+      group: 'ExtensionMain',
       persist: true,
     });
   }, [visibleTagId]);

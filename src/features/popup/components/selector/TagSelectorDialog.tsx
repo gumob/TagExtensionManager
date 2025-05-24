@@ -1,11 +1,12 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { XMarkIcon } from '@heroicons/react/24/outline';
-import { TagIcon } from '@heroicons/react/24/outline';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { TagIcon as TagSolidIcon } from '@heroicons/react/24/solid';
 
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useState } from 'react';
 
+import {
+  TagSelectorHeader,
+  TagSelectorList,
+  TagSelectorSearchBar,
+} from '@/features/popup/components/selector';
 import { TagModel } from '@/models';
 
 /**
@@ -49,11 +50,6 @@ export function TagSelectorDialog({
   );
 
   /**
-   * The search input ref.
-   */
-  const searchInputRef = useRef<HTMLInputElement>(null);
-
-  /**
    * The handle tag click.
    */
   const handleTagClick = (tagId: string) => {
@@ -62,17 +58,6 @@ export function TagSelectorDialog({
       : [...selectedTagIds, tagId];
     onSelectTags(newSelectedTagIds);
   };
-
-  /**
-   * The use effect for the tag selector.
-   */
-  useEffect(() => {
-    if (isOpen) {
-      setTimeout(() => {
-        searchInputRef.current?.focus();
-      }, 100);
-    }
-  }, [isOpen]);
 
   /**
    * The TagSelectorDialog component.
@@ -104,57 +89,17 @@ export function TagSelectorDialog({
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-zinc-800 p-6 shadow-xl transition-all">
-                <div className="flex justify-between items-center mb-4">
-                  <Dialog.Title
-                    as="h3"
-                    className="text-lg font-semibold text-zinc-900 dark:text-zinc-100"
-                  >
-                    Select Tags
-                  </Dialog.Title>
-                  <button
-                    onClick={onClose}
-                    className="text-zinc-700 hover:text-zinc-900 dark:text-zinc-100 dark:hover:text-zinc-300"
-                  >
-                    <XMarkIcon className="w-6 h-6" />
-                  </button>
-                </div>
-
-                <div className="mb-4">
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <MagnifyingGlassIcon className="h-5 w-5 text-zinc-400" aria-hidden="true" />
-                    </div>
-                    <input
-                      ref={searchInputRef}
-                      type="text"
-                      placeholder="Search tags..."
-                      value={searchQuery}
-                      onChange={e => setSearchQuery(e.target.value)}
-                      className="w-full h-10 pl-10 pr-4 rounded-full bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-zinc-200 dark:focus:ring-zinc-500"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-2">
-                  {filteredTags.map(tag => (
-                    <button
-                      key={tag.id}
-                      onClick={() => handleTagClick(tag.id)}
-                      className={`px-3 py-2 rounded-full text-xs font-semibold transition-opacity ${
-                        selectedTagIds.includes(tag.id)
-                          ? 'bg-zinc-200 dark:bg-zinc-600 text-zinc-900 dark:text-zinc-100'
-                          : 'bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-600'
-                      } flex items-center gap-1`}
-                    >
-                      {selectedTagIds.includes(tag.id) ? (
-                        <TagSolidIcon className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
-                      ) : (
-                        <TagIcon className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
-                      )}
-                      <span className="mr-2">{tag.name}</span>
-                    </button>
-                  ))}
-                </div>
+                <TagSelectorHeader onClose={onClose} />
+                <TagSelectorSearchBar
+                  searchQuery={searchQuery}
+                  onSearchChange={setSearchQuery}
+                  isOpen={isOpen}
+                />
+                <TagSelectorList
+                  tags={filteredTags}
+                  selectedTagIds={selectedTagIds}
+                  onTagClick={handleTagClick}
+                />
               </Dialog.Panel>
             </Transition.Child>
           </div>

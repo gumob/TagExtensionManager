@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client';
 import { Toaster } from 'react-hot-toast';
 
 import { chromeAPI } from '@/api/ChromeAPI';
-import { ExtensionContainer } from '@/features/popup/components/main/ExtensionContainer';
+import { ExtensionMain } from '@/features/popup/components/main/ExtensionMain';
 import '@/styles/globals.css';
 import { logger } from '@/utils/Logger';
 
@@ -49,7 +49,7 @@ const Popup: React.FC = () => {
    */
   return (
     <>
-      <ExtensionContainer />
+      <ExtensionMain />
       <Toaster
         position="top-center"
         containerClassName="!top-5"

@@ -1,17 +1,13 @@
-import { Dialog, Transition } from '@headlessui/react';
 import { TagIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
-import React, { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
-import { DndProvider, useDrag, useDrop } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { FixedSizeList } from 'react-window';
+import { useDrag, useDrop } from 'react-dnd';
 
 import { TagModel } from '@/models';
-import { useTagStore } from '@/stores';
 
 /**
- * The props for the TagEditorItem component.
+ * The props for the TagEditorListItem component.
  * @param tag - The tag data.
  * @param index - The index of the tag.
  * @param moveTag - The callback to move the tag.
@@ -20,7 +16,7 @@ import { useTagStore } from '@/stores';
  * @param onDelete - The callback to delete the tag.
  * @param onTagClick - The callback to click the tag.
  */
-interface TagEditorItemProps {
+interface TagEditorListItemProps {
   tag: TagModel;
   index: number;
   moveTag: (dragIndex: number, hoverIndex: number) => void;
@@ -31,7 +27,7 @@ interface TagEditorItemProps {
 }
 
 /**
- * The TagEditorItem component.
+ * The TagEditorListItem component.
  *
  * @param tag - The tag data.
  * @param index - The index of the tag.
@@ -41,8 +37,8 @@ interface TagEditorItemProps {
  * @param onDelete - The callback to delete the tag.
  * @param onTagClick - The callback to click the tag.
  */
-export const TagEditorItem = React.memo(
-  ({ tag, index, moveTag, isEditing, onEdit, onDelete, onTagClick }: TagEditorItemProps) => {
+export const TagEditorListItem = React.memo(
+  ({ tag, index, moveTag, isEditing, onEdit, onDelete, onTagClick }: TagEditorListItemProps) => {
     /**
      * The data for the drag and drop operation.
      * @param id - The id of the tag.
@@ -184,4 +180,4 @@ export const TagEditorItem = React.memo(
   }
 );
 
-TagEditorItem.displayName = 'TagEditorItem';
+TagEditorListItem.displayName = 'TagEditorListItem';

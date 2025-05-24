@@ -1,13 +1,14 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { TagIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
-import React, { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Fragment, useCallback, useMemo, useState } from 'react';
 
-import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { FixedSizeList } from 'react-window';
 
-import { TagEditorItem } from '@/features/popup/components/editor';
+import { TagEditorHeader } from './TagEditorHeader';
+import { TagEditorList } from './TagEditorList';
+import { TagEditorSearchBar } from './TagEditorSearchBar';
+
 import { useTagStore } from '@/stores';
 
 /**
@@ -29,10 +30,7 @@ interface TagEditorProps {
  */
 export const TagEditorDialog = ({ isOpen, onClose }: TagEditorProps) => {
   const { tags, addTag, updateTag, deleteTag, reorderTags } = useTagStore();
-  const [newTagName, setNewTagName] = useState('');
   const [editingTagId, setEditingTagId] = useState<string | null>(null);
-  const tagListRef = useRef<HTMLDivElement>(null);
-  const listRef = useRef<FixedSizeList>(null);
 
   /**
    * The sorted tags.
@@ -53,16 +51,6 @@ export const TagEditorDialog = ({ isOpen, onClose }: TagEditorProps) => {
     },
     [sortedTags, reorderTags]
   );
-
-  /**
-   * The handle add tag handler.
-   */
-  const handleAddTag = useCallback(() => {
-    if (newTagName.trim()) {
-      addTag(newTagName.trim());
-      setNewTagName('');
-    }
-  }, [newTagName, addTag]);
 
   /**
    * The handle tag click handler.
@@ -128,67 +116,17 @@ export const TagEditorDialog = ({ isOpen, onClose }: TagEditorProps) => {
                 <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-zinc-800 shadow-xl transition-all">
                   <div className="flex flex-col max-h-[80vh]">
                     <div className="flex-none">
-                      <div className="flex justify-between items-center p-4">
-                        <Dialog.Title
-                          as="h3"
-                          className="text-lg font-semibold text-zinc-900 dark:text-zinc-100"
-                        >
-                          Manage Tags
-                        </Dialog.Title>
-                        <button
-                          onClick={onClose}
-                          className="text-zinc-700 hover:text-zinc-900 dark:text-zinc-100 dark:hover:text-zinc-300"
-                        >
-                          <XMarkIcon className="w-6 h-6" />
-                        </button>
-                      </div>
-
-                      <div className="px-4 pt-0 pb-4">
-                        <div className="flex gap-2">
-                          <div className="relative flex-1">
-                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                              <TagIcon className="h-5 w-5 text-zinc-400" aria-hidden="true" />
-                            </div>
-                            <input
-                              type="text"
-                              value={newTagName}
-                              onChange={e => setNewTagName(e.target.value)}
-                              onKeyDown={e => {
-                                if (e.key === 'Enter') {
-                                  e.preventDefault();
-                                  handleAddTag();
-                                }
-                              }}
-                              placeholder="Enter new tag name"
-                              className="w-full h-10 pl-10 pr-3 py-1.5 rounded-full bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-zinc-200 dark:focus:ring-zinc-500"
-                            />
-                          </div>
-                          <button
-                            onClick={handleAddTag}
-                            className="px-4 py-1.5 bg-zinc-600 dark:bg-zinc-500 text-white rounded-full hover:bg-zinc-700 dark:hover:bg-zinc-400"
-                          >
-                            Add
-                          </button>
-                        </div>
-                      </div>
+                      <TagEditorHeader onClose={onClose} />
+                      <TagEditorSearchBar onAddTag={addTag} />
                     </div>
-
-                    <div className="flex-1 overflow-y-auto overflow-x-hidden px-4 pt-0 pb-4">
-                      <div ref={tagListRef} className="flex flex-wrap gap-2">
-                        {sortedTags.map((tag, index) => (
-                          <TagEditorItem
-                            key={tag.id}
-                            tag={tag}
-                            index={index}
-                            moveTag={moveTag}
-                            isEditing={editingTagId === tag.id}
-                            onEdit={handleTagNameChange}
-                            onDelete={handleDeleteClick}
-                            onTagClick={handleTagClick}
-                          />
-                        ))}
-                      </div>
-                    </div>
+                    <TagEditorList
+                      tags={sortedTags}
+                      moveTag={moveTag}
+                      editingTagId={editingTagId}
+                      onEdit={handleTagNameChange}
+                      onDelete={handleDeleteClick}
+                      onTagClick={handleTagClick}
+                    />
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

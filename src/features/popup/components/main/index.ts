@@ -5,7 +5,7 @@ export * from './ExtensionTagChip';
 export * from './ExtensionSearchBar';
 export * from './ExtensionListHeader';
 export * from './ExtensionList';
-export * from './ExtensionContainer';
+export * from './ExtensionMain';
 export * from './ExtensionCardMenu';
 export * from './ExtensionCard';
 export * from './ExtensionBackupMenu';
