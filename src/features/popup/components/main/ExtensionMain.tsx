@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import { chromeAPI } from '@/api/ChromeAPI';
 import {
@@ -19,11 +19,6 @@ export const ExtensionMain: React.FC = () => {
    * The extensions and filtered extensions.
    */
   const { filteredExtensions, setSearchQuery } = useExtensions();
-
-  /**
-   * The visible tag id.
-   */
-  const [visibleTagId, setVisibleTagId] = useState<string | null>(null);
 
   /**
    * Handle the extension state change.
@@ -51,13 +46,6 @@ export const ExtensionMain: React.FC = () => {
     });
   }, [filteredExtensions]);
 
-  useEffect(() => {
-    logger.debug(`👩‍💼🔍 visibleTagId: ${visibleTagId}`, {
-      group: 'ExtensionMain',
-      persist: true,
-    });
-  }, [visibleTagId]);
-
   /**
    * The main component.
    * @returns
@@ -74,11 +62,7 @@ export const ExtensionMain: React.FC = () => {
           </div>
 
           <div className="mb-3">
-            <ExtensionTagList
-              extensions={filteredExtensions}
-              visibleTagId={visibleTagId}
-              setVisibleTag={setVisibleTagId}
-            />
+            <ExtensionTagList extensions={filteredExtensions} />
           </div>
 
           <div className="mb-3">
@@ -91,8 +75,6 @@ export const ExtensionMain: React.FC = () => {
             <ExtensionList
               extensions={filteredExtensions}
               onExtensionStateChange={handleExtensionStateChange}
-              visibleTagId={visibleTagId}
-              setVisibleTag={setVisibleTagId}
             />
           </div>
         </div>

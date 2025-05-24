@@ -6,23 +6,22 @@ import {
 import { ExtensionModel } from '@/models';
 import { useTagStore } from '@/stores';
 
-type ExtensionTagListProps = {
+/**
+ * The props for the ExtensionTagList component.
+ *
+ * @param extensions - The extensions to display.
+ */
+interface ExtensionTagListProps {
   extensions: ExtensionModel[];
-  visibleTagId: string | null;
-  setVisibleTag: (tagId: string | null) => void;
-};
+}
 
 /**
  * The props for the ExtensionTagList component.
  *
  * @param extensions - The extensions to display.
- * @param visibleTagId - The id of the visible tag.
- * @param setVisibleTag - The function to set the visible tag.
  */
 export const ExtensionTagList: React.FC<ExtensionTagListProps> = ({
   extensions,
-  visibleTagId,
-  setVisibleTag,
 }: ExtensionTagListProps) => {
   /**
    * The tag store.
@@ -44,21 +43,12 @@ export const ExtensionTagList: React.FC<ExtensionTagListProps> = ({
   return (
     <>
       <div className="flex flex-wrap gap-1 mb-1">
-        <ExtensionTagMetrics
-          extensions={extensions}
-          visibleTagId={visibleTagId}
-          setVisibleTag={setVisibleTag}
-        />
+        <ExtensionTagMetrics extensions={extensions} />
         <ExtensionTagListEditButton />
       </div>
       <div className="flex flex-wrap gap-1">
         {tags.map(tag => (
-          <ExtensionTagListItem
-            key={tag.id}
-            tag={tag}
-            visibleTagId={visibleTagId}
-            setVisibleTag={setVisibleTag}
-          />
+          <ExtensionTagListItem key={tag.id} tag={tag} />
         ))}
         {untaggedExtensions.length > 0 && (
           <ExtensionTagListItem
@@ -70,8 +60,6 @@ export const ExtensionTagList: React.FC<ExtensionTagListProps> = ({
               updatedAt: new Date(),
             }}
             extensionCount={untaggedExtensions.length}
-            visibleTagId={visibleTagId}
-            setVisibleTag={setVisibleTag}
           />
         )}
       </div>

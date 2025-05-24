@@ -8,14 +8,10 @@ import { useTagStore } from '@/stores';
  *
  * @param tag - The tag to display.
  * @param extensionCount - The number of extensions with the tag.
- * @param visibleTagId - The id of the visible tag.
- * @param setVisibleTag - The function to set the visible tag.
  */
 interface ExtensionTagListItemProps {
   tag: TagModel;
   extensionCount?: number;
-  visibleTagId: string | null;
-  setVisibleTag: (tagId: string | null) => void;
 }
 
 /**
@@ -23,20 +19,16 @@ interface ExtensionTagListItemProps {
  *
  * @param tag - The tag to display.
  * @param extensionCount - The number of extensions with the tag.
- * @param visibleTagId - The id of the visible tag.
- * @param setVisibleTag - The function to set the visible tag.
  * @returns The ExtensionTagListItem component.
  */
 export const ExtensionTagListItem: React.FC<ExtensionTagListItemProps> = ({
   tag,
   extensionCount,
-  visibleTagId,
-  setVisibleTag,
 }: ExtensionTagListItemProps) => {
   /**
    * The tag store.
    */
-  const { extensionTags } = useTagStore();
+  const { extensionTags, visibleTagId, setVisibleTag } = useTagStore();
 
   /**
    * The count of extensions with the tag.

@@ -10,33 +10,25 @@ import { useExtensionStore, useTagStore } from '@/stores';
  *
  * @param extensions
  * @param onExtensionStateChange
- * @param visibleTagId
- * @param setVisibleTag
  * @returns
  */
 interface ExtensionListProps {
   extensions: ExtensionModel[];
   onExtensionStateChange: (id: string, enabled: boolean) => void;
-  visibleTagId: string | null;
-  setVisibleTag: (tagId: string | null) => void;
 }
 
 /**
  * The component for displaying a list of extensions.
  * @param extensions
  * @param onExtensionStateChange
- * @param visibleTagId
- * @param setVisibleTag
  * @returns
  */
 export const ExtensionList: React.FC<ExtensionListProps> = ({
   extensions,
   onExtensionStateChange,
-  visibleTagId,
-  setVisibleTag,
 }: ExtensionListProps) => {
   const [localExtensions, setLocalExtensions] = useState<ExtensionModel[]>(extensions);
-  const { tags, extensionTags } = useTagStore();
+  const { tags, extensionTags, visibleTagId } = useTagStore();
   const { toggleLock } = useExtensionStore();
 
   /**
