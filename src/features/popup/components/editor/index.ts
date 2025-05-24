@@ -1,2 +1,2 @@
-export * from './TagEditorDialog';
+export * from './TagEditorMain';
 export * from './TagEditorListItem';

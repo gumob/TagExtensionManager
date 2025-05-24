@@ -12,23 +12,23 @@ import { TagEditorSearchBar } from './TagEditorSearchBar';
 import { useTagStore } from '@/stores';
 
 /**
- * The props for the TagEditorDialog component.
+ * The props for the TagEditorMain component.
  * @param isOpen - Whether the tag editor is open.
  * @param onClose - The callback to close the tag editor.
  */
-interface TagEditorProps {
+interface TagEditorMainProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
 /**
- * The TagEditorDialog component.
+ * The TagEditorMain component.
  *
  * @param isOpen - Whether the tag editor is open.
  * @param onClose - The callback to close the tag editor.
- * @returns The TagEditorDialog component.
+ * @returns The TagEditorMain component.
  */
-export const TagEditorDialog = ({ isOpen, onClose }: TagEditorProps) => {
+export const TagEditorMain = ({ isOpen, onClose }: TagEditorMainProps) => {
   const { tags, addTag, updateTag, deleteTag, reorderTags } = useTagStore();
   const [editingTagId, setEditingTagId] = useState<string | null>(null);
 
@@ -84,7 +84,7 @@ export const TagEditorDialog = ({ isOpen, onClose }: TagEditorProps) => {
   );
 
   /**
-   * The TagEditorDialog component.
+   * The TagEditorMain component.
    */
   return (
     <DndProvider backend={HTML5Backend}>

@@ -10,9 +10,9 @@ import {
 import { TagModel } from '@/models';
 
 /**
- * The props for the TagSelectorDialog component.
+ * The props for the TagSelectorMain component.
  */
-interface TagSelectorDialogProps {
+interface TagSelectorMainProps {
   isOpen: boolean;
   tags: TagModel[];
   selectedTagIds: string[];
@@ -21,22 +21,22 @@ interface TagSelectorDialogProps {
 }
 
 /**
- * The TagSelectorDialog component.
+ * The TagSelectorMain component.
  *
  * @param isOpen - Whether the tag selector is open.
  * @param tags - The tags to select from.
  * @param selectedTagIds - The selected tag ids.
  * @param onClose - The callback to close the tag selector.
  * @param onSelectTags - The callback to select the tags.
- * @returns The TagSelectorDialog component.
+ * @returns The TagSelectorMain component.
  */
-export function TagSelectorDialog({
+export function TagSelectorMain({
   isOpen,
   tags,
   selectedTagIds,
   onClose,
   onSelectTags,
-}: TagSelectorDialogProps) {
+}: TagSelectorMainProps) {
   /**
    * The search query.
    */
@@ -60,7 +60,7 @@ export function TagSelectorDialog({
   };
 
   /**
-   * The TagSelectorDialog component.
+   * The TagSelectorMain component.
    */
   return (
     <Transition appear show={isOpen} as={Fragment}>

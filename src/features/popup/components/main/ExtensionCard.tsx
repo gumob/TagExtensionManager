@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { chromeAPI } from '@/api/ChromeAPI';
 import { ExtensionCardMenu } from '@/features/popup/components/main';
-import { TagSelectorDialog } from '@/features/popup/components/selector';
+import { TagSelectorMain } from '@/features/popup/components/selector';
 import { useExtensions } from '@/hooks';
 import { ExtensionModel } from '@/models';
 import { useTagStore } from '@/stores';
@@ -228,7 +228,7 @@ export function ExtensionCard({
       </div>
 
       {isTagDialogOpen && (
-        <TagSelectorDialog
+        <TagSelectorMain
           isOpen={isTagDialogOpen}
           tags={tags}
           selectedTagIds={currentTagIds}

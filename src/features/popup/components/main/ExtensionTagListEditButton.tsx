@@ -2,7 +2,7 @@ import { PencilIcon } from 'lucide-react';
 
 import { useState } from 'react';
 
-import { TagEditorDialog } from '@/features/popup/components/editor';
+import { TagEditorMain } from '@/features/popup/components/editor';
 
 /**
  * The ExtensionTagListEditButton component.
@@ -30,7 +30,7 @@ export function ExtensionTagListEditButton() {
         <span className="">Edit Tags</span>
       </button>
 
-      <TagEditorDialog isOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)} />
+      <TagEditorMain isOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)} />
     </>
   );
 }
