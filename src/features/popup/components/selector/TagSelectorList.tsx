@@ -1,5 +1,4 @@
-import { TagSelectorListItem } from './TagSelectorListItem';
-
+import { TagSelectorListItem } from '@/features/popup/components/selector';
 import { TagModel } from '@/models';
 
 interface TagSelectorListProps {

@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 
-import { TagEditorListItem } from './TagEditorListItem';
-
+import { TagEditorListItem } from '@/features/popup/components/editor';
 import { TagModel } from '@/models';
 
 interface TagEditorListProps {

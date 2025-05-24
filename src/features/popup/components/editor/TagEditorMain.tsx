@@ -5,10 +5,11 @@ import { Fragment, useCallback, useMemo, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import { TagEditorHeader } from './TagEditorHeader';
-import { TagEditorList } from './TagEditorList';
-import { TagEditorSearchBar } from './TagEditorSearchBar';
-
+import {
+  TagEditorHeader,
+  TagEditorList,
+  TagEditorSearchBar,
+} from '@/features/popup/components/editor';
 import { useTagStore } from '@/stores';
 
 /**
