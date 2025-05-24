@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import { chromeAPI } from '@/api/ChromeAPI';
-import { TagExtensionMapModel, TagModel, TagManagementModel } from '@/models';
+import { TagExtensionMapModel, TagManagementModel, TagModel } from '@/models';
 import { logger } from '@/utils';
 
 /**
@@ -44,7 +44,7 @@ export const useTagStore = create<TagStore>()(
 
       /**
        * Initializes the tag store by loading saved data from Chrome storage
-       * 
+       *
        * This function:
        * 1. Sets loading state to true
        * 2. Attempts to load saved tag data from Chrome storage
@@ -59,7 +59,7 @@ export const useTagStore = create<TagStore>()(
 
           const storedData = await chromeAPI.getLocalStorage('extension-manager-tags');
           if (storedData['extension-manager-tags']) {
-            logger.debug('Loading tags from storage', {
+            logger.debug('🌱 Loading tags from storage', {
               group: 'TagStore',
               persist: true,
             });
@@ -87,7 +87,7 @@ export const useTagStore = create<TagStore>()(
             });
           }
         } catch (error) {
-          logger.error('Failed to load tags', {
+          logger.error('🛑 Failed to load tags', {
             group: 'TagStore',
             persist: true,
           });
@@ -97,7 +97,7 @@ export const useTagStore = create<TagStore>()(
 
       /**
        * Creates a new tag and adds it to the beginning of the tags list
-       * 
+       *
        * This function:
        * 1. Creates a new tag object with a unique ID and the current timestamp
        * 2. Increments the order of all existing tags by 1
@@ -133,7 +133,7 @@ export const useTagStore = create<TagStore>()(
 
       /**
        * Updates an existing tag's name
-       * 
+       *
        * This function:
        * 1. Finds the tag with the matching ID
        * 2. Updates its name and updatedAt timestamp
@@ -164,7 +164,7 @@ export const useTagStore = create<TagStore>()(
 
       /**
        * Deletes a tag and removes all its associations with extensions
-       * 
+       *
        * This function:
        * 1. Removes the tag from the tags list
        * 2. Removes the tag ID from all extension tag associations
@@ -191,7 +191,7 @@ export const useTagStore = create<TagStore>()(
 
       /**
        * Reorders tags based on a new order of tag IDs
-       * 
+       *
        * This function:
        * 1. Takes an array of tag IDs in their new desired order
        * 2. Updates each tag's order property to match its new position
@@ -216,7 +216,7 @@ export const useTagStore = create<TagStore>()(
 
       /**
        * Associates a tag with an extension
-       * 
+       *
        * This function:
        * 1. Checks if the extension already has any tags
        * 2. If it does, adds the new tag ID to its existing tags
@@ -257,7 +257,7 @@ export const useTagStore = create<TagStore>()(
 
       /**
        * Removes a tag association from an extension
-       * 
+       *
        * This function:
        * 1. Finds the extension's tag associations
        * 2. Removes the specified tag ID from its list of tags
@@ -311,7 +311,7 @@ export const useTagStore = create<TagStore>()(
             const result = await chromeAPI.getLocalStorage(name);
             return result[name];
           } catch (error) {
-            logger.error('Failed to get item from storage', {
+            logger.error('🛑 Failed to get item from storage', {
               group: 'TagStore',
               persist: true,
             });
@@ -325,12 +325,12 @@ export const useTagStore = create<TagStore>()(
         setItem: async (name: string, value: any) => {
           try {
             await chromeAPI.setLocalStorage({ [name]: value });
-            logger.debug('Saved tags to storage', {
+            logger.debug('💾 Saved tags to storage', {
               group: 'TagStore',
               persist: true,
             });
           } catch (error) {
-            logger.error('Failed to set item in storage', {
+            logger.error('🛑 Failed to set item in storage', {
               group: 'TagStore',
               persist: true,
             });
@@ -343,12 +343,12 @@ export const useTagStore = create<TagStore>()(
         removeItem: async (name: string) => {
           try {
             await chromeAPI.removeLocalStorage(name);
-            logger.debug('Removed tags from storage', {
+            logger.debug('🗑️ Removed tags from storage', {
               group: 'TagStore',
               persist: true,
             });
           } catch (error) {
-            logger.error('Failed to remove item from storage', {
+            logger.error('🛑 Failed to remove item from storage', {
               group: 'TagStore',
               persist: true,
             });

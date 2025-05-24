@@ -3,7 +3,7 @@ import { logger } from '@/utils/Logger';
 import { updateExtensionIcon } from '@/utils/ThemeUtils';
 
 /** Background script for extension management */
-logger.debug('Starting background script', {
+logger.debug('🌱 Initializing background script', {
   group: 'background',
   persist: true,
 });
@@ -24,12 +24,12 @@ const createOffscreenDocument = async () => {
       ['DOM_PARSER' as chrome.offscreen.Reason],
       'Detect system color scheme changes'
     );
-    logger.debug('Offscreen document created successfully', {
+    logger.debug('🌱 Offscreen document created successfully', {
       group: 'background',
       persist: true,
     });
   } catch (error) {
-    logger.error('Failed to create offscreen document', {
+    logger.error('🛑 Failed to create offscreen document', {
       group: 'background',
       persist: true,
     });
@@ -40,7 +40,7 @@ const createOffscreenDocument = async () => {
  * Listen for extension installation
  */
 chrome.runtime.onInstalled.addListener(async details => {
-  logger.debug('Extension installed', {
+  logger.debug('🫱 Extension installed', {
     group: 'background',
     persist: true,
   });
@@ -51,7 +51,7 @@ chrome.runtime.onInstalled.addListener(async details => {
  * Listen for extension state changes
  */
 chrome.management.onEnabled.addListener(extension => {
-  logger.debug(`Extension enabled: ${extension.name}`, {
+  logger.debug(`🫱 Extension enabled: ${extension.name}`, {
     group: 'background',
     persist: true,
   });
@@ -61,7 +61,7 @@ chrome.management.onEnabled.addListener(extension => {
  * Listen for extension disabled
  */
 chrome.management.onDisabled.addListener(extension => {
-  logger.debug(`Extension disabled: ${extension.name}`, {
+  logger.debug(`🫱 Extension disabled: ${extension.name}`, {
     group: 'background',
     persist: true,
   });
@@ -71,12 +71,12 @@ chrome.management.onDisabled.addListener(extension => {
  * Listen for theme changes from offscreen document
  */
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  logger.debug('Received message', {
+  logger.debug('🫱 Received message', {
     group: 'background',
     persist: true,
   });
   if (message.type === 'COLOR_SCHEME_CHANGED') {
-    logger.debug('Color scheme changed', {
+    logger.debug('🫱 Color scheme changed', {
       group: 'background',
       persist: true,
     });

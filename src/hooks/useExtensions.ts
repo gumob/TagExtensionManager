@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { chromeAPI } from '@/api/ChromeAPI';
 import { ExtensionModel } from '@/models';
@@ -42,11 +42,14 @@ const findOptimalIcon = (icons: chrome.management.IconInfo[] | undefined): strin
  *    - Display info (description, icon)
  *
  * @param ext - Raw Chrome extension information
+ * @param storedExtensions - Current extensions from the store
  * @returns Formatted extension data for our app
  */
-export const formatExtension = (ext: chrome.management.ExtensionInfo): ExtensionModel => {
-  const { extensions } = useExtensionStore.getState();
-  const storedExtension = extensions.find(e => e.id === ext.id);
+export const formatExtension = (
+  ext: chrome.management.ExtensionInfo,
+  storedExtensions: ExtensionModel[]
+): ExtensionModel => {
+  const storedExtension = storedExtensions.find(e => e.id === ext.id);
   const isLocked = storedExtension?.locked ?? false;
 
   return {
@@ -61,158 +64,165 @@ export const formatExtension = (ext: chrome.management.ExtensionInfo): Extension
 };
 
 /**
- * The custom React hook that manages browser extension states and operations.
- * This hook provides functionality to:
- * - Load and refresh extension data
- * - Filter extensions by search query
- * - Track loading states
- * - Handle extension state changes (enable/disable/install/uninstall)
- * - Manage manual vs automatic refresh behavior
- *
- * @returns An object containing extension data and management functions
+ * Custom hook for managing extension state and operations.
+ * Implements a more robust architecture with clear separation of concerns.
  */
 export const useExtensions = () => {
-  /**
-   * State Management Setup:
-   * - extensions: Main array storing all extension data
-   * - searchQuery: Text used to filter extensions
-   * - isLoading: Boolean flag for loading state
-   * - isManualRefresh: Controls automatic vs manual updates
-   * - setStoreExtensions: Function to update global store
-   */
+  // State Management
   const [extensions, setExtensions] = useState<ExtensionModel[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isManualRefresh, setIsManualRefresh] = useState(false);
-  const { setExtensions: setStoreExtensions } = useExtensionStore();
+  const { extensions: storedExtensions, setExtensions: setStoreExtensions } = useExtensionStore();
+
+  // Refs for managing component lifecycle and preventing stale closures
+  const isSubscribed = useRef(true);
+  const isInitialized = useRef(false);
+  const storedExtensionsRef = useRef(storedExtensions);
+
+  // Update ref when storedExtensions changes
+  useEffect(() => {
+    storedExtensionsRef.current = storedExtensions;
+  }, [storedExtensions]);
 
   /**
-   * This callback function handles refreshing the extension list.
-   * Process:
-   * 1. Shows loading indicator
-   * 2. Fetches all extensions from Chrome API
-   * 3. Formats and sorts extensions alphabetically
-   * 4. Updates both local state and global store
-   * 5. Logs debug information
-   * 6. Handles any errors during refresh
-   * 7. Removes loading indicator
+   * Core function for refreshing extension data.
+   * Implements a more robust error handling and state management.
    */
   const refreshExtensions = useCallback(async () => {
+    if (!isSubscribed.current) return;
+
     try {
       setIsLoading(true);
-      const extensions = await chromeAPI.getAllExtensions();
-      /** Format the extensions */
-      const formattedExtensions = extensions.map(formatExtension);
-      /** Sort the extensions */
-      formattedExtensions.sort((a, b) => a.name.localeCompare(b.name));
-      logger.debug(`refreshExtensions`, {
+      const rawExtensions = await chromeAPI.getAllExtensions();
+
+      // Format and sort extensions
+      const formattedExtensions = rawExtensions
+        .map(ext => formatExtension(ext, storedExtensionsRef.current))
+        .sort((a, b) => a.name.localeCompare(b.name));
+
+      // Batch state updates
+      setExtensions(formattedExtensions);
+      setStoreExtensions(formattedExtensions);
+
+      logger.debug('🔄 Extensions refreshed successfully', {
         group: 'useExtensions',
         persist: true,
       });
-      /** Update the local state with the current extensions */
-      setExtensions(formattedExtensions);
-      /** Update the extension store with the current extensions */
-      setStoreExtensions(formattedExtensions);
+
       return formattedExtensions;
     } catch (error) {
-      logger.error('Failed to refresh extensions', {
-        group: 'useExtensions',
-        persist: true,
-      });
+      logger.error(
+        `Failed to refresh extensions: ${error instanceof Error ? error.message : String(error)}`,
+        {
+          group: 'useExtensions',
+          persist: true,
+        }
+      );
       throw error;
     } finally {
-      setIsLoading(false);
+      if (isSubscribed.current) {
+        setIsLoading(false);
+      }
     }
   }, [setStoreExtensions]);
 
   /**
-   * This effect hook manages extension state changes and updates.
-   * Process:
-   * 1. Initial load of extensions when component mounts
-   * 2. Sets up listeners for:
-   *    - Extension enable/disable events
-   *    - Installation/uninstallation events
-   *    - Update events
-   * 3. Handles refresh logic based on manual/automatic mode
-   * 4. Cleans up listeners on unmount
+   * Event handlers for extension state changes.
+   * Implemented as stable callbacks to prevent unnecessary re-renders.
    */
-  useEffect(() => {
-    /** Get the initial state */
-    logger.debug(`---Initialize---`, {
-      group: 'useExtensions',
-      persist: true,
-    });
-    refreshExtensions();
-
-    /** Watch for extension state changes */
-    const handleExtensionStateChange = () => {
-      /** If manual refresh is enabled, skip automatic refresh */
-      if (isManualRefresh) {
-        logger.debug(`handleExtensionStateChange`, {
-          group: 'useExtensions',
-          persist: true,
-        });
-        setIsManualRefresh(false);
-        return;
-      }
-      refreshExtensions();
-    };
-
-    /** Watch for extension updates */
-    const handleExtensionUpdate = (details: chrome.runtime.InstalledDetails) => {
-      if (details.reason === 'update') {
-        logger.info('handleExtensionUpdate', {
-          group: 'useExtensions',
-          persist: true,
-        });
-        setIsManualRefresh(true);
-        refreshExtensions();
-      }
-    };
-
-    /** Register event listeners */
-    chrome.management.onEnabled.addListener(handleExtensionStateChange);
-    chrome.management.onDisabled.addListener(handleExtensionStateChange);
-    chrome.management.onInstalled.addListener(handleExtensionStateChange);
-    chrome.management.onUninstalled.addListener(handleExtensionStateChange);
-    chrome.runtime.onInstalled.addListener(handleExtensionUpdate);
-
-    /** Cleanup */
-    return () => {
-      logger.debug(`---Cleanup---`, {
+  const handleExtensionStateChange = useCallback(
+    (info: chrome.management.ExtensionInfo) => {
+      if (!isSubscribed.current) return;
+      logger.debug(`🫱 Extension state changed: ${info.name}`, {
         group: 'useExtensions',
         persist: true,
       });
-      chrome.management.onEnabled.removeListener(handleExtensionStateChange);
-      chrome.management.onDisabled.removeListener(handleExtensionStateChange);
-      chrome.management.onInstalled.removeListener(handleExtensionStateChange);
-      chrome.management.onUninstalled.removeListener(handleExtensionStateChange);
-      chrome.runtime.onInstalled.removeListener(handleExtensionUpdate);
-    };
-  }, [refreshExtensions]);
+      refreshExtensions();
+    },
+    [refreshExtensions]
+  );
 
-  /**
-   * This memoized computation filters extensions based on search text.
-   * Process:
-   * 1. Takes current extensions array and search query
-   * 2. Converts both extension names and search query to lowercase
-   * 3. Returns only extensions whose names contain the search text
-   * 4. Updates automatically when extensions or search query change
-   */
-  const filteredExtensions = useMemo(
-    () => extensions.filter(ext => ext.name.toLowerCase().includes(searchQuery.toLowerCase())),
-    [extensions, searchQuery]
+  const handleExtensionUninstalled = useCallback(
+    (id: string) => {
+      if (!isSubscribed.current) return;
+      logger.debug(`🫱 Extension uninstalled: ${id}`, {
+        group: 'useExtensions',
+        persist: true,
+      });
+      refreshExtensions();
+    },
+    [refreshExtensions]
+  );
+
+  const handleExtensionUpdate = useCallback(
+    (details: chrome.runtime.InstalledDetails) => {
+      if (!isSubscribed.current || details.reason !== 'update') return;
+      logger.debug(`🫱 Extension updated: ${details.id}`, {
+        group: 'useExtensions',
+        persist: true,
+      });
+      refreshExtensions();
+    },
+    [refreshExtensions]
   );
 
   /**
-   * This function creates a snapshot of current extension states.
-   * Process:
-   * 1. Maps through all extensions
-   * 2. For each extension, captures:
-   *    - Extension ID
-   *    - Current enabled state
-   *    - Current locked state
-   * 3. Returns array of simplified state objects
+   * Main effect for initializing extension management and setting up event listeners.
+   * Implements a more robust cleanup mechanism.
+   */
+  useEffect(() => {
+    // Initialize extensions
+    const initialize = async () => {
+      if (!isInitialized.current && isSubscribed.current) {
+        logger.debug('🌱 Initializing useExtensions hook', {
+          group: 'useExtensions',
+          persist: true,
+        });
+        await refreshExtensions();
+        isInitialized.current = true;
+      }
+    };
+
+    initialize();
+
+    // Register event listeners
+    if (isSubscribed.current) {
+      chrome.management.onEnabled.addListener(handleExtensionStateChange);
+      chrome.management.onDisabled.addListener(handleExtensionStateChange);
+      chrome.management.onInstalled.addListener(handleExtensionStateChange);
+      chrome.management.onUninstalled.addListener(handleExtensionUninstalled);
+      chrome.runtime.onInstalled.addListener(handleExtensionUpdate);
+    }
+
+    // Cleanup function
+    return () => {
+      logger.debug('🗑️ Deinitializing useExtensions hook', {
+        group: 'useExtensions',
+        persist: true,
+      });
+      isSubscribed.current = false;
+      chrome.management.onEnabled.removeListener(handleExtensionStateChange);
+      chrome.management.onDisabled.removeListener(handleExtensionStateChange);
+      chrome.management.onInstalled.removeListener(handleExtensionStateChange);
+      chrome.management.onUninstalled.removeListener(handleExtensionUninstalled);
+      chrome.runtime.onInstalled.removeListener(handleExtensionUpdate);
+    };
+  }, [
+    refreshExtensions,
+    handleExtensionStateChange,
+    handleExtensionUninstalled,
+    handleExtensionUpdate,
+  ]);
+
+  /**
+   * Memoized filtered extensions based on search query.
+   */
+  const filteredExtensions = extensions.filter(ext =>
+    ext.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  /**
+   * Function to get current extension states.
    */
   const getCurrentExtensionStates = useCallback(() => {
     return extensions.map(ext => ({
@@ -230,6 +240,5 @@ export const useExtensions = () => {
     isLoading,
     refreshExtensions,
     getCurrentExtensionStates,
-    setIsManualRefresh,
   };
 };

@@ -8,7 +8,7 @@ import { logger } from '@/utils';
  * - Extension states (enabled/disabled)
  * - Extension locks
  * - Tags and tag assignments
- * 
+ *
  * @returns Object containing exportFile and importFile functions
  */
 export const useBackup = () => {
@@ -24,7 +24,7 @@ export const useBackup = () => {
 
   /**
    * The function that exports the current profile configuration to a JSON file.
-   * 
+   *
    * Step-by-step process:
    * 1. Retrieves current tag data using exportTags()
    * 2. Gets current extension states from the store
@@ -83,7 +83,7 @@ export const useBackup = () => {
       a.click();
       URL.revokeObjectURL(url);
     } catch (error) {
-      logger.error('Failed to export profile', {
+      logger.error('🛑 Failed to export profile', {
         group: 'BackupManager',
         persist: true,
       });
@@ -92,13 +92,13 @@ export const useBackup = () => {
 
   /**
    * The function that imports a profile configuration from a JSON file.
-   * 
+   *
    * Step-by-step process:
    * 1. Creates FileReader to read the JSON file
    * 2. Sets up onload handler to process file contents
    * 3. Imports tags and extension states
    * 4. Refreshes extension list to show changes
-   * 
+   *
    * @param file - The JSON file containing profile configuration
    */
   const importFile = async (file: File) => {
@@ -126,7 +126,7 @@ export const useBackup = () => {
            */
           await refreshExtensions();
         } catch (error) {
-          logger.error('Failed to import profile', {
+          logger.error('🛑 Failed to import profile', {
             group: 'BackupManager',
             persist: true,
           });
@@ -138,7 +138,7 @@ export const useBackup = () => {
        */
       reader.readAsText(file);
     } catch (error) {
-      logger.error('Failed to import profile', {
+      logger.error('🛑 Failed to import profile', {
         group: 'BackupManager',
         persist: true,
       });

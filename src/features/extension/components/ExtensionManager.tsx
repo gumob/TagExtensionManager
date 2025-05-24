@@ -28,7 +28,7 @@ export const ExtensionManager: React.FC = () => {
    * @param enabled
    */
   const handleExtensionStateChange = useCallback(async (id: string, enabled: boolean) => {
-    logger.debug(`handleExtensionStateChange: ${id} ${enabled}`, {
+    logger.debug(`🫱 handleExtensionStateChange: ${id} ${enabled}`, {
       group: 'ExtensionManager',
       persist: true,
     });
@@ -42,14 +42,14 @@ export const ExtensionManager: React.FC = () => {
    */
 
   useEffect(() => {
-    logger.debug(`filteredExtensions: ${filteredExtensions.length}`, {
+    logger.debug(`🔍 filteredExtensions: ${filteredExtensions.length}`, {
       group: 'ExtensionManager',
       persist: true,
     });
   }, [filteredExtensions]);
 
   useEffect(() => {
-    logger.debug(`visibleTagId: ${visibleTagId}`, {
+    logger.debug(`🔍 visibleTagId: ${visibleTagId}`, {
       group: 'ExtensionManager',
       persist: true,
     });

@@ -12,7 +12,7 @@ import { logger } from '@/utils';
  */
 export const detectThemeOnOffscreen = () => {
   const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  logger.debug('Theme detected', {
+  logger.debug('🎨 Theme detected', {
     group: 'themeDetector',
     persist: true,
   });
@@ -27,7 +27,7 @@ export const detectThemeOnOffscreen = () => {
  * @param isDarkMode - Whether the color scheme is dark
  */
 export const updateExtensionIcon = async (isDarkMode: boolean) => {
-  logger.debug('Updating extension icon', {
+  logger.debug('🎨 Updating extension icon', {
     group: 'background',
     persist: true,
   });
@@ -41,12 +41,12 @@ export const updateExtensionIcon = async (isDarkMode: boolean) => {
         128: `${iconPath}icon128.png`,
       },
     });
-    logger.debug('Icon updated', {
+    logger.debug('🎨 Icon updated', {
       group: 'background',
       persist: true,
     });
   } catch (error) {
-    logger.error('Failed to update extension icon', {
+    logger.error('🛑 Failed to update extension icon', {
       group: 'background',
       persist: true,
     });

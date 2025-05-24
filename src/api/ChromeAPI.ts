@@ -13,8 +13,7 @@ export class ChromeAPI {
   /**
    * The constructor.
    */
-  private constructor() {
-  }
+  private constructor() {}
 
   /**
    * The get instance method.
@@ -43,7 +42,7 @@ export class ChromeAPI {
       const result = await chrome.storage.local.get(keys);
       return result;
     } catch (error) {
-      logger.error('Failed to get value from storage', {
+      logger.error('🛑 Failed to get value from storage', {
         group: 'ChromeAPI',
         persist: true,
       });
@@ -59,7 +58,7 @@ export class ChromeAPI {
     try {
       await chrome.storage.local.set(items);
     } catch (error) {
-      logger.error('Failed to set value in storage', {
+      logger.error('🛑 Failed to set value in storage', {
         group: 'ChromeAPI',
         persist: true,
       });
@@ -75,7 +74,7 @@ export class ChromeAPI {
     try {
       await chrome.storage.local.remove(key);
     } catch (error) {
-      logger.error('Failed to remove value from storage', {
+      logger.error('🛑 Failed to remove value from storage', {
         group: 'ChromeAPI',
         persist: true,
       });
@@ -90,7 +89,7 @@ export class ChromeAPI {
     try {
       await chrome.storage.local.clear();
     } catch (error) {
-      logger.error('Failed to clear local storage', {
+      logger.error('🛑 Failed to clear local storage', {
         group: 'ChromeAPI',
         persist: true,
       });
@@ -111,7 +110,7 @@ export class ChromeAPI {
       const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
       return tab || null;
     } catch (error) {
-      logger.error('Failed to get current tab', {
+      logger.error('🛑 Failed to get current tab', {
         group: 'ChromeAPI',
         persist: true,
       });
@@ -128,7 +127,7 @@ export class ChromeAPI {
     try {
       return await chrome.tabs.create({ url, active: true });
     } catch (error) {
-      logger.error('Failed to create tab', {
+      logger.error('🛑 Failed to create tab', {
         group: 'ChromeAPI',
         persist: true,
       });
@@ -150,7 +149,7 @@ export class ChromeAPI {
     try {
       return await chrome.tabs.sendMessage(tabId, message);
     } catch (error) {
-      logger.error('Failed to send message to tab', {
+      logger.error('🛑 Failed to send message to tab', {
         group: 'ChromeAPI',
         persist: true,
       });
@@ -171,7 +170,7 @@ export class ChromeAPI {
     try {
       return await chrome.runtime.sendMessage(message);
     } catch (error) {
-      logger.error('Failed to send runtime message', {
+      logger.error('🛑 Failed to send runtime message', {
         group: 'ChromeAPI',
         persist: true,
       });
@@ -201,7 +200,7 @@ export class ChromeAPI {
     try {
       await chrome.action.setIcon(icon);
     } catch (error) {
-      logger.error('Failed to set icon', {
+      logger.error('🛑 Failed to set icon', {
         group: 'ChromeAPI',
         persist: true,
       });
@@ -223,7 +222,7 @@ export class ChromeAPI {
         chrome.management.getAll(resolve);
       });
     } catch (error) {
-      logger.error('Failed to get all extensions', {
+      logger.error('🛑 Failed to get all extensions', {
         group: 'ChromeAPI',
         persist: true,
       });
@@ -248,7 +247,7 @@ export class ChromeAPI {
         });
       });
     } catch (error) {
-      logger.error('Failed to get extension info', {
+      logger.error('🛑 Failed to get extension info', {
         group: 'ChromeAPI',
         persist: true,
       });
@@ -273,7 +272,7 @@ export class ChromeAPI {
         });
       });
     } catch (error) {
-      logger.error('Failed to toggle extension', {
+      logger.error('🛑 Failed to toggle extension', {
         group: 'ChromeAPI',
         persist: true,
       });
@@ -297,7 +296,7 @@ export class ChromeAPI {
         });
       });
     } catch (error) {
-      logger.error('Failed to uninstall extension', {
+      logger.error('🛑 Failed to uninstall extension', {
         group: 'ChromeAPI',
         persist: true,
       });
@@ -317,7 +316,7 @@ export class ChromeAPI {
     try {
       return await chrome.offscreen.hasDocument();
     } catch (error) {
-      logger.error('Failed to check offscreen document', {
+      logger.error('🛑 Failed to check offscreen document', {
         group: 'ChromeAPI',
         persist: true,
       });
@@ -343,7 +342,7 @@ export class ChromeAPI {
         justification,
       });
     } catch (error) {
-      logger.error('Failed to create offscreen document', {
+      logger.error('🛑 Failed to create offscreen document', {
         group: 'ChromeAPI',
         persist: true,
       });
@@ -358,7 +357,7 @@ export class ChromeAPI {
     try {
       await chrome.offscreen.closeDocument();
     } catch (error) {
-      logger.error('Failed to close offscreen document', {
+      logger.error('🛑 Failed to close offscreen document', {
         group: 'ChromeAPI',
         persist: true,
       });

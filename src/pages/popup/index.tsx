@@ -12,15 +12,19 @@ import { logger } from '@/utils/Logger';
  * The main component for the extension manager.
  * @returns
  */
-const Background: React.FC = () => {
+const Popup: React.FC = () => {
   /**
    * Setup color scheme listener.
    */
   useEffect(() => {
+    logger.debug('🌱 Initializing popup document', {
+      group: 'Popup',
+      persist: true,
+    });
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleChange = (e: MediaQueryListEvent) => {
-      logger.debug('Color scheme changed', {
-        group: 'Background',
+      logger.debug('🫱 Color scheme changed', {
+        group: 'Popup',
         persist: true,
       });
       chromeAPI.sendRuntimeMessage({
@@ -30,7 +34,13 @@ const Background: React.FC = () => {
     };
 
     mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
+    return () => {
+      logger.debug('🗑️ Deinitializing popup document', {
+        group: 'Popup',
+        persist: true,
+      });
+      mediaQuery.removeEventListener('change', handleChange);
+    };
   }, []);
 
   /**
@@ -64,7 +74,7 @@ if (container) {
   const root = createRoot(container);
   root.render(
     <React.StrictMode>
-      <Background />
+      <Popup />
     </React.StrictMode>
   );
 }
