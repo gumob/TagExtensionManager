@@ -2,23 +2,23 @@ import { PencilIcon } from 'lucide-react';
 
 import { useState } from 'react';
 
-import { TagEditor } from '@/features/tag/components';
+import { TagEditorDialog } from '@/features/popup/components/editor';
 
 /**
- * The TagEditChip component.
+ * The ExtensionTagEditButton component.
  *
- * @returns The TagEditChip component.
+ * @returns The ExtensionTagEditButton component.
  */
-export function TagEditChip() {
+export function ExtensionTagEditButton() {
   /**
    * The state for the dialog.
    */
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   /**
-   * The TagEditChip component.
+   * The ExtensionTagEditButton component.
    *
-   * @returns The TagEditChip component.
+   * @returns The ExtensionTagEditButton component.
    */
   return (
     <>
@@ -30,7 +30,7 @@ export function TagEditChip() {
         <span className="">Edit Tags</span>
       </button>
 
-      <TagEditor isOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)} />
+      <TagEditorDialog isOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)} />
     </>
   );
 }

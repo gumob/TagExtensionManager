@@ -6,31 +6,35 @@ import { ExtensionModel } from '@/models';
 import { useTagStore } from '@/stores';
 
 /**
- * The props for the TagMetricsChip component.
+ * The props for the ExtensionTagMetricsChip component.
  *
  * @param extensions - The extensions to display.
  * @param visibleTagId - The id of the visible tag.
  * @param setVisibleTag - The function to set the visible tag.
  */
-interface TagMetricsChipProps {
+interface ExtensionTagMetricsChipProps {
   extensions?: ExtensionModel[];
   visibleTagId: string | null;
   setVisibleTag: (tagId: string | null) => void;
 }
 
 /**
- * The TagMetricsChip component.
+ * The ExtensionTagMetricsChip component.
  *
  * @param extensions - The extensions to display.
  * @param visibleTagId - The id of the visible tag.
  * @param setVisibleTag - The function to set the visible tag.
- * @returns The TagMetricsChip component.
+ * @returns The ExtensionTagMetricsChip component.
  */
-export const TagMetricsChip: FC<TagMetricsChipProps> = ({ extensions = [], visibleTagId, setVisibleTag }) => {
+export const ExtensionTagMetricsChip: FC<ExtensionTagMetricsChipProps> = ({
+  extensions = [],
+  visibleTagId,
+  setVisibleTag,
+}) => {
   const [localExtensions, setLocalExtensions] = useState(extensions);
 
   /**
-   * The use effect for the TagMetricsChip component.
+   * The use effect for the ExtensionTagMetricsChip component.
    */
   useEffect(() => {
     setLocalExtensions(extensions);
@@ -73,9 +77,9 @@ export const TagMetricsChip: FC<TagMetricsChipProps> = ({ extensions = [], visib
   };
 
   /**
-   * The TagMetricsChip component.
+   * The ExtensionTagMetricsChip component.
    *
-   * @returns The TagMetricsChip component.
+   * @returns The ExtensionTagMetricsChip component.
    */
   return (
     <div className="flex flex-row w-auto gap-[1px]">

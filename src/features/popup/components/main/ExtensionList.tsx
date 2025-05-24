@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { chromeAPI } from '@/api/ChromeAPI';
-import { ExtensionCard } from '@/features/extension/components/ExtensionCard';
-import { ExtensionHeader } from '@/features/extension/components/ExtensionHeader';
+import { ExtensionCard, ExtensionListHeader } from '@/features/popup/components/main';
 import { ExtensionModel } from '@/models';
 import { useTagStore } from '@/stores';
 import { useExtensionStore } from '@/stores';
@@ -150,7 +149,7 @@ export function ExtensionList({
     <div className="space-y-4 pb-4 pl-4 pr-3">
       {Object.entries(extensionsByTag).map(([tagId, tagExtensions]) => (
         <div key={tagId} className="space-y-2">
-          <ExtensionHeader
+          <ExtensionListHeader
             tag={tags.find(t => t.id === tagId)!}
             extensionCount={tagExtensions.length}
             onToggle={(enabled, extensions) => {
@@ -180,7 +179,7 @@ export function ExtensionList({
         visibleTagId === 'disabled') &&
         untaggedExtensions.length > 0 && (
           <div className="space-y-2">
-            <ExtensionHeader
+            <ExtensionListHeader
               tag={{
                 id: 'untagged',
                 name: 'Untagged',

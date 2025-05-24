@@ -84,7 +84,7 @@ export const useBackup = () => {
       URL.revokeObjectURL(url);
     } catch (error) {
       logger.error('📁🛑 Failed to export profile', {
-        group: 'BackupManager',
+        group: 'ExtensionBackupMenu',
         persist: true,
       });
     }
@@ -127,7 +127,7 @@ export const useBackup = () => {
           await refreshExtensions();
         } catch (error) {
           logger.error('📁🛑 Failed to import profile', {
-            group: 'BackupManager',
+            group: 'ExtensionBackupMenu',
             persist: true,
           });
         }
@@ -139,7 +139,7 @@ export const useBackup = () => {
       reader.readAsText(file);
     } catch (error) {
       logger.error('📁🛑 Failed to import profile', {
-        group: 'BackupManager',
+        group: 'ExtensionBackupMenu',
         persist: true,
       });
     }

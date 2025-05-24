@@ -9,9 +9,9 @@ import { Fragment, useEffect, useRef, useState } from 'react';
 import { TagModel } from '@/models';
 
 /**
- * The props for the TagSelector component.
+ * The props for the TagSelectorDialog component.
  */
-interface TagSelectorProps {
+interface TagSelectorDialogProps {
   isOpen: boolean;
   tags: TagModel[];
   selectedTagIds: string[];
@@ -20,22 +20,22 @@ interface TagSelectorProps {
 }
 
 /**
- * The TagSelector component.
+ * The TagSelectorDialog component.
  *
  * @param isOpen - Whether the tag selector is open.
  * @param tags - The tags to select from.
  * @param selectedTagIds - The selected tag ids.
  * @param onClose - The callback to close the tag selector.
  * @param onSelectTags - The callback to select the tags.
- * @returns The TagSelector component.
+ * @returns The TagSelectorDialog component.
  */
-export function TagSelector({
+export function TagSelectorDialog({
   isOpen,
   tags,
   selectedTagIds,
   onClose,
   onSelectTags,
-}: TagSelectorProps) {
+}: TagSelectorDialogProps) {
   /**
    * The search query.
    */
@@ -75,7 +75,7 @@ export function TagSelector({
   }, [isOpen]);
 
   /**
-   * The TagSelector component.
+   * The TagSelectorDialog component.
    */
   return (
     <Transition appear show={isOpen} as={Fragment}>

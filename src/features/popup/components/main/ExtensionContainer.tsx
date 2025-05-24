@@ -1,9 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { chromeAPI } from '@/api/ChromeAPI';
-import { ExtensionList, SearchBar } from '@/features/extension/components';
-import { BackupManager } from '@/features/profile/components';
-import { TagList } from '@/features/tag/components';
+import {
+  ExtensionBackupMenu,
+  ExtensionList,
+  ExtensionSearchBar,
+  ExtensionTagList,
+} from '@/features/popup/components/main';
 import { useExtensions } from '@/hooks';
 import { logger } from '@/utils';
 
@@ -11,7 +14,7 @@ import { logger } from '@/utils';
  * The component for managing extensions.
  * @returns
  */
-export const ExtensionManager: React.FC = () => {
+export const ExtensionContainer: React.FC = () => {
   /**
    * The extensions and filtered extensions.
    */
@@ -29,7 +32,7 @@ export const ExtensionManager: React.FC = () => {
    */
   const handleExtensionStateChange = useCallback(async (id: string, enabled: boolean) => {
     logger.debug(`👩‍💼🫱 handleExtensionStateChange: ${id} ${enabled}`, {
-      group: 'ExtensionManager',
+      group: 'ExtensionContainer',
       persist: true,
     });
 
@@ -43,14 +46,14 @@ export const ExtensionManager: React.FC = () => {
 
   useEffect(() => {
     logger.debug(`👩‍💼🔍 filteredExtensions: ${filteredExtensions.length}`, {
-      group: 'ExtensionManager',
+      group: 'ExtensionContainer',
       persist: true,
     });
   }, [filteredExtensions]);
 
   useEffect(() => {
     logger.debug(`👩‍💼🔍 visibleTagId: ${visibleTagId}`, {
-      group: 'ExtensionManager',
+      group: 'ExtensionContainer',
       persist: true,
     });
   }, [visibleTagId]);
@@ -67,11 +70,11 @@ export const ExtensionManager: React.FC = () => {
             <h1 className="text-lg font-bold text-zinc-900 dark:text-white">
               Clean Extension Manager
             </h1>
-            <BackupManager />
+            <ExtensionBackupMenu />
           </div>
 
           <div className="mb-3">
-            <TagList
+            <ExtensionTagList
               extensions={filteredExtensions}
               visibleTagId={visibleTagId}
               setVisibleTag={setVisibleTagId}
@@ -79,7 +82,7 @@ export const ExtensionManager: React.FC = () => {
           </div>
 
           <div className="mb-3">
-            <SearchBar onSearch={setSearchQuery} />
+            <ExtensionSearchBar onSearch={setSearchQuery} />
           </div>
         </div>
 

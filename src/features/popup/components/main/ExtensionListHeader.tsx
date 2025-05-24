@@ -1,14 +1,14 @@
 import { ExtensionModel, TagModel } from '@/models';
 
 /**
- * The props for the ExtensionHeader component.
+ * The props for the ExtensionListHeader component.
  *
  * @param tag - The tag to display.
  * @param extensionCount - The number of extensions.
  * @param onToggle - The callback to toggle the extensions.
  * @param extensions - The extensions to display.
  */
-interface ExtensionHeaderProps {
+interface ExtensionListHeaderProps {
   tag: TagModel;
   extensionCount: number;
   onToggle: (enabled: boolean, extensions: ExtensionModel[]) => void;
@@ -16,20 +16,20 @@ interface ExtensionHeaderProps {
 }
 
 /**
- * The ExtensionHeader component.
+ * The ExtensionListHeader component.
  *
  * @param tag - The tag to display.
  * @param extensionCount - The number of extensions.
  * @param onToggle - The callback to toggle the extensions.
  * @param extensions - The extensions to display.
- * @returns The ExtensionHeader component.
+ * @returns The ExtensionListHeader component.
  */
-export const ExtensionHeader = ({
+export const ExtensionListHeader = ({
   tag,
   extensionCount,
   onToggle,
   extensions,
-}: ExtensionHeaderProps) => {
+}: ExtensionListHeaderProps) => {
   /**
    * The enabled count.
    */
@@ -52,9 +52,9 @@ export const ExtensionHeader = ({
   };
 
   /**
-   * The ExtensionHeader component.
+   * The ExtensionListHeader component.
    *
-   * @returns The ExtensionHeader component.
+   * @returns The ExtensionListHeader component.
    */
   return (
     <div className="flex items-center justify-between p-1">

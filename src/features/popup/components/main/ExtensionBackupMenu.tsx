@@ -6,9 +6,9 @@ import { useBackup } from '@/hooks';
 
 /**
  * The component for managing profile export/import.
- * @returns The BackupManager component
+ * @returns The ExtensionBackupMenu component
  */
-export const BackupManager = () => {
+export const ExtensionBackupMenu = () => {
   const { exportFile, importFile } = useBackup();
   const fileInputRef = useRef<HTMLInputElement>(null);
 

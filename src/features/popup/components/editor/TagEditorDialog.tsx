@@ -7,12 +7,11 @@ import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { FixedSizeList } from 'react-window';
 
-import { TagEditorItem } from '@/features/tag/components';
-import { TagModel } from '@/models';
+import { TagEditorItem } from '@/features/popup/components/editor';
 import { useTagStore } from '@/stores';
 
 /**
- * The props for the TagEditor component.
+ * The props for the TagEditorDialog component.
  * @param isOpen - Whether the tag editor is open.
  * @param onClose - The callback to close the tag editor.
  */
@@ -22,13 +21,13 @@ interface TagEditorProps {
 }
 
 /**
- * The TagEditor component.
+ * The TagEditorDialog component.
  *
  * @param isOpen - Whether the tag editor is open.
  * @param onClose - The callback to close the tag editor.
- * @returns The TagEditor component.
+ * @returns The TagEditorDialog component.
  */
-export const TagEditor = ({ isOpen, onClose }: TagEditorProps) => {
+export const TagEditorDialog = ({ isOpen, onClose }: TagEditorProps) => {
   const { tags, addTag, updateTag, deleteTag, reorderTags } = useTagStore();
   const [newTagName, setNewTagName] = useState('');
   const [editingTagId, setEditingTagId] = useState<string | null>(null);
@@ -97,7 +96,7 @@ export const TagEditor = ({ isOpen, onClose }: TagEditorProps) => {
   );
 
   /**
-   * The TagEditor component.
+   * The TagEditorDialog component.
    */
   return (
     <DndProvider backend={HTML5Backend}>

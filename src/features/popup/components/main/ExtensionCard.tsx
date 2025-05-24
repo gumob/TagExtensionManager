@@ -4,8 +4,8 @@ import { LockClosedIcon } from '@heroicons/react/24/outline';
 import { useEffect, useRef, useState } from 'react';
 
 import { chromeAPI } from '@/api/ChromeAPI';
-import { ExtensionCardMenu } from '@/features/extension/components';
-import { TagSelector } from '@/features/tag/components';
+import { ExtensionCardMenu } from '@/features/popup/components/main';
+import { TagSelectorDialog } from '@/features/popup/components/selector';
 import { useExtensions } from '@/hooks';
 import { ExtensionModel } from '@/models';
 import { useTagStore } from '@/stores';
@@ -228,7 +228,7 @@ export function ExtensionCard({
       </div>
 
       {isTagDialogOpen && (
-        <TagSelector
+        <TagSelectorDialog
           isOpen={isTagDialogOpen}
           tags={tags}
           selectedTagIds={currentTagIds}

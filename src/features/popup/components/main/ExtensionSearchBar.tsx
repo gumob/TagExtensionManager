@@ -3,21 +3,21 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import React, { FC, useState } from 'react';
 
 /**
- * The props for the SearchBar component.
+ * The props for the ExtensionSearchBar component.
  *
  * @param onSearch - The callback to search for extensions.
  */
-interface SearchBarProps {
+interface ExtensionSearchBarProps {
   onSearch?: (query: string) => void;
 }
 
 /**
- * The SearchBar component.
+ * The ExtensionSearchBar component.
  *
  * @param onSearch - The callback to search for extensions.
- * @returns The SearchBar component.
+ * @returns The ExtensionSearchBar component.
  */
-const SearchBar: FC<SearchBarProps> = ({ onSearch }) => {
+const ExtensionSearchBar: FC<ExtensionSearchBarProps> = ({ onSearch }) => {
   /**
    * The search term.
    */
@@ -33,9 +33,9 @@ const SearchBar: FC<SearchBarProps> = ({ onSearch }) => {
   };
 
   /**
-   * The SearchBar component.
+   * The ExtensionSearchBar component.
    *
-   * @returns The SearchBar component.
+   * @returns The ExtensionSearchBar component.
    */
   return (
     <div className="relative">
@@ -53,4 +53,4 @@ const SearchBar: FC<SearchBarProps> = ({ onSearch }) => {
   );
 };
 
-export { SearchBar };
+export { ExtensionSearchBar };

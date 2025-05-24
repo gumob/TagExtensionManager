@@ -4,14 +4,14 @@ import { TagModel } from '@/models';
 import { useTagStore } from '@/stores';
 
 /**
- * The props for the TagChip component.
+ * The props for the ExtensionTagChip component.
  *
  * @param tag - The tag to display.
  * @param extensionCount - The number of extensions with the tag.
  * @param visibleTagId - The id of the visible tag.
  * @param setVisibleTag - The function to set the visible tag.
  */
-interface TagChipProps {
+interface ExtensionTagChipProps {
   tag: TagModel;
   extensionCount?: number;
   visibleTagId: string | null;
@@ -19,15 +19,20 @@ interface TagChipProps {
 }
 
 /**
- * The TagChip component.
+ * The ExtensionTagChip component.
  *
  * @param tag - The tag to display.
  * @param extensionCount - The number of extensions with the tag.
  * @param visibleTagId - The id of the visible tag.
  * @param setVisibleTag - The function to set the visible tag.
- * @returns The TagChip component.
+ * @returns The ExtensionTagChip component.
  */
-export function TagChip({ tag, extensionCount, visibleTagId, setVisibleTag }: TagChipProps) {
+export function ExtensionTagChip({
+  tag,
+  extensionCount,
+  visibleTagId,
+  setVisibleTag,
+}: ExtensionTagChipProps) {
   /**
    * The tag store.
    */
@@ -43,9 +48,9 @@ export function TagChip({ tag, extensionCount, visibleTagId, setVisibleTag }: Ta
   const isSelected = visibleTagId === tag.id;
 
   /**
-   * The TagChip component.
+   * The ExtensionTagChip component.
    *
-   * @returns The TagChip component.
+   * @returns The ExtensionTagChip component.
    */
   return (
     <button
