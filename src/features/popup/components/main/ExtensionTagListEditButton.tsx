@@ -5,20 +5,20 @@ import { useState } from 'react';
 import { TagEditorDialog } from '@/features/popup/components/editor';
 
 /**
- * The ExtensionTagEditButton component.
+ * The ExtensionTagListEditButton component.
  *
- * @returns The ExtensionTagEditButton component.
+ * @returns The ExtensionTagListEditButton component.
  */
-export function ExtensionTagEditButton() {
+export function ExtensionTagListEditButton() {
   /**
    * The state for the dialog.
    */
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   /**
-   * The ExtensionTagEditButton component.
+   * The ExtensionTagListEditButton component.
    *
-   * @returns The ExtensionTagEditButton component.
+   * @returns The ExtensionTagListEditButton component.
    */
   return (
     <>

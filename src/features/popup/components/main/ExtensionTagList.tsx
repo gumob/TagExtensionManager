@@ -1,6 +1,6 @@
 import {
-  ExtensionTagChip,
-  ExtensionTagEditButton,
+  ExtensionTagListEditButton,
+  ExtensionTagListItem,
   ExtensionTagMetricsChip,
 } from '@/features/popup/components/main';
 import { ExtensionModel } from '@/models';
@@ -47,11 +47,11 @@ export const ExtensionTagList = ({
           visibleTagId={visibleTagId}
           setVisibleTag={setVisibleTag}
         />
-        <ExtensionTagEditButton />
+        <ExtensionTagListEditButton />
       </div>
       <div className="flex flex-wrap gap-1">
         {tags.map(tag => (
-          <ExtensionTagChip
+          <ExtensionTagListItem
             key={tag.id}
             tag={tag}
             visibleTagId={visibleTagId}
@@ -59,7 +59,7 @@ export const ExtensionTagList = ({
           />
         ))}
         {untaggedExtensions.length > 0 && (
-          <ExtensionTagChip
+          <ExtensionTagListItem
             tag={{
               id: 'untagged',
               name: 'Untagged',
