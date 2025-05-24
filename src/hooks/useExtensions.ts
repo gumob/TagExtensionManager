@@ -179,6 +179,10 @@ export const useExtensions = () => {
 
     /** Cleanup */
     return () => {
+      logger.debug(`---Cleanup---`, {
+        group: 'useExtensions',
+        persist: true,
+      });
       chrome.management.onEnabled.removeListener(handleExtensionStateChange);
       chrome.management.onDisabled.removeListener(handleExtensionStateChange);
       chrome.management.onInstalled.removeListener(handleExtensionStateChange);
