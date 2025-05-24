@@ -3,30 +3,29 @@ import { TagsIcon, ToggleLeftIcon, ToggleRightIcon } from 'lucide-react';
 import { FC, useEffect, useState } from 'react';
 
 import { ExtensionModel } from '@/models';
-import { useTagStore } from '@/stores';
 
 /**
- * The props for the ExtensionTagMetricsChip component.
+ * The props for the ExtensionTagMetrics component.
  *
  * @param extensions - The extensions to display.
  * @param visibleTagId - The id of the visible tag.
  * @param setVisibleTag - The function to set the visible tag.
  */
-interface ExtensionTagMetricsChipProps {
+interface ExtensionTagMetricsProps {
   extensions?: ExtensionModel[];
   visibleTagId: string | null;
   setVisibleTag: (tagId: string | null) => void;
 }
 
 /**
- * The ExtensionTagMetricsChip component.
+ * The ExtensionTagMetrics component.
  *
  * @param extensions - The extensions to display.
  * @param visibleTagId - The id of the visible tag.
  * @param setVisibleTag - The function to set the visible tag.
- * @returns The ExtensionTagMetricsChip component.
+ * @returns The ExtensionTagMetrics component.
  */
-export const ExtensionTagMetricsChip: FC<ExtensionTagMetricsChipProps> = ({
+export const ExtensionTagMetrics: FC<ExtensionTagMetricsProps> = ({
   extensions = [],
   visibleTagId,
   setVisibleTag,
@@ -34,7 +33,7 @@ export const ExtensionTagMetricsChip: FC<ExtensionTagMetricsChipProps> = ({
   const [localExtensions, setLocalExtensions] = useState(extensions);
 
   /**
-   * The use effect for the ExtensionTagMetricsChip component.
+   * The use effect for the ExtensionTagMetrics component.
    */
   useEffect(() => {
     setLocalExtensions(extensions);
@@ -77,9 +76,9 @@ export const ExtensionTagMetricsChip: FC<ExtensionTagMetricsChipProps> = ({
   };
 
   /**
-   * The ExtensionTagMetricsChip component.
+   * The ExtensionTagMetrics component.
    *
-   * @returns The ExtensionTagMetricsChip component.
+   * @returns The ExtensionTagMetrics component.
    */
   return (
     <div className="flex flex-row w-auto gap-[1px]">

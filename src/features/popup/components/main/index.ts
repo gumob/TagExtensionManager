@@ -1,4 +1,4 @@
-export * from './ExtensionTagMetricsChip';
+export * from './ExtensionTagMetrics';
 export * from './ExtensionTagList';
 export * from './ExtensionTagListEditButton';
 export * from './ExtensionTagListItem';

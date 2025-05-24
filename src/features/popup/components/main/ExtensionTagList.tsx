@@ -1,7 +1,7 @@
 import {
   ExtensionTagListEditButton,
   ExtensionTagListItem,
-  ExtensionTagMetricsChip,
+  ExtensionTagMetrics,
 } from '@/features/popup/components/main';
 import { ExtensionModel } from '@/models';
 import { useTagStore } from '@/stores';
@@ -44,7 +44,7 @@ export const ExtensionTagList: React.FC<ExtensionTagListProps> = ({
   return (
     <>
       <div className="flex flex-wrap gap-1 mb-1">
-        <ExtensionTagMetricsChip
+        <ExtensionTagMetrics
           extensions={extensions}
           visibleTagId={visibleTagId}
           setVisibleTag={setVisibleTag}
