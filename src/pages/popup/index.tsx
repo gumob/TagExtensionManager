@@ -12,7 +12,7 @@ import { logger } from '@/utils/Logger';
  * The main component for the extension manager.
  * @returns
  */
-const App: React.FC = () => {
+const Background: React.FC = () => {
   /**
    * Setup color scheme listener.
    */
@@ -20,7 +20,7 @@ const App: React.FC = () => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleChange = (e: MediaQueryListEvent) => {
       logger.debug('Color scheme changed', {
-        group: 'App',
+        group: 'Background',
         persist: true,
       });
       chromeAPI.sendRuntimeMessage({
@@ -64,7 +64,7 @@ if (container) {
   const root = createRoot(container);
   root.render(
     <React.StrictMode>
-      <App />
+      <Background />
     </React.StrictMode>
   );
 }
