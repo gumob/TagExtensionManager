@@ -59,7 +59,7 @@ export const useTagStore = create<TagStore>()(
 
           const storedData = await chromeAPI.getLocalStorage('extension-manager-tags');
           if (storedData['extension-manager-tags']) {
-            logger.debug('🌱 Loading tags from storage', {
+            logger.debug('🏷🌱 Loading tags from storage', {
               group: 'TagStore',
               persist: true,
             });
@@ -87,7 +87,7 @@ export const useTagStore = create<TagStore>()(
             });
           }
         } catch (error) {
-          logger.error('🛑 Failed to load tags', {
+          logger.error('🏷🛑 Failed to load tags', {
             group: 'TagStore',
             persist: true,
           });
@@ -311,7 +311,7 @@ export const useTagStore = create<TagStore>()(
             const result = await chromeAPI.getLocalStorage(name);
             return result[name];
           } catch (error) {
-            logger.error('🛑 Failed to get item from storage', {
+            logger.error('🏷🛑 Failed to get item from storage', {
               group: 'TagStore',
               persist: true,
             });
@@ -325,12 +325,12 @@ export const useTagStore = create<TagStore>()(
         setItem: async (name: string, value: any) => {
           try {
             await chromeAPI.setLocalStorage({ [name]: value });
-            logger.debug('💾 Saved tags to storage', {
+            logger.debug('🏷💾 Saved tags to storage', {
               group: 'TagStore',
               persist: true,
             });
           } catch (error) {
-            logger.error('🛑 Failed to set item in storage', {
+            logger.error('🏷🛑 Failed to set item in storage', {
               group: 'TagStore',
               persist: true,
             });
@@ -343,12 +343,12 @@ export const useTagStore = create<TagStore>()(
         removeItem: async (name: string) => {
           try {
             await chromeAPI.removeLocalStorage(name);
-            logger.debug('🗑️ Removed tags from storage', {
+            logger.debug('🏷🗑️ Removed tags from storage', {
               group: 'TagStore',
               persist: true,
             });
           } catch (error) {
-            logger.error('🛑 Failed to remove item from storage', {
+            logger.error('🏷🛑 Failed to remove item from storage', {
               group: 'TagStore',
               persist: true,
             });

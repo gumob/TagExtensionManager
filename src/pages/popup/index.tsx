@@ -17,13 +17,13 @@ const Popup: React.FC = () => {
    * Setup color scheme listener.
    */
   useEffect(() => {
-    logger.debug('🌱 Initializing popup document', {
+    logger.debug('🍭🌱 Initializing popup document', {
       group: 'Popup',
       persist: true,
     });
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleChange = (e: MediaQueryListEvent) => {
-      logger.debug('🫱 Color scheme changed', {
+      logger.debug('🍭🫱 Color scheme changed', {
         group: 'Popup',
         persist: true,
       });
@@ -35,7 +35,7 @@ const Popup: React.FC = () => {
 
     mediaQuery.addEventListener('change', handleChange);
     return () => {
-      logger.debug('🗑️ Deinitializing popup document', {
+      logger.debug('🍭🗑️ Deinitializing popup document', {
         group: 'Popup',
         persist: true,
       });

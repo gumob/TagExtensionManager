@@ -104,7 +104,7 @@ export const useExtensions = () => {
       setExtensions(formattedExtensions);
       setStoreExtensions(formattedExtensions);
 
-      logger.debug('🔄 Extensions refreshed successfully', {
+      logger.debug('🧯🔄 Extensions refreshed successfully', {
         group: 'useExtensions',
         persist: true,
       });
@@ -112,7 +112,7 @@ export const useExtensions = () => {
       return formattedExtensions;
     } catch (error) {
       logger.error(
-        `Failed to refresh extensions: ${error instanceof Error ? error.message : String(error)}`,
+        `🧯🛑 Failed to refresh extensions: ${error instanceof Error ? error.message : String(error)}`,
         {
           group: 'useExtensions',
           persist: true,
@@ -133,7 +133,7 @@ export const useExtensions = () => {
   const handleExtensionStateChange = useCallback(
     (info: chrome.management.ExtensionInfo) => {
       if (!isSubscribed.current) return;
-      logger.debug(`🫱 Extension state changed: ${info.name}`, {
+      logger.debug(`🧯🫱 Extension state changed: ${info.name}`, {
         group: 'useExtensions',
         persist: true,
       });
@@ -145,7 +145,7 @@ export const useExtensions = () => {
   const handleExtensionUninstalled = useCallback(
     (id: string) => {
       if (!isSubscribed.current) return;
-      logger.debug(`🫱 Extension uninstalled: ${id}`, {
+      logger.debug(`🧯🫱 Extension uninstalled: ${id}`, {
         group: 'useExtensions',
         persist: true,
       });
@@ -157,7 +157,7 @@ export const useExtensions = () => {
   const handleExtensionUpdate = useCallback(
     (details: chrome.runtime.InstalledDetails) => {
       if (!isSubscribed.current || details.reason !== 'update') return;
-      logger.debug(`🫱 Extension updated: ${details.id}`, {
+      logger.debug(`🧯🫱 Extension updated: ${details.id}`, {
         group: 'useExtensions',
         persist: true,
       });
@@ -174,7 +174,7 @@ export const useExtensions = () => {
     // Initialize extensions
     const initialize = async () => {
       if (!isInitialized.current && isSubscribed.current) {
-        logger.debug('🌱 Initializing useExtensions hook', {
+        logger.debug('🧯🌱 Initializing useExtensions hook', {
           group: 'useExtensions',
           persist: true,
         });
@@ -196,7 +196,7 @@ export const useExtensions = () => {
 
     // Cleanup function
     return () => {
-      logger.debug('🗑️ Deinitializing useExtensions hook', {
+      logger.debug('🧯🗑️ Deinitializing useExtensions hook', {
         group: 'useExtensions',
         persist: true,
       });
