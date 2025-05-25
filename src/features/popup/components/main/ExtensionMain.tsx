@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-  ExtensionBackupMenu,
+  ExtensionHeader,
   ExtensionList,
   ExtensionSearchBar,
   ExtensionTagList,
@@ -21,10 +21,7 @@ export const ExtensionMain: React.FC = () => {
       <div className="container mx-auto flex flex-col h-full">
         <div className="flex-none px-4 pt-4 pb-0">
           <div className="flex justify-between items-center mb-3">
-            <h1 className="text-lg font-bold text-zinc-900 dark:text-white">
-              Clean Extension Manager
-            </h1>
-            <ExtensionBackupMenu />
+            <ExtensionHeader />
           </div>
 
           <div className="mb-3">
