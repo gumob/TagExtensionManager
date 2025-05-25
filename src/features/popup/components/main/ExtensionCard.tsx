@@ -18,8 +18,6 @@ import { useTagStore } from '@/stores';
  */
 interface ExtensionCardProps {
   extension: ExtensionModel;
-  onToggle: (id: string, enabled: boolean) => void;
-  onSettingsClick: (id: string) => void;
 }
 
 /**
@@ -27,15 +25,10 @@ interface ExtensionCardProps {
  *
  * @param extension - The extension to display.
  * @param onToggle - The callback to toggle the extension.
- * @param onSettingsClick - The callback to open the settings page.
  * @param onLockToggle - The callback to lock the extension.
  * @returns The extension card component.
  */
-export const ExtensionCard: React.FC<ExtensionCardProps> = ({
-  extension,
-  onToggle,
-  onSettingsClick,
-}) => {
+export const ExtensionCard: React.FC<ExtensionCardProps> = ({ extension }) => {
   /**
    * The hovered state.
    */
@@ -166,7 +159,7 @@ export const ExtensionCard: React.FC<ExtensionCardProps> = ({
           )}
           <Switch
             checked={extension.enabled}
-            onChange={checked => onToggle(extension.id, checked)}
+            onChange={async checked => await chromeAPI.toggleExtension(extension.id, checked)}
             disabled={extension.locked}
             className={`${
               extension.enabled ? 'bg-green-500' : 'bg-zinc-300 dark:bg-zinc-600'

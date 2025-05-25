@@ -1,17 +1,15 @@
+import { chromeAPI } from '@/api/ChromeAPI';
 import { ExtensionModel, TagModel } from '@/models';
 
 /**
  * The props for the ExtensionListHeader component.
  *
  * @param tag - The tag to display.
- * @param extensionCount - The number of extensions.
- * @param onToggle - The callback to toggle the extensions.
  * @param extensions - The extensions to display.
+ * @param extensionCount - The number of extensions.
  */
 interface ExtensionListHeaderProps {
   tag: TagModel;
-  extensionCount: number;
-  onToggle: (enabled: boolean, extensions: ExtensionModel[]) => void;
   extensions: ExtensionModel[];
 }
 
@@ -19,16 +17,13 @@ interface ExtensionListHeaderProps {
  * The ExtensionListHeader component.
  *
  * @param tag - The tag to display.
- * @param extensionCount - The number of extensions.
- * @param onToggle - The callback to toggle the extensions.
  * @param extensions - The extensions to display.
  * @returns The ExtensionListHeader component.
  */
 export const ExtensionListHeader: React.FC<ExtensionListHeaderProps> = ({
   tag,
-  extensionCount,
-  onToggle,
   extensions,
+  // onToggle,
 }: ExtensionListHeaderProps) => {
   /**
    * The enabled count.
@@ -38,7 +33,7 @@ export const ExtensionListHeader: React.FC<ExtensionListHeaderProps> = ({
   /**
    * The disabled count.
    */
-  const disabledCount = extensionCount - enabledCount;
+  const disabledCount = extensions.length - enabledCount;
 
   /**
    * The handle toggle.
@@ -48,7 +43,7 @@ export const ExtensionListHeader: React.FC<ExtensionListHeaderProps> = ({
     const unlockedExtensions = extensions.filter(ext => !ext.locked);
 
     /** Toggle the extensions */
-    onToggle(enabled, unlockedExtensions);
+    unlockedExtensions.forEach(async ext => chromeAPI.toggleExtension(ext.id, enabled));
   };
 
   /**
