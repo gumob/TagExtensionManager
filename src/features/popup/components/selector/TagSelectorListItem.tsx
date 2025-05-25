@@ -9,10 +9,10 @@ interface TagSelectorListItemProps {
 }
 
 export const TagSelectorListItem: React.FC<TagSelectorListItemProps> = ({ tag }) => {
-  const { currentTagIds, handleTagClick } = useTagSelectorContext();
+  const { currentTagIds, selectTag } = useTagSelectorContext();
   return (
     <button
-      onClick={() => handleTagClick(tag.id)}
+      onClick={() => selectTag(tag.id)}
       className={`px-3 py-2 rounded-full text-xs font-semibold transition-opacity ${
         currentTagIds.includes(tag.id)
           ? 'bg-zinc-200 dark:bg-zinc-600 text-zinc-900 dark:text-zinc-100'

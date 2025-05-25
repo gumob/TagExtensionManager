@@ -26,7 +26,7 @@ interface TagSelectorContextValue {
   /**
    * The handle tag click function.
    */
-  handleTagClick: (tagId: string) => void;
+  selectTag: (tagId: string) => void;
 }
 
 /**
@@ -85,7 +85,7 @@ export const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
   /**
    * The handle tag click.
    */
-  const handleTagClick = useCallback(
+  const selectTag = useCallback(
     (tagId: string) => {
       /** The new current tag ids. */
       const newCurrentTagIds = currentTagIds.includes(tagId)
@@ -115,9 +115,9 @@ export const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
       setSearchQuery,
       filteredTags,
       currentTagIds,
-      handleTagClick,
+      selectTag,
     }),
-    [searchQuery, filteredTags, currentTagIds, handleTagClick]
+    [searchQuery, filteredTags, currentTagIds, selectTag]
   );
 
   return <TagSelectorContext.Provider value={value}>{children}</TagSelectorContext.Provider>;
