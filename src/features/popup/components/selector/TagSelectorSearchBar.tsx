@@ -10,17 +10,8 @@ import { useTagSelectorContext } from '@/contexts';
  * @returns The TagSelectorSearchBar component.
  */
 export const TagSelectorSearchBar: React.FC = () => {
-  // const { searchQuery, setSearchQuery, isOpen } = useTagSelectorContext();
   const { searchQuery, setSearchQuery } = useTagSelectorContext();
   const searchInputRef = useRef<HTMLInputElement>(null);
-
-  // useEffect(() => {
-  //   if (isOpen) {
-  //     setTimeout(() => {
-  //       searchInputRef.current?.focus();
-  //     }, 100);
-  //   }
-  // }, [isOpen]);
 
   useEffect(() => {
     setTimeout(() => {

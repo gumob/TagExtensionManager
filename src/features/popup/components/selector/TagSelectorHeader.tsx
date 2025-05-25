@@ -4,9 +4,6 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
  * The props for the TagSelectorHeader component.
  */
 interface TagSelectorHeaderProps {
-  /**
-   * The callback to close the tag selector.
-   */
   onClose: () => void;
 }
 
