@@ -12,7 +12,6 @@ import { useTagStore } from '@/stores';
  */
 interface ExtensionTagListItemProps {
   tag: TagModel;
-  extensionCount?: number;
 }
 
 /**
@@ -24,14 +23,13 @@ interface ExtensionTagListItemProps {
  */
 export const ExtensionTagListItem: React.FC<ExtensionTagListItemProps> = ({
   tag,
-  extensionCount,
 }: ExtensionTagListItemProps) => {
   /**
    * The tag store.
    */
   const { extensionTags } = useTagStore();
   const {
-    extensions: { visibleTagId, setVisibleTagId },
+    extensions: { untaggedExtensions, visibleTagId, setVisibleTagId },
   } = useExtensionContext();
 
   /**
@@ -39,7 +37,7 @@ export const ExtensionTagListItem: React.FC<ExtensionTagListItemProps> = ({
    */
   const count =
     tag.id === 'untagged'
-      ? (extensionCount ?? 0)
+      ? (untaggedExtensions.length ?? 0)
       : extensionTags.filter(extTag => extTag.tagIds.includes(tag.id)).length;
   const isSelected = visibleTagId === tag.id;
 
