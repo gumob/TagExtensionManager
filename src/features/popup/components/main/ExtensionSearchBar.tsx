@@ -3,7 +3,6 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import React, { FC } from 'react';
 
 import { useExtensionContext } from '@/contexts/ExtensionContext';
-import { logger } from '@/utils';
 
 /**
  * The props for the ExtensionSearchBar component.
@@ -28,12 +27,7 @@ const ExtensionSearchBar: FC<ExtensionSearchBarProps> = () => {
    * The handle search.
    */
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    logger.debug(`🔍🔍🔍 handleSearch: ${value}`, {
-      group: 'ExtensionSearchBar',
-      persist: true,
-    });
-    setSearchQuery(value);
+    setSearchQuery(e.target.value);
   };
 
   /**
