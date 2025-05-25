@@ -64,15 +64,6 @@ export const ExtensionCard: React.FC<ExtensionCardProps> = ({ extension }) => {
   }, [extension.id]);
 
   /**
-   * Handle uninstall.
-   */
-  const handleUninstall = async () => {
-    await chromeAPI.uninstallExtension(extension.id);
-    /** Refresh the extension list after uninstallation */
-    await refreshExtensions();
-  };
-
-  /**
    * Handle card click to open the extension.
    */
   const handleCardClick = async () => {
@@ -174,13 +165,7 @@ export const ExtensionCard: React.FC<ExtensionCardProps> = ({ extension }) => {
             />
           </Switch>
           <div className="relative">
-            <ExtensionCardMenu
-              extension={extension}
-              extensionName={extension.name}
-              isLocked={extension.locked}
-              buttonRef={buttonRef}
-              onUninstall={handleUninstall}
-            />
+            <ExtensionCardMenu extension={extension} buttonRef={buttonRef} />
           </div>
         </div>
       </div>

@@ -14,6 +14,7 @@ import { Fragment, useState } from 'react';
 import { TagSelectorMain } from '../selector/TagSelectorMain';
 
 import { chromeAPI } from '@/api/ChromeAPI';
+import { useExtensionContext } from '@/contexts/ExtensionContext';
 import { ExtensionModel } from '@/models';
 import { useExtensionStore, useTagStore } from '@/stores';
 
@@ -21,38 +22,31 @@ import { useExtensionStore, useTagStore } from '@/stores';
  * Extension menu props.
  *
  * @param buttonRef - The button ref.
- * @param onUninstall - The callback to uninstall extension.
- * @param extensionName - The name of the extension.
- * @param isLocked - Whether the extension is locked.
  */
 interface ExtensionCardMenuProps {
   extension: ExtensionModel;
   buttonRef: React.RefObject<HTMLButtonElement>;
-  onUninstall?: () => void;
-  extensionName?: string;
-  isLocked: boolean;
 }
 
 /**
  * Extension card menu component.
  *
  * @param buttonRef - The button ref.
- * @param onUninstall - The callback to uninstall extension.
  * @param extensionName - The name of the extension.
  * @param isLocked - Whether the extension is locked.
  * @returns The extension card menu component.
  */
-export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({
-  extension,
-  buttonRef,
-  onUninstall,
-  extensionName,
-  isLocked,
-}) => {
+export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension, buttonRef }) => {
   /**
    * The tag store.
    */
   const { tags, extensionTags } = useTagStore();
+  /**
+   * The use extension store.
+   */
+  const {
+    extensions: { refreshExtensions },
+  } = useExtensionContext();
 
   /**
    * The toggle lock function.
@@ -90,10 +84,10 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({
   /**
    * The handle confirm uninstall.
    */
-  const handleConfirmUninstall = () => {
-    if (onUninstall) {
-      onUninstall();
-    }
+  const handleConfirmUninstall = async () => {
+    await chromeAPI.uninstallExtension(extension.id);
+    /** Refresh the extension list after uninstallation */
+    await refreshExtensions();
     setIsUninstallDialogOpen(false);
   };
 
@@ -154,7 +148,7 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({
                       } block w-full text-left px-3 py-2 text-2xs text-zinc-700 dark:text-zinc-200 focus:outline-none`}
                     >
                       <span className="flex items-center gap-2">
-                        {isLocked ? (
+                        {extension.locked ? (
                           <>
                             <LockOpenIcon className="w-4 h-4" />
                             Unlock Extension
@@ -238,7 +232,7 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({
               >
                 <Dialog.Panel className="w-full max-w-sm transform overflow-hidden rounded-2xl bg-white dark:bg-zinc-800 p-6 shadow-xl transition-all">
                   <Dialog.Title className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
-                    {extensionName ? `Uninstall ${extensionName}?` : 'Uninstall this extension?'}
+                    {`Uninstall ${extension.name}?`}
                   </Dialog.Title>
 
                   <div className="mt-6 flex justify-end gap-2">

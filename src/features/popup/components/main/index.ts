@@ -8,4 +8,4 @@ export * from './ExtensionList';
 export * from './ExtensionMain';
 export * from './ExtensionCardMenu';
 export * from './ExtensionCard';
-export * from './ExtensionBackupMenu';
+export * from './ExtensionHeader';
