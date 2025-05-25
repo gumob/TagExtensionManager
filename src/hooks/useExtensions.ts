@@ -77,7 +77,7 @@ export const useExtensions = () => {
   const [filteredExtensions, setFilteredExtensions] = useState<ExtensionModel[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const { extensionTags } = useTagStore();
+  const { tags, extensionTags } = useTagStore();
 
   /**
    * The visible tag.
@@ -269,12 +269,55 @@ export const useExtensions = () => {
     setFilteredExtensions(filteredExtensions);
   }, [extensions, searchQuery]);
 
-  const untaggedExtensions = useMemo(() => {
-    return filteredExtensions.filter(
-      ext =>
-        !extensionTags.find(extTag => extTag.extensionId === ext.id && extTag.tagIds.length > 0)
-    );
-  }, [filteredExtensions]);
+  // /**
+  //  * Group extensions by tag
+  //  */
+  // const taggedExtensions = tags.reduce(
+  //   (accumulator, tag) => {
+  //     const tagExtensions = filteredExtensions.filter(extension =>
+  //       extensionTags.find(
+  //         extTag => extTag.extensionId === extension.id && extTag.tagIds.includes(tag.id)
+  //       )
+  //     );
+  //     if (tagExtensions.length > 0) {
+  //       accumulator[tag.id] = tagExtensions;
+  //     }
+  //     return accumulator;
+  //   },
+  //   {} as Record<string, ExtensionModel[]>
+  // );
+
+  // /**
+  //  * Get untagged extensions
+  //  */
+  // const untaggedExtensions = filteredExtensions.filter(
+  //   ext => !extensionTags.find(extTag => extTag.extensionId === ext.id && extTag.tagIds.length > 0)
+  // );
+
+  const { taggedExtensions, untaggedExtensions } = useMemo(() => {
+    return {
+      taggedExtensions: tags.reduce(
+        (acc, tag) => {
+          const tagExtensions = filteredExtensions.filter(extension =>
+            extensionTags.find(
+              extTag => extTag.extensionId === extension.id && extTag.tagIds.includes(tag.id)
+            )
+          );
+          if (tagExtensions.length > 0) {
+            acc[tag.id] = tagExtensions;
+          }
+          return acc;
+        },
+        {} as Record<string, ExtensionModel[]>
+      ),
+      untaggedExtensions: filteredExtensions.filter(
+        extension =>
+          !extensionTags.find(
+            extTag => extTag.extensionId === extension.id && extTag.tagIds.length > 0
+          )
+      ),
+    };
+  }, [filteredExtensions, tags, extensionTags]);
 
   /*******************************************************
    * Debugging
@@ -294,6 +337,7 @@ export const useExtensions = () => {
   return {
     extensions,
     filteredExtensions,
+    taggedExtensions,
     untaggedExtensions,
     searchQuery,
     setSearchQuery,
