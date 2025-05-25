@@ -1,51 +1,17 @@
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 
-import { chromeAPI } from '@/api/ChromeAPI';
 import {
   ExtensionBackupMenu,
   ExtensionList,
   ExtensionSearchBar,
   ExtensionTagList,
 } from '@/features/popup/components/main';
-import { useExtensions } from '@/hooks';
-import { logger } from '@/utils';
 
 /**
  * The component for managing extensions.
  * @returns
  */
 export const ExtensionMain: React.FC = () => {
-  /**
-   * The extensions and filtered extensions.
-   */
-  const { filteredExtensions, setSearchQuery } = useExtensions();
-
-  /**
-   * Handle the extension state change.
-   * @param id
-   * @param enabled
-   */
-  const handleExtensionStateChange = useCallback(async (id: string, enabled: boolean) => {
-    logger.debug(`👩‍💼🫱 handleExtensionStateChange: ${id} ${enabled}`, {
-      group: 'ExtensionMain',
-      persist: true,
-    });
-
-    /** Update the extension state using Chrome API */
-    await chromeAPI.toggleExtension(id, enabled);
-  }, []);
-
-  /*
-   * Debugging
-   */
-
-  useEffect(() => {
-    logger.debug(`👩‍💼🔍 filteredExtensions: ${filteredExtensions.length}`, {
-      group: 'ExtensionMain',
-      persist: true,
-    });
-  }, [filteredExtensions]);
-
   /**
    * The main component.
    * @returns
@@ -62,20 +28,17 @@ export const ExtensionMain: React.FC = () => {
           </div>
 
           <div className="mb-3">
-            <ExtensionTagList extensions={filteredExtensions} />
+            <ExtensionTagList />
           </div>
 
           <div className="mb-3">
-            <ExtensionSearchBar onSearch={setSearchQuery} />
+            <ExtensionSearchBar />
           </div>
         </div>
 
         <div className="flex-1 overflow-y-auto">
           <div className="h-full">
-            <ExtensionList
-              extensions={filteredExtensions}
-              onExtensionStateChange={handleExtensionStateChange}
-            />
+            <ExtensionList />
           </div>
         </div>
       </div>

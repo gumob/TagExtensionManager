@@ -2,7 +2,7 @@ import { TagsIcon, ToggleLeftIcon, ToggleRightIcon } from 'lucide-react';
 
 import { FC, useEffect, useState } from 'react';
 
-import { useVisibleTag } from '@/hooks';
+import { useExtensionContext } from '@/contexts/ExtensionContext';
 import { ExtensionModel } from '@/models';
 
 /**
@@ -22,7 +22,9 @@ interface ExtensionTagMetricsProps {
  */
 export const ExtensionTagMetrics: FC<ExtensionTagMetricsProps> = ({ extensions = [] }) => {
   const [localExtensions, setLocalExtensions] = useState(extensions);
-  const { setVisibleTagId } = useVisibleTag();
+  const {
+    extensions: { setVisibleTagId },
+  } = useExtensionContext();
 
   /**
    * The use effect for the ExtensionTagMetrics component.

@@ -1,23 +1,25 @@
+import { useExtensionContext } from '@/contexts/ExtensionContext';
 import {
   ExtensionTagListEditButton,
   ExtensionTagListItem,
   ExtensionTagMetrics,
 } from '@/features/popup/components/main';
-import { ExtensionModel } from '@/models';
 import { useTagStore } from '@/stores';
 
-type ExtensionTagListProps = {
-  extensions: ExtensionModel[];
-};
+type ExtensionTagListProps = {};
 
 /**
  * The props for the ExtensionTagList component.
  *
  * @param extensions - The extensions to display.
  */
-export const ExtensionTagList: React.FC<ExtensionTagListProps> = ({
-  extensions,
-}: ExtensionTagListProps) => {
+export const ExtensionTagList: React.FC<ExtensionTagListProps> = ({}: ExtensionTagListProps) => {
+  /**
+   * The extensions and filtered extensions.
+   */
+  const {
+    extensions: { filteredExtensions },
+  } = useExtensionContext();
   /**
    * The tag store.
    */
@@ -26,7 +28,7 @@ export const ExtensionTagList: React.FC<ExtensionTagListProps> = ({
   /**
    * The untagged extensions.
    */
-  const untaggedExtensions = extensions.filter(
+  const untaggedExtensions = filteredExtensions.filter(
     ext => !extensionTags.find(extTag => extTag.extensionId === ext.id && extTag.tagIds.length > 0)
   );
 
@@ -38,7 +40,7 @@ export const ExtensionTagList: React.FC<ExtensionTagListProps> = ({
   return (
     <>
       <div className="flex flex-wrap gap-1 mb-1">
-        <ExtensionTagMetrics extensions={extensions} />
+        <ExtensionTagMetrics extensions={filteredExtensions} />
         <ExtensionTagListEditButton />
       </div>
       <div className="flex flex-wrap gap-1">

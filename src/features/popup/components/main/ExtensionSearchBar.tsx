@@ -1,15 +1,14 @@
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
+
+import { useExtensionContext } from '@/contexts/ExtensionContext';
+import { logger } from '@/utils';
 
 /**
  * The props for the ExtensionSearchBar component.
- *
- * @param onSearch - The callback to search for extensions.
  */
-interface ExtensionSearchBarProps {
-  onSearch?: (query: string) => void;
-}
+interface ExtensionSearchBarProps {}
 
 /**
  * The ExtensionSearchBar component.
@@ -17,19 +16,24 @@ interface ExtensionSearchBarProps {
  * @param onSearch - The callback to search for extensions.
  * @returns The ExtensionSearchBar component.
  */
-const ExtensionSearchBar: FC<ExtensionSearchBarProps> = ({ onSearch }) => {
+const ExtensionSearchBar: FC<ExtensionSearchBarProps> = () => {
   /**
-   * The search term.
+   * The extensions and filtered extensions.
    */
-  const [searchTerm, setSearchTerm] = useState('');
+  const {
+    extensions: { searchQuery, setSearchQuery },
+  } = useExtensionContext();
 
   /**
    * The handle search.
    */
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setSearchTerm(value);
-    onSearch?.(value);
+    logger.debug(`🔍🔍🔍 handleSearch: ${value}`, {
+      group: 'ExtensionSearchBar',
+      persist: true,
+    });
+    setSearchQuery(value);
   };
 
   /**
@@ -45,7 +49,7 @@ const ExtensionSearchBar: FC<ExtensionSearchBarProps> = ({ onSearch }) => {
       <input
         type="text"
         placeholder="Search extensions..."
-        value={searchTerm}
+        value={searchQuery}
         onChange={handleSearch}
         className="w-full h-10 px-4 pl-10 rounded-full bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-zinc-200 dark:focus:ring-zinc-500"
       />

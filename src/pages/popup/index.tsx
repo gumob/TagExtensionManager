@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client';
 import { Toaster } from 'react-hot-toast';
 
 import { chromeAPI } from '@/api/ChromeAPI';
+import { ExtensionProvider } from '@/contexts/ExtensionContext';
 import { ExtensionMain } from '@/features/popup/components/main/ExtensionMain';
 import '@/styles/globals.css';
 import { logger } from '@/utils/Logger';
@@ -74,7 +75,9 @@ if (container) {
   const root = createRoot(container);
   root.render(
     <React.StrictMode>
-      <Popup />
+      <ExtensionProvider>
+        <Popup />
+      </ExtensionProvider>
     </React.StrictMode>
   );
 }

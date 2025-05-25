@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { chromeAPI } from '@/api/ChromeAPI';
 import { ExtensionModel } from '@/models';
-import { useExtensionStore } from '@/stores';
+import { useExtensionStore, useTagStore } from '@/stores';
 import { logger } from '@/utils';
 
 /**
@@ -68,12 +68,26 @@ export const formatExtension = (
  * Implements a more robust architecture with clear separation of concerns.
  */
 export const useExtensions = () => {
-  // State Management
-  const [extensions, setExtensions] = useState<ExtensionModel[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const { extensions: storedExtensions, setExtensions: setStoreExtensions } = useExtensionStore();
+  /*******************************************************
+   * State Management
+   *******************************************************/
 
+  const [extensions, setExtensions] = useState<ExtensionModel[]>([]);
+  const { extensions: storedExtensions, setExtensions: setStoreExtensions } = useExtensionStore();
+  const [filteredExtensions, setFilteredExtensions] = useState<ExtensionModel[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const { extensionTags } = useTagStore();
+
+  /**
+   * The visible tag.
+   */
+  const [visibleTagId, setVisibleTagId] = useState<string | null>(null);
+
+  /**
+   * The is loading.
+   */
+  const [isLoading, setIsLoading] = useState(false);
   // Refs for managing component lifecycle and preventing stale closures
   const isSubscribed = useRef(true);
   const isInitialized = useRef(false);
@@ -83,6 +97,10 @@ export const useExtensions = () => {
   useEffect(() => {
     storedExtensionsRef.current = storedExtensions;
   }, [storedExtensions]);
+
+  /*******************************************************
+   * Core Function
+   *******************************************************/
 
   /**
    * Core function for refreshing extension data.
@@ -126,6 +144,10 @@ export const useExtensions = () => {
     }
   }, [setStoreExtensions]);
 
+  /*******************************************************
+   * Event Handlers
+   *******************************************************/
+
   /**
    * Event handlers for extension state changes.
    * Implemented as stable callbacks to prevent unnecessary re-renders.
@@ -142,6 +164,10 @@ export const useExtensions = () => {
     [refreshExtensions]
   );
 
+  /**
+   * Handle the extension uninstalled event.
+   * @param id
+   */
   const handleExtensionUninstalled = useCallback(
     (id: string) => {
       if (!isSubscribed.current) return;
@@ -154,6 +180,10 @@ export const useExtensions = () => {
     [refreshExtensions]
   );
 
+  /**
+   * Handle the extension updated event.
+   * @param details
+   */
   const handleExtensionUpdate = useCallback(
     (details: chrome.runtime.InstalledDetails) => {
       if (!isSubscribed.current || details.reason !== 'update') return;
@@ -217,28 +247,51 @@ export const useExtensions = () => {
   /**
    * Memoized filtered extensions based on search query.
    */
-  const filteredExtensions = extensions.filter(ext =>
-    ext.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  useEffect(() => {
+    const filteredExtensions = extensions.filter((ext, index) => {
+      const isNameMatch = ext.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const isDescriptionMatch = ext.description.toLowerCase().includes(searchQuery.toLowerCase());
+      const isTextMatch = isNameMatch || isDescriptionMatch;
+      const isVisible =
+        visibleTagId === null ||
+        visibleTagId === 'untagged' ||
+        visibleTagId === 'enabled' ||
+        visibleTagId === 'disabled';
+      // logger.debug(
+      //   `🧯🔄 filter[${index}] extension: ${ext.name} isTextMatch: ${isTextMatch} isVisible: ${isVisible}`,
+      //   {
+      //     group: 'useExtensions',
+      //     persist: true,
+      //   }
+      // );
+      return isTextMatch;
+    });
+    setFilteredExtensions(filteredExtensions);
+  }, [extensions, searchQuery]);
 
-  /**
-   * Function to get current extension states.
-   */
-  const getCurrentExtensionStates = useCallback(() => {
-    return extensions.map(ext => ({
-      id: ext.id,
-      enabled: ext.enabled,
-      locked: ext.locked,
-    }));
-  }, [extensions]);
+  /*******************************************************
+   * Debugging
+   *******************************************************/
+
+  useEffect(() => {
+    logger.debug(`🧯🐛 Filtered extensions: ${filteredExtensions.length}`, {
+      group: 'useExtensions',
+      persist: true,
+    });
+  }, [filteredExtensions]);
+
+  /*******************************************************
+   * Return
+   *******************************************************/
 
   return {
     extensions,
     filteredExtensions,
     searchQuery,
     setSearchQuery,
-    isLoading,
+    visibleTagId,
+    setVisibleTagId,
     refreshExtensions,
-    getCurrentExtensionStates,
+    isLoading,
   };
 };

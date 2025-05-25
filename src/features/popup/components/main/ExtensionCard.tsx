@@ -4,9 +4,9 @@ import { LockClosedIcon } from '@heroicons/react/24/outline';
 import { useEffect, useRef, useState } from 'react';
 
 import { chromeAPI } from '@/api/ChromeAPI';
+import { useExtensionContext } from '@/contexts/ExtensionContext';
 import { ExtensionCardMenu } from '@/features/popup/components/main';
 import { TagSelectorMain } from '@/features/popup/components/selector';
-import { useExtensions } from '@/hooks';
 import { ExtensionModel } from '@/models';
 import { useTagStore } from '@/stores';
 
@@ -59,7 +59,9 @@ export const ExtensionCard: React.FC<ExtensionCardProps> = ({
   /**
    * The use extensions hook.
    */
-  const { refreshExtensions } = useExtensions();
+  const {
+    extensions: { refreshExtensions },
+  } = useExtensionContext();
   /**
    * The button ref.
    */

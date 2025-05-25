@@ -1,6 +1,6 @@
 import { TagIcon } from 'lucide-react';
 
-import { useVisibleTag } from '@/hooks';
+import { useExtensionContext } from '@/contexts/ExtensionContext';
 import { TagModel } from '@/models';
 import { useTagStore } from '@/stores';
 
@@ -20,8 +20,6 @@ interface ExtensionTagListItemProps {
  *
  * @param tag - The tag to display.
  * @param extensionCount - The number of extensions with the tag.
- * @param visibleTagId - The id of the visible tag.
- * @param setVisibleTag - The function to set the visible tag.
  * @returns The ExtensionTagListItem component.
  */
 export const ExtensionTagListItem: React.FC<ExtensionTagListItemProps> = ({
@@ -32,7 +30,9 @@ export const ExtensionTagListItem: React.FC<ExtensionTagListItemProps> = ({
    * The tag store.
    */
   const { extensionTags } = useTagStore();
-  const { visibleTagId, setVisibleTagId } = useVisibleTag();
+  const {
+    extensions: { visibleTagId, setVisibleTagId },
+  } = useExtensionContext();
 
   /**
    * The count of extensions with the tag.
