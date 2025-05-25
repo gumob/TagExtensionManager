@@ -20,25 +20,21 @@ interface TagEditorContextValue {
    */
   setEditingTagId: (tagId: string | null) => void;
   /**
+   * The add tag function.
+   */
+  addTag: (name: string) => void;
+  /**
    * The move tag function.
    */
   moveTag: (dragIndex: number, hoverIndex: number) => void;
   /**
-   * The handle tag click function.
+   * The delete tag function.
    */
-  handleTagClick: (tagId: string) => void;
+  deleteTag: (tagId: string) => void;
   /**
-   * The handle tag name change function.
+   * The change tag name function.
    */
-  handleTagNameChange: (tagId: string, newName: string, shouldCloseEdit?: boolean) => void;
-  /**
-   * The handle delete click function.
-   */
-  handleDeleteClick: (tagId: string) => void;
-  /**
-   * The add tag function.
-   */
-  addTag: (name: string) => void;
+  changeTagName: (tagId: string, newName: string, shouldCloseEdit?: boolean) => void;
 }
 
 /**
@@ -63,7 +59,7 @@ interface TagEditorProviderProps {
  * @returns The TagEditorProvider component.
  */
 export const TagEditorProvider: React.FC<TagEditorProviderProps> = ({ children }) => {
-  const { tags, addTag, updateTag, deleteTag, reorderTags } = useTagStore();
+  const { tags, addTag, updateTag, deleteTag: deleteTagOnStore, reorderTags } = useTagStore();
   const [editingTagId, setEditingTagId] = useState<string | null>(null);
 
   /**
@@ -87,16 +83,9 @@ export const TagEditorProvider: React.FC<TagEditorProviderProps> = ({ children }
   );
 
   /**
-   * The handle tag click handler.
-   */
-  const handleTagClick = useCallback((tagId: string) => {
-    setEditingTagId(tagId);
-  }, []);
-
-  /**
    * The handle tag name change handler.
    */
-  const handleTagNameChange = useCallback(
+  const changeTagName = useCallback(
     (tagId: string, newName: string, shouldCloseEdit: boolean = false) => {
       updateTag(tagId, newName);
       if (shouldCloseEdit) {
@@ -109,12 +98,12 @@ export const TagEditorProvider: React.FC<TagEditorProviderProps> = ({ children }
   /**
    * The handle delete click handler.
    */
-  const handleDeleteClick = useCallback(
+  const deleteTag = useCallback(
     (tagId: string) => {
       setEditingTagId(null);
-      deleteTag(tagId);
+      deleteTagOnStore(tagId);
     },
-    [deleteTag]
+    [deleteTagOnStore]
   );
 
   const value = useMemo(
@@ -123,20 +112,11 @@ export const TagEditorProvider: React.FC<TagEditorProviderProps> = ({ children }
       editingTagId,
       setEditingTagId,
       moveTag,
-      handleTagClick,
-      handleTagNameChange,
-      handleDeleteClick,
+      changeTagName,
+      deleteTag,
       addTag,
     }),
-    [
-      sortedTags,
-      editingTagId,
-      moveTag,
-      handleTagClick,
-      handleTagNameChange,
-      handleDeleteClick,
-      addTag,
-    ]
+    [sortedTags, editingTagId, moveTag, changeTagName, deleteTag, addTag]
   );
 
   return <TagEditorContext.Provider value={value}>{children}</TagEditorContext.Provider>;

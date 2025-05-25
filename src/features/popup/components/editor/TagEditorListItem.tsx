@@ -35,7 +35,7 @@ export const TagEditorListItem: React.FC<TagEditorListItemProps> = React.memo(
       index: number;
     }
 
-    const { moveTag, editingTagId, handleTagNameChange, handleDeleteClick, handleTagClick } =
+    const { moveTag, editingTagId, changeTagName, deleteTag, setEditingTagId } =
       useTagEditorContext();
 
     /**
@@ -135,12 +135,12 @@ export const TagEditorListItem: React.FC<TagEditorListItemProps> = React.memo(
                     ref={inputRef}
                     type="text"
                     value={tag.name}
-                    onChange={e => handleTagNameChange(tag.id, e.target.value, false)}
-                    onBlur={() => handleTagNameChange(tag.id, tag.name, true)}
+                    onChange={e => changeTagName(tag.id, e.target.value, false)}
+                    onBlur={() => changeTagName(tag.id, tag.name, true)}
                     onKeyDown={e => {
                       if (e.key === 'Enter') {
                         e.preventDefault();
-                        handleTagNameChange(tag.id, tag.name, true);
+                        changeTagName(tag.id, tag.name, true);
                       }
                     }}
                     size={Math.max(tag.name.length, 1)}
@@ -148,7 +148,7 @@ export const TagEditorListItem: React.FC<TagEditorListItemProps> = React.memo(
                   />
                 ) : (
                   <button
-                    onClick={() => handleTagClick(tag.id)}
+                    onClick={() => setEditingTagId(tag.id)}
                     className="select-none px-1 py-0.5 text-zinc-900 dark:text-zinc-100"
                   >
                     {tag.name}
@@ -156,7 +156,7 @@ export const TagEditorListItem: React.FC<TagEditorListItemProps> = React.memo(
                 )}
               </div>
               <button
-                onClick={() => handleDeleteClick(tag.id)}
+                onClick={() => deleteTag(tag.id)}
                 className="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-300"
               >
                 <XMarkIcon className="w-4 h-4" />
