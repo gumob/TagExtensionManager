@@ -7,18 +7,13 @@ import { TagSelectorListItem } from '@/features/popup/components/selector';
  * @returns The TagSelectorList component.
  */
 export const TagSelectorList: React.FC = () => {
-  const { filteredTags, currentTagIds, handleTagClick } = useTagSelectorContext();
+  const { filteredTags } = useTagSelectorContext();
 
   return (
     <div className="mt-4 max-h-[60vh] overflow-y-auto">
       <div className="flex flex-wrap gap-2">
         {filteredTags.map(tag => (
-          <TagSelectorListItem
-            key={tag.id}
-            tag={tag}
-            isSelected={currentTagIds.includes(tag.id)}
-            onClick={handleTagClick}
-          />
+          <TagSelectorListItem key={tag.id} tag={tag} />
         ))}
       </div>
     </div>
