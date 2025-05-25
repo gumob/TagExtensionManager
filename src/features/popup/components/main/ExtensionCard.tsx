@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from 'react';
 import { chromeAPI } from '@/api/ChromeAPI';
 import { useExtensionContext } from '@/contexts/ExtensionContext';
 import { ExtensionCardMenu } from '@/features/popup/components/main';
-import { TagSelectorMain } from '@/features/popup/components/selector';
 import { ExtensionModel } from '@/models';
 import { useTagStore } from '@/stores';
 
@@ -16,13 +15,11 @@ import { useTagStore } from '@/stores';
  * @param extension - The extension to display.
  * @param onToggle - The callback to toggle the extension.
  * @param onSettingsClick - The callback to open the settings page.
- * @param onLockToggle - The callback to lock the extension.
  */
 interface ExtensionCardProps {
   extension: ExtensionModel;
   onToggle: (id: string, enabled: boolean) => void;
   onSettingsClick: (id: string) => void;
-  onLockToggle: (id: string, locked: boolean) => void;
 }
 
 /**
@@ -38,12 +35,7 @@ export const ExtensionCard: React.FC<ExtensionCardProps> = ({
   extension,
   onToggle,
   onSettingsClick,
-  onLockToggle,
 }) => {
-  /**
-   * The tag dialog open state.
-   */
-  const [isTagDialogOpen, setIsTagDialogOpen] = useState(false);
   /**
    * The hovered state.
    */
@@ -77,32 +69,6 @@ export const ExtensionCard: React.FC<ExtensionCardProps> = ({
     };
     checkOptionsPage();
   }, [extension.id]);
-
-  /**
-   * Current tag ids.
-   */
-  const currentTagIds =
-    extensionTags.find(extTag => extTag.extensionId === extension.id)?.tagIds ?? [];
-
-  /**
-   * Handle tag selection.
-   * @param tagIds
-   */
-  const handleTagSelection = (tagIds: string[]) => {
-    /** Add new tags */
-    tagIds.forEach(tagId => {
-      if (!currentTagIds.includes(tagId)) {
-        addTagToExtension(extension.id, tagId);
-      }
-    });
-
-    /** Remove deselected tags */
-    currentTagIds.forEach(tagId => {
-      if (!tagIds.includes(tagId)) {
-        removeTagFromExtension(extension.id, tagId);
-      }
-    });
-  };
 
   /**
    * Handle uninstall.
@@ -216,27 +182,15 @@ export const ExtensionCard: React.FC<ExtensionCardProps> = ({
           </Switch>
           <div className="relative">
             <ExtensionCardMenu
-              buttonRef={buttonRef}
-              onManageTags={() => setIsTagDialogOpen(true)}
-              onManageExtension={() => onSettingsClick(extension.id)}
-              onUninstall={handleUninstall}
-              onLockToggle={() => onLockToggle(extension.id, !extension.locked)}
+              extension={extension}
               extensionName={extension.name}
               isLocked={extension.locked}
+              buttonRef={buttonRef}
+              onUninstall={handleUninstall}
             />
           </div>
         </div>
       </div>
-
-      {isTagDialogOpen && (
-        <TagSelectorMain
-          isOpen={isTagDialogOpen}
-          tags={tags}
-          selectedTagIds={currentTagIds}
-          onClose={() => setIsTagDialogOpen(false)}
-          onSelectTags={handleTagSelection}
-        />
-      )}
     </div>
   );
 };

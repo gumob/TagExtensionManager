@@ -7,36 +7,38 @@ import {
   TagSelectorList,
   TagSelectorSearchBar,
 } from '@/features/popup/components/selector';
-import { TagModel } from '@/models';
+import { ExtensionModel } from '@/models';
+import { useTagStore } from '@/stores';
 
 /**
  * The props for the TagSelectorMain component.
  */
 interface TagSelectorMainProps {
+  extension: ExtensionModel;
   isOpen: boolean;
-  tags: TagModel[];
-  selectedTagIds: string[];
   onClose: () => void;
-  onSelectTags: (tagIds: string[]) => void;
 }
 
 /**
  * The TagSelectorMain component.
  *
  * @param isOpen - Whether the tag selector is open.
- * @param tags - The tags to select from.
- * @param selectedTagIds - The selected tag ids.
+ * @param currentTagIds - The selected tag ids.
  * @param onClose - The callback to close the tag selector.
- * @param onSelectTags - The callback to select the tags.
  * @returns The TagSelectorMain component.
  */
-export const TagSelectorMain: React.FC<TagSelectorMainProps> = ({
-  isOpen,
-  tags,
-  selectedTagIds,
-  onClose,
-  onSelectTags,
-}) => {
+export const TagSelectorMain: React.FC<TagSelectorMainProps> = ({ extension, isOpen, onClose }) => {
+  /**
+   * The tag store.
+   */
+  const { tags, extensionTags, addTagToExtension, removeTagFromExtension } = useTagStore();
+
+  /**
+   * Current tag ids.
+   */
+  const currentTagIds =
+    extensionTags.find(extTag => extTag.extensionId === extension.id)?.tagIds ?? [];
+
   /**
    * The search query.
    */
@@ -53,10 +55,24 @@ export const TagSelectorMain: React.FC<TagSelectorMainProps> = ({
    * The handle tag click.
    */
   const handleTagClick = (tagId: string) => {
-    const newSelectedTagIds = selectedTagIds.includes(tagId)
-      ? selectedTagIds.filter(id => id !== tagId)
-      : [...selectedTagIds, tagId];
-    onSelectTags(newSelectedTagIds);
+    /** The new current tag ids. */
+    const newCurrentTagIds = currentTagIds.includes(tagId)
+      ? currentTagIds.filter(id => id !== tagId)
+      : [...currentTagIds, tagId];
+
+    /** Add new tags */
+    newCurrentTagIds.forEach(tagId => {
+      if (!currentTagIds.includes(tagId)) {
+        addTagToExtension(extension.id, tagId);
+      }
+    });
+
+    /** Remove deselected tags */
+    currentTagIds.forEach(tagId => {
+      if (!newCurrentTagIds.includes(tagId)) {
+        removeTagFromExtension(extension.id, tagId);
+      }
+    });
   };
 
   /**
@@ -97,7 +113,7 @@ export const TagSelectorMain: React.FC<TagSelectorMainProps> = ({
                 />
                 <TagSelectorList
                   tags={filteredTags}
-                  selectedTagIds={selectedTagIds}
+                  selectedTagIds={currentTagIds}
                   onTagClick={handleTagClick}
                 />
               </Dialog.Panel>

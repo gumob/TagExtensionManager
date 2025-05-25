@@ -4,7 +4,7 @@ import { chromeAPI } from '@/api/ChromeAPI';
 import { useExtensionContext } from '@/contexts/ExtensionContext';
 import { ExtensionCard, ExtensionListHeader } from '@/features/popup/components/main';
 import { ExtensionModel } from '@/models';
-import { useExtensionStore, useTagStore } from '@/stores';
+import { useTagStore } from '@/stores';
 import { logger } from '@/utils';
 
 /**
@@ -28,7 +28,6 @@ export const ExtensionList: React.FC<ExtensionListProps> = ({}: ExtensionListPro
     extensions: { filteredExtensions, visibleTagId },
   } = useExtensionContext();
   const { tags, extensionTags } = useTagStore();
-  const { toggleLock } = useExtensionStore();
 
   // /**
   //  * Group extensions by tag
@@ -101,34 +100,11 @@ export const ExtensionList: React.FC<ExtensionListProps> = ({}: ExtensionListPro
   };
 
   /**
-   * Handle the lock toggle event.
-   * @param id
-   * @param locked
-   */
-  const handleLockToggle = (id: string, locked: boolean) => {
-    /** Update the store */
-    toggleLock(id);
-  };
-
-  /**
    * Handle the settings click event.
    * @param extensionId
    */
   const handleSettingsClick = async (extensionId: string) => {
-    const browser = navigator.userAgent.toLowerCase();
-    let baseUrl = 'chrome://extensions';
-
-    if (browser.includes('brave')) {
-      baseUrl = 'brave://extensions';
-    } else if (browser.includes('edg')) {
-      baseUrl = 'edge://extensions';
-    } else if (browser.includes('opera')) {
-      baseUrl = 'opera://extensions';
-    } else if (browser.includes('vivaldi')) {
-      baseUrl = 'vivaldi://extensions';
-    }
-
-    await chromeAPI.createTab(`${baseUrl}/?id=${extensionId}`);
+    await chromeAPI.createTab(extensionId);
   };
 
   /**
@@ -176,7 +152,6 @@ export const ExtensionList: React.FC<ExtensionListProps> = ({}: ExtensionListPro
                   extension={extension}
                   onToggle={handleToggle}
                   onSettingsClick={handleSettingsClick}
-                  onLockToggle={handleLockToggle}
                 />
               ))}
           </div>
@@ -212,7 +187,6 @@ export const ExtensionList: React.FC<ExtensionListProps> = ({}: ExtensionListPro
                     extension={extension}
                     onToggle={handleToggle}
                     onSettingsClick={handleSettingsClick}
-                    onLockToggle={handleLockToggle}
                   />
                 ))}
             </div>

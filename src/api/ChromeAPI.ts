@@ -120,11 +120,23 @@ export class ChromeAPI {
 
   /**
    * The function that creates a new tab.
-   * @param url - The URL to open.
+   * @param extensionId - The extension id.
    * @returns The created tab.
    */
-  public async createTab(url: string): Promise<chrome.tabs.Tab> {
+  public async createTab(extensionId: string): Promise<chrome.tabs.Tab> {
     try {
+      const browser = navigator.userAgent.toLowerCase();
+      let baseUrl = 'chrome://extensions';
+      if (browser.includes('brave')) {
+        baseUrl = 'brave://extensions';
+      } else if (browser.includes('edg')) {
+        baseUrl = 'edge://extensions';
+      } else if (browser.includes('opera')) {
+        baseUrl = 'opera://extensions';
+      } else if (browser.includes('vivaldi')) {
+        baseUrl = 'vivaldi://extensions';
+      }
+      const url = `${baseUrl}/?id=${extensionId}`;
       return await chrome.tabs.create({ url, active: true });
     } catch (error) {
       logger.error('🛜🛑 Failed to create tab', {
