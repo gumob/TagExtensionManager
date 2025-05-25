@@ -52,7 +52,6 @@ export const ExtensionTagList: React.FC<ExtensionTagListProps> = ({}: ExtensionT
               createdAt: new Date(),
               updatedAt: new Date(),
             }}
-            extensionCount={untaggedExtensions.length}
           />
         )}
       </div>
