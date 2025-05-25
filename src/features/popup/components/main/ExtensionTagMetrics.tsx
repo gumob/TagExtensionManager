@@ -18,9 +18,7 @@ export const ExtensionTagMetrics: FC<ExtensionTagMetricsProps> = () => {
   /**
    * The extensions context.
    */
-  const {
-    extensions: { filteredExtensions, setVisibleTagId },
-  } = useExtensionContext();
+  const { filteredExtensions, setVisibleTagId } = useExtensionContext();
 
   /**
    * The total number of extensions.

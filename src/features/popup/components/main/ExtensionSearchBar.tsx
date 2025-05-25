@@ -19,9 +19,7 @@ const ExtensionSearchBar: FC<ExtensionSearchBarProps> = () => {
   /**
    * The extensions and filtered extensions.
    */
-  const {
-    extensions: { searchQuery, setSearchQuery },
-  } = useExtensionContext();
+  const { searchQuery, setSearchQuery } = useExtensionContext();
 
   /**
    * The handle search.

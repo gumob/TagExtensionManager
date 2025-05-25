@@ -19,9 +19,7 @@ export const ExtensionList: React.FC<ExtensionListProps> = ({}: ExtensionListPro
    * State Management
    *******************************************************/
 
-  const {
-    extensions: { visibleTagId, taggedExtensions, untaggedExtensions },
-  } = useExtensionContext();
+  const { visibleTagId, taggedExtensions, untaggedExtensions } = useExtensionContext();
   const { tags } = useTagStore();
 
   /*******************************************************

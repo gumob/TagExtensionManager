@@ -44,9 +44,7 @@ export const ExtensionCard: React.FC<ExtensionCardProps> = ({ extension }) => {
   /**
    * The use extensions hook.
    */
-  const {
-    extensions: { refreshExtensions },
-  } = useExtensionContext();
+  const { refreshExtensions } = useExtensionContext();
   /**
    * The button ref.
    */

@@ -43,9 +43,7 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
   /**
    * The use extension store.
    */
-  const {
-    extensions: { refreshExtensions },
-  } = useExtensionContext();
+  const { refreshExtensions } = useExtensionContext();
 
   /**
    * The tag selector open state.

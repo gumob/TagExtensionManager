@@ -28,9 +28,7 @@ export const ExtensionTagListItem: React.FC<ExtensionTagListItemProps> = ({
    * The tag store.
    */
   const { extensionTags } = useTagStore();
-  const {
-    extensions: { untaggedExtensions, visibleTagId, setVisibleTagId },
-  } = useExtensionContext();
+  const { untaggedExtensions, visibleTagId, setVisibleTagId } = useExtensionContext();
 
   /**
    * The count of extensions with the tag.

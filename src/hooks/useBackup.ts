@@ -18,9 +18,7 @@ export const useBackup = () => {
    * - exportTags/importTags: Handles saving/loading tag data
    * - importExtensions: Updates extension states in the store
    */
-  const {
-    extensions: { refreshExtensions },
-  } = useExtensionContext();
+  const { refreshExtensions } = useExtensionContext();
   const { exportTags, importTags } = useTagStore();
   const { importExtensions } = useExtensionStore();
 

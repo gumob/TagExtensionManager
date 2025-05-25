@@ -17,9 +17,7 @@ export const ExtensionTagList: React.FC<ExtensionTagListProps> = ({}: ExtensionT
   /**
    * The extensions and filtered extensions.
    */
-  const {
-    extensions: { untaggedExtensions },
-  } = useExtensionContext();
+  const { untaggedExtensions } = useExtensionContext();
 
   /**
    * The tag store.
