@@ -4,26 +4,17 @@ import React, { useEffect, useRef } from 'react';
 
 import { useDrag, useDrop } from 'react-dnd';
 
+import { useTagEditorContext } from '@/contexts/TagEditorContext';
 import { TagModel } from '@/models';
 
 /**
  * The props for the TagEditorListItem component.
  * @param tag - The tag data.
  * @param index - The index of the tag.
- * @param moveTag - The callback to move the tag.
- * @param isEditing - Whether the tag is being edited.
- * @param onEdit - The callback to edit the tag.
- * @param onDelete - The callback to delete the tag.
- * @param onTagClick - The callback to click the tag.
  */
 interface TagEditorListItemProps {
   tag: TagModel;
   index: number;
-  moveTag: (dragIndex: number, hoverIndex: number) => void;
-  isEditing: boolean;
-  onEdit: (id: string, name: string, shouldCloseEdit: boolean) => void;
-  onDelete: (id: string) => void;
-  onTagClick: (id: string) => void;
 }
 
 /**
@@ -31,14 +22,9 @@ interface TagEditorListItemProps {
  *
  * @param tag - The tag data.
  * @param index - The index of the tag.
- * @param moveTag - The callback to move the tag.
- * @param isEditing - Whether the tag is being edited.
- * @param onEdit - The callback to edit the tag.
- * @param onDelete - The callback to delete the tag.
- * @param onTagClick - The callback to click the tag.
  */
 export const TagEditorListItem: React.FC<TagEditorListItemProps> = React.memo(
-  ({ tag, index, moveTag, isEditing, onEdit, onDelete, onTagClick }: TagEditorListItemProps) => {
+  ({ tag, index }: TagEditorListItemProps) => {
     /**
      * The data for the drag and drop operation.
      * @param id - The id of the tag.
@@ -48,6 +34,9 @@ export const TagEditorListItem: React.FC<TagEditorListItemProps> = React.memo(
       id: string;
       index: number;
     }
+
+    const { moveTag, editingTagId, handleTagNameChange, handleDeleteClick, handleTagClick } =
+      useTagEditorContext();
 
     /**
      * The ref for the tag item.
@@ -117,11 +106,11 @@ export const TagEditorListItem: React.FC<TagEditorListItemProps> = React.memo(
      * The use effect for the tag item.
      */
     useEffect(() => {
-      if (isEditing && inputRef.current) {
+      if (editingTagId === tag.id && inputRef.current) {
         inputRef.current.focus();
         inputRef.current.select();
       }
-    }, [isEditing]);
+    }, [editingTagId]);
 
     /**
      * The tag item.
@@ -141,17 +130,17 @@ export const TagEditorListItem: React.FC<TagEditorListItemProps> = React.memo(
                 <TagIcon className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
               </div>
               <div>
-                {isEditing ? (
+                {editingTagId === tag.id ? (
                   <input
                     ref={inputRef}
                     type="text"
                     value={tag.name}
-                    onChange={e => onEdit(tag.id, e.target.value, false)}
-                    onBlur={() => onEdit(tag.id, tag.name, true)}
+                    onChange={e => handleTagNameChange(tag.id, e.target.value, false)}
+                    onBlur={() => handleTagNameChange(tag.id, tag.name, true)}
                     onKeyDown={e => {
                       if (e.key === 'Enter') {
                         e.preventDefault();
-                        onEdit(tag.id, tag.name, true);
+                        handleTagNameChange(tag.id, tag.name, true);
                       }
                     }}
                     size={Math.max(tag.name.length, 1)}
@@ -159,7 +148,7 @@ export const TagEditorListItem: React.FC<TagEditorListItemProps> = React.memo(
                   />
                 ) : (
                   <button
-                    onClick={() => onTagClick(tag.id)}
+                    onClick={() => handleTagClick(tag.id)}
                     className="select-none px-1 py-0.5 text-zinc-900 dark:text-zinc-100"
                   >
                     {tag.name}
@@ -167,7 +156,7 @@ export const TagEditorListItem: React.FC<TagEditorListItemProps> = React.memo(
                 )}
               </div>
               <button
-                onClick={() => onDelete(tag.id)}
+                onClick={() => handleDeleteClick(tag.id)}
                 className="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-300"
               >
                 <XMarkIcon className="w-4 h-4" />
