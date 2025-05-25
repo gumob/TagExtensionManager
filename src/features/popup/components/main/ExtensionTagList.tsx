@@ -18,19 +18,13 @@ export const ExtensionTagList: React.FC<ExtensionTagListProps> = ({}: ExtensionT
    * The extensions and filtered extensions.
    */
   const {
-    extensions: { filteredExtensions },
+    extensions: { filteredExtensions, untaggedExtensions },
   } = useExtensionContext();
+
   /**
    * The tag store.
    */
   const { tags, extensionTags } = useTagStore();
-
-  /**
-   * The untagged extensions.
-   */
-  const untaggedExtensions = filteredExtensions.filter(
-    ext => !extensionTags.find(extTag => extTag.extensionId === ext.id && extTag.tagIds.length > 0)
-  );
 
   /**
    * The ExtensionTagList component.
@@ -44,9 +38,11 @@ export const ExtensionTagList: React.FC<ExtensionTagListProps> = ({}: ExtensionT
         <ExtensionTagListEditButton />
       </div>
       <div className="flex flex-wrap gap-1">
+        {/* Tagged chip */}
         {tags.map(tag => (
           <ExtensionTagListItem key={tag.id} tag={tag} />
         ))}
+        {/* Untagged chip */}
         {untaggedExtensions.length > 0 && (
           <ExtensionTagListItem
             tag={{

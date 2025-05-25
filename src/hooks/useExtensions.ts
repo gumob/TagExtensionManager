@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { chromeAPI } from '@/api/ChromeAPI';
 import { ExtensionModel } from '@/models';
@@ -269,6 +269,13 @@ export const useExtensions = () => {
     setFilteredExtensions(filteredExtensions);
   }, [extensions, searchQuery]);
 
+  const untaggedExtensions = useMemo(() => {
+    return filteredExtensions.filter(
+      ext =>
+        !extensionTags.find(extTag => extTag.extensionId === ext.id && extTag.tagIds.length > 0)
+    );
+  }, [filteredExtensions]);
+
   /*******************************************************
    * Debugging
    *******************************************************/
@@ -287,6 +294,7 @@ export const useExtensions = () => {
   return {
     extensions,
     filteredExtensions,
+    untaggedExtensions,
     searchQuery,
     setSearchQuery,
     visibleTagId,
