@@ -2,19 +2,20 @@ import { TagIcon } from '@heroicons/react/24/outline';
 
 import { useCallback, useState } from 'react';
 
-interface TagEditorSearchBarProps {
-  onAddTag: (tagName: string) => void;
-}
+import { useTagStore } from '@/stores';
 
-export const TagEditorSearchBar: React.FC<TagEditorSearchBarProps> = ({ onAddTag }) => {
+interface TagEditorSearchBarProps {}
+
+export const TagEditorSearchBar: React.FC<TagEditorSearchBarProps> = () => {
+  const { tags, addTag, updateTag, deleteTag, reorderTags } = useTagStore();
   const [newTagName, setNewTagName] = useState('');
 
   const handleAddTag = useCallback(() => {
     if (newTagName.trim()) {
-      onAddTag(newTagName.trim());
+      addTag(newTagName.trim());
       setNewTagName('');
     }
-  }, [newTagName, onAddTag]);
+  }, [newTagName]);
 
   return (
     <div className="px-4 pt-0 pb-4">

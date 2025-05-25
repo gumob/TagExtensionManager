@@ -118,7 +118,7 @@ export const TagEditorMain: React.FC<TagEditorMainProps> = ({ isOpen, onClose })
                   <div className="flex flex-col max-h-[80vh]">
                     <div className="flex-none">
                       <TagEditorHeader onClose={onClose} />
-                      <TagEditorSearchBar onAddTag={addTag} />
+                      <TagEditorSearchBar />
                     </div>
                     <TagEditorList
                       tags={sortedTags}
