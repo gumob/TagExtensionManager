@@ -22,8 +22,8 @@ interface TagSelectorMainProps {
 /**
  * The TagSelectorMain component.
  *
+ * @param extension - The extension to select tags for.
  * @param isOpen - Whether the tag selector is open.
- * @param currentTagIds - The selected tag ids.
  * @param onClose - The callback to close the tag selector.
  * @returns The TagSelectorMain component.
  */
@@ -113,7 +113,7 @@ export const TagSelectorMain: React.FC<TagSelectorMainProps> = ({ extension, isO
                 />
                 <TagSelectorList
                   tags={filteredTags}
-                  selectedTagIds={currentTagIds}
+                  currentTagIds={currentTagIds}
                   onTagClick={handleTagClick}
                 />
               </Dialog.Panel>

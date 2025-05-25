@@ -3,13 +3,13 @@ import { TagModel } from '@/models';
 
 interface TagSelectorListProps {
   tags: TagModel[];
-  selectedTagIds: string[];
+  currentTagIds: string[];
   onTagClick: (tagId: string) => void;
 }
 
 export const TagSelectorList: React.FC<TagSelectorListProps> = ({
   tags,
-  selectedTagIds,
+  currentTagIds,
   onTagClick,
 }) => {
   return (
@@ -18,7 +18,7 @@ export const TagSelectorList: React.FC<TagSelectorListProps> = ({
         <TagSelectorListItem
           key={tag.id}
           tag={tag}
-          isSelected={selectedTagIds.includes(tag.id)}
+          isSelected={currentTagIds.includes(tag.id)}
           onClick={onTagClick}
         />
       ))}

@@ -11,10 +11,9 @@ import {
 
 import { Fragment, useState } from 'react';
 
-import { TagSelectorMain } from '../selector/TagSelectorMain';
-
 import { chromeAPI } from '@/api/ChromeAPI';
 import { useExtensionContext } from '@/contexts/ExtensionContext';
+import { TagSelectorMain } from '@/features/popup/components/selector/TagSelectorMain';
 import { ExtensionModel } from '@/models';
 import { useExtensionStore, useTagStore } from '@/stores';
 
