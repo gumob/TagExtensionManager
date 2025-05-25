@@ -1,73 +1,41 @@
 import { TagsIcon, ToggleLeftIcon, ToggleRightIcon } from 'lucide-react';
 
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 
 import { useExtensionContext } from '@/contexts/ExtensionContext';
-import { ExtensionModel } from '@/models';
 
 /**
  * The props for the ExtensionTagMetrics component.
- *
- * @param extensions - The extensions to display.
  */
-interface ExtensionTagMetricsProps {
-  extensions?: ExtensionModel[];
-}
+interface ExtensionTagMetricsProps {}
 
 /**
  * The ExtensionTagMetrics component.
  *
- * @param extensions - The extensions to display.
  * @returns The ExtensionTagMetrics component.
  */
-export const ExtensionTagMetrics: FC<ExtensionTagMetricsProps> = ({ extensions = [] }) => {
-  const [localExtensions, setLocalExtensions] = useState(extensions);
-  const {
-    extensions: { setVisibleTagId },
-  } = useExtensionContext();
-
+export const ExtensionTagMetrics: FC<ExtensionTagMetricsProps> = () => {
   /**
-   * The use effect for the ExtensionTagMetrics component.
+   * The extensions context.
    */
-  useEffect(() => {
-    setLocalExtensions(extensions);
-  }, [extensions]);
+  const {
+    extensions: { filteredExtensions, setVisibleTagId },
+  } = useExtensionContext();
 
   /**
    * The total number of extensions.
    */
-  const total = localExtensions.length;
+  const total = filteredExtensions.length;
 
   /**
    * The number of enabled extensions.
    */
-  const enabled = localExtensions.filter(ext => ext.enabled).length;
+  const enabled = filteredExtensions.filter(ext => ext.enabled).length;
 
   /**
    * The number of disabled extensions.
    */
   const disabled = total - enabled;
-
-  /**
-   * The show enabled extensions handler.
-   */
-  const showEnabledExtensions = () => {
-    setVisibleTagId('enabled');
-  };
-
-  /**
-   * The show disabled extensions handler.
-   */
-  const showDisabledExtensions = () => {
-    setVisibleTagId('disabled');
-  };
-
-  /**
-   * The show all extensions handler.
-   */
-  const showAllExtensions = () => {
-    setVisibleTagId(null);
-  };
 
   /**
    * The ExtensionTagMetrics component.
@@ -78,7 +46,7 @@ export const ExtensionTagMetrics: FC<ExtensionTagMetricsProps> = ({ extensions =
     <div className="flex flex-row w-auto gap-[1px]">
       <button
         className="flex-1 pl-3 pr-2 py-1 rounded-s-full text-2xs bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-600 inline-flex items-center"
-        onClick={showAllExtensions}
+        onClick={() => setVisibleTagId(null)}
       >
         <TagsIcon className="w-4 h-4 mr-1" strokeWidth={1} />
         <span className="text-2xs text-zinc-900 dark:text-white mr-1">Total</span>
@@ -86,7 +54,7 @@ export const ExtensionTagMetrics: FC<ExtensionTagMetricsProps> = ({ extensions =
       </button>
       <button
         className="flex-1 pl-3 pr-2 py-1 rounded-none text-2xs bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-600 inline-flex items-center"
-        onClick={showEnabledExtensions}
+        onClick={() => setVisibleTagId('enabled')}
       >
         <ToggleRightIcon className="w-4 h-4 mr-1" strokeWidth={1} />
         <span className="text-2xs text-zinc-900 dark:text-white mr-1">Enabled</span>
@@ -94,7 +62,7 @@ export const ExtensionTagMetrics: FC<ExtensionTagMetricsProps> = ({ extensions =
       </button>
       <button
         className="flex-1 pl-2 pr-3 py-1 rounded-r-full text-2xs bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-600 inline-flex items-center"
-        onClick={showDisabledExtensions}
+        onClick={() => setVisibleTagId('disabled')}
       >
         <ToggleLeftIcon className="w-4 h-4 mr-1" strokeWidth={1} />
         <span className="text-2xs text-zinc-900 dark:text-white mr-1">Disabled</span>

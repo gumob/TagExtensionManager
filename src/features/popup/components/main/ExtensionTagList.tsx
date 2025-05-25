@@ -18,7 +18,7 @@ export const ExtensionTagList: React.FC<ExtensionTagListProps> = ({}: ExtensionT
    * The extensions and filtered extensions.
    */
   const {
-    extensions: { filteredExtensions, untaggedExtensions },
+    extensions: { untaggedExtensions },
   } = useExtensionContext();
 
   /**
@@ -34,7 +34,7 @@ export const ExtensionTagList: React.FC<ExtensionTagListProps> = ({}: ExtensionT
   return (
     <>
       <div className="flex flex-wrap gap-1 mb-1">
-        <ExtensionTagMetrics extensions={filteredExtensions} />
+        <ExtensionTagMetrics />
         <ExtensionTagListEditButton />
       </div>
       <div className="flex flex-wrap gap-1">
