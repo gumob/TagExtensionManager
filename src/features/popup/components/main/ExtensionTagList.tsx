@@ -6,14 +6,9 @@ import {
 import { ExtensionModel } from '@/models';
 import { useTagStore } from '@/stores';
 
-/**
- * The props for the ExtensionTagList component.
- *
- * @param extensions - The extensions to display.
- */
-interface ExtensionTagListProps {
+type ExtensionTagListProps = {
   extensions: ExtensionModel[];
-}
+};
 
 /**
  * The props for the ExtensionTagList component.

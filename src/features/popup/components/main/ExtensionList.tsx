@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { chromeAPI } from '@/api/ChromeAPI';
 import { ExtensionCard, ExtensionListHeader } from '@/features/popup/components/main';
+import { useVisibleTag } from '@/hooks';
 import { ExtensionModel } from '@/models';
 import { useExtensionStore, useTagStore } from '@/stores';
 
@@ -28,8 +29,9 @@ export const ExtensionList: React.FC<ExtensionListProps> = ({
   onExtensionStateChange,
 }: ExtensionListProps) => {
   const [localExtensions, setLocalExtensions] = useState<ExtensionModel[]>(extensions);
-  const { tags, extensionTags, visibleTagId } = useTagStore();
+  const { tags, extensionTags } = useTagStore();
   const { toggleLock } = useExtensionStore();
+  const { visibleTagId } = useVisibleTag();
 
   /**
    * Use effect for updating the local extensions.

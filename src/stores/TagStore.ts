@@ -15,11 +15,8 @@ import { logger } from '@/utils';
  * @property reorderTags - The reorder tags function.
  * @property addTagToExtension - The add tag to extension function.
  * @property removeTagFromExtension - The remove tag from extension function.
- * @property visibleTagId - The id of the visible tag.
- * @property setVisibleTag - The function to set the visible tag.
  */
 export interface TagStore extends TagManagementModel {
-  initialize: () => Promise<void>;
   addTag: (name: string) => void;
   updateTag: (id: string, name: string) => void;
   deleteTag: (id: string) => void;
@@ -28,8 +25,7 @@ export interface TagStore extends TagManagementModel {
   removeTagFromExtension: (extensionId: string, tagId: string) => void;
   importTags: (tags: TagModel[], extensionTags: TagExtensionMapModel[]) => void;
   exportTags: () => { tags: TagModel[]; extensionTags: TagExtensionMapModel[] };
-  visibleTagId: string | null;
-  setVisibleTag: (tagId: string | null) => void;
+  initialize: () => Promise<void>;
   isLoading: boolean;
 }
 
@@ -45,15 +41,6 @@ export const useTagStore = create<TagStore>()(
       tags: [],
       extensionTags: [],
       isLoading: false,
-      visibleTagId: null,
-
-      /**
-       * Sets the visible tag id.
-       * @param tagId - The id of the tag to make visible.
-       */
-      setVisibleTag: (tagId: string | null) => {
-        set({ visibleTagId: tagId });
-      },
 
       /**
        * Initializes the tag store by loading saved data from Chrome storage

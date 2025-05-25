@@ -1,5 +1,6 @@
 import { TagIcon } from 'lucide-react';
 
+import { useVisibleTag } from '@/hooks';
 import { TagModel } from '@/models';
 import { useTagStore } from '@/stores';
 
@@ -19,6 +20,8 @@ interface ExtensionTagListItemProps {
  *
  * @param tag - The tag to display.
  * @param extensionCount - The number of extensions with the tag.
+ * @param visibleTagId - The id of the visible tag.
+ * @param setVisibleTag - The function to set the visible tag.
  * @returns The ExtensionTagListItem component.
  */
 export const ExtensionTagListItem: React.FC<ExtensionTagListItemProps> = ({
@@ -28,7 +31,8 @@ export const ExtensionTagListItem: React.FC<ExtensionTagListItemProps> = ({
   /**
    * The tag store.
    */
-  const { extensionTags, visibleTagId, setVisibleTag } = useTagStore();
+  const { extensionTags } = useTagStore();
+  const { visibleTagId, setVisibleTagId } = useVisibleTag();
 
   /**
    * The count of extensions with the tag.
@@ -46,7 +50,7 @@ export const ExtensionTagListItem: React.FC<ExtensionTagListItemProps> = ({
    */
   return (
     <button
-      onClick={() => setVisibleTag(isSelected ? null : tag.id)}
+      onClick={() => setVisibleTagId(isSelected ? null : tag.id)}
       className={`px-3 py-1 text-2xs font-medium rounded-full transition-colors ${
         isSelected
           ? 'bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100'

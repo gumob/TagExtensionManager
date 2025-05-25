@@ -1,9 +1,9 @@
-import { ToggleLeftIcon, ToggleRightIcon } from 'lucide-react';
+import { TagsIcon, ToggleLeftIcon, ToggleRightIcon } from 'lucide-react';
 
 import { FC, useEffect, useState } from 'react';
 
+import { useVisibleTag } from '@/hooks';
 import { ExtensionModel } from '@/models';
-import { useTagStore } from '@/stores';
 
 /**
  * The props for the ExtensionTagMetrics component.
@@ -21,44 +21,82 @@ interface ExtensionTagMetricsProps {
  * @returns The ExtensionTagMetrics component.
  */
 export const ExtensionTagMetrics: FC<ExtensionTagMetricsProps> = ({ extensions = [] }) => {
-  const { visibleTagId, setVisibleTag } = useTagStore();
-  const [enabledCount, setEnabledCount] = useState(0);
-  const [disabledCount, setDisabledCount] = useState(0);
+  const [localExtensions, setLocalExtensions] = useState(extensions);
+  const { setVisibleTagId } = useVisibleTag();
 
+  /**
+   * The use effect for the ExtensionTagMetrics component.
+   */
   useEffect(() => {
-    setEnabledCount(extensions.filter(ext => ext.enabled).length);
-    setDisabledCount(extensions.filter(ext => !ext.enabled).length);
+    setLocalExtensions(extensions);
   }, [extensions]);
 
+  /**
+   * The total number of extensions.
+   */
+  const total = localExtensions.length;
+
+  /**
+   * The number of enabled extensions.
+   */
+  const enabled = localExtensions.filter(ext => ext.enabled).length;
+
+  /**
+   * The number of disabled extensions.
+   */
+  const disabled = total - enabled;
+
+  /**
+   * The show enabled extensions handler.
+   */
+  const showEnabledExtensions = () => {
+    setVisibleTagId('enabled');
+  };
+
+  /**
+   * The show disabled extensions handler.
+   */
+  const showDisabledExtensions = () => {
+    setVisibleTagId('disabled');
+  };
+
+  /**
+   * The show all extensions handler.
+   */
+  const showAllExtensions = () => {
+    setVisibleTagId(null);
+  };
+
+  /**
+   * The ExtensionTagMetrics component.
+   *
+   * @returns The ExtensionTagMetrics component.
+   */
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex flex-row w-auto gap-[1px]">
       <button
-        onClick={() => setVisibleTag(visibleTagId === 'enabled' ? null : 'enabled')}
-        className={`px-3 py-1 text-2xs font-medium rounded-full transition-colors ${
-          visibleTagId === 'enabled'
-            ? 'bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100'
-            : visibleTagId === null
-              ? 'bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-300 dark:hover:bg-zinc-600'
-              : 'bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-300 dark:hover:bg-zinc-600 opacity-30'
-        }`}
+        className="flex-1 pl-3 pr-2 py-1 rounded-s-full text-2xs bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-600 inline-flex items-center"
+        onClick={showAllExtensions}
       >
-        <ToggleRightIcon className="w-3 h-3 inline-flex mr-1" strokeWidth={1} />
-        <span className="text-2xs">Enabled</span>
-        <span className="ml-1 text-2xs text-zinc-500 dark:text-zinc-400">{enabledCount}</span>
+        <TagsIcon className="w-4 h-4 mr-1" strokeWidth={1} />
+        <span className="text-2xs text-zinc-900 dark:text-white mr-1">Total</span>
+        <span className="text-2xs text-blue-600 dark:text-blue-400">{total}</span>
       </button>
       <button
-        onClick={() => setVisibleTag(visibleTagId === 'disabled' ? null : 'disabled')}
-        className={`px-3 py-1 text-2xs font-medium rounded-full transition-colors ${
-          visibleTagId === 'disabled'
-            ? 'bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100'
-            : visibleTagId === null
-              ? 'bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-300 dark:hover:bg-zinc-600'
-              : 'bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-300 dark:hover:bg-zinc-600 opacity-30'
-        }`}
+        className="flex-1 pl-3 pr-2 py-1 rounded-none text-2xs bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-600 inline-flex items-center"
+        onClick={showEnabledExtensions}
       >
-        <ToggleLeftIcon className="w-3 h-3 inline-flex mr-1" strokeWidth={1} />
-        <span className="text-2xs">Disabled</span>
-        <span className="ml-1 text-2xs text-zinc-500 dark:text-zinc-400">{disabledCount}</span>
+        <ToggleRightIcon className="w-4 h-4 mr-1" strokeWidth={1} />
+        <span className="text-2xs text-zinc-900 dark:text-white mr-1">Enabled</span>
+        <span className="text-2xs text-green-600 dark:text-green-400">{enabled}</span>
+      </button>
+      <button
+        className="flex-1 pl-2 pr-3 py-1 rounded-r-full text-2xs bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-600 inline-flex items-center"
+        onClick={showDisabledExtensions}
+      >
+        <ToggleLeftIcon className="w-4 h-4 mr-1" strokeWidth={1} />
+        <span className="text-2xs text-zinc-900 dark:text-white mr-1">Disabled</span>
+        <span className="text-2xs text-red-600 dark:text-red-400">{disabled}</span>
       </button>
     </div>
   );
