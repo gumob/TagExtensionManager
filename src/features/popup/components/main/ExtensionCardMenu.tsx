@@ -12,6 +12,7 @@ import {
 import { Fragment, useState } from 'react';
 
 import { chromeAPI } from '@/api/ChromeAPI';
+import { useTagSelectorContext } from '@/contexts';
 import { useExtensionContext } from '@/contexts/ExtensionContext';
 import { TagSelectorMain } from '@/features/popup/components/selector/TagSelectorMain';
 import { ExtensionModel } from '@/models';
@@ -47,6 +48,8 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
     extensions: { refreshExtensions },
   } = useExtensionContext();
 
+  const { isOpen: isTagSelectorOpen, setIsOpen: setIsTagSelectorOpen } = useTagSelectorContext();
+
   /**
    * The toggle lock function.
    */
@@ -56,11 +59,6 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
    * The uninstall dialog open state.
    */
   const [isUninstallDialogOpen, setIsUninstallDialogOpen] = useState(false);
-
-  /**
-   * The tag dialog open state.
-   */
-  const [isTagDialogOpen, setIsTagDialogOpen] = useState(false);
 
   /**
    * The use floating hook.
@@ -126,7 +124,7 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
                 <Menu.Item>
                   {({ active }) => (
                     <button
-                      onClick={() => setIsTagDialogOpen(true)}
+                      onClick={() => setIsTagSelectorOpen(true)}
                       className={`${
                         active ? 'bg-zinc-100 dark:bg-zinc-600' : ''
                       } block w-full text-left px-3 py-2 text-2xs text-zinc-700 dark:text-zinc-200 focus:outline-none`}
@@ -255,12 +253,8 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
         </Dialog>
       </Transition>
 
-      {isTagDialogOpen && (
-        <TagSelectorMain
-          extension={extension}
-          isOpen={isTagDialogOpen}
-          onClose={() => setIsTagDialogOpen(false)}
-        />
+      {isTagSelectorOpen && (
+        <TagSelectorMain extension={extension} onClose={() => setIsTagSelectorOpen(false)} />
       )}
     </>
   );

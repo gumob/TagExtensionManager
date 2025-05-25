@@ -1,21 +1,30 @@
-import { Dialog } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
+/**
+ * The props for the TagSelectorHeader component.
+ */
 interface TagSelectorHeaderProps {
+  /**
+   * The callback to close the tag selector.
+   */
   onClose: () => void;
 }
 
+/**
+ * The TagSelectorHeader component.
+ *
+ * @param onClose - The callback to close the tag selector.
+ * @returns The TagSelectorHeader component.
+ */
 export const TagSelectorHeader: React.FC<TagSelectorHeaderProps> = ({ onClose }) => {
   return (
-    <div className="flex justify-between items-center mb-4">
-      <Dialog.Title as="h3" className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
-        Select Tags
-      </Dialog.Title>
+    <div className="flex items-center justify-between">
+      <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">Select Tags</h2>
       <button
         onClick={onClose}
-        className="text-zinc-700 hover:text-zinc-900 dark:text-zinc-100 dark:hover:text-zinc-300"
+        className="rounded-lg p-1 text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 focus:outline-none"
       >
-        <XMarkIcon className="w-6 h-6" />
+        <XMarkIcon className="h-6 w-6" />
       </button>
     </div>
   );

@@ -1,21 +1,20 @@
 import { Dialog, Transition } from '@headlessui/react';
 
-import { Fragment, useState } from 'react';
+import { Fragment } from 'react';
 
+import { TagSelectorProvider, useTagSelectorContext } from '@/contexts';
 import {
   TagSelectorHeader,
   TagSelectorList,
   TagSelectorSearchBar,
 } from '@/features/popup/components/selector';
 import { ExtensionModel } from '@/models';
-import { useTagStore } from '@/stores';
 
 /**
  * The props for the TagSelectorMain component.
  */
 interface TagSelectorMainProps {
   extension: ExtensionModel;
-  isOpen: boolean;
   onClose: () => void;
 }
 
@@ -27,57 +26,9 @@ interface TagSelectorMainProps {
  * @param onClose - The callback to close the tag selector.
  * @returns The TagSelectorMain component.
  */
-export const TagSelectorMain: React.FC<TagSelectorMainProps> = ({ extension, isOpen, onClose }) => {
-  /**
-   * The tag store.
-   */
-  const { tags, extensionTags, addTagToExtension, removeTagFromExtension } = useTagStore();
+export const TagSelectorMain: React.FC<TagSelectorMainProps> = ({ extension, onClose }) => {
+  const { isOpen } = useTagSelectorContext();
 
-  /**
-   * Current tag ids.
-   */
-  const currentTagIds =
-    extensionTags.find(extTag => extTag.extensionId === extension.id)?.tagIds ?? [];
-
-  /**
-   * The search query.
-   */
-  const [searchQuery, setSearchQuery] = useState('');
-
-  /**
-   * The filtered tags.
-   */
-  const filteredTags = tags.filter(tag =>
-    tag.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  /**
-   * The handle tag click.
-   */
-  const handleTagClick = (tagId: string) => {
-    /** The new current tag ids. */
-    const newCurrentTagIds = currentTagIds.includes(tagId)
-      ? currentTagIds.filter(id => id !== tagId)
-      : [...currentTagIds, tagId];
-
-    /** Add new tags */
-    newCurrentTagIds.forEach(tagId => {
-      if (!currentTagIds.includes(tagId)) {
-        addTagToExtension(extension.id, tagId);
-      }
-    });
-
-    /** Remove deselected tags */
-    currentTagIds.forEach(tagId => {
-      if (!newCurrentTagIds.includes(tagId)) {
-        removeTagFromExtension(extension.id, tagId);
-      }
-    });
-  };
-
-  /**
-   * The TagSelectorMain component.
-   */
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={onClose}>
@@ -105,17 +56,11 @@ export const TagSelectorMain: React.FC<TagSelectorMainProps> = ({ extension, isO
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-zinc-800 p-6 shadow-xl transition-all">
-                <TagSelectorHeader onClose={onClose} />
-                <TagSelectorSearchBar
-                  searchQuery={searchQuery}
-                  onSearchChange={setSearchQuery}
-                  isOpen={isOpen}
-                />
-                <TagSelectorList
-                  tags={filteredTags}
-                  currentTagIds={currentTagIds}
-                  onTagClick={handleTagClick}
-                />
+                <TagSelectorProvider extension={extension}>
+                  <TagSelectorHeader onClose={onClose} />
+                  <TagSelectorSearchBar />
+                  <TagSelectorList />
+                </TagSelectorProvider>
               </Dialog.Panel>
             </Transition.Child>
           </div>

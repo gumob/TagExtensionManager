@@ -1,27 +1,31 @@
-import { TagSelectorListItem } from '@/features/popup/components/selector';
-import { TagModel } from '@/models';
+import { CheckIcon } from '@heroicons/react/24/outline';
 
-interface TagSelectorListProps {
-  tags: TagModel[];
-  currentTagIds: string[];
-  onTagClick: (tagId: string) => void;
-}
+import { useTagSelectorContext } from '@/contexts/TagSelectorContext';
 
-export const TagSelectorList: React.FC<TagSelectorListProps> = ({
-  tags,
-  currentTagIds,
-  onTagClick,
-}) => {
+/**
+ * The TagSelectorList component.
+ *
+ * @returns The TagSelectorList component.
+ */
+export const TagSelectorList: React.FC = () => {
+  const { filteredTags, currentTagIds, handleTagClick } = useTagSelectorContext();
+
   return (
-    <div className="flex flex-wrap gap-2">
-      {tags.map(tag => (
-        <TagSelectorListItem
-          key={tag.id}
-          tag={tag}
-          isSelected={currentTagIds.includes(tag.id)}
-          onClick={onTagClick}
-        />
-      ))}
+    <div className="mt-4 max-h-[60vh] overflow-y-auto">
+      <div className="space-y-1">
+        {filteredTags.map(tag => (
+          <button
+            key={tag.id}
+            onClick={() => handleTagClick(tag.id)}
+            className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700 focus:outline-none"
+          >
+            <span>{tag.name}</span>
+            {currentTagIds.includes(tag.id) && (
+              <CheckIcon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            )}
+          </button>
+        ))}
+      </div>
     </div>
   );
 };
