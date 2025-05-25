@@ -12,7 +12,6 @@ import {
 import { Fragment, useState } from 'react';
 
 import { chromeAPI } from '@/api/ChromeAPI';
-import { useTagSelectorContext } from '@/contexts';
 import { useExtensionContext } from '@/contexts/ExtensionContext';
 import { TagSelectorMain } from '@/features/popup/components/selector/TagSelectorMain';
 import { ExtensionModel } from '@/models';
@@ -48,7 +47,10 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
     extensions: { refreshExtensions },
   } = useExtensionContext();
 
-  const { isOpen: isTagSelectorOpen, setIsOpen: setIsTagSelectorOpen } = useTagSelectorContext();
+  /**
+   * The tag selector open state.
+   */
+  const [isTagSelectorOpen, setIsTagSelectorOpen] = useState(false);
 
   /**
    * The toggle lock function.
@@ -254,7 +256,11 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
       </Transition>
 
       {isTagSelectorOpen && (
-        <TagSelectorMain extension={extension} onClose={() => setIsTagSelectorOpen(false)} />
+        <TagSelectorMain
+          extension={extension}
+          isOpen={isTagSelectorOpen}
+          onClose={() => setIsTagSelectorOpen(false)}
+        />
       )}
     </>
   );

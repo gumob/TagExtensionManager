@@ -10,16 +10,23 @@ import { useTagSelectorContext } from '@/contexts';
  * @returns The TagSelectorSearchBar component.
  */
 export const TagSelectorSearchBar: React.FC = () => {
-  const { searchQuery, setSearchQuery, isOpen } = useTagSelectorContext();
+  // const { searchQuery, setSearchQuery, isOpen } = useTagSelectorContext();
+  const { searchQuery, setSearchQuery } = useTagSelectorContext();
   const searchInputRef = useRef<HTMLInputElement>(null);
 
+  // useEffect(() => {
+  //   if (isOpen) {
+  //     setTimeout(() => {
+  //       searchInputRef.current?.focus();
+  //     }, 100);
+  //   }
+  // }, [isOpen]);
+
   useEffect(() => {
-    if (isOpen) {
-      setTimeout(() => {
-        searchInputRef.current?.focus();
-      }, 100);
-    }
-  }, [isOpen]);
+    setTimeout(() => {
+      searchInputRef.current?.focus();
+    }, 100);
+  }, []);
 
   return (
     <div className="relative mt-4">
@@ -29,7 +36,7 @@ export const TagSelectorSearchBar: React.FC = () => {
       <input
         ref={searchInputRef}
         type="text"
-        className="block w-full rounded-lg border-0 py-2 pl-10 pr-3 text-zinc-900 dark:text-zinc-100 ring-1 ring-inset ring-zinc-300 dark:ring-zinc-600 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:ring-2 focus:ring-inset focus:ring-blue-600 dark:focus:ring-blue-500 sm:text-sm sm:leading-6 bg-white dark:bg-zinc-800"
+        className="flex-1 w-full h-10 pl-10 pr-3 py-1.5 rounded-full bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-zinc-200 dark:focus:ring-zinc-500"
         placeholder="Search tags..."
         value={searchQuery}
         onChange={e => setSearchQuery(e.target.value)}

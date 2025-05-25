@@ -1,5 +1,4 @@
-import { useRef } from 'react';
-
+import { useTagEditorContext } from '@/contexts/TagEditorContext';
 import { TagEditorListItem } from '@/features/popup/components/editor';
 import { TagModel } from '@/models';
 
@@ -12,29 +11,29 @@ interface TagEditorListProps {
   onTagClick: (tagId: string) => void;
 }
 
-export const TagEditorList: React.FC<TagEditorListProps> = ({
-  tags,
-  moveTag,
-  editingTagId,
-  onEdit,
-  onDelete,
-  onTagClick,
-}: TagEditorListProps) => {
-  const tagListRef = useRef<HTMLDivElement>(null);
+export const TagEditorList: React.FC = () => {
+  const {
+    sortedTags,
+    moveTag,
+    editingTagId,
+    handleTagNameChange,
+    handleDeleteClick,
+    handleTagClick,
+  } = useTagEditorContext();
 
   return (
     <div className="flex-1 overflow-y-auto overflow-x-hidden px-4 pt-0 pb-4">
-      <div ref={tagListRef} className="flex flex-wrap gap-2">
-        {tags.map((tag, index) => (
+      <div className="flex flex-wrap gap-2">
+        {sortedTags.map((tag, index) => (
           <TagEditorListItem
             key={tag.id}
             tag={tag}
             index={index}
             moveTag={moveTag}
             isEditing={editingTagId === tag.id}
-            onEdit={onEdit}
-            onDelete={onDelete}
-            onTagClick={onTagClick}
+            onEdit={handleTagNameChange}
+            onDelete={handleDeleteClick}
+            onTagClick={handleTagClick}
           />
         ))}
       </div>

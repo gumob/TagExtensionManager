@@ -10,10 +10,7 @@ import { TagEditorMain } from '@/features/popup/components/editor';
  * @returns The ExtensionTagListEditButton component.
  */
 export const ExtensionTagListEditButton: React.FC = () => {
-  /**
-   * The state for the dialog.
-   */
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isTagEditorOpen, setIsTagEditorOpen] = useState(false);
 
   /**
    * The ExtensionTagListEditButton component.
@@ -23,14 +20,15 @@ export const ExtensionTagListEditButton: React.FC = () => {
   return (
     <>
       <button
-        onClick={() => setIsDialogOpen(true)}
+        onClick={() => setIsTagEditorOpen(true)}
         className="px-3 py-1 text-2xs font-medium rounded-full bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors"
       >
         <PencilIcon className="w-3 h-3 inline-flex mr-1" strokeWidth={1} />
         <span className="">Edit Tags</span>
       </button>
-
-      <TagEditorMain isOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)} />
+      {isTagEditorOpen && (
+        <TagEditorMain isOpen={isTagEditorOpen} onClose={() => setIsTagEditorOpen(false)} />
+      )}
     </>
   );
 };

@@ -1,21 +1,36 @@
 import { TagIcon } from '@heroicons/react/24/outline';
 
-import { useCallback, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-import { useTagStore } from '@/stores';
+import { useTagEditorContext } from '@/contexts/TagEditorContext';
 
-interface TagEditorSearchBarProps {}
-
-export const TagEditorSearchBar: React.FC<TagEditorSearchBarProps> = () => {
-  const { tags, addTag, updateTag, deleteTag, reorderTags } = useTagStore();
+/**
+ * The TagEditorSearchBar component.
+ *
+ * @returns The TagEditorSearchBar component.
+ */
+export const TagEditorSearchBar: React.FC = () => {
+  const { addTag } = useTagEditorContext();
   const [newTagName, setNewTagName] = useState('');
-
-  const handleAddTag = useCallback(() => {
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const handleAddTag = () => {
     if (newTagName.trim()) {
       addTag(newTagName.trim());
       setNewTagName('');
     }
-  }, [newTagName]);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleAddTag();
+    }
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      searchInputRef.current?.focus();
+    }, 100);
+  }, []);
 
   return (
     <div className="px-4 pt-0 pb-4">
@@ -25,16 +40,12 @@ export const TagEditorSearchBar: React.FC<TagEditorSearchBarProps> = () => {
             <TagIcon className="h-5 w-5 text-zinc-400" aria-hidden="true" />
           </div>
           <input
+            ref={searchInputRef}
             type="text"
             value={newTagName}
             onChange={e => setNewTagName(e.target.value)}
-            onKeyDown={e => {
-              if (e.key === 'Enter') {
-                e.preventDefault();
-                handleAddTag();
-              }
-            }}
-            placeholder="Enter new tag name"
+            onKeyDown={handleKeyDown}
+            placeholder="Enter new tag name..."
             className="w-full h-10 pl-10 pr-3 py-1.5 rounded-full bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-zinc-200 dark:focus:ring-zinc-500"
           />
         </div>

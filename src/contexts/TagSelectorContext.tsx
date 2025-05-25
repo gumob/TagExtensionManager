@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 
-import { ExtensionModel } from '@/models';
+import { ExtensionModel, TagModel } from '@/models';
 import { useTagStore } from '@/stores';
 
 /**
@@ -18,7 +18,7 @@ interface TagSelectorContextValue {
   /**
    * The filtered tags.
    */
-  filteredTags: Array<{ id: string; name: string }>;
+  filteredTags: TagModel[];
   /**
    * The current tag ids.
    */
@@ -27,14 +27,6 @@ interface TagSelectorContextValue {
    * The handle tag click function.
    */
   handleTagClick: (tagId: string) => void;
-  /**
-   * Whether the tag selector is open.
-   */
-  isOpen: boolean;
-  /**
-   * The set is open function.
-   */
-  setIsOpen: (isOpen: boolean) => void;
 }
 
 /**
@@ -83,11 +75,6 @@ export const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
 
   /**
-   * The set is open function.
-   */
-  const [isOpen, setIsOpen] = useState(false);
-
-  /**
    * The filtered tags.
    */
   const filteredTags = useMemo(
@@ -129,10 +116,8 @@ export const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
       filteredTags,
       currentTagIds,
       handleTagClick,
-      isOpen,
-      setIsOpen,
     }),
-    [searchQuery, filteredTags, currentTagIds, handleTagClick, isOpen, setIsOpen]
+    [searchQuery, filteredTags, currentTagIds, handleTagClick]
   );
 
   return <TagSelectorContext.Provider value={value}>{children}</TagSelectorContext.Provider>;

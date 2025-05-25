@@ -2,7 +2,7 @@ import { Dialog, Transition } from '@headlessui/react';
 
 import { Fragment } from 'react';
 
-import { TagSelectorProvider, useTagSelectorContext } from '@/contexts';
+import { TagSelectorProvider } from '@/contexts';
 import {
   TagSelectorHeader,
   TagSelectorList,
@@ -15,6 +15,7 @@ import { ExtensionModel } from '@/models';
  */
 interface TagSelectorMainProps {
   extension: ExtensionModel;
+  isOpen: boolean;
   onClose: () => void;
 }
 
@@ -26,9 +27,7 @@ interface TagSelectorMainProps {
  * @param onClose - The callback to close the tag selector.
  * @returns The TagSelectorMain component.
  */
-export const TagSelectorMain: React.FC<TagSelectorMainProps> = ({ extension, onClose }) => {
-  const { isOpen } = useTagSelectorContext();
-
+export const TagSelectorMain: React.FC<TagSelectorMainProps> = ({ extension, isOpen, onClose }) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={onClose}>
