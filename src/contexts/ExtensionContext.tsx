@@ -199,18 +199,16 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
     async (id: string, enabled: boolean) => {
       if (!isSubscribed.current) return;
       toggleEnabledStore(id, enabled);
-      refreshExtensions();
     },
-    [refreshExtensions, toggleEnabledStore]
+    [toggleEnabledStore]
   );
 
   const toggleLock = useCallback(
     async (id: string, locked: boolean) => {
       if (!isSubscribed.current) return;
       toggleLockStore(id, locked);
-      refreshExtensions();
     },
-    [refreshExtensions, toggleLockStore]
+    [toggleLockStore]
   );
 
   const openExtensionPage = useCallback(async (id: string) => {
@@ -285,7 +283,7 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
         group: 'ExtensionProvider',
         persist: true,
       });
-      refreshExtensions();
+      // refreshExtensions();
     },
     [refreshExtensions]
   );
