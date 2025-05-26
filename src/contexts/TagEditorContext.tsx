@@ -1,5 +1,7 @@
 import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 
+import toast from 'react-hot-toast';
+
 import { TagModel } from '@/models';
 import { useTagStore } from '@/stores';
 
@@ -15,6 +17,10 @@ interface TagEditorContextValue {
    * The editing tag id.
    */
   editingTagId: string | null;
+  /**
+   * The editing tag name.
+   */
+  editingTagName: string;
   /**
    * The set editing tag id function.
    */
@@ -35,6 +41,10 @@ interface TagEditorContextValue {
    * The change tag name function.
    */
   changeTagName: (tagId: string, newName: string, shouldCloseEdit?: boolean) => void;
+  /**
+   * The start editing function.
+   */
+  startEditing: (tagId: string, initialName: string) => void;
 }
 
 /**
@@ -59,8 +69,26 @@ interface TagEditorProviderProps {
  * @returns The TagEditorProvider component.
  */
 export const TagEditorProvider: React.FC<TagEditorProviderProps> = ({ children }) => {
-  const { tags, addTag, updateTag, deleteTag: deleteTagOnStore, reorderTags } = useTagStore();
+  const {
+    tags,
+    addTag: addTagToStore,
+    updateTag,
+    deleteTag: deleteTagOnStore,
+    reorderTags,
+  } = useTagStore();
+
+  /**
+   * The max tag name length.
+   */
+  const maxTagNameLength = 24;
+  /**
+   * The editing tag id.
+   */
   const [editingTagId, setEditingTagId] = useState<string | null>(null);
+  /**
+   * The editing tag name.
+   */
+  const [editingTagName, setEditingTagName] = useState<string>('');
 
   /**
    * The sorted tags.
@@ -83,16 +111,91 @@ export const TagEditorProvider: React.FC<TagEditorProviderProps> = ({ children }
   );
 
   /**
+   * Check if a tag name already exists
+   * @param name - The tag name to check
+   * @param excludeTagId - The tag ID to exclude from the check (for editing)
+   * @returns Whether the tag name already exists
+   */
+  const isDuplicateTagName = useCallback(
+    (name: string, excludeTagId?: string) => {
+      return tags.some(tag => tag.name === name && tag.id !== excludeTagId);
+    },
+    [tags]
+  );
+
+  /**
+   * The add tag handler.
+   */
+  const addTag = useCallback(
+    (name: string) => {
+      if (!name.trim()) {
+        toast.error('Empty tag names are not allowed.');
+        return;
+      }
+      if (name.length > maxTagNameLength) {
+        toast.error(`Tag name must be ${maxTagNameLength} characters or less.`);
+        return;
+      }
+      if (isDuplicateTagName(name)) {
+        toast.error(`Tag '${name}' already exists.`);
+        return;
+      }
+      addTagToStore(name);
+    },
+    [addTagToStore, isDuplicateTagName]
+  );
+
+  /**
+   * Start editing a tag
+   */
+  const startEditing = useCallback((tagId: string, initialName: string) => {
+    setEditingTagId(tagId);
+    setEditingTagName(initialName);
+  }, []);
+
+  /**
    * The handle tag name change handler.
    */
   const changeTagName = useCallback(
     (tagId: string, newName: string, shouldCloseEdit: boolean = false) => {
-      updateTag(tagId, newName);
       if (shouldCloseEdit) {
+        if (!newName.trim()) {
+          toast.error('Empty tag names are not allowed.');
+          // Reset to original name
+          const originalTag = tags.find(tag => tag.id === tagId);
+          if (originalTag) {
+            updateTag(tagId, originalTag.name);
+          }
+          setEditingTagId(null);
+          return;
+        }
+        if (newName.length > maxTagNameLength) {
+          toast.error(`Tag name must be ${maxTagNameLength} characters or less.`);
+          // Reset to original name
+          const originalTag = tags.find(tag => tag.id === tagId);
+          if (originalTag) {
+            updateTag(tagId, originalTag.name);
+          }
+          setEditingTagId(null);
+          return;
+        }
+        if (isDuplicateTagName(newName, tagId)) {
+          toast.error(`Tag '${newName}' already exists.`);
+          // Reset to original name
+          const originalTag = tags.find(tag => tag.id === tagId);
+          if (originalTag) {
+            updateTag(tagId, originalTag.name);
+          }
+          setEditingTagId(null);
+          return;
+        }
+        updateTag(tagId, newName);
         setEditingTagId(null);
+      } else {
+        setEditingTagName(newName);
       }
     },
-    [updateTag]
+    [updateTag, isDuplicateTagName, tags]
   );
 
   /**
@@ -110,13 +213,24 @@ export const TagEditorProvider: React.FC<TagEditorProviderProps> = ({ children }
     () => ({
       sortedTags,
       editingTagId,
+      editingTagName,
       setEditingTagId,
       moveTag,
       changeTagName,
       deleteTag,
       addTag,
+      startEditing,
     }),
-    [sortedTags, editingTagId, moveTag, changeTagName, deleteTag, addTag]
+    [
+      sortedTags,
+      editingTagId,
+      editingTagName,
+      moveTag,
+      changeTagName,
+      deleteTag,
+      addTag,
+      startEditing,
+    ]
   );
 
   return <TagEditorContext.Provider value={value}>{children}</TagEditorContext.Provider>;

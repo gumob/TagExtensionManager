@@ -35,7 +35,7 @@ export const TagEditorListItem: React.FC<TagEditorListItemProps> = React.memo(
       index: number;
     }
 
-    const { moveTag, editingTagId, changeTagName, deleteTag, setEditingTagId } =
+    const { moveTag, editingTagId, editingTagName, changeTagName, deleteTag, startEditing } =
       useTagEditorContext();
 
     /**
@@ -134,21 +134,21 @@ export const TagEditorListItem: React.FC<TagEditorListItemProps> = React.memo(
                   <input
                     ref={inputRef}
                     type="text"
-                    value={tag.name}
+                    value={editingTagName}
                     onChange={e => changeTagName(tag.id, e.target.value, false)}
-                    onBlur={() => changeTagName(tag.id, tag.name, true)}
+                    onBlur={() => changeTagName(tag.id, editingTagName, true)}
                     onKeyDown={e => {
                       if (e.key === 'Enter') {
                         e.preventDefault();
-                        changeTagName(tag.id, tag.name, true);
+                        changeTagName(tag.id, editingTagName, true);
                       }
                     }}
-                    size={Math.max(tag.name.length, 1)}
+                    size={Math.max(editingTagName.length, 1)}
                     className="px-1 py-0.5 rounded-sm bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 focus:bg-zinc-100 dark:focus:bg-zinc-600 focus:outline-none"
                   />
                 ) : (
                   <button
-                    onClick={() => setEditingTagId(tag.id)}
+                    onClick={() => startEditing(tag.id, tag.name)}
                     className="select-none px-1 py-0.5 text-zinc-900 dark:text-zinc-100"
                   >
                     {tag.name}
