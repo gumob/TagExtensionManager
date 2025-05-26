@@ -10,10 +10,7 @@ import {
 
 import { chromeAPI } from '@/api/ChromeAPI';
 import { ExtensionModel } from '@/models';
-import {
-  useExtensionStore,
-  useTagStore,
-} from '@/stores';
+import { useExtensionStore, useTagStore } from '@/stores';
 import { logger } from '@/utils';
 
 /**
@@ -345,17 +342,6 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
       isSubscribed.current = false;
     };
   }, []);
-
-  /*******************************************************
-   * Debugging
-   *******************************************************/
-
-  useEffect(() => {
-    console.log('filteredExtensions', filteredExtensions);
-    console.log('taggedExtensions', taggedExtensions);
-    console.log('untaggedExtensions', untaggedExtensions);
-    console.log('visibleTagId', visibleTagId);
-  }, [filteredExtensions, taggedExtensions, untaggedExtensions, visibleTagId]);
 
   /*******************************************************
    * Exported Value

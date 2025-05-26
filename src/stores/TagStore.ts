@@ -4,11 +4,7 @@ import { persist } from 'zustand/middleware';
 
 import { chromeAPI } from '@/api/ChromeAPI';
 import { STORAGE_KEYS } from '@/constants';
-import {
-  TagExtensionMapModel,
-  TagManagementModel,
-  TagModel,
-} from '@/models';
+import { TagExtensionMapModel, TagManagementModel, TagModel } from '@/models';
 import { logger } from '@/utils';
 
 /**
@@ -70,7 +66,8 @@ export const useTagStore = create<TagStore>()(
           const storedData = (
             await useTagStore.persist.getOptions().storage?.getItem(STORAGE_KEYS.TAGS)
           )?.state;
-          console.log('storedData', storedData);
+
+          /** If the stored data exists, load the tags and extension tags */
           if (storedData?.tags && storedData?.extensionTags) {
             logger.debug('🏷🏪🌱 Loading tags from storage', {
               group: 'TagStore',
