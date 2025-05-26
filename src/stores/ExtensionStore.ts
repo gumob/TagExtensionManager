@@ -108,11 +108,23 @@ export const useExtensionStore = create<ExtensionStore>()(
        * @param enabled - The enabled state of the extension.
        */
       toggleEnabled: async (id, enabled) => {
-        set(extensions => ({
-          extensions: extensions.extensions.map(ext =>
-            ext.id === id ? { ...ext, enabled: !ext.enabled } : ext
-          ),
-        }));
+        set(state => {
+          /** Create a Map for O(1) lookup of stored extensions */
+          const extensionsMap = new Map(state.extensions.map(ext => [ext.id, ext]));
+
+          /** Get the target extension */
+          const targetExt = extensionsMap.get(id);
+
+          /** Update the target extension */
+          if (targetExt) {
+            extensionsMap.set(id, { ...targetExt, enabled });
+          }
+
+          /** Return the updated extensions */
+          return {
+            extensions: Array.from(extensionsMap.values()),
+          };
+        });
       },
 
       /**
@@ -122,11 +134,21 @@ export const useExtensionStore = create<ExtensionStore>()(
        * @param locked - The locked state of the extension.
        */
       toggleLock: async (id, locked) => {
-        set(extensions => ({
-          extensions: extensions.extensions.map(ext =>
-            ext.id === id ? { ...ext, locked: !ext.locked } : ext
-          ),
-        }));
+        set(state => {
+          /** Create a Map for O(1) lookup of stored extensions */
+          const extensionsMap = new Map(state.extensions.map(ext => [ext.id, ext]));
+
+          /** Get the target extension */
+          const targetExt = extensionsMap.get(id);
+
+          /** Update the target extension */
+          if (targetExt) {
+            extensionsMap.set(id, { ...targetExt, locked });
+          }
+          return {
+            extensions: Array.from(extensionsMap.values()),
+          };
+        });
       },
 
       /**
