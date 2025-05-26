@@ -7,6 +7,34 @@ import {
 import { logger } from '@/utils';
 
 /**
+ * Current version of the backup file format
+ */
+const BACKUP_VERSION = '1.0.0';
+
+/**
+ * Interface for the backup file structure
+ */
+interface BackupData {
+  version: string;
+  tags: {
+    id: string;
+    name: string;
+    order: number;
+    createdAt: string;
+    updatedAt: string;
+  }[];
+  extensionTags: {
+    extensionId: string;
+    tagIds: string[];
+  }[];
+  extensions: {
+    id: string;
+    enabled: boolean;
+    locked: boolean;
+  }[];
+}
+
+/**
  * Custom hook for backup management.
  * This hook provides functionality to export and import extension profiles including:
  * - Extension states (enabled/disabled)
@@ -33,6 +61,9 @@ export const useBackup = () => {
    */
   const convertToISOString = (date: Date): string => {
     try {
+      if (!(date instanceof Date) || isNaN(date.getTime())) {
+        return new Date().toISOString();
+      }
       return date.toISOString();
     } catch (error) {
       logger.error('📁🛑 Failed to convert date', {
@@ -41,6 +72,38 @@ export const useBackup = () => {
       });
       return new Date().toISOString();
     }
+  };
+
+  /**
+   * Validates the backup data structure
+   * @param data - The backup data to validate
+   * @returns Whether the data is valid
+   */
+  const validateBackupData = (data: any): data is BackupData => {
+    if (!data || typeof data !== 'object') return false;
+    if (!data.version || typeof data.version !== 'string') return false;
+    if (!Array.isArray(data.tags)) return false;
+    if (!Array.isArray(data.extensionTags)) return false;
+    if (!Array.isArray(data.extensions)) return false;
+
+    /** Validate tags */
+    for (const tag of data.tags) {
+      if (!tag.id || !tag.name || typeof tag.order !== 'number') return false;
+      if (!tag.createdAt || !tag.updatedAt) return false;
+    }
+
+    /** Validate extension tags */
+    for (const extTag of data.extensionTags) {
+      if (!extTag.extensionId || !Array.isArray(extTag.tagIds)) return false;
+    }
+
+    /** Validate extensions */
+    for (const ext of data.extensions) {
+      if (!ext.id || typeof ext.enabled !== 'boolean' || typeof ext.locked !== 'boolean')
+        return false;
+    }
+
+    return true;
   };
 
   /**
@@ -66,7 +129,8 @@ export const useBackup = () => {
        * Create a profile object containing only necessary extension data
        * and convert dates to ISO format
        */
-      const profiles = {
+      const profiles: BackupData = {
+        version: BACKUP_VERSION,
         tags: tags.map(tag => ({
           ...tag,
           createdAt: convertToISOString(tag.createdAt),
@@ -108,11 +172,20 @@ export const useBackup = () => {
        */
       a.click();
       URL.revokeObjectURL(url);
-    } catch (error) {
-      logger.error('📁🛑 Failed to export profile', {
+
+      logger.info('📁✅ Successfully exported profile', {
         group: 'useBackup',
         persist: true,
       });
+    } catch (error) {
+      logger.error(
+        `📁🛑 Failed to export profile: ${error instanceof Error ? error.message : String(error)}`,
+        {
+          group: 'useBackup',
+          persist: true,
+        }
+      );
+      throw error;
     }
   };
 
@@ -142,6 +215,26 @@ export const useBackup = () => {
           const profiles = JSON.parse(content);
 
           /**
+           * Validate backup data structure
+           */
+          if (!validateBackupData(profiles)) {
+            throw new Error('Invalid backup file format');
+          }
+
+          /**
+           * Check version compatibility
+           */
+          if (profiles.version !== BACKUP_VERSION) {
+            logger.warn(
+              `📁⚠️ Backup file version (${profiles.version}) differs from current version (${BACKUP_VERSION})`,
+              {
+                group: 'useBackup',
+                persist: true,
+              }
+            );
+          }
+
+          /**
            * Get current installed extensions
            */
           const { extensions: installedExtensions } = useExtensionStore.getState();
@@ -150,9 +243,19 @@ export const useBackup = () => {
           /**
            * Filter out data for non-installed extensions
            */
-          const filteredExtensions = profiles.extensions.filter((ext: any) =>
-            installedExtensionIds.has(ext.id)
-          );
+          const filteredExtensions = profiles.extensions
+            .filter((ext: any) => installedExtensionIds.has(ext.id))
+            .map(ext => {
+              const installedExt = installedExtensions.find(e => e.id === ext.id);
+              if (!installedExt) {
+                throw new Error(`Extension ${ext.id} not found in installed extensions`);
+              }
+              return {
+                ...installedExt,
+                enabled: ext.enabled,
+                locked: ext.locked,
+              };
+            });
 
           const filteredExtensionTags = profiles.extensionTags.filter((extTag: any) =>
             installedExtensionIds.has(extTag.extensionId)
@@ -188,11 +291,20 @@ export const useBackup = () => {
               persist: true,
             });
           }
-        } catch (error) {
-          logger.error('📁🛑 Failed to import profile', {
+
+          logger.info('📁✅ Successfully imported profile', {
             group: 'useBackup',
             persist: true,
           });
+        } catch (error) {
+          logger.error(
+            `📁🛑 Failed to import profile: ${error instanceof Error ? error.message : String(error)}`,
+            {
+              group: 'useBackup',
+              persist: true,
+            }
+          );
+          throw error;
         }
       };
 
@@ -201,10 +313,14 @@ export const useBackup = () => {
        */
       reader.readAsText(file);
     } catch (error) {
-      logger.error('📁🛑 Failed to import profile', {
-        group: 'useBackup',
-        persist: true,
-      });
+      logger.error(
+        `📁🛑 Failed to import profile: ${error instanceof Error ? error.message : String(error)}`,
+        {
+          group: 'useBackup',
+          persist: true,
+        }
+      );
+      throw error;
     }
   };
 
