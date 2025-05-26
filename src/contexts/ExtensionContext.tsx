@@ -10,110 +10,40 @@ import {
 
 import { chromeAPI } from '@/api/ChromeAPI';
 import { ExtensionModel } from '@/models';
-import { useExtensionStore, useTagStore } from '@/stores';
+import {
+  useExtensionStore,
+  useTagStore,
+} from '@/stores';
 import { logger } from '@/utils';
 
 /**
- * This function finds the best icon size for an extension from its available icons.
- * Process:
- * 1. First checks if icons exist, returns empty string if not
- * 2. Starts searching from size 48px and gradually decreases
- * 3. Returns the first matching icon URL at desired size
- * 4. If no ideal size found, falls back to the first available icon
- *
- * @param icons - Array of available icons with different sizes
- * @returns The URL of the optimal icon
- */
-const findOptimalIcon = (icons: chrome.management.IconInfo[] | undefined): string => {
-  if (!icons || icons.length === 0) return '';
-
-  /** Search for the optimal icon */
-  let targetSize = 48;
-  while (targetSize > 0) {
-    const icon = icons.find(icon => icon.size === targetSize);
-    if (icon) return icon.url;
-    targetSize -= 2;
-  }
-
-  /** If no appropriate size is found, use the first icon */
-  return icons[0].url;
-};
-
-/**
- * This function transforms raw Chrome extension data into our application's format.
- * Process:
- * 1. Gets stored extension data from our global store
- * 2. Checks if extension is locked in our store
- * 3. Creates a standardized extension object with:
- *    - Basic info (id, name, version)
- *    - State info (enabled, locked)
- *    - Display info (description, icon)
- *
- * @param ext - Raw Chrome extension information
- * @param storedExtensions - Current extensions from the store
- * @returns Formatted extension data for our app
- */
-const formatExtension = (
-  ext: chrome.management.ExtensionInfo,
-  storedExtensions: ExtensionModel[]
-): ExtensionModel => {
-  const storedExtension = storedExtensions.find(e => e.id === ext.id);
-  const isLocked = storedExtension?.locked ?? false;
-
-  return {
-    id: ext.id,
-    name: ext.name,
-    version: ext.version || '',
-    enabled: ext.enabled,
-    description: ext.description || '',
-    iconUrl: findOptimalIcon(ext.icons),
-    locked: isLocked,
-  };
-};
-
-/**
  * The context value type for ExtensionContext.
+ *
+ * @property extensions - The extensions.
+ * @property filteredExtensions - The filtered extensions.
+ * @property taggedExtensions - The tagged extensions.
+ * @property untaggedExtensions - The untagged extensions.
+ * @property searchQuery - The search query.
+ * @property setSearchQuery - The set search query function.
+ * @property visibleTagId - The visible tag id.
+ * @property setVisibleTagId - The set visible tag id function.
+ * @property refreshExtensions - The refresh extensions function.
+ * @property isLoading - The is loading.
  */
 interface ExtensionContextValue {
-  /**
-   * The extensions.
-   */
-  extensions: ExtensionModel[];
-  /**
-   * The filtered extensions.
-   */
   filteredExtensions: ExtensionModel[];
-  /**
-   * The tagged extensions.
-   */
   taggedExtensions: Record<string, ExtensionModel[]>;
-  /**
-   * The untagged extensions.
-   */
   untaggedExtensions: ExtensionModel[];
-  /**
-   * The search query.
-   */
+  toggleEnabled: (id: string, enabled: boolean) => Promise<void>;
+  toggleLock: (id: string, locked: boolean) => Promise<void>;
+  openExtensionPage: (id: string) => Promise<void>;
+  openOptionsPage: (id: string) => Promise<void>;
+  uninstallExtension: (id: string) => Promise<void>;
   searchQuery: string;
-  /**
-   * The set search query function.
-   */
   setSearchQuery: (query: string) => void;
-  /**
-   * The visible tag id.
-   */
   visibleTagId: string | null;
-  /**
-   * The set visible tag id function.
-   */
   setVisibleTagId: (tagId: string | null) => void;
-  /**
-   * The refresh extensions function.
-   */
   refreshExtensions: () => Promise<ExtensionModel[] | undefined>;
-  /**
-   * The is loading.
-   */
   isLoading: boolean;
 }
 
@@ -143,9 +73,12 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
    * State Management
    *******************************************************/
 
-  const [extensions, setExtensions] = useState<ExtensionModel[]>([]);
-  const { extensions: storedExtensions, setExtensions: setStoreExtensions } = useExtensionStore();
-  const [filteredExtensions, setFilteredExtensions] = useState<ExtensionModel[]>([]);
+  const {
+    loadExtensions,
+    extensions: storedExtensions,
+    toggleEnabled: toggleEnabledStore,
+    toggleLock: toggleLockStore,
+  } = useExtensionStore();
   const [searchQuery, setSearchQuery] = useState('');
 
   const { tags, extensionTags } = useTagStore();
@@ -159,181 +92,48 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
    * The is loading.
    */
   const [isLoading, setIsLoading] = useState(false);
-  // Refs for managing component lifecycle and preventing stale closures
-  const isSubscribed = useRef(true);
+
+  /**
+   * Refs for managing component lifecycle and preventing stale closures
+   */
   const isInitialized = useRef(false);
-  const storedExtensionsRef = useRef(storedExtensions);
-
-  // Update ref when storedExtensions changes
-  useEffect(() => {
-    storedExtensionsRef.current = storedExtensions;
-  }, [storedExtensions]);
+  const isSubscribed = useRef(false);
 
   /*******************************************************
-   * Core Function
+   * Memoized Values
    *******************************************************/
-
-  /**
-   * Core function for refreshing extension data.
-   * Implements a more robust error handling and state management.
-   */
-  const refreshExtensions = useCallback(async () => {
-    if (!isSubscribed.current) return;
-
-    try {
-      setIsLoading(true);
-      const rawExtensions = await chromeAPI.getAllExtensions();
-
-      // Format and sort extensions
-      const formattedExtensions = rawExtensions
-        .map(ext => formatExtension(ext, storedExtensionsRef.current))
-        .sort((a, b) => a.name.localeCompare(b.name));
-
-      // Batch state updates
-      setExtensions(formattedExtensions);
-      setStoreExtensions(formattedExtensions);
-
-      logger.debug('🧯🔄 Extensions refreshed successfully', {
-        group: 'useExtensions',
-        persist: true,
-      });
-
-      return formattedExtensions;
-    } catch (error) {
-      logger.error(
-        `🧯🛑 Failed to refresh extensions: ${error instanceof Error ? error.message : String(error)}`,
-        {
-          group: 'useExtensions',
-          persist: true,
-        }
-      );
-      throw error;
-    } finally {
-      if (isSubscribed.current) {
-        setIsLoading(false);
-      }
-    }
-  }, [setStoreExtensions]);
-
-  /*******************************************************
-   * Event Handlers
-   *******************************************************/
-
-  /**
-   * Event handlers for extension state changes.
-   * Implemented as stable callbacks to prevent unnecessary re-renders.
-   */
-  const handleExtensionStateChange = useCallback(
-    (info: chrome.management.ExtensionInfo) => {
-      if (!isSubscribed.current) return;
-      logger.debug(`🧯🫱 Extension state changed: ${info.name}`, {
-        group: 'useExtensions',
-        persist: true,
-      });
-      refreshExtensions();
-    },
-    [refreshExtensions]
-  );
-
-  /**
-   * Handle the extension uninstalled event.
-   * @param id
-   */
-  const handleExtensionUninstalled = useCallback(
-    (id: string) => {
-      if (!isSubscribed.current) return;
-      logger.debug(`🧯🫱 Extension uninstalled: ${id}`, {
-        group: 'useExtensions',
-        persist: true,
-      });
-      refreshExtensions();
-    },
-    [refreshExtensions]
-  );
-
-  /**
-   * Handle the extension updated event.
-   * @param details
-   */
-  const handleExtensionUpdate = useCallback(
-    (details: chrome.runtime.InstalledDetails) => {
-      if (!isSubscribed.current || details.reason !== 'update') return;
-      logger.debug(`🧯🫱 Extension updated: ${details.id}`, {
-        group: 'useExtensions',
-        persist: true,
-      });
-      refreshExtensions();
-    },
-    [refreshExtensions]
-  );
-
-  /**
-   * Main effect for initializing extension management and setting up event listeners.
-   * Implements a more robust cleanup mechanism.
-   */
-  useEffect(() => {
-    // Initialize extensions
-    const initialize = async () => {
-      if (!isInitialized.current && isSubscribed.current) {
-        logger.debug('🧯🌱 Initializing useExtensions hook', {
-          group: 'useExtensions',
-          persist: true,
-        });
-        await refreshExtensions();
-        isInitialized.current = true;
-      }
-    };
-
-    initialize();
-
-    // Register event listeners
-    if (isSubscribed.current) {
-      chrome.management.onEnabled.addListener(handleExtensionStateChange);
-      chrome.management.onDisabled.addListener(handleExtensionStateChange);
-      chrome.management.onInstalled.addListener(handleExtensionStateChange);
-      chrome.management.onUninstalled.addListener(handleExtensionUninstalled);
-      chrome.runtime.onInstalled.addListener(handleExtensionUpdate);
-    }
-
-    // Cleanup function
-    return () => {
-      logger.debug('🧯🗑️ Deinitializing useExtensions hook', {
-        group: 'useExtensions',
-        persist: true,
-      });
-      isSubscribed.current = false;
-      chrome.management.onEnabled.removeListener(handleExtensionStateChange);
-      chrome.management.onDisabled.removeListener(handleExtensionStateChange);
-      chrome.management.onInstalled.removeListener(handleExtensionStateChange);
-      chrome.management.onUninstalled.removeListener(handleExtensionUninstalled);
-      chrome.runtime.onInstalled.removeListener(handleExtensionUpdate);
-    };
-  }, [
-    refreshExtensions,
-    handleExtensionStateChange,
-    handleExtensionUninstalled,
-    handleExtensionUpdate,
-  ]);
 
   /**
    * Memoized filtered extensions based on search query.
    */
-  useEffect(() => {
-    const filteredExtensions = extensions.filter((ext, index) => {
+  const filteredExtensions: ExtensionModel[] = useMemo(() => {
+    return storedExtensions.filter(ext => {
       const isNameMatch = ext.name.toLowerCase().includes(searchQuery.toLowerCase());
       const isDescriptionMatch = ext.description.toLowerCase().includes(searchQuery.toLowerCase());
       const isTextMatch = isNameMatch || isDescriptionMatch;
-      const isVisible =
-        visibleTagId === null ||
-        visibleTagId === 'untagged' ||
-        visibleTagId === 'enabled' ||
-        visibleTagId === 'disabled';
-      return isTextMatch;
-    });
-    setFilteredExtensions(filteredExtensions);
-  }, [extensions, searchQuery]);
 
-  const { taggedExtensions, untaggedExtensions } = useMemo(() => {
+      const isVisible = (() => {
+        if (visibleTagId === null) return true;
+        if (visibleTagId === 'untagged') {
+          return !extensionTags.find(
+            extTag => extTag.extensionId === ext.id && extTag.tagIds.length > 0
+          );
+        }
+        if (visibleTagId === 'enabled') return ext.enabled;
+        if (visibleTagId === 'disabled') return !ext.enabled;
+        return extensionTags.find(
+          extTag => extTag.extensionId === ext.id && extTag.tagIds.includes(visibleTagId)
+        );
+      })();
+
+      return isTextMatch && isVisible;
+    });
+  }, [storedExtensions, searchQuery, tags, visibleTagId, extensionTags]);
+
+  const { taggedExtensions, untaggedExtensions } = useMemo<{
+    taggedExtensions: Record<string, ExtensionModel[]>;
+    untaggedExtensions: ExtensionModel[];
+  }>(() => {
     return {
       taggedExtensions: tags.reduce(
         (acc, tag) => {
@@ -356,25 +156,223 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
           )
       ),
     };
-  }, [filteredExtensions, tags, extensionTags]);
+  }, [filteredExtensions]);
+
+  /*******************************************************
+   * Core Function
+   *******************************************************/
+
+  /**
+   * Core function for refreshing extension data.
+   * Implements a more robust error handling and state management.
+   */
+  const refreshExtensions = useCallback(async () => {
+    if (!isSubscribed.current) return;
+
+    try {
+      setIsLoading(true);
+      await loadExtensions();
+
+      logger.debug('🧯🔄 Extensions refreshed successfully', {
+        group: 'ExtensionProvider',
+        persist: true,
+      });
+
+      return storedExtensions;
+    } catch (error) {
+      logger.error(
+        `🧯🛑 Failed to refresh extensions: ${error instanceof Error ? error.message : String(error)}`,
+        {
+          group: 'ExtensionProvider',
+          persist: true,
+        }
+      );
+      throw error;
+    } finally {
+      if (isSubscribed.current) {
+        setIsLoading(false);
+      }
+    }
+  }, [loadExtensions, storedExtensions]);
+
+  const toggleEnabled = useCallback(
+    async (id: string, enabled: boolean) => {
+      if (!isSubscribed.current) return;
+      toggleEnabledStore(id, enabled);
+      refreshExtensions();
+    },
+    [refreshExtensions, toggleEnabledStore]
+  );
+
+  const toggleLock = useCallback(
+    async (id: string, locked: boolean) => {
+      if (!isSubscribed.current) return;
+      toggleLockStore(id, locked);
+      refreshExtensions();
+    },
+    [refreshExtensions, toggleLockStore]
+  );
+
+  const openExtensionPage = useCallback(async (id: string) => {
+    if (!isSubscribed.current) return;
+    await chromeAPI.createTab(id);
+  }, []);
+
+  const openOptionsPage = useCallback(
+    async (id: string) => {
+      if (!isSubscribed.current) return;
+      const extension = storedExtensions.find(ext => ext.id === id);
+      if (extension?.optionsUrl) {
+        await chromeAPI.createTab(extension.optionsUrl);
+      }
+    },
+    [storedExtensions]
+  );
+
+  const uninstallExtension = useCallback(
+    async (id: string) => {
+      if (!isSubscribed.current) return;
+      await chromeAPI.uninstallExtension(id);
+      refreshExtensions();
+    },
+    [refreshExtensions]
+  );
+
+  /*******************************************************
+   * Event Handlers
+   *******************************************************/
+
+  /**
+   * Event handlers for extension state changes.
+   * Implemented as stable callbacks to prevent unnecessary re-renders.
+   */
+  const handleExtensionStateChange = useCallback(
+    (info: chrome.management.ExtensionInfo) => {
+      if (!isSubscribed.current) return;
+      logger.debug(`🧯🫱 Extension state changed: ${info.name}`, {
+        group: 'ExtensionProvider',
+        persist: true,
+      });
+      refreshExtensions();
+    },
+    [refreshExtensions]
+  );
+
+  /**
+   * Handle the extension uninstalled event.
+   * @param id
+   */
+  const handleExtensionUninstalled = useCallback(
+    (id: string) => {
+      if (!isSubscribed.current) return;
+      logger.debug(`🧯🫱 Extension uninstalled: ${id}`, {
+        group: 'ExtensionProvider',
+        persist: true,
+      });
+      refreshExtensions();
+    },
+    [refreshExtensions]
+  );
+
+  /**
+   * Handle the extension updated event.
+   * @param details
+   */
+  const handleExtensionUpdate = useCallback(
+    (details: chrome.runtime.InstalledDetails) => {
+      if (!isSubscribed.current || details.reason !== 'update') return;
+      logger.debug(`🧯🫱 Extension updated: ${details.id}`, {
+        group: 'ExtensionProvider',
+        persist: true,
+      });
+      refreshExtensions();
+    },
+    [refreshExtensions]
+  );
+
+  /*******************************************************
+   * Lifecycle
+   *******************************************************/
+
+  /**
+   * Main effect for initializing extension management and setting up event listeners.
+   * Implements a more robust cleanup mechanism.
+   */
+  useEffect(() => {
+    /** Initialize extensions */
+    const initialize = async () => {
+      logger.debug('🧯🌱 Initializing ExtensionProvider', {
+        group: 'ExtensionProvider',
+        persist: true,
+      });
+      try {
+        /* Initialize stores in sequence */
+        await useExtensionStore.getState().initialize();
+        await useTagStore.getState().initialize();
+        isInitialized.current = true;
+      } catch (error) {
+        logger.error('🧯🛑 Failed to initialize extensions', {
+          group: 'useExtensions',
+          persist: true,
+        });
+      }
+    };
+    if (!isInitialized.current) initialize();
+
+    /** Subscribe listeners */
+    if (!isSubscribed.current) {
+      logger.debug('🧯🌱 Subscribing listeners', {
+        group: 'ExtensionProvider',
+        persist: true,
+      });
+      chrome.management.onEnabled.addListener(handleExtensionStateChange);
+      chrome.management.onDisabled.addListener(handleExtensionStateChange);
+      chrome.management.onInstalled.addListener(handleExtensionStateChange);
+      chrome.management.onUninstalled.addListener(handleExtensionUninstalled);
+      chrome.runtime.onInstalled.addListener(handleExtensionUpdate);
+      isSubscribed.current = true;
+    }
+
+    /** Unsubscribe listeners */
+    return () => {
+      logger.debug('🧯🗑️ Deinitializing ExtensionProvider', {
+        group: 'ExtensionProvider',
+        persist: true,
+      });
+      chrome.management.onEnabled.removeListener(handleExtensionStateChange);
+      chrome.management.onDisabled.removeListener(handleExtensionStateChange);
+      chrome.management.onInstalled.removeListener(handleExtensionStateChange);
+      chrome.management.onUninstalled.removeListener(handleExtensionUninstalled);
+      chrome.runtime.onInstalled.removeListener(handleExtensionUpdate);
+      isSubscribed.current = false;
+    };
+  }, []);
 
   /*******************************************************
    * Debugging
    *******************************************************/
 
   useEffect(() => {
-    logger.debug(`🧯🐛 Filtered extensions: ${filteredExtensions.length}`, {
-      group: 'useExtensions',
-      persist: true,
-    });
-  }, [filteredExtensions]);
+    console.log('filteredExtensions', filteredExtensions);
+    console.log('taggedExtensions', taggedExtensions);
+    console.log('untaggedExtensions', untaggedExtensions);
+    console.log('visibleTagId', visibleTagId);
+  }, [filteredExtensions, taggedExtensions, untaggedExtensions, visibleTagId]);
+
+  /*******************************************************
+   * Exported Value
+   *******************************************************/
 
   const value = useMemo(
     () => ({
-      extensions,
       filteredExtensions,
       taggedExtensions,
       untaggedExtensions,
+      toggleEnabled,
+      toggleLock,
+      openExtensionPage,
+      openOptionsPage,
+      uninstallExtension,
       searchQuery,
       setSearchQuery,
       visibleTagId,
@@ -383,10 +381,14 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
       isLoading,
     }),
     [
-      extensions,
       filteredExtensions,
       taggedExtensions,
       untaggedExtensions,
+      toggleEnabled,
+      toggleLock,
+      openExtensionPage,
+      openOptionsPage,
+      uninstallExtension,
       searchQuery,
       visibleTagId,
       refreshExtensions,

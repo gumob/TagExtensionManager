@@ -3,7 +3,12 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import { chromeAPI } from '@/api/ChromeAPI';
-import { TagExtensionMapModel, TagManagementModel, TagModel } from '@/models';
+import { STORAGE_KEYS } from '@/constants';
+import {
+  TagExtensionMapModel,
+  TagManagementModel,
+  TagModel,
+} from '@/models';
 import { logger } from '@/utils';
 
 /**
@@ -56,21 +61,29 @@ export const useTagStore = create<TagStore>()(
       initialize: async () => {
         try {
           set({ isLoading: true });
+          logger.debug('🏷🏪🌱 Initializing tag store', {
+            group: 'TagStore',
+            persist: true,
+          });
 
-          const storedData = await chromeAPI.getLocalStorage('extension-manager-tags');
-          if (storedData['extension-manager-tags']) {
-            logger.debug('🏷🌱 Loading tags from storage', {
+          /** Get the storage instance */
+          const storedData = (
+            await useTagStore.persist.getOptions().storage?.getItem(STORAGE_KEYS.TAGS)
+          )?.state;
+          console.log('storedData', storedData);
+          if (storedData?.tags && storedData?.extensionTags) {
+            logger.debug('🏷🏪🌱 Loading tags from storage', {
               group: 'TagStore',
               persist: true,
             });
 
             const loadedData = {
-              tags: storedData['extension-manager-tags'].tags.map((tag: any) => ({
+              tags: storedData.tags.map((tag: any) => ({
                 ...tag,
-                createdAt: new Date(tag.createdAt),
-                updatedAt: new Date(tag.updatedAt),
+                createdAt: tag.createdAt ? new Date(tag.createdAt) : new Date(),
+                updatedAt: tag.updatedAt ? new Date(tag.updatedAt) : new Date(),
               })),
-              extensionTags: storedData['extension-manager-tags'].extensionTags,
+              extensionTags: storedData.extensionTags || [],
             };
 
             set({
@@ -87,10 +100,14 @@ export const useTagStore = create<TagStore>()(
             });
           }
         } catch (error) {
-          logger.error('🏷🛑 Failed to load tags', {
-            group: 'TagStore',
-            persist: true,
-          });
+          console.error(error);
+          logger.error(
+            `🏷🏪🛑 Failed to load tags: ${error instanceof Error ? error.message : String(error)}`,
+            {
+              group: 'TagStore',
+              persist: true,
+            }
+          );
           set({ isLoading: false });
         }
       },
@@ -121,14 +138,6 @@ export const useTagStore = create<TagStore>()(
         }));
         const newTags = [newTag, ...updatedTags];
         set({ tags: newTags });
-
-        /** Save to storage immediately */
-        chromeAPI.setLocalStorage({
-          'extension-manager-tags': {
-            tags: newTags,
-            extensionTags: get().extensionTags,
-          },
-        });
       },
 
       /**
@@ -152,14 +161,6 @@ export const useTagStore = create<TagStore>()(
             : tag
         );
         set({ tags: updatedTags });
-
-        /** Save to storage immediately */
-        chromeAPI.setLocalStorage({
-          'extension-manager-tags': {
-            tags: updatedTags,
-            extensionTags: get().extensionTags,
-          },
-        });
       },
 
       /**
@@ -179,14 +180,6 @@ export const useTagStore = create<TagStore>()(
           tagIds: extTag.tagIds.filter(tagId => tagId !== id),
         }));
         set({ tags: updatedTags, extensionTags: updatedExtensionTags });
-
-        /** Save to storage immediately */
-        chromeAPI.setLocalStorage({
-          'extension-manager-tags': {
-            tags: updatedTags,
-            extensionTags: updatedExtensionTags,
-          },
-        });
       },
 
       /**
@@ -243,16 +236,6 @@ export const useTagStore = create<TagStore>()(
           updatedExtensionTags = [...extensionTags, { extensionId, tagIds: [tagId] }];
           set({ extensionTags: updatedExtensionTags });
         }
-
-        /** Save to storage immediately */
-        if (updatedExtensionTags) {
-          chromeAPI.setLocalStorage({
-            'extension-manager-tags': {
-              tags: get().tags,
-              extensionTags: updatedExtensionTags,
-            },
-          });
-        }
       },
 
       /**
@@ -272,14 +255,6 @@ export const useTagStore = create<TagStore>()(
             : extTag
         );
         set({ extensionTags: updatedExtensionTags });
-
-        /** Save to storage immediately */
-        chromeAPI.setLocalStorage({
-          'extension-manager-tags': {
-            tags: get().tags,
-            extensionTags: updatedExtensionTags,
-          },
-        });
       },
 
       /**
@@ -300,59 +275,33 @@ export const useTagStore = create<TagStore>()(
       },
     }),
     {
-      name: 'extension-manager-tags',
+      name: STORAGE_KEYS.TAGS,
+      partialize: state => ({
+        tags: state.tags,
+        extensionTags: state.extensionTags,
+      }),
       storage: {
         /**
          * Custom storage getter that loads data from Chrome storage
          * Handles errors and logs them appropriately
          */
         getItem: async (name: string) => {
-          try {
-            const result = await chromeAPI.getLocalStorage(name);
-            return result[name];
-          } catch (error) {
-            logger.error('🏷🛑 Failed to get item from storage', {
-              group: 'TagStore',
-              persist: true,
-            });
-            return null;
-          }
+          const result = await chromeAPI.getLocalStorage(name);
+          return result[name];
         },
         /**
          * Custom storage setter that saves data to Chrome storage
          * Handles errors and logs them appropriately
          */
         setItem: async (name: string, value: any) => {
-          try {
-            await chromeAPI.setLocalStorage({ [name]: value });
-            logger.debug('🏷💾 Saved tags to storage', {
-              group: 'TagStore',
-              persist: true,
-            });
-          } catch (error) {
-            logger.error('🏷🛑 Failed to set item in storage', {
-              group: 'TagStore',
-              persist: true,
-            });
-          }
+          await chromeAPI.setLocalStorage({ [name]: value });
         },
         /**
          * Custom storage remover that deletes data from Chrome storage
          * Handles errors and logs them appropriately
          */
         removeItem: async (name: string) => {
-          try {
-            await chromeAPI.removeLocalStorage(name);
-            logger.debug('🏷🗑️ Removed tags from storage', {
-              group: 'TagStore',
-              persist: true,
-            });
-          } catch (error) {
-            logger.error('🏷🛑 Failed to remove item from storage', {
-              group: 'TagStore',
-              persist: true,
-            });
-          }
+          await chromeAPI.removeLocalStorage(name);
         },
       },
     }

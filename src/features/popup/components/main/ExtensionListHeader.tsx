@@ -1,5 +1,8 @@
-import { chromeAPI } from '@/api/ChromeAPI';
-import { ExtensionModel, TagModel } from '@/models';
+import { useExtensionContext } from '@/contexts/ExtensionContext';
+import {
+  ExtensionModel,
+  TagModel,
+} from '@/models';
 
 /**
  * The props for the ExtensionListHeader component.
@@ -26,6 +29,11 @@ export const ExtensionListHeader: React.FC<ExtensionListHeaderProps> = ({
   // onToggle,
 }: ExtensionListHeaderProps) => {
   /**
+   * The use extension context.
+   */
+  const { toggleEnabled } = useExtensionContext();
+
+  /**
    * The enabled count.
    */
   const enabledCount = extensions.filter(ext => ext.enabled).length;
@@ -43,7 +51,7 @@ export const ExtensionListHeader: React.FC<ExtensionListHeaderProps> = ({
     const unlockedExtensions = extensions.filter(ext => !ext.locked);
 
     /** Toggle the extensions */
-    unlockedExtensions.forEach(async ext => chromeAPI.toggleExtension(ext.id, enabled));
+    unlockedExtensions.forEach(async ext => toggleEnabled(ext.id, enabled));
   };
 
   /**

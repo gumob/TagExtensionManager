@@ -1,5 +1,8 @@
 import { useExtensionContext } from '@/contexts/ExtensionContext';
-import { useExtensionStore, useTagStore } from '@/stores';
+import {
+  useExtensionStore,
+  useTagStore,
+} from '@/stores';
 import { logger } from '@/utils';
 
 /**
@@ -39,7 +42,7 @@ export const useBackup = () => {
        * Get current tag configuration and extension states
        */
       const { tags, extensionTags } = exportTags();
-      const { extensions } = useExtensionStore.getState();
+      const { extensions: storedExtensions } = useExtensionStore.getState();
 
       /**
        * Create a profile object containing only necessary extension data
@@ -47,7 +50,7 @@ export const useBackup = () => {
       const profiles = {
         tags,
         extensionTags,
-        extensions: extensions.map(ext => ({
+        extensions: storedExtensions.map(ext => ({
           id: ext.id,
           enabled: ext.enabled,
           locked: ext.locked,

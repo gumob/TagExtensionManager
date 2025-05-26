@@ -13,6 +13,7 @@ export interface ExtensionModel {
   id: string;
   name: string;
   description: string;
+  optionsUrl: string;
   iconUrl: string;
   version: string;
   enabled: boolean;

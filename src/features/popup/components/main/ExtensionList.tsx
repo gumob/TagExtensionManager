@@ -1,7 +1,10 @@
 import React from 'react';
 
 import { useExtensionContext } from '@/contexts/ExtensionContext';
-import { ExtensionCard, ExtensionListHeader } from '@/features/popup/components/main';
+import {
+  ExtensionCard,
+  ExtensionListHeader,
+} from '@/features/popup/components/main';
 import { useTagStore } from '@/stores';
 
 /**
@@ -19,7 +22,7 @@ export const ExtensionList: React.FC<ExtensionListProps> = ({}: ExtensionListPro
    * State Management
    *******************************************************/
 
-  const { visibleTagId, taggedExtensions, untaggedExtensions } = useExtensionContext();
+  const { taggedExtensions, untaggedExtensions, visibleTagId } = useExtensionContext();
   const { tags } = useTagStore();
 
   /*******************************************************

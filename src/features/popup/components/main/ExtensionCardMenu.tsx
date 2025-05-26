@@ -1,5 +1,27 @@
-import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/react';
-import { Dialog, Menu, Transition } from '@headlessui/react';
+import {
+  Fragment,
+  useState,
+} from 'react';
+
+import { useExtensionContext } from '@/contexts/ExtensionContext';
+import { TagSelectorMain } from '@/features/popup/components/selector/TagSelectorMain';
+import { ExtensionModel } from '@/models';
+import {
+  useExtensionStore,
+  useTagStore,
+} from '@/stores';
+import {
+  autoUpdate,
+  flip,
+  offset,
+  shift,
+  useFloating,
+} from '@floating-ui/react';
+import {
+  Dialog,
+  Menu,
+  Transition,
+} from '@headlessui/react';
 import {
   ArchiveBoxXMarkIcon,
   Cog6ToothIcon,
@@ -8,14 +30,6 @@ import {
   LockOpenIcon,
   TagIcon,
 } from '@heroicons/react/24/outline';
-
-import { Fragment, useState } from 'react';
-
-import { chromeAPI } from '@/api/ChromeAPI';
-import { useExtensionContext } from '@/contexts/ExtensionContext';
-import { TagSelectorMain } from '@/features/popup/components/selector/TagSelectorMain';
-import { ExtensionModel } from '@/models';
-import { useExtensionStore, useTagStore } from '@/stores';
 
 /**
  * Extension menu props.
@@ -43,7 +57,7 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
   /**
    * The use extension store.
    */
-  const { refreshExtensions } = useExtensionContext();
+  const { uninstallExtension, openExtensionPage } = useExtensionContext();
 
   /**
    * The tag selector open state.
@@ -82,9 +96,7 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
    * The handle confirm uninstall.
    */
   const handleConfirmUninstall = async () => {
-    await chromeAPI.uninstallExtension(extension.id);
-    /** Refresh the extension list after uninstallation */
-    await refreshExtensions();
+    await uninstallExtension(extension.id);
     setIsUninstallDialogOpen(false);
   };
 
@@ -94,7 +106,7 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
    * @param close - The close callback.
    */
   const handleLockToggle = (close: () => void) => {
-    toggleLock(extension.id);
+    toggleLock(extension.id, !extension.locked);
     close();
   };
 
@@ -164,7 +176,7 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
                   {({ active }) => (
                     <button
                       onClick={async () => {
-                        await chromeAPI.createTab(extension.id);
+                        openExtensionPage(extension.id);
                       }}
                       className={`${
                         active ? 'bg-zinc-100 dark:bg-zinc-600' : ''

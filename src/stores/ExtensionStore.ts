@@ -1,23 +1,30 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+import { chromeAPI } from '@/api/ChromeAPI';
+import { STORAGE_KEYS } from '@/constants';
+import { mapExtensionInfoToExtensionModel } from '@/mappers';
 import { ExtensionModel } from '@/models';
+import { logger } from '@/utils';
 
 /**
  * The extension store type that defines the structure and available actions for managing browser extensions.
  *
- * @property extensions - Array of ExtensionModel objects representing all browser extensions
- * @property setExtensions - Function to completely replace the extensions array with a new one
- * @property toggleExtension - Function to toggle an extension's enabled/disabled state
- * @property toggleLock - Function to toggle whether an extension is locked (protected from state changes)
- * @property importExtensions - Function to import and merge extension states from a backup
+ * @property storedExtensions - Array of ExtensionModel objects representing all browser extensions
+ * @property toggleEnabled - The function that toggles an extension's enabled state between true and false.
+ * @property toggleLock - The function that toggles an extension's locked state between true and false.
+ * @property importExtensions - The function that imports extension states from a backup file.
+ * @property initialize - The function that initializes the extension store by loading the extensions from Chrome storage
+ * @property isLoading - Boolean indicating whether the extension store is currently loading data
  */
 interface ExtensionStore {
+  initialize: () => Promise<void>;
+  loadExtensions: () => Promise<void>;
   extensions: ExtensionModel[];
-  setExtensions: (extensions: ExtensionModel[]) => void;
-  toggleExtension: (id: string) => void;
-  toggleLock: (id: string) => void;
+  toggleEnabled: (id: string, enabled: boolean) => void;
+  toggleLock: (id: string, locked: boolean) => void;
   importExtensions: (extensions: ExtensionModel[]) => void;
+  isLoading: boolean;
 }
 
 /**
@@ -27,50 +34,112 @@ interface ExtensionStore {
  */
 export const useExtensionStore = create<ExtensionStore>()(
   persist(
-    set => ({
+    (set, get) => ({
       /**
        * Initial state with an empty extensions array
        */
       extensions: [],
+      isLoading: false,
 
       /**
-       * Replaces the entire extensions array with a new one.
-       * Used when first loading extensions or after a complete refresh.
+       * The function that initializes the extension store by loading the extensions from Chrome storage
        */
-      setExtensions: extensions => set({ extensions }),
+      initialize: async () => {
+        await get().loadExtensions();
+      },
 
       /**
-       * Toggles an extension's enabled state between true and false.
-       * Finds the extension by ID and flips its 'enabled' property while preserving other properties.
+       * The function that loads the extensions from Chrome storage
        */
-      toggleExtension: id =>
-        set(state => ({
-          extensions: state.extensions.map(ext =>
+      loadExtensions: async () => {
+        try {
+          set({ isLoading: true });
+          logger.debug('🧯🏪🌱 Loading extensions from storage', {
+            group: 'ExtensionStore',
+            persist: true,
+          });
+
+          /** Get the storage instance */
+          const storedData = (
+            await useExtensionStore.persist.getOptions().storage?.getItem(STORAGE_KEYS.EXTENSIONS)
+          )?.state;
+          const storedExtensions = storedData?.extensions ?? [];
+
+          /** Get the local extensions */
+          const localExtensions = (await chromeAPI.getAllExtensions())
+            .map(ext => mapExtensionInfoToExtensionModel(ext))
+            .sort((a, b) => a.name.localeCompare(b.name));
+
+          /** Update the locked state of the local extensions */
+          if (storedExtensions) {
+            /* Create a Map for O(1) lookup of stored extensions */
+            const storedExtensionsMap = new Map(storedExtensions.map(ext => [ext.id, ext]));
+
+            /** Update locked state in O(n) time */
+            localExtensions.forEach(ext => {
+              const storedExt = storedExtensionsMap.get(ext.id);
+              if (storedExt) {
+                ext.locked = storedExt.locked;
+              }
+            });
+          }
+
+          /** Update the store state */
+          set({
+            extensions: localExtensions,
+            isLoading: false,
+          });
+        } catch (error) {
+          logger.error(
+            `🧯🏪🛑 Failed to load extensions: ${error instanceof Error ? error.message : String(error)}`,
+            {
+              group: 'ExtensionStore',
+              persist: true,
+            }
+          );
+          set({ isLoading: false });
+        }
+      },
+
+      /**
+       * The function that toggles an extension's enabled state between true and false.
+       *
+       * @param id - The id of the extension.
+       * @param enabled - The enabled state of the extension.
+       */
+      toggleEnabled: async (id, enabled) => {
+        set(extensions => ({
+          extensions: extensions.extensions.map(ext =>
             ext.id === id ? { ...ext, enabled: !ext.enabled } : ext
           ),
-        })),
+        }));
+      },
 
       /**
-       * Toggles an extension's locked state between true and false.
-       * Locked extensions are protected from automatic state changes.
-       * Finds the extension by ID and flips its 'locked' property while preserving other properties.
+       * The function that toggles an extension's locked state between true and false.
+       *
+       * @param id - The id of the extension.
+       * @param locked - The locked state of the extension.
        */
-      toggleLock: id =>
-        set(state => ({
-          extensions: state.extensions.map(ext =>
+      toggleLock: async (id, locked) => {
+        set(extensions => ({
+          extensions: extensions.extensions.map(ext =>
             ext.id === id ? { ...ext, locked: !ext.locked } : ext
           ),
-        })),
+        }));
+      },
 
       /**
-       * Imports extension states from a backup file.
+       * The function that imports extension states from a backup file.
        * For each existing extension, looks for a matching imported extension
        * and updates its enabled and locked states if found.
        * Extensions not found in the import keep their current states.
+       *
+       * @param importedExtensions - The imported extensions.
        */
       importExtensions: importedExtensions =>
-        set(state => ({
-          extensions: state.extensions.map(ext => {
+        set(extensions => ({
+          extensions: extensions.extensions.map(ext => {
             const importedExt = importedExtensions.find(imp => imp.id === ext.id);
             return importedExt
               ? { ...ext, enabled: importedExt.enabled, locked: importedExt.locked }
@@ -79,7 +148,39 @@ export const useExtensionStore = create<ExtensionStore>()(
         })),
     }),
     {
-      name: 'extension-manager-extensions',
+      name: STORAGE_KEYS.EXTENSIONS,
+      partialize: state => ({
+        // /** Only save the locked state of the extensions */
+        // extensions: state.extensions.map(ext => ({
+        //   id: ext.id,
+        //   locked: ext.locked,
+        // })),
+        extensions: state.extensions,
+      }),
+      storage: {
+        /**
+         * Custom storage getter that loads data from Chrome storage
+         * Handles errors and logs them appropriately
+         */
+        getItem: async (name: string) => {
+          const result = await chromeAPI.getLocalStorage(name);
+          return result[name];
+        },
+        /**
+         * Custom storage setter that saves data to Chrome storage
+         * Handles errors and logs them appropriately
+         */
+        setItem: async (name: string, value: any) => {
+          await chromeAPI.setLocalStorage({ [name]: value });
+        },
+        /**
+         * Custom storage remover that deletes data from Chrome storage
+         * Handles errors and logs them appropriately
+         */
+        removeItem: async (name: string) => {
+          await chromeAPI.removeLocalStorage(name);
+        },
+      },
     }
   )
 );

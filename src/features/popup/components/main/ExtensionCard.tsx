@@ -1,13 +1,15 @@
-import { Switch } from '@headlessui/react';
-import { LockClosedIcon } from '@heroicons/react/24/outline';
+import {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
-import { useEffect, useRef, useState } from 'react';
-
-import { chromeAPI } from '@/api/ChromeAPI';
 import { useExtensionContext } from '@/contexts/ExtensionContext';
 import { ExtensionCardMenu } from '@/features/popup/components/main';
 import { ExtensionModel } from '@/models';
 import { useTagStore } from '@/stores';
+import { Switch } from '@headlessui/react';
+import { LockClosedIcon } from '@heroicons/react/24/outline';
 
 /**
  * Extension card props.
@@ -44,7 +46,7 @@ export const ExtensionCard: React.FC<ExtensionCardProps> = ({ extension }) => {
   /**
    * The use extensions hook.
    */
-  const { refreshExtensions } = useExtensionContext();
+  const { refreshExtensions, toggleEnabled, toggleLock, openOptionsPage } = useExtensionContext();
   /**
    * The button ref.
    */
@@ -55,8 +57,7 @@ export const ExtensionCard: React.FC<ExtensionCardProps> = ({ extension }) => {
    */
   useEffect(() => {
     const checkOptionsPage = async () => {
-      const extensionInfo = await chromeAPI.getExtensionInfo(extension.id);
-      setHasOptionsPage(!!extensionInfo.optionsUrl);
+      setHasOptionsPage(!!extension.optionsUrl);
     };
     checkOptionsPage();
   }, [extension.id]);
@@ -67,10 +68,7 @@ export const ExtensionCard: React.FC<ExtensionCardProps> = ({ extension }) => {
   const handleCardClick = async () => {
     if (!extension.enabled || !hasOptionsPage) return;
 
-    const extensionInfo = await chromeAPI.getExtensionInfo(extension.id);
-    if (extensionInfo.optionsUrl) {
-      await chromeAPI.createTab(extensionInfo.optionsUrl);
-    }
+    await openOptionsPage(extension.id);
   };
 
   /**
@@ -148,7 +146,7 @@ export const ExtensionCard: React.FC<ExtensionCardProps> = ({ extension }) => {
           )}
           <Switch
             checked={extension.enabled}
-            onChange={async checked => await chromeAPI.toggleExtension(extension.id, checked)}
+            onChange={async checked => toggleEnabled(extension.id, checked)}
             disabled={extension.locked}
             className={`${
               extension.enabled ? 'bg-green-500' : 'bg-zinc-300 dark:bg-zinc-600'
