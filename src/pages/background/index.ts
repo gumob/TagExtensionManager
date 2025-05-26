@@ -1,12 +1,9 @@
-import { chromeAPI } from '@/api/ChromeAPI';
-import { logger } from '@/utils/Logger';
-import { updateExtensionIcon } from '@/utils/ThemeUtils';
+import { chromeAPI } from '@/api';
+import { logger, updateExtensionIcon } from '@/utils';
 
-/** Background script for extension management */
-logger.debug('🔙🌱 Initializing background script', {
-  group: 'Background',
-  persist: true,
-});
+/**
+ * Background script
+ */
 
 /**
  * Create and manage offscreen document
@@ -21,7 +18,7 @@ const createOffscreenDocument = async () => {
     /** Create new document */
     await chromeAPI.createOffscreenDocument(
       'offscreen.html',
-      ['DOM_PARSER' as chrome.offscreen.Reason],
+      ['MATCH_MEDIA' as chrome.offscreen.Reason],
       'Detect system color scheme changes'
     );
     logger.debug('🔙🌱 Offscreen document created successfully', {
@@ -29,11 +26,71 @@ const createOffscreenDocument = async () => {
       persist: true,
     });
   } catch (error) {
-    logger.error('🔙🛑 Failed to create offscreen document', {
-      group: 'Background',
-      persist: true,
-    });
+    console.error('🔙🛑 Failed to initialize extensions', error);
   }
+};
+
+/**
+ * Initialize background script
+ */
+const initialize = async () => {
+  logger.debug('🔙🌱 Initializing background script', {
+    group: 'Background',
+    persist: true,
+  });
+
+  /**
+   * Listen for theme changes from offscreen document
+   */
+  const handleColorSchemeChange = (
+    message: any,
+    sender: chrome.runtime.MessageSender,
+    sendResponse: (response: any) => void
+  ) => {
+    switch (message.type) {
+      /**
+       * Debug messages
+       */
+      case 'OFFSCREEN_DEBUG':
+        logger.debug(`🖥🐛 ${message.message}`, {
+          group: 'Offscreen',
+          persist: true,
+        });
+        sendResponse({ success: true });
+        return true;
+      /**
+       * Error messages
+       */
+      case 'OFFSCREEN_ERROR':
+        console.error(`🖥🔴 ${message.message}`, message.error);
+        sendResponse({ success: true });
+        return true;
+      /**
+       * Color scheme changed
+       */
+      case 'COLOR_SCHEME_CHANGED':
+        logger.debug('🔙🫱 Color scheme changed', {
+          group: 'Background',
+          persist: true,
+        });
+        updateExtensionIcon(message.isDarkMode);
+        sendResponse({ success: true });
+        return true;
+      default:
+        return false;
+    }
+  };
+
+  /**
+   * Remove existing listener and add new listener
+   */
+  chrome.runtime.onMessage.removeListener(handleColorSchemeChange);
+  chrome.runtime.onMessage.addListener(handleColorSchemeChange);
+
+  /**
+   * Create offscreen document after listener is set
+   */
+  await createOffscreenDocument();
 };
 
 /**
@@ -44,44 +101,16 @@ chrome.runtime.onInstalled.addListener(async details => {
     group: 'Background',
     persist: true,
   });
-  await createOffscreenDocument();
+  await initialize();
 });
 
 /**
- * Listen for extension state changes
+ * Listen for extension startup
  */
-chrome.management.onEnabled.addListener(extension => {
-  logger.debug(`🔙🫱 Extension enabled: ${extension.name}`, {
+chrome.runtime.onStartup.addListener(async () => {
+  logger.debug('🔙🫱 Extension started', {
     group: 'Background',
     persist: true,
   });
-});
-
-/**
- * Listen for extension disabled
- */
-chrome.management.onDisabled.addListener(extension => {
-  logger.debug(`🔙🫱 Extension disabled: ${extension.name}`, {
-    group: 'Background',
-    persist: true,
-  });
-});
-
-/**
- * Listen for theme changes from offscreen document
- */
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  logger.debug('🔙🫱 Received message', {
-    group: 'Background',
-    persist: true,
-  });
-  if (message.type === 'COLOR_SCHEME_CHANGED') {
-    logger.debug('🔙🫱 Color scheme changed', {
-      group: 'Background',
-      persist: true,
-    });
-    updateExtensionIcon(message.isDarkMode);
-    sendResponse({ success: true });
-  }
-  return true;
+  await initialize();
 });
