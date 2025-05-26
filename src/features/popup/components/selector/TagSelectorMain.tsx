@@ -54,7 +54,7 @@ export const TagSelectorMain: React.FC<TagSelectorMainProps> = ({ extension, isO
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-zinc-50 dark:bg-zinc-800 p-6 shadow-xl shadow-zinc-300 dark:shadow-zinc-900 transition-all">
+              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-zinc-100 dark:bg-zinc-800 p-6 shadow-xl shadow-zinc-300 dark:shadow-zinc-900 transition-all">
                 <TagSelectorProvider extension={extension}>
                   <div className="flex flex-col gap-4">
                     <TagSelectorHeader onClose={onClose} />
