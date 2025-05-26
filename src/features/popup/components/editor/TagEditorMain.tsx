@@ -57,13 +57,11 @@ export const TagEditorMain: React.FC<TagEditorMainProps> = ({ isOpen, onClose })
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-zinc-800 shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-zinc-800 p-6 shadow-xl transition-all">
                   <TagEditorProvider>
-                    <div className="flex flex-col max-h-[80vh]">
-                      <div className="flex-none">
-                        <TagEditorHeader onClose={onClose} />
-                        <TagEditorSearchBar />
-                      </div>
+                    <div className="flex flex-col gap-4">
+                      <TagEditorHeader onClose={onClose} />
+                      <TagEditorSearchBar />
                       <TagEditorList />
                     </div>
                   </TagEditorProvider>

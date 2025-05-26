@@ -10,7 +10,7 @@ export const TagSelectorList: React.FC = () => {
   const { filteredTags } = useTagSelectorContext();
 
   return (
-    <div className="mt-4 max-h-[60vh] overflow-y-auto">
+    <div className="max-h-[60vh] overflow-y-auto">
       <div className="flex flex-wrap gap-2">
         {filteredTags.map(tag => (
           <TagSelectorListItem key={tag.id} tag={tag} />

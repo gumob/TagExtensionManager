@@ -56,9 +56,11 @@ export const TagSelectorMain: React.FC<TagSelectorMainProps> = ({ extension, isO
             >
               <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-zinc-800 p-6 shadow-xl transition-all">
                 <TagSelectorProvider extension={extension}>
-                  <TagSelectorHeader onClose={onClose} />
-                  <TagSelectorSearchBar />
-                  <TagSelectorList />
+                  <div className="flex flex-col gap-4">
+                    <TagSelectorHeader onClose={onClose} />
+                    <TagSelectorSearchBar />
+                    <TagSelectorList />
+                  </div>
                 </TagSelectorProvider>
               </Dialog.Panel>
             </Transition.Child>

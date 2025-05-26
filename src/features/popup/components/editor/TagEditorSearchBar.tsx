@@ -33,7 +33,7 @@ export const TagEditorSearchBar: React.FC = () => {
   }, []);
 
   return (
-    <div className="px-4 pt-0 pb-4">
+    <div className="relative">
       <div className="flex gap-2">
         <div className="relative flex-1">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
