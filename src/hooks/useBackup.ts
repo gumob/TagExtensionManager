@@ -142,6 +142,23 @@ export const useBackup = () => {
           const profiles = JSON.parse(content);
 
           /**
+           * Get current installed extensions
+           */
+          const { extensions: installedExtensions } = useExtensionStore.getState();
+          const installedExtensionIds = new Set(installedExtensions.map(ext => ext.id));
+
+          /**
+           * Filter out data for non-installed extensions
+           */
+          const filteredExtensions = profiles.extensions.filter((ext: any) =>
+            installedExtensionIds.has(ext.id)
+          );
+
+          const filteredExtensionTags = profiles.extensionTags.filter((extTag: any) =>
+            installedExtensionIds.has(extTag.extensionId)
+          );
+
+          /**
            * Convert dates to Date objects before importing
            */
           const convertedTags: TagModel[] = profiles.tags.map((tag: any) => ({
@@ -153,13 +170,24 @@ export const useBackup = () => {
           /**
            * Import tags and extension states into their respective stores
            */
-          importTags(convertedTags, profiles.extensionTags);
-          importExtensions(profiles.extensions);
+          importTags(convertedTags, filteredExtensionTags);
+          importExtensions(filteredExtensions);
 
           /**
            * Refresh the extension list to reflect imported changes
            */
           await refreshExtensions();
+
+          /**
+           * Log the number of filtered out extensions
+           */
+          const filteredOutCount = profiles.extensions.length - filteredExtensions.length;
+          if (filteredOutCount > 0) {
+            logger.info(`📁ℹ️ Filtered out ${filteredOutCount} non-installed extensions`, {
+              group: 'useBackup',
+              persist: true,
+            });
+          }
         } catch (error) {
           logger.error('📁🛑 Failed to import profile', {
             group: 'useBackup',
