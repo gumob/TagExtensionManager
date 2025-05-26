@@ -1,6 +1,6 @@
 import { TagIcon } from 'lucide-react';
 
-import { useExtensionContext } from '@/contexts/ExtensionContext';
+import { useExtensionContext } from '@/contexts';
 import { TagModel } from '@/models';
 import { useTagStore } from '@/stores';
 

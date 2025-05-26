@@ -2,7 +2,7 @@ import { TagsIcon, ToggleLeftIcon, ToggleRightIcon } from 'lucide-react';
 
 import { FC } from 'react';
 
-import { useExtensionContext } from '@/contexts/ExtensionContext';
+import { useExtensionContext } from '@/contexts';
 
 /**
  * The props for the ExtensionTagMetrics component.

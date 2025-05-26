@@ -1,10 +1,7 @@
 import React from 'react';
 
-import { useExtensionContext } from '@/contexts/ExtensionContext';
-import {
-  ExtensionCard,
-  ExtensionListHeader,
-} from '@/features/popup/components/main';
+import { useExtensionContext } from '@/contexts';
+import { ExtensionCard, ExtensionListHeader } from '@/features/popup/components/main';
 import { useTagStore } from '@/stores';
 
 /**

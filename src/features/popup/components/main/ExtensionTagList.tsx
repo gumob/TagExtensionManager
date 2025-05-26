@@ -1,4 +1,4 @@
-import { useExtensionContext } from '@/contexts/ExtensionContext';
+import { useExtensionContext } from '@/contexts';
 import {
   ExtensionTagListEditButton,
   ExtensionTagListItem,

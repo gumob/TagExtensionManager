@@ -11,10 +11,10 @@ import {
 
 import { Fragment, useState } from 'react';
 
-import { useExtensionContext } from '@/contexts/ExtensionContext';
-import { TagSelectorMain } from '@/features/popup/components/selector/TagSelectorMain';
+import { useExtensionContext } from '@/contexts';
+import { TagSelectorMain } from '@/features/popup/components/selector';
 import { ExtensionModel } from '@/models';
-import { useExtensionStore, useTagStore } from '@/stores';
+import { useExtensionStore } from '@/stores';
 
 /**
  * Extension menu props.
@@ -35,10 +35,6 @@ interface ExtensionCardMenuProps {
  * @returns The extension card menu component.
  */
 export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension, buttonRef }) => {
-  /**
-   * The tag store.
-   */
-  const { tags, extensionTags } = useTagStore();
   /**
    * The use extension store.
    */

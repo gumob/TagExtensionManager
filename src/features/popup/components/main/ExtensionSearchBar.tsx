@@ -2,7 +2,7 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 import React, { FC } from 'react';
 
-import { useExtensionContext } from '@/contexts/ExtensionContext';
+import { useExtensionContext } from '@/contexts';
 
 /**
  * The props for the ExtensionSearchBar component.
