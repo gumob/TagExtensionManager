@@ -54,7 +54,7 @@ export const ExtensionTagMetrics: FC<ExtensionTagMetricsProps> = () => {
         className="flex-1 inline-flex items-center pl-3 pr-2 py-1 rounded-none text-2xs text-default bg-chip-default"
         onClick={() => setVisibleTagId('enabled')}
       >
-        <ToggleRightIcon className="w-4 h-4 mr-1" icon-color-default strokeWidth={1} />
+        <ToggleRightIcon className="w-4 h-4 mr-1 icon-color-default" strokeWidth={1} />
         <span className="text-2xs text-default mr-1">Enabled</span>
         <span className="text-2xs text-green-600 dark:text-green-400">{enabled}</span>
       </button>
