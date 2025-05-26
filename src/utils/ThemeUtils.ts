@@ -1,6 +1,4 @@
-import React from 'react';
-
-import { chromeAPI } from '@/api/ChromeAPI';
+import { chromeAPI } from '@/api';
 import { logger } from '@/utils';
 
 /**
