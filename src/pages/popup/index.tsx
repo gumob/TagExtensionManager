@@ -49,7 +49,7 @@ const Popup: React.FC = () => {
    * @returns
    */
   return (
-    <>
+    <ExtensionProvider>
       <ExtensionMain />
       <Toaster
         position="top-center"
@@ -59,7 +59,7 @@ const Popup: React.FC = () => {
             '!text-zinc-900 dark:!text-zinc-100 !bg-zinc-50 dark:!bg-zinc-700 !rounded-xl !shadow-lg shadow-zinc-300 dark:shadow-zinc-900',
         }}
       />
-    </>
+    </ExtensionProvider>
   );
 };
 
@@ -75,9 +75,7 @@ if (container) {
   const root = createRoot(container);
   root.render(
     <React.StrictMode>
-      <ExtensionProvider>
-        <Popup />
-      </ExtensionProvider>
+      <Popup />
     </React.StrictMode>
   );
 }
