@@ -124,7 +124,7 @@ export const TagEditorListItem: React.FC<TagEditorListItemProps> = React.memo(
         style={{ width: 'fit-content' }}
       >
         <div className="flex items-center gap-1">
-          <div className="flex items-center gap-1 px-2 py-1.5 rounded-full text-xs font-semibold bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 shadow-sm">
+          <div className="flex items-center gap-1 px-2 py-1.5 rounded-full text-xs font-semibold bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100">
             <div className="flex items-center gap-1">
               <div className="cursor-grab active:cursor-grabbing touch-none select-none">
                 <TagIcon className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />

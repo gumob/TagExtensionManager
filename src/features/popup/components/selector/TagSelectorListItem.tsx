@@ -16,7 +16,7 @@ export const TagSelectorListItem: React.FC<TagSelectorListItemProps> = ({ tag })
       className={`px-3 py-2 rounded-full text-xs font-semibold transition-opacity ${
         currentTagIds.includes(tag.id)
           ? 'bg-zinc-200 dark:bg-zinc-600 text-zinc-900 dark:text-zinc-100'
-          : 'bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-600'
+          : 'bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-300 dark:hover:bg-zinc-600'
       } flex items-center gap-1`}
     >
       {currentTagIds.includes(tag.id) ? (

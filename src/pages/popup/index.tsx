@@ -56,7 +56,7 @@ const Popup: React.FC = () => {
         containerClassName="!top-5"
         toastOptions={{
           className:
-            '!bg-zinc-300 !text-zinc-900 dark:!bg-zinc-700 dark:!text-zinc-100 !rounded-xl !shadow-lg',
+            '!text-zinc-900 dark:!text-zinc-100 !bg-zinc-50 dark:!bg-zinc-700 !rounded-xl !shadow-lg shadow-zinc-300 dark:shadow-zinc-900',
         }}
       />
     </>

@@ -1,27 +1,5 @@
-import {
-  Fragment,
-  useState,
-} from 'react';
-
-import { useExtensionContext } from '@/contexts/ExtensionContext';
-import { TagSelectorMain } from '@/features/popup/components/selector/TagSelectorMain';
-import { ExtensionModel } from '@/models';
-import {
-  useExtensionStore,
-  useTagStore,
-} from '@/stores';
-import {
-  autoUpdate,
-  flip,
-  offset,
-  shift,
-  useFloating,
-} from '@floating-ui/react';
-import {
-  Dialog,
-  Menu,
-  Transition,
-} from '@headlessui/react';
+import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/react';
+import { Dialog, Menu, Transition } from '@headlessui/react';
 import {
   ArchiveBoxXMarkIcon,
   Cog6ToothIcon,
@@ -30,6 +8,13 @@ import {
   LockOpenIcon,
   TagIcon,
 } from '@heroicons/react/24/outline';
+
+import { Fragment, useState } from 'react';
+
+import { useExtensionContext } from '@/contexts/ExtensionContext';
+import { TagSelectorMain } from '@/features/popup/components/selector/TagSelectorMain';
+import { ExtensionModel } from '@/models';
+import { useExtensionStore, useTagStore } from '@/stores';
 
 /**
  * Extension menu props.
@@ -130,7 +115,7 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
             <Menu.Items
               ref={refs.setFloating}
               style={floatingStyles}
-              className="w-36 bg-white dark:bg-zinc-700 rounded-lg shadow-xl shadow-zinc-900 ring-1 ring-black ring-opacity-5 focus:outline-none z-[100]"
+              className="w-36 bg-white dark:bg-zinc-700 rounded-lg shadow-xl shadow-zinc-300 dark:shadow-zinc-900 ring-1 ring-black ring-opacity-5 focus:outline-none z-[100]"
             >
               <div className="py-1">
                 <Menu.Item>
@@ -225,7 +210,7 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black/70 dark:bg-black/70 backdrop-blur-sm" />
+            <div className="fixed inset-0 bg-zinc-50/70 dark:bg-zinc-900/70 backdrop-blur-sm" />
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
@@ -239,7 +224,7 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-sm transform overflow-hidden rounded-2xl bg-white dark:bg-zinc-800 p-6 shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-sm transform overflow-hidden rounded-2xl bg-white dark:bg-zinc-800 p-6 shadow-xl shadow-zinc-300 dark:shadow-zinc-900 transition-all">
                   <Dialog.Title className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
                     {`Uninstall ${extension.name}?`}
                   </Dialog.Title>
@@ -247,7 +232,7 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
                   <div className="mt-6 flex justify-end gap-2">
                     <button
                       onClick={() => setIsUninstallDialogOpen(false)}
-                      className="px-3 py-2 text-sm font-medium text-zinc-700 dark:text-zinc-200 bg-zinc-100 dark:bg-zinc-600 hover:bg-zinc-200 dark:hover:bg-zinc-500 rounded-full transition-colors"
+                      className="px-3 py-2 text-sm font-medium text-zinc-700 dark:text-zinc-200 bg-zinc-100 dark:bg-zinc-600 hover:bg-zinc-300 dark:hover:bg-zinc-600 rounded-full transition-colors"
                     >
                       Cancel
                     </button>

@@ -51,7 +51,7 @@ export const TagEditorSearchBar: React.FC = () => {
         </div>
         <button
           onClick={handleAddTag}
-          className="px-4 py-1.5 bg-zinc-600 dark:bg-zinc-500 text-white rounded-full hover:bg-zinc-600 dark:hover:bg-zinc-400"
+          className="px-4 py-1.5 bg-zinc-600 dark:bg-zinc-500 text-white rounded-full hover:bg-zinc-300 dark:hover:bg-zinc-600"
         >
           Add
         </button>
