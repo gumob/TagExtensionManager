@@ -124,7 +124,7 @@ export const TagEditorListItem: React.FC<TagEditorListItemProps> = React.memo(
         style={{ width: 'fit-content' }}
       >
         <div className="flex items-center gap-1">
-          <div className="flex items-center gap-1 px-2 py-1.5 rounded-full text-xs font-semibold bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100">
+          <div className="flex items-center gap-1 px-2 py-1.5 rounded-full text-xs font-semibold bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-300 dark:hover:bg-zinc-600">
             <div className="flex items-center gap-1">
               <div className="cursor-grab active:cursor-grabbing touch-none select-none">
                 <TagIcon className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
@@ -144,7 +144,7 @@ export const TagEditorListItem: React.FC<TagEditorListItemProps> = React.memo(
                       }
                     }}
                     size={Math.max(editingTagName.length, 1)}
-                    className="px-1 py-0.5 rounded-sm bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 focus:bg-zinc-100 dark:focus:bg-zinc-600 focus:outline-none"
+                    className="px-1 py-0.5 rounded-sm bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-300 dark:hover:bg-zinc-600 focus:bg-zinc-100 dark:focus:bg-zinc-600 focus:outline-none"
                   />
                 ) : (
                   <button
