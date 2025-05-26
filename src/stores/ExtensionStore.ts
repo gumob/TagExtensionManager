@@ -90,13 +90,7 @@ export const useExtensionStore = create<ExtensionStore>()(
             isLoading: false,
           });
         } catch (error) {
-          logger.error(
-            `🧯🏪🛑 Failed to load extensions: ${error instanceof Error ? error.message : String(error)}`,
-            {
-              group: 'ExtensionStore',
-              persist: true,
-            }
-          );
+          console.error('🧯🏪🛑 Failed to load extensions', error);
           set({ isLoading: false });
         }
       },

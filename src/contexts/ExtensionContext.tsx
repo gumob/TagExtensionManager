@@ -177,13 +177,7 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
 
       return storedExtensions;
     } catch (error) {
-      logger.error(
-        `🧯🛑 Failed to refresh extensions: ${error instanceof Error ? error.message : String(error)}`,
-        {
-          group: 'ExtensionProvider',
-          persist: true,
-        }
-      );
+      console.error('🧯🛑 Failed to refresh extensions', error);
       throw error;
     } finally {
       if (isSubscribed.current) {
@@ -306,10 +300,7 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
         await useTagStore.getState().initialize();
         isInitialized.current = true;
       } catch (error) {
-        logger.error('🧯🛑 Failed to initialize extensions', {
-          group: 'useExtensions',
-          persist: true,
-        });
+        console.error('🧯🛑 Failed to initialize extensions', error);
       }
     };
     if (!isInitialized.current) initialize();

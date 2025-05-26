@@ -1,7 +1,5 @@
-import autoprefixer from 'autoprefixer';
 import CopyPlugin from 'copy-webpack-plugin';
 import path from 'path';
-import tailwindcss from 'tailwindcss';
 import { fileURLToPath } from 'url';
 import type { Configuration } from 'webpack';
 

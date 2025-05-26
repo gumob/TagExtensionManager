@@ -8,7 +8,7 @@ import { logger } from '@/utils';
 /**
  * Theme detection for offscreen document
  */
-export const detectThemeOnOffscreen = () => {
+export const detectTheme = () => {
   const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
   logger.debug('🧰🎨 Theme detected', {
     group: 'themeDetector',
@@ -44,9 +44,6 @@ export const updateExtensionIcon = async (isDarkMode: boolean) => {
       persist: true,
     });
   } catch (error) {
-    logger.error('🧰🛑 Failed to update extension icon', {
-      group: 'background',
-      persist: true,
-    });
+    console.error('🧰🛑 Failed to update extension icon', error);
   }
 };

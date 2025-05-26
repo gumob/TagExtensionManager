@@ -3,7 +3,15 @@
   "name": "Clean Extension Manager",
   "version": "1.0.0",
   "description": "A Chrome extension to manage other extensions",
-  "permissions": ["management", "storage", "tabs", "scripting", "activeTab", "offscreen"],
+  "permissions": [
+    "management",
+    "storage",
+    "tabs",
+    "scripting",
+    "activeTab",
+    "system.display",
+    "offscreen"
+  ],
   "host_permissions": ["<all_urls>"],
   "action": {
     "default_popup": "popup.html",

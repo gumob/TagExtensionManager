@@ -6,8 +6,7 @@ import { Toaster } from 'react-hot-toast';
 import { ExtensionProvider } from '@/contexts';
 import { ExtensionMain } from '@/features/popup/components/main';
 import '@/styles/globals.css';
-import { logger } from '@/utils';
-import { detectThemeOnOffscreen } from '@/utils/ThemeUtils';
+import { detectTheme, logger } from '@/utils';
 
 /**
  * The main component for the extension manager.
@@ -22,7 +21,7 @@ const Popup: React.FC = () => {
       group: 'Popup',
       persist: true,
     });
-    detectThemeOnOffscreen();
+    detectTheme();
     return () => {
       logger.debug('🍭🍭🍭🗑️ Deinitializing popup document', {
         group: 'Popup',

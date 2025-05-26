@@ -97,14 +97,7 @@ export const useTagStore = create<TagStore>()(
             });
           }
         } catch (error) {
-          console.error(error);
-          logger.error(
-            `🏷🏪🛑 Failed to load tags: ${error instanceof Error ? error.message : String(error)}`,
-            {
-              group: 'TagStore',
-              persist: true,
-            }
-          );
+          console.error('🏷🏪🛑 Failed to load tags', error);
           set({ isLoading: false });
         }
       },

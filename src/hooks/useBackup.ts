@@ -1,9 +1,6 @@
 import { useExtensionContext } from '@/contexts/ExtensionContext';
 import { TagModel } from '@/models';
-import {
-  useExtensionStore,
-  useTagStore,
-} from '@/stores';
+import { useExtensionStore, useTagStore } from '@/stores';
 import { logger } from '@/utils';
 
 /**
@@ -66,10 +63,7 @@ export const useBackup = () => {
       }
       return date.toISOString();
     } catch (error) {
-      logger.error('📁🛑 Failed to convert date', {
-        group: 'useBackup',
-        persist: true,
-      });
+      console.error('📁🛑 Failed to initialize extensions', error);
       return new Date().toISOString();
     }
   };
@@ -178,13 +172,7 @@ export const useBackup = () => {
         persist: true,
       });
     } catch (error) {
-      logger.error(
-        `📁🛑 Failed to export profile: ${error instanceof Error ? error.message : String(error)}`,
-        {
-          group: 'useBackup',
-          persist: true,
-        }
-      );
+      console.error('📁🛑 Failed to export profile', error);
       throw error;
     }
   };
@@ -297,13 +285,7 @@ export const useBackup = () => {
             persist: true,
           });
         } catch (error) {
-          logger.error(
-            `📁🛑 Failed to import profile: ${error instanceof Error ? error.message : String(error)}`,
-            {
-              group: 'useBackup',
-              persist: true,
-            }
-          );
+          console.error('📁🛑 Failed to import profile', error);
           throw error;
         }
       };
@@ -313,13 +295,7 @@ export const useBackup = () => {
        */
       reader.readAsText(file);
     } catch (error) {
-      logger.error(
-        `📁🛑 Failed to import profile: ${error instanceof Error ? error.message : String(error)}`,
-        {
-          group: 'useBackup',
-          persist: true,
-        }
-      );
+      console.error('📁🛑 Failed to import profile', error);
       throw error;
     }
   };
