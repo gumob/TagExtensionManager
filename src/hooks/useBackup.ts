@@ -1,4 +1,5 @@
 import { useExtensionContext } from '@/contexts/ExtensionContext';
+import { TagModel } from '@/models';
 import {
   useExtensionStore,
   useTagStore,
@@ -26,6 +27,23 @@ export const useBackup = () => {
   const { importExtensions } = useExtensionStore();
 
   /**
+   * Converts a date to ISO format
+   * @param date - The date to convert
+   * @returns The date in ISO format
+   */
+  const convertToISOString = (date: Date): string => {
+    try {
+      return date.toISOString();
+    } catch (error) {
+      logger.error('📁🛑 Failed to convert date', {
+        group: 'useBackup',
+        persist: true,
+      });
+      return new Date().toISOString();
+    }
+  };
+
+  /**
    * The function that exports the current profile configuration to a JSON file.
    *
    * Step-by-step process:
@@ -46,9 +64,14 @@ export const useBackup = () => {
 
       /**
        * Create a profile object containing only necessary extension data
+       * and convert dates to ISO format
        */
       const profiles = {
-        tags,
+        tags: tags.map(tag => ({
+          ...tag,
+          createdAt: convertToISOString(tag.createdAt),
+          updatedAt: convertToISOString(tag.updatedAt),
+        })),
         extensionTags,
         extensions: storedExtensions.map(ext => ({
           id: ext.id,
@@ -119,9 +142,18 @@ export const useBackup = () => {
           const profiles = JSON.parse(content);
 
           /**
+           * Convert dates to Date objects before importing
+           */
+          const convertedTags: TagModel[] = profiles.tags.map((tag: any) => ({
+            ...tag,
+            createdAt: new Date(tag.createdAt),
+            updatedAt: new Date(tag.updatedAt),
+          }));
+
+          /**
            * Import tags and extension states into their respective stores
            */
-          importTags(profiles.tags, profiles.extensionTags);
+          importTags(convertedTags, profiles.extensionTags);
           importExtensions(profiles.extensions);
 
           /**
