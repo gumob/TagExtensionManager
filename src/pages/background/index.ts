@@ -4,7 +4,7 @@ import { updateExtensionIcon } from '@/utils/ThemeUtils';
 
 /** Background script for extension management */
 logger.debug('🔙🌱 Initializing background script', {
-  group: 'background',
+  group: 'Background',
   persist: true,
 });
 
@@ -25,12 +25,12 @@ const createOffscreenDocument = async () => {
       'Detect system color scheme changes'
     );
     logger.debug('🔙🌱 Offscreen document created successfully', {
-      group: 'background',
+      group: 'Background',
       persist: true,
     });
   } catch (error) {
     logger.error('🔙🛑 Failed to create offscreen document', {
-      group: 'background',
+      group: 'Background',
       persist: true,
     });
   }
@@ -41,7 +41,7 @@ const createOffscreenDocument = async () => {
  */
 chrome.runtime.onInstalled.addListener(async details => {
   logger.debug('🔙🫱 Extension installed', {
-    group: 'background',
+    group: 'Background',
     persist: true,
   });
   await createOffscreenDocument();
@@ -52,7 +52,7 @@ chrome.runtime.onInstalled.addListener(async details => {
  */
 chrome.management.onEnabled.addListener(extension => {
   logger.debug(`🔙🫱 Extension enabled: ${extension.name}`, {
-    group: 'background',
+    group: 'Background',
     persist: true,
   });
 });
@@ -62,7 +62,7 @@ chrome.management.onEnabled.addListener(extension => {
  */
 chrome.management.onDisabled.addListener(extension => {
   logger.debug(`🔙🫱 Extension disabled: ${extension.name}`, {
-    group: 'background',
+    group: 'Background',
     persist: true,
   });
 });
@@ -72,12 +72,12 @@ chrome.management.onDisabled.addListener(extension => {
  */
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   logger.debug('🔙🫱 Received message', {
-    group: 'background',
+    group: 'Background',
     persist: true,
   });
   if (message.type === 'COLOR_SCHEME_CHANGED') {
     logger.debug('🔙🫱 Color scheme changed', {
-      group: 'background',
+      group: 'Background',
       persist: true,
     });
     updateExtensionIcon(message.isDarkMode);
