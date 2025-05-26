@@ -101,26 +101,21 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
       <Menu>
         {({ close }) => (
           <>
-            <Menu.Button
-              ref={buttonRef}
-              className="p-1 text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 rounded-lg transition-colors"
-            >
+            <Menu.Button ref={buttonRef} className="p-1 menu-button">
               <EllipsisVerticalIcon className="w-5 h-5" />
             </Menu.Button>
 
             <Menu.Items
               ref={refs.setFloating}
               style={floatingStyles}
-              className="w-36 bg-white dark:bg-zinc-700 rounded-lg shadow-xl shadow-zinc-300 dark:shadow-zinc-900 ring-1 ring-black ring-opacity-5 focus:outline-none z-[100]"
+              className="w-36 z-[100] menu-panel"
             >
               <div className="py-1">
                 <Menu.Item>
                   {({ active }) => (
                     <button
                       onClick={() => setIsTagSelectorOpen(true)}
-                      className={`${
-                        active ? 'bg-zinc-100 dark:bg-zinc-600' : ''
-                      } block w-full text-left px-3 py-2 text-2xs text-zinc-700 dark:text-zinc-200 focus:outline-none`}
+                      className={`block w-full text-left px-3 py-2 menu-item`}
                     >
                       <span className="flex items-center gap-2">
                         <TagIcon className="w-4 h-4" />
@@ -133,9 +128,7 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
                   {({ active }) => (
                     <button
                       onClick={() => handleLockToggle(close)}
-                      className={`${
-                        active ? 'bg-zinc-100 dark:bg-zinc-600' : ''
-                      } block w-full text-left px-3 py-2 text-2xs text-zinc-700 dark:text-zinc-200 focus:outline-none`}
+                      className={`block w-full text-left px-3 py-2 menu-item`}
                     >
                       <span className="flex items-center gap-2">
                         {extension.locked ? (
@@ -159,9 +152,7 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
                       onClick={async () => {
                         openExtensionPage(extension.id);
                       }}
-                      className={`${
-                        active ? 'bg-zinc-100 dark:bg-zinc-600' : ''
-                      } block w-full text-left px-3 py-2 text-2xs text-zinc-700 dark:text-zinc-200 focus:outline-none`}
+                      className={`block w-full text-left px-3 py-2 menu-item`}
                     >
                       <span className="flex items-center gap-2">
                         <Cog6ToothIcon className="w-4 h-4" />
@@ -174,9 +165,7 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
                   {({ active }) => (
                     <button
                       onClick={handleUninstallClick}
-                      className={`${
-                        active ? 'bg-zinc-100 dark:bg-zinc-600' : ''
-                      } block w-full text-left px-3 py-2 text-2xs text-red-600 dark:text-red-400 focus:outline-none`}
+                      className={`block w-full text-left px-3 py-2 menu-item text-red-600 dark:text-red-400`}
                     >
                       <span className="flex items-center gap-2">
                         <ArchiveBoxXMarkIcon className="w-4 h-4" />
@@ -221,21 +210,18 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-full max-w-sm dialog-panel">
-                  <Dialog.Title className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
+                  <Dialog.Title className="text-header">
                     {`Uninstall ${extension.name}?`}
                   </Dialog.Title>
 
                   <div className="mt-6 flex justify-end gap-2">
                     <button
                       onClick={() => setIsUninstallDialogOpen(false)}
-                      className="px-3 py-2 text-sm font-medium text-zinc-700 dark:text-zinc-200 bg-zinc-100 dark:bg-zinc-600 hover:bg-zinc-300 dark:hover:bg-zinc-600 rounded-full transition-colors"
+                      className="dialog-cancel-button"
                     >
                       Cancel
                     </button>
-                    <button
-                      onClick={handleConfirmUninstall}
-                      className="px-3 py-2 text-sm font-medium text-white bg-red-500 hover:bg-red-600 dark:bg-red-500/90 dark:hover:bg-red-500 rounded-full transition-colors"
-                    >
+                    <button onClick={handleConfirmUninstall} className="dialog-delete-button">
                       Delete
                     </button>
                   </div>

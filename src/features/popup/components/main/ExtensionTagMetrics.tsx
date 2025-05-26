@@ -43,27 +43,27 @@ export const ExtensionTagMetrics: FC<ExtensionTagMetricsProps> = () => {
   return (
     <div className="flex flex-row w-auto gap-[1px]">
       <button
-        className="flex-1 pl-3 pr-2 py-1 rounded-s-full text-2xs bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors inline-flex items-center"
+        className="flex-1 inline-flex items-center pl-3 pr-2 py-1 rounded-s-full text-2xs text-default bg-chip-default"
         onClick={() => setVisibleTagId(null)}
       >
-        <TagsIcon className="w-4 h-4 mr-1" strokeWidth={1} />
-        <span className="text-2xs text-zinc-900 dark:text-white mr-1">Total</span>
+        <TagsIcon className="w-4 h-4 mr-1 icon-color-default" strokeWidth={1} />
+        <span className="text-2xs text-default mr-1">Total</span>
         <span className="text-2xs text-blue-600 dark:text-blue-400">{total}</span>
       </button>
       <button
-        className="flex-1 pl-3 pr-2 py-1 rounded-none text-2xs bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors inline-flex items-center"
+        className="flex-1 inline-flex items-center pl-3 pr-2 py-1 rounded-none text-2xs text-default bg-chip-default"
         onClick={() => setVisibleTagId('enabled')}
       >
-        <ToggleRightIcon className="w-4 h-4 mr-1" strokeWidth={1} />
-        <span className="text-2xs text-zinc-900 dark:text-white mr-1">Enabled</span>
+        <ToggleRightIcon className="w-4 h-4 mr-1" icon-color-default strokeWidth={1} />
+        <span className="text-2xs text-default mr-1">Enabled</span>
         <span className="text-2xs text-green-600 dark:text-green-400">{enabled}</span>
       </button>
       <button
-        className="flex-1 pl-2 pr-3 py-1 rounded-r-full text-2xs bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors inline-flex items-center"
+        className="flex-1 inline-flex items-center pl-2 pr-3 py-1 rounded-r-full text-2xs text-default bg-chip-default"
         onClick={() => setVisibleTagId('disabled')}
       >
-        <ToggleLeftIcon className="w-4 h-4 mr-1" strokeWidth={1} />
-        <span className="text-2xs text-zinc-900 dark:text-white mr-1">Disabled</span>
+        <ToggleLeftIcon className="w-4 h-4 mr-1 icon-color-default" strokeWidth={1} />
+        <span className="text-2xs text-default mr-1">Disabled</span>
         <span className="text-2xs text-red-600 dark:text-red-400">{disabled}</span>
       </button>
     </div>

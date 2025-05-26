@@ -20,10 +20,7 @@ export const TagEditorHeader: React.FC<TagEditorHeaderProps> = ({ onClose }) => 
   return (
     <div className="flex items-center justify-between">
       <h2 className="text-header">Edit Tags</h2>
-      <button
-        onClick={onClose}
-        className="rounded-lg p-1 text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 focus:outline-none"
-      >
+      <button onClick={onClose} className="dialog-close-button">
         <XMarkIcon className="h-6 w-6" />
       </button>
     </div>

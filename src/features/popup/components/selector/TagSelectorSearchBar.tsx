@@ -22,7 +22,7 @@ export const TagSelectorSearchBar: React.FC = () => {
   return (
     <div className="relative">
       <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-        <MagnifyingGlassIcon className="h-5 w-5 text-zinc-400" aria-hidden="true" />
+        <MagnifyingGlassIcon className="h-5 w-5 icon-color-default" aria-hidden="true" />
       </div>
       <input
         ref={searchInputRef}

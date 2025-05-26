@@ -49,19 +49,19 @@ export const ExtensionListHeader: React.FC<ExtensionListHeaderProps> = ({
   return (
     <div className="flex items-center justify-between p-1">
       <div className="flex items-center gap-2">
-        <h3 className="text-xs font-semibold text-zinc-900 dark:text-zinc-100">{tag.name}</h3>
+        <h3 className="text-xs font-semibold text-default">{tag.name}</h3>
       </div>
       <div className="flex items-center gap-2">
         <div className="flex">
           <button
             onClick={() => handleToggle(true)}
-            className={`ps-3 pe-2 py-1 text-2xs font-medium bg-zinc-200 text-zinc-600 dark:bg-zinc-600 dark:text-zinc-300 rounded-l-full mr-[1px] hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors`}
+            className={`ps-3 pe-2 py-1 text-2xs font-medium rounded-l-full mr-[1px] text-default bg-chip-default`}
           >
             Enable All
           </button>
           <button
             onClick={() => handleToggle(false)}
-            className={`ps-2 pe-3 py-1 text-2xs font-medium bg-zinc-200 text-zinc-600 dark:bg-zinc-600 dark:text-zinc-300 rounded-r-full hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors`}
+            className={`ps-2 pe-3 py-1 text-2xs font-medium rounded-r-full text-default bg-chip-default`}
           >
             Disable All
           </button>

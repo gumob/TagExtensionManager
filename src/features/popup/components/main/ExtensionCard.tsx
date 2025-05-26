@@ -117,12 +117,12 @@ export const ExtensionCard: React.FC<ExtensionCardProps> = ({ extension }) => {
         />
         <div className="flex-1 min-w-0">
           <h3
-            className={`text-2xs select-none font-semibold truncate text-zinc-900 dark:text-white transition-opacity ${!extension.enabled ? 'opacity-30' : ''}`}
+            className={`text-2xs select-none font-semibold truncate text-default transition-opacity ${!extension.enabled ? 'opacity-30' : ''}`}
           >
             {extension.name}
           </h3>
           <p
-            className={`text-3xs select-none text-zinc-500 dark:text-zinc-400 transition-opacity ${!extension.enabled ? 'opacity-50' : ''}`}
+            className={`text-3xs select-none extension-version-color transition-opacity ${!extension.enabled ? 'opacity-50' : ''}`}
           >
             {extension.version}
           </p>
@@ -133,9 +133,7 @@ export const ExtensionCard: React.FC<ExtensionCardProps> = ({ extension }) => {
           onMouseLeave={handleControlsMouseLeave}
           onClick={handleControlsClick}
         >
-          {extension.locked && (
-            <LockClosedIcon className="w-3 h-3 text-zinc-500 dark:text-zinc-400" />
-          )}
+          {extension.locked && <LockClosedIcon className="w-3 h-3 icon-color-default" />}
           <Switch
             checked={extension.enabled}
             onChange={async checked => toggleEnabled(extension.id, checked)}

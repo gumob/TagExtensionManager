@@ -36,7 +36,7 @@ const ExtensionSearchBar: FC<ExtensionSearchBarProps> = () => {
   return (
     <div className="relative">
       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-        <MagnifyingGlassIcon className="h-5 w-5 text-zinc-400" aria-hidden="true" />
+        <MagnifyingGlassIcon className="h-5 w-5 icon-color-default" aria-hidden="true" />
       </div>
       <input
         type="text"

@@ -28,7 +28,7 @@ export const ExtensionHeader: React.FC = () => {
       <div className="flex items-center gap-1">
         <button
           onClick={exportFile}
-          className="pl-2 pr-3 py-1 rounded-full bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors"
+          className="pl-2 pr-3 py-1 rounded-full text-default bg-chip-default"
           title="Export Profile"
         >
           <ArrowDownTrayIcon className="w-3 h-3 inline-flex mr-1" />
@@ -36,7 +36,7 @@ export const ExtensionHeader: React.FC = () => {
         </button>
         <button
           onClick={() => fileInputRef.current?.click()}
-          className="pl-2 pr-3 py-1 rounded-full bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors"
+          className="pl-2 pr-3 py-1 rounded-full text-default bg-chip-default"
           title="Import Profile"
         >
           <ArrowUpTrayIcon className="w-3 h-3 inline-flex mr-1" />
