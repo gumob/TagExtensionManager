@@ -7,7 +7,6 @@ import {
 import { useExtensionContext } from '@/contexts/ExtensionContext';
 import { ExtensionCardMenu } from '@/features/popup/components/main';
 import { ExtensionModel } from '@/models';
-import { useTagStore } from '@/stores';
 import { Switch } from '@headlessui/react';
 import { LockClosedIcon } from '@heroicons/react/24/outline';
 
@@ -40,13 +39,9 @@ export const ExtensionCard: React.FC<ExtensionCardProps> = ({ extension }) => {
    */
   const [hasOptionsPage, setHasOptionsPage] = useState(false);
   /**
-   * The has options page state.
-   */
-  const { tags, extensionTags, addTagToExtension, removeTagFromExtension } = useTagStore();
-  /**
    * The use extensions hook.
    */
-  const { refreshExtensions, toggleEnabled, toggleLock, openOptionsPage } = useExtensionContext();
+  const { toggleEnabled, openOptionsPage } = useExtensionContext();
   /**
    * The button ref.
    */
