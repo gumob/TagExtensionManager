@@ -1,4 +1,4 @@
-import { useTagSelectorContext } from '@/contexts/TagSelectorContext';
+import { useTagSelectorContext } from '@/contexts';
 import { TagSelectorListItem } from '@/features/popup/components/selector';
 
 /**

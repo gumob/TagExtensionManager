@@ -2,7 +2,7 @@ import { TagIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useRef, useState } from 'react';
 
-import { useTagEditorContext } from '@/contexts/TagEditorContext';
+import { useTagEditorContext } from '@/contexts';
 
 /**
  * The TagEditorSearchBar component.

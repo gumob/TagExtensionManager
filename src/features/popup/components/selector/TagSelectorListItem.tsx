@@ -1,7 +1,7 @@
 import { TagIcon } from '@heroicons/react/24/outline';
 import { TagIcon as TagSolidIcon } from '@heroicons/react/24/solid';
 
-import { useTagSelectorContext } from '@/contexts/TagSelectorContext';
+import { useTagSelectorContext } from '@/contexts';
 import { TagModel } from '@/models';
 
 interface TagSelectorListItemProps {

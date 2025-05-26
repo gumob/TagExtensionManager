@@ -5,7 +5,7 @@ import { Fragment } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import { TagEditorProvider } from '@/contexts/TagEditorContext';
+import { TagEditorProvider } from '@/contexts';
 import {
   TagEditorHeader,
   TagEditorList,

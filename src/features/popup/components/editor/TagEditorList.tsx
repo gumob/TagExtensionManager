@@ -1,4 +1,4 @@
-import { useTagEditorContext } from '@/contexts/TagEditorContext';
+import { useTagEditorContext } from '@/contexts';
 import { TagEditorListItem } from '@/features/popup/components/editor';
 
 export const TagEditorList: React.FC = () => {

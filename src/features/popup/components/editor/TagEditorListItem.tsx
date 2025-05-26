@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from 'react';
 
 import { useDrag, useDrop } from 'react-dnd';
 
-import { useTagEditorContext } from '@/contexts/TagEditorContext';
+import { useTagEditorContext } from '@/contexts';
 import { TagModel } from '@/models';
 
 /**
