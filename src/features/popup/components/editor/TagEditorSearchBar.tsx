@@ -46,13 +46,10 @@ export const TagEditorSearchBar: React.FC = () => {
             onChange={e => setNewTagName(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Enter new tag name..."
-            className="w-full h-10 pl-10 pr-3 py-1.5 rounded-full bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-zinc-200 dark:focus:ring-zinc-500"
+            className="w-full h-10 pl-10 pr-3 py-1.5 input-search-bar"
           />
         </div>
-        <button
-          onClick={handleAddTag}
-          className="px-4 py-1.5 bg-zinc-600 dark:bg-zinc-500 text-white rounded-full hover:bg-zinc-300 dark:hover:bg-zinc-600"
-        >
+        <button onClick={handleAddTag} className="px-4 py-1.5 button-search-bar">
           Add
         </button>
       </div>

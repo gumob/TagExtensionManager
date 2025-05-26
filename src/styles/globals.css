@@ -2,6 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .text-header {
+    @apply text-lg font-bold text-zinc-700 dark:text-zinc-50;
+  }
+
+  .input-search-bar {
+    @apply rounded-full bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-zinc-200 dark:focus:ring-zinc-500;
+  }
+
+  .button-search-bar {
+    @apply bg-zinc-600 dark:bg-zinc-500 text-white rounded-full hover:bg-zinc-300 dark:hover:bg-zinc-600;
+  }
+
+  .dialog-glass-panel {
+    @apply fixed inset-0 bg-zinc-50/70 dark:bg-zinc-900/70 backdrop-blur-sm;
+  }
+
+  .dialog-panel {
+    @apply transform overflow-hidden rounded-2xl bg-zinc-100 dark:bg-zinc-800 p-6 shadow-xl shadow-zinc-300 dark:shadow-zinc-900 transition-all;
+  }
+
+  .bg-tag-item-default {
+    @apply bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-300 dark:hover:bg-zinc-600;
+  }
+
+  .bg-tag-item-selected {
+    @apply bg-zinc-200 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100;
+  }
+}
+
 :root {
   --foreground-color: oklch(27.4% 0.006 286.033);
   --background-color: oklch(96.7% 0.001 286.375);

@@ -43,7 +43,7 @@ const ExtensionSearchBar: FC<ExtensionSearchBarProps> = () => {
         placeholder="Search extensions..."
         value={searchQuery}
         onChange={handleSearch}
-        className="w-full h-10 px-4 pl-10 rounded-full bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-zinc-200 dark:focus:ring-zinc-500"
+        className="w-full h-10 pl-10 px-4 input-search-bar"
       />
     </div>
   );

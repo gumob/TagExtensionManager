@@ -16,7 +16,7 @@ interface TagSelectorHeaderProps {
 export const TagSelectorHeader: React.FC<TagSelectorHeaderProps> = ({ onClose }) => {
   return (
     <div className="flex items-center justify-between">
-      <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">Select Tags</h2>
+      <h2 className="text-header">Select Tags</h2>
       <button
         onClick={onClose}
         className="rounded-lg p-1 text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 focus:outline-none"

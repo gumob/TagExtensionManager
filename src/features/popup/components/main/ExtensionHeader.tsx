@@ -24,7 +24,7 @@ export const ExtensionHeader: React.FC = () => {
 
   return (
     <>
-      <h1 className="text-lg font-bold text-zinc-900 dark:text-white">Clean Extension Manager</h1>
+      <h1 className="text-header">Clean Extension Manager</h1>
       <div className="flex items-center gap-1">
         <button
           onClick={exportFile}

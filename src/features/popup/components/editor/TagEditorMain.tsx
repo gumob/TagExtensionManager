@@ -43,7 +43,7 @@ export const TagEditorMain: React.FC<TagEditorMainProps> = ({ isOpen, onClose })
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-zinc-50/70 dark:bg-zinc-900/70 backdrop-blur-sm" />
+            <div className="dialog-glass-panel" />
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
@@ -57,7 +57,7 @@ export const TagEditorMain: React.FC<TagEditorMainProps> = ({ isOpen, onClose })
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-zinc-100 dark:bg-zinc-800 p-6 shadow-xl shadow-zinc-300 dark:shadow-zinc-900 transition-all">
+                <Dialog.Panel className="w-full max-w-md dialog-panel">
                   <TagEditorProvider>
                     <div className="flex flex-col gap-4">
                       <TagEditorHeader onClose={onClose} />
