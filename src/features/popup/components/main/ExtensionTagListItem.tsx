@@ -1,5 +1,6 @@
 import { TagIcon } from 'lucide-react';
 
+import { DefaultBackgroundButton } from '@/components';
 import { useExtensionContext } from '@/contexts';
 import { TagModel } from '@/models';
 import { useTagStore } from '@/stores';
@@ -45,19 +46,15 @@ export const ExtensionTagListItem: React.FC<ExtensionTagListItemProps> = ({
    * @returns The ExtensionTagListItem component.
    */
   return (
-    <button
+    <DefaultBackgroundButton
       onClick={() => setVisibleTagId(isSelected ? null : tag.id)}
       className={`px-3 py-1 text-2xs font-medium rounded-full transition-opacity ${
-        isSelected
-          ? 'bg-chip-default'
-          : visibleTagId === null
-            ? 'bg-chip-default'
-            : 'bg-chip-default opacity-50'
+        isSelected ? '' : visibleTagId === null ? '' : 'opacity-50'
       }`}
     >
       <TagIcon className="w-3 h-3 inline-flex mr-1" strokeWidth={1} />
       <span className="text-2xs">{tag.name}</span>
       <span className="ml-1 text-2xs text-zinc-400 dark:text-zinc-600">{count}</span>
-    </button>
+    </DefaultBackgroundButton>
   );
 };

@@ -2,6 +2,7 @@ import { ArrowDownTrayIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline'
 
 import { useRef } from 'react';
 
+import { DefaultBackgroundButton } from '@/components';
 import { useBackup } from '@/hooks';
 
 /**
@@ -26,22 +27,22 @@ export const ExtensionHeader: React.FC = () => {
     <div className="flex justify-between items-center">
       <h1 className="text-lg font-bold">Clean Extension Manager</h1>
       <div className="flex items-center gap-1">
-        <button
+        <DefaultBackgroundButton
           onClick={exportFile}
-          className="pl-2 pr-3 py-1 rounded-full bg-chip-default"
+          className="pl-2 pr-3 py-1 rounded-full"
           title="Export Profile"
         >
           <ArrowDownTrayIcon className="w-3 h-3 inline-flex mr-1" />
           <span className="text-2xs">Export</span>
-        </button>
-        <button
+        </DefaultBackgroundButton>
+        <DefaultBackgroundButton
           onClick={() => fileInputRef.current?.click()}
-          className="pl-2 pr-3 py-1 rounded-full bg-chip-default"
+          className="pl-2 pr-3 py-1 rounded-full"
           title="Import Profile"
         >
           <ArrowUpTrayIcon className="w-3 h-3 inline-flex mr-1" />
           <span className="text-2xs">Import</span>
-        </button>
+        </DefaultBackgroundButton>
         <input
           ref={fileInputRef}
           type="file"

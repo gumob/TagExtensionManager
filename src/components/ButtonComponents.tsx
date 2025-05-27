@@ -1,5 +1,47 @@
 import React from 'react';
 
+interface DefaultBackgroundButtonProps {
+  className?: string;
+  title?: string;
+  onClick: () => void;
+  children?: React.ReactNode;
+}
+
+export const DefaultBackgroundButton: React.FC<DefaultBackgroundButtonProps> = ({
+  className,
+  title,
+  onClick,
+  children,
+}) => {
+  return (
+    <button
+      onClick={onClick}
+      title={title}
+      className={`bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300 dark:hover:bg-zinc-600 focus:outline-none transition-colors ${className}`}
+    >
+      {children}
+    </button>
+  );
+};
+
+interface DefaultBackgroundDivProps {
+  className?: string;
+  children?: React.ReactNode;
+}
+
+export const DefaultBackgroundDiv: React.FC<DefaultBackgroundDivProps> = ({
+  className,
+  children,
+}) => {
+  return (
+    <div
+      className={`bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300 dark:hover:bg-zinc-600 focus:outline-none transition-colors ${className}`}
+    >
+      {children}
+    </div>
+  );
+};
+
 interface XLargeButtonComponentProps {
   className?: string;
   onClick: () => void;

@@ -1,3 +1,4 @@
+import { DefaultBackgroundButton } from '@/components';
 import { useExtensionContext } from '@/contexts';
 import { ExtensionModel, TagModel } from '@/models';
 
@@ -53,18 +54,18 @@ export const ExtensionListHeader: React.FC<ExtensionListHeaderProps> = ({
       </div>
       <div className="flex items-center gap-2">
         <div className="flex">
-          <button
+          <DefaultBackgroundButton
             onClick={() => handleToggle(true)}
-            className={`ps-3 pe-2 py-1 text-2xs font-medium rounded-l-full mr-[1px] bg-chip-default`}
+            className={`ps-3 pe-2 py-1 text-2xs font-medium rounded-l-full mr-[1px]`}
           >
             Enable All
-          </button>
-          <button
+          </DefaultBackgroundButton>
+          <DefaultBackgroundButton
             onClick={() => handleToggle(false)}
-            className={`ps-2 pe-3 py-1 text-2xs font-medium rounded-r-full bg-chip-default`}
+            className={`ps-2 pe-3 py-1 text-2xs font-medium rounded-r-full`}
           >
             Disable All
-          </button>
+          </DefaultBackgroundButton>
         </div>
       </div>
     </div>

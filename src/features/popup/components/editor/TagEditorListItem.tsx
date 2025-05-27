@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from 'react';
 
 import { useDrag, useDrop } from 'react-dnd';
 
+import { DefaultBackgroundDiv } from '@/components';
 import { useTagEditorContext } from '@/contexts';
 import { TagModel } from '@/models';
 
@@ -124,7 +125,7 @@ export const TagEditorListItem: React.FC<TagEditorListItemProps> = React.memo(
         style={{ width: 'fit-content' }}
       >
         <div className="flex items-center gap-1">
-          <div className="flex items-center gap-1 px-2 py-1.5 rounded-full text-xs font-medium bg-chip-default">
+          <DefaultBackgroundDiv className="flex items-center gap-1 px-2 py-1.5 rounded-full text-xs font-medium">
             <div className="flex items-center gap-1">
               <div className="cursor-grab active:cursor-grabbing touch-none select-none">
                 <TagIcon className="w-4 h-4" />
@@ -162,7 +163,7 @@ export const TagEditorListItem: React.FC<TagEditorListItemProps> = React.memo(
                 <XMarkIcon className="w-4 h-4" />
               </button>
             </div>
-          </div>
+          </DefaultBackgroundDiv>
         </div>
       </div>
     );
