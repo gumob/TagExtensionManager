@@ -38,8 +38,11 @@ export const ExtensionListHeader: React.FC<ExtensionListHeaderProps> = ({
     /** Filter the unlocked extensions */
     const unlockedExtensions = extensions.filter(ext => !ext.locked);
 
-    /** Toggle the extensions */
-    unlockedExtensions.forEach(async ext => toggleEnabled(ext.id, enabled));
+    /** Toggle all extensions simultaneously */
+    const togglePromises = unlockedExtensions.map(ext => toggleEnabled(ext.id, enabled));
+    Promise.all(togglePromises).catch(error => {
+      console.warn('Failed to toggle extensions:', error);
+    });
   };
 
   /**

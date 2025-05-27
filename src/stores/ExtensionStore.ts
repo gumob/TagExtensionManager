@@ -102,7 +102,6 @@ export const useExtensionStore = create<ExtensionStore>()(
        * @param enabled - The enabled state of the extension.
        */
       toggleEnabled: async (id, enabled) => {
-        await chromeAPI.toggleExtension(id, enabled);
         set(state => {
           /** Create a Map for O(1) lookup of stored extensions */
           const extensionsMap = new Map(state.extensions.map(ext => [ext.id, ext]));
@@ -120,6 +119,8 @@ export const useExtensionStore = create<ExtensionStore>()(
             extensions: Array.from(extensionsMap.values()),
           };
         });
+
+        await chromeAPI.toggleExtension(id, enabled);
       },
 
       /**
