@@ -1,5 +1,5 @@
 import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/react';
-import { Dialog, Menu, Transition } from '@headlessui/react';
+import { Dialog, Menu } from '@headlessui/react';
 import {
   ArchiveBoxXMarkIcon,
   Cog6ToothIcon,
@@ -9,8 +9,9 @@ import {
   TagIcon,
 } from '@heroicons/react/24/outline';
 
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 
+import { DialogComponent } from '@/components';
 import { useExtensionContext } from '@/contexts';
 import { TagSelectorMain } from '@/features/popup/components/selector';
 import { ExtensionModel } from '@/models';
@@ -180,57 +181,21 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
         )}
       </Menu>
 
-      <Transition appear show={isUninstallDialogOpen} as={Fragment}>
-        <Dialog
-          as="div"
-          className="relative z-[200]"
-          onClose={() => setIsUninstallDialogOpen(false)}
-        >
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="dialog-glass-panel" />
-          </Transition.Child>
+      <DialogComponent
+        isOpen={isUninstallDialogOpen}
+        onClose={() => setIsUninstallDialogOpen(false)}
+      >
+        <Dialog.Title className="text-header">{`Uninstall ${extension.name}?`}</Dialog.Title>
 
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
-                <Dialog.Panel className="w-full max-w-sm dialog-panel">
-                  <Dialog.Title className="text-header">
-                    {`Uninstall ${extension.name}?`}
-                  </Dialog.Title>
-
-                  <div className="mt-6 flex justify-end gap-2">
-                    <button
-                      onClick={() => setIsUninstallDialogOpen(false)}
-                      className="dialog-cancel-button"
-                    >
-                      Cancel
-                    </button>
-                    <button onClick={handleConfirmUninstall} className="dialog-delete-button">
-                      Delete
-                    </button>
-                  </div>
-                </Dialog.Panel>
-              </Transition.Child>
-            </div>
-          </div>
-        </Dialog>
-      </Transition>
+        <div className="mt-6 flex justify-end gap-2">
+          <button onClick={() => setIsUninstallDialogOpen(false)} className="dialog-cancel-button">
+            Cancel
+          </button>
+          <button onClick={handleConfirmUninstall} className="dialog-delete-button">
+            Delete
+          </button>
+        </div>
+      </DialogComponent>
 
       {isTagSelectorOpen && (
         <TagSelectorMain
