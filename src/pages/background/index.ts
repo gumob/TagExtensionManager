@@ -49,6 +49,27 @@ const initialize = async () => {
   ) => {
     switch (message.type) {
       /**
+       * Keep service worker active
+       */
+      case 'PING':
+        logger.debug('🔙�� Received PING', {
+          group: 'Background',
+          persist: true,
+        });
+        sendResponse({ success: true });
+        return true;
+      /**
+       * Theme detection from popup
+       */
+      case 'COLOR_SCHEME_CHANGED':
+        logger.debug('🔙🫱 Color scheme changed', {
+          group: 'Background',
+          persist: true,
+        });
+        updateExtensionIcon(message.isDarkMode);
+        sendResponse({ success: true });
+        return true;
+      /**
        * Debug messages
        */
       case 'OFFSCREEN_DEBUG':
@@ -63,17 +84,6 @@ const initialize = async () => {
        */
       case 'OFFSCREEN_ERROR':
         console.error(`🖥🔴 ${message.message}`, message.error);
-        sendResponse({ success: true });
-        return true;
-      /**
-       * Color scheme changed
-       */
-      case 'COLOR_SCHEME_CHANGED':
-        logger.debug('🔙🫱 Color scheme changed', {
-          group: 'Background',
-          persist: true,
-        });
-        updateExtensionIcon(message.isDarkMode);
         sendResponse({ success: true });
         return true;
       default:

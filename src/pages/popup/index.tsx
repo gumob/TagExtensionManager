@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { createRoot } from 'react-dom/client';
 import { Toaster } from 'react-hot-toast';
@@ -13,16 +13,26 @@ import { detectTheme, logger } from '@/utils';
  * @returns
  */
 const Popup: React.FC = () => {
+  const isInitialized = useRef(false);
   /**
    * Setup color scheme listener.
    */
   useEffect(() => {
-    logger.debug('🍭🍭🍭🌱 Initializing popup document', {
-      group: 'Popup',
-      persist: true,
-    });
-    detectTheme();
+    const initialize = async () => {
+      if (isInitialized.current) return;
+      isInitialized.current = true;
+
+      logger.debug('🍭🍭🍭🌱 Initializing popup document', {
+        group: 'Popup',
+        persist: true,
+      });
+      await detectTheme();
+    };
+
+    initialize();
+
     return () => {
+      isInitialized.current = false;
       logger.debug('🍭🍭🍭🗑️ Deinitializing popup document', {
         group: 'Popup',
         persist: true,

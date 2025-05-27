@@ -6,18 +6,47 @@ import { logger } from '@/utils';
  */
 
 /**
+ * Check if background script is ready
+ * @returns Whether the background script is ready
+ */
+const isBackgroundScriptReady = async (): Promise<boolean> => {
+  try {
+    await chromeAPI.sendRuntimeMessage({ type: 'PING' });
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
+
+/**
  * Theme detection for offscreen document
  */
-export const detectTheme = () => {
+export const detectTheme = async () => {
   const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
   logger.debug('🧰🎨 Theme detected', {
     group: 'themeDetector',
     persist: true,
   });
-  chromeAPI.sendRuntimeMessage({
-    type: 'COLOR_SCHEME_CHANGED',
-    isDarkMode: isDarkMode,
-  });
+
+  // バックグラウンドスクリプトの起動を確認
+  const isReady = await isBackgroundScriptReady();
+  if (!isReady) {
+    logger.warn('🧰🎨 Background script is not ready, skipping theme detection', {
+      group: 'themeDetector',
+      persist: true,
+    });
+    return;
+  }
+
+  // オフスクリーンドキュメントにメッセージを送信
+  try {
+    await chrome.runtime.sendMessage({
+      type: 'COLOR_SCHEME_CHANGED',
+      isDarkMode: isDarkMode,
+    });
+  } catch (error) {
+    console.error('🧰🛑 Failed to send theme detection message', error);
+  }
 };
 
 /**

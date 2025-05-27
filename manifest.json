@@ -20,7 +20,6 @@
   },
   "background": {
     "service_worker": "background.js",
-    "type": "module",
-    "persistent": true
+    "type": "module"
   }
 }
