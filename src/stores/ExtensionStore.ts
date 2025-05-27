@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { chromeAPI } from '@/api/ChromeAPI';
+import { chromeAPI } from '@/api';
 import { STORAGE_KEYS } from '@/constants';
 import { mapExtensionInfoToExtensionModel } from '@/mappers';
 import { ExtensionModel } from '@/models';

@@ -8,7 +8,7 @@ import {
   useState,
 } from 'react';
 
-import { chromeAPI } from '@/api/ChromeAPI';
+import { chromeAPI } from '@/api';
 import { ExtensionModel } from '@/models';
 import { useExtensionStore, useTagStore } from '@/stores';
 import { logger } from '@/utils';

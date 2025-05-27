@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { chromeAPI } from '@/api/ChromeAPI';
+import { chromeAPI } from '@/api';
 import { STORAGE_KEYS } from '@/constants';
 import { TagExtensionMapModel, TagManagementModel, TagModel } from '@/models';
 import { logger } from '@/utils';
