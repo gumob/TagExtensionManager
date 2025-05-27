@@ -5,14 +5,14 @@ import { Fragment } from 'react';
 interface DialogComponentProps {
   isOpen: boolean;
   onClose: () => void;
-  size?: 'sm' | 'md' | 'lg';
+  width?: 'max-w-sm' | 'max-w-md' | 'max-w-lg';
   children: React.ReactNode;
 }
 
 export const DialogComponent: React.FC<DialogComponentProps> = ({
   isOpen,
   onClose,
-  size = 'md',
+  width = 'max-w-md',
   children,
 }) => {
   return (
@@ -27,7 +27,7 @@ export const DialogComponent: React.FC<DialogComponentProps> = ({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="dialog-glass-panel" />
+          <div className="fixed inset-0 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-sm" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
@@ -41,7 +41,9 @@ export const DialogComponent: React.FC<DialogComponentProps> = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className={`w-full max-w-${size} dialog-panel`}>
+              <Dialog.Panel
+                className={`w-full ${width} transform overflow-hidden rounded-2xl bg-zinc-100 dark:bg-zinc-800 p-6 shadow-xl shadow-zinc-300 dark:shadow-zinc-900 transition-all`}
+              >
                 {children}
               </Dialog.Panel>
             </Transition.Child>

@@ -1,5 +1,5 @@
 import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/react';
-import { Dialog, Menu } from '@headlessui/react';
+import { Dialog, Menu, MenuItems } from '@headlessui/react';
 import {
   ArchiveBoxXMarkIcon,
   Cog6ToothIcon,
@@ -11,7 +11,7 @@ import {
 
 import { useState } from 'react';
 
-import { DialogComponent } from '@/components';
+import { DialogComponent, MenuItemComponent } from '@/components';
 import { useExtensionContext } from '@/contexts';
 import { TagSelectorMain } from '@/features/popup/components/selector';
 import { ExtensionModel } from '@/models';
@@ -102,81 +102,49 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
       <Menu>
         {({ close }) => (
           <>
-            <Menu.Button ref={buttonRef} className="p-1 menu-button">
+            <Menu.Button
+              ref={buttonRef}
+              className="p-1 text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 rounded-lg focus:outline-none transition-colors"
+            >
               <EllipsisVerticalIcon className="w-5 h-5" />
             </Menu.Button>
 
-            <Menu.Items
+            <MenuItems
               ref={refs.setFloating}
               style={floatingStyles}
-              className="w-36 z-[100] menu-panel"
+              className="w-36 z-[100] bg-zinc-50 dark:bg-zinc-700 rounded-lg shadow-xl shadow-zinc-300 dark:shadow-zinc-900 ring-1 ring-black ring-opacity-5 focus:outline-none"
             >
               <div className="py-1">
-                <Menu.Item>
-                  {({ active }) => (
-                    <button
-                      onClick={() => setIsTagSelectorOpen(true)}
-                      className={`block w-full text-left px-3 py-2 menu-item`}
-                    >
-                      <span className="flex items-center gap-2">
-                        <TagIcon className="w-4 h-4" />
-                        Manage Tags
-                      </span>
-                    </button>
+                <MenuItemComponent onClick={() => setIsTagSelectorOpen(true)}>
+                  <TagIcon className="w-4 h-4" />
+                  Manage Tags
+                </MenuItemComponent>
+                <MenuItemComponent onClick={() => handleLockToggle(close)}>
+                  {extension.locked ? (
+                    <>
+                      <LockOpenIcon className="w-4 h-4" />
+                      Unlock Extension
+                    </>
+                  ) : (
+                    <>
+                      <LockClosedIcon className="w-4 h-4" />
+                      Lock Extension
+                    </>
                   )}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => (
-                    <button
-                      onClick={() => handleLockToggle(close)}
-                      className={`block w-full text-left px-3 py-2 menu-item`}
-                    >
-                      <span className="flex items-center gap-2">
-                        {extension.locked ? (
-                          <>
-                            <LockOpenIcon className="w-4 h-4" />
-                            Unlock Extension
-                          </>
-                        ) : (
-                          <>
-                            <LockClosedIcon className="w-4 h-4" />
-                            Lock Extension
-                          </>
-                        )}
-                      </span>
-                    </button>
-                  )}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => (
-                    <button
-                      onClick={async () => {
-                        openExtensionPage(extension.id);
-                      }}
-                      className={`block w-full text-left px-3 py-2 menu-item`}
-                    >
-                      <span className="flex items-center gap-2">
-                        <Cog6ToothIcon className="w-4 h-4" />
-                        Manage Extension
-                      </span>
-                    </button>
-                  )}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => (
-                    <button
-                      onClick={handleUninstallClick}
-                      className={`block w-full text-left px-3 py-2 menu-item text-red-600 dark:text-red-400`}
-                    >
-                      <span className="flex items-center gap-2">
-                        <ArchiveBoxXMarkIcon className="w-4 h-4" />
-                        Uninstall Extension
-                      </span>
-                    </button>
-                  )}
-                </Menu.Item>
+                </MenuItemComponent>
+                <MenuItemComponent onClick={() => openExtensionPage(extension.id)}>
+                  <Cog6ToothIcon className="w-4 h-4" />
+                  Manage Extension
+                </MenuItemComponent>
+                <MenuItemComponent
+                  className="!text-red-600 dark:!text-red-400"
+                  onClick={handleUninstallClick}
+                >
+                  <ArchiveBoxXMarkIcon className="w-4 h-4" />
+                  Uninstall Extension
+                </MenuItemComponent>
               </div>
-            </Menu.Items>
+            </MenuItems>
           </>
         )}
       </Menu>
@@ -184,8 +152,9 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
       <DialogComponent
         isOpen={isUninstallDialogOpen}
         onClose={() => setIsUninstallDialogOpen(false)}
+        width="max-w-sm"
       >
-        <Dialog.Title className="text-header">{`Uninstall ${extension.name}?`}</Dialog.Title>
+        <Dialog.Title className="text-header">{`Uninstall "${extension.name}"?`}</Dialog.Title>
 
         <div className="mt-6 flex justify-end gap-2">
           <button onClick={() => setIsUninstallDialogOpen(false)} className="dialog-cancel-button">
