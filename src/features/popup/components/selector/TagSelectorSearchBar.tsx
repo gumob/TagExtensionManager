@@ -25,7 +25,7 @@ export const TagSelectorSearchBar: React.FC = () => {
       value={searchQuery}
       placeholder="Search tags..."
       onInputChange={e => setSearchQuery(e.target.value)}
-      icon={<MagnifyingGlassIcon className="h-5 w-5 icon-color-default" aria-hidden="true" />}
+      icon={<MagnifyingGlassIcon className="h-5 w-5" aria-hidden="true" />}
     />
   );
 };

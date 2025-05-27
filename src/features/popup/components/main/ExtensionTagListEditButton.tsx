@@ -21,14 +21,12 @@ export const ExtensionTagListEditButton: React.FC = () => {
     <>
       <button
         onClick={() => setIsTagEditorOpen(true)}
-        className="px-3 py-1 text-2xs font-medium rounded-full text-default bg-chip-default"
+        className="px-3 py-1 text-2xs font-medium rounded-full bg-chip-default"
       >
-        <PencilIcon className="w-3 h-3 inline-flex mr-1 icon-color-default" strokeWidth={1} />
+        <PencilIcon className="w-3 h-3 inline-flex mr-1" strokeWidth={1} />
         <span className="">Edit Tags</span>
       </button>
-      {isTagEditorOpen && (
-        <TagEditorMain isOpen={isTagEditorOpen} onClose={() => setIsTagEditorOpen(false)} />
-      )}
+      <TagEditorMain isOpen={isTagEditorOpen} onClose={() => setIsTagEditorOpen(false)} />
     </>
   );
 };

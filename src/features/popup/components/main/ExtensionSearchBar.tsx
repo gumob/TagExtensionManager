@@ -45,7 +45,7 @@ const ExtensionSearchBar: FC<ExtensionSearchBarProps> = () => {
       value={searchQuery}
       placeholder="Search extensions..."
       onInputChange={handleSearch}
-      icon={<MagnifyingGlassIcon className="h-5 w-5 icon-color-default" aria-hidden="true" />}
+      icon={<MagnifyingGlassIcon className="h-5 w-5" aria-hidden="true" />}
     />
   );
 };

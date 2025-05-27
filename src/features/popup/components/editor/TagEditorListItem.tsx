@@ -124,10 +124,10 @@ export const TagEditorListItem: React.FC<TagEditorListItemProps> = React.memo(
         style={{ width: 'fit-content' }}
       >
         <div className="flex items-center gap-1">
-          <div className="flex items-center gap-1 px-2 py-1.5 rounded-full text-xs font-semibold text-default bg-chip-default">
+          <div className="flex items-center gap-1 px-2 py-1.5 rounded-full text-xs font-semibold bg-chip-default">
             <div className="flex items-center gap-1">
               <div className="cursor-grab active:cursor-grabbing touch-none select-none">
-                <TagIcon className="w-4 h-4 icon-color-default" />
+                <TagIcon className="w-4 h-4" />
               </div>
               <div>
                 {editingTagId === tag.id ? (
@@ -144,19 +144,22 @@ export const TagEditorListItem: React.FC<TagEditorListItemProps> = React.memo(
                       }
                     }}
                     size={Math.max(editingTagName.length, 1)}
-                    className="px-1 py-0.5 rounded-sm text-default bg-chip-default focus:bg-zinc-100 dark:focus:bg-zinc-600"
+                    className="px-1 py-0.5 rounded-sm bg-chip-default focus:bg-zinc-100 dark:focus:bg-zinc-600"
                   />
                 ) : (
                   <button
                     onClick={() => startEditing(tag.id, tag.name)}
-                    className="select-none px-1 py-0.5 text-default"
+                    className="select-none px-1 py-0.5"
                   >
                     {tag.name}
                   </button>
                 )}
               </div>
-              <button onClick={() => deleteTag(tag.id)} className="chip-delete-button">
-                <XMarkIcon className="w-4 h-4 icon-color-default" />
+              <button
+                onClick={() => deleteTag(tag.id)}
+                className="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-300"
+              >
+                <XMarkIcon className="w-4 h-4" />
               </button>
             </div>
           </div>

@@ -1,15 +1,16 @@
-import { Dialog, Transition } from '@headlessui/react';
+import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 
 import { Fragment } from 'react';
 
-interface DialogComponentProps {
+interface DialogRootProps {
   isOpen: boolean;
   onClose: () => void;
   width?: 'max-w-sm' | 'max-w-md' | 'max-w-lg';
   children: React.ReactNode;
 }
 
-export const DialogComponent: React.FC<DialogComponentProps> = ({
+export const DialogRoot: React.FC<DialogRootProps> = ({
   isOpen,
   onClose,
   width = 'max-w-md',
@@ -18,7 +19,7 @@ export const DialogComponent: React.FC<DialogComponentProps> = ({
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={onClose}>
-        <Transition.Child
+        <TransitionChild
           as={Fragment}
           enter="ease-out duration-300"
           enterFrom="opacity-0"
@@ -28,11 +29,11 @@ export const DialogComponent: React.FC<DialogComponentProps> = ({
           leaveTo="opacity-0"
         >
           <div className="fixed inset-0 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-sm" />
-        </Transition.Child>
+        </TransitionChild>
 
         <div className="fixed inset-0 overflow-y-auto">
           <div className="flex min-h-full items-center justify-center p-4">
-            <Transition.Child
+            <TransitionChild
               as={Fragment}
               enter="ease-out duration-300"
               enterFrom="opacity-0 scale-95"
@@ -41,15 +42,33 @@ export const DialogComponent: React.FC<DialogComponentProps> = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel
+              <DialogPanel
                 className={`w-full ${width} transform overflow-hidden rounded-2xl bg-zinc-100 dark:bg-zinc-800 p-6 shadow-xl shadow-zinc-300 dark:shadow-zinc-900 transition-all`}
               >
                 {children}
-              </Dialog.Panel>
-            </Transition.Child>
+              </DialogPanel>
+            </TransitionChild>
           </div>
         </div>
       </Dialog>
     </Transition>
+  );
+};
+
+interface DialogHeaderProps {
+  title: string;
+  onClose?: () => void;
+}
+
+export const DialogHeader: React.FC<DialogHeaderProps> = ({ title, onClose }) => {
+  return (
+    <div className="flex items-center justify-between">
+      <h2 className="text-lg font-bold">{title}</h2>
+      {onClose && (
+        <button onClick={onClose} className="dialog-close-button">
+          <XMarkIcon className="h-6 w-6" />
+        </button>
+      )}
+    </div>
   );
 };

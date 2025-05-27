@@ -39,7 +39,7 @@ export const TagEditorSearchBar: React.FC = () => {
       placeholder="Enter new tag name..."
       onInputChange={e => setNewTagName(e.target.value)}
       onInputKeyDown={handleKeyDown}
-      icon={<TagIcon className="h-5 w-5 icon-color-default" aria-hidden="true" />}
+      icon={<TagIcon className="h-5 w-5" aria-hidden="true" />}
       buttons={<AddButtonComponent onClick={handleAddTag} />}
     />
   );

@@ -1,4 +1,4 @@
 export * from './ButtonComponents';
-export * from './DialogComponent';
+export * from './DialogComponents';
 export * from './MenuItemComponent';
 export * from './SearchBarComponent';

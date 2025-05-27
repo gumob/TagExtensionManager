@@ -24,11 +24,11 @@ export const ExtensionHeader: React.FC = () => {
 
   return (
     <div className="flex justify-between items-center">
-      <h1 className="text-header">Clean Extension Manager</h1>
+      <h1 className="text-lg font-bold">Clean Extension Manager</h1>
       <div className="flex items-center gap-1">
         <button
           onClick={exportFile}
-          className="pl-2 pr-3 py-1 rounded-full text-default bg-chip-default"
+          className="pl-2 pr-3 py-1 rounded-full bg-chip-default"
           title="Export Profile"
         >
           <ArrowDownTrayIcon className="w-3 h-3 inline-flex mr-1" />
@@ -36,7 +36,7 @@ export const ExtensionHeader: React.FC = () => {
         </button>
         <button
           onClick={() => fileInputRef.current?.click()}
-          className="pl-2 pr-3 py-1 rounded-full text-default bg-chip-default"
+          className="pl-2 pr-3 py-1 rounded-full bg-chip-default"
           title="Import Profile"
         >
           <ArrowUpTrayIcon className="w-3 h-3 inline-flex mr-1" />

@@ -1,13 +1,9 @@
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import { DialogComponent } from '@/components';
+import { DialogHeader, DialogRoot } from '@/components';
 import { TagEditorProvider } from '@/contexts';
-import {
-  TagEditorHeader,
-  TagEditorList,
-  TagEditorSearchBar,
-} from '@/features/popup/components/editor';
+import { TagEditorList, TagEditorSearchBar } from '@/features/popup/components/editor';
 
 /**
  * The props for the TagEditorMain component.
@@ -28,16 +24,16 @@ interface TagEditorMainProps {
  */
 export const TagEditorMain: React.FC<TagEditorMainProps> = ({ isOpen, onClose }) => {
   return (
-    <DialogComponent isOpen={isOpen} onClose={onClose}>
+    <DialogRoot isOpen={isOpen} onClose={onClose}>
       <DndProvider backend={HTML5Backend}>
         <TagEditorProvider>
           <div className="flex flex-col gap-4">
-            <TagEditorHeader onClose={onClose} />
+            <DialogHeader title="Edit Tags" onClose={onClose} />
             <TagEditorSearchBar />
             <TagEditorList />
           </div>
         </TagEditorProvider>
       </DndProvider>
-    </DialogComponent>
+    </DialogRoot>
   );
 };

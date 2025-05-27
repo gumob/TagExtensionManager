@@ -55,7 +55,7 @@ export const ExtensionTagListItem: React.FC<ExtensionTagListItemProps> = ({
             : 'bg-chip-default opacity-50'
       }`}
     >
-      <TagIcon className="w-3 h-3 inline-flex mr-1 icon-color-default" strokeWidth={1} />
+      <TagIcon className="w-3 h-3 inline-flex mr-1" strokeWidth={1} />
       <span className="text-2xs">{tag.name}</span>
       <span className="ml-1 text-2xs text-zinc-400 dark:text-zinc-600">{count}</span>
     </button>

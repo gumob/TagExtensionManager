@@ -1,10 +1,6 @@
-import { DialogComponent } from '@/components';
+import { DialogHeader, DialogRoot } from '@/components';
 import { TagSelectorProvider } from '@/contexts';
-import {
-  TagSelectorHeader,
-  TagSelectorList,
-  TagSelectorSearchBar,
-} from '@/features/popup/components/selector';
+import { TagSelectorList, TagSelectorSearchBar } from '@/features/popup/components/selector';
 import { ExtensionModel } from '@/models';
 
 /**
@@ -26,14 +22,14 @@ interface TagSelectorMainProps {
  */
 export const TagSelectorMain: React.FC<TagSelectorMainProps> = ({ extension, isOpen, onClose }) => {
   return (
-    <DialogComponent isOpen={isOpen} onClose={onClose}>
+    <DialogRoot isOpen={isOpen} onClose={onClose}>
       <TagSelectorProvider extension={extension}>
         <div className="flex flex-col gap-4">
-          <TagSelectorHeader onClose={onClose} />
+          <DialogHeader title="Select Tags" onClose={onClose} />
           <TagSelectorSearchBar />
           <TagSelectorList />
         </div>
       </TagSelectorProvider>
-    </DialogComponent>
+    </DialogRoot>
   );
 };

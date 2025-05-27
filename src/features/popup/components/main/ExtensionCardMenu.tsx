@@ -1,5 +1,5 @@
 import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/react';
-import { Dialog, Menu, MenuItems } from '@headlessui/react';
+import { Menu, MenuItems } from '@headlessui/react';
 import {
   ArchiveBoxXMarkIcon,
   Cog6ToothIcon,
@@ -14,7 +14,8 @@ import { useState } from 'react';
 import {
   CancelButtonComponent,
   DeleteButtonComponent,
-  DialogComponent,
+  DialogHeader,
+  DialogRoot,
   MenuItemComponent,
 } from '@/components';
 import { useExtensionContext } from '@/contexts';
@@ -154,26 +155,28 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
         )}
       </Menu>
 
-      <DialogComponent
+      <DialogRoot
         isOpen={isUninstallDialogOpen}
         onClose={() => setIsUninstallDialogOpen(false)}
         width="max-w-sm"
       >
-        <Dialog.Title className="text-header">{`Uninstall "${extension.name}"?`}</Dialog.Title>
-
-        <div className="mt-6 flex justify-end gap-2">
-          <CancelButtonComponent onClick={() => setIsUninstallDialogOpen(false)} />
-          <DeleteButtonComponent onClick={handleConfirmUninstall} />
+        <div className="flex flex-col gap-4">
+          <DialogHeader title="Uninstall Extension" />
+          <div className="flex ">
+            Are you sure to uninstall "{extension.name}"? This action cannot be undone.
+          </div>
+          <div className="flex justify-end gap-2">
+            <CancelButtonComponent onClick={() => setIsUninstallDialogOpen(false)} />
+            <DeleteButtonComponent onClick={handleConfirmUninstall} />
+          </div>
         </div>
-      </DialogComponent>
+      </DialogRoot>
 
-      {isTagSelectorOpen && (
-        <TagSelectorMain
-          extension={extension}
-          isOpen={isTagSelectorOpen}
-          onClose={() => setIsTagSelectorOpen(false)}
-        />
-      )}
+      <TagSelectorMain
+        extension={extension}
+        isOpen={isTagSelectorOpen}
+        onClose={() => setIsTagSelectorOpen(false)}
+      />
     </>
   );
 };

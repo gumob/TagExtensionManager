@@ -3,46 +3,8 @@
 @tailwind utilities;
 
 @layer components {
-  .text-default {
-    @apply text-zinc-900 dark:text-zinc-100;
-  }
-
-  .text-header {
-    @apply text-lg font-bold text-default;
-  }
-
-  .button-search-bar {
-    @apply bg-zinc-600 dark:bg-zinc-500 text-white rounded-full hover:bg-zinc-300 dark:hover:bg-zinc-600 focus:outline-none transition-colors;
-  }
-
-  .icon-color-default {
-    @apply text-zinc-500 dark:text-zinc-400;
-  }
-
-  .icon-color-darken {
-    @apply text-zinc-600 dark:text-zinc-400;
-  }
-
-  .extension-version-color {
-    @apply text-zinc-500 dark:text-zinc-400;
-  }
-
-  .dialog-close-button {
-    @apply rounded-lg p-1 text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 focus:outline-none transition-colors;
-  }
-
   .bg-chip-default {
     @apply bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300 dark:hover:bg-zinc-600 focus:outline-none transition-colors;
-  }
-
-  /* .bg-chip- */
-
-  .bg-chip-selected {
-    @apply bg-zinc-200 dark:bg-zinc-700;
-  }
-
-  .chip-delete-button {
-    @apply text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-300;
   }
 }
 
