@@ -11,10 +11,6 @@
     @apply text-lg font-bold text-default;
   }
 
-  .input-search-bar {
-    @apply rounded-full text-default bg-white dark:bg-zinc-700 focus:outline-none focus:ring-1 focus:ring-zinc-200 dark:focus:ring-zinc-500;
-  }
-
   .button-search-bar {
     @apply bg-zinc-600 dark:bg-zinc-500 text-white rounded-full hover:bg-zinc-300 dark:hover:bg-zinc-600 focus:outline-none transition-colors;
   }

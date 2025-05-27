@@ -2,6 +2,7 @@ import { TagIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useRef, useState } from 'react';
 
+import { SearchBarComponent } from '@/components';
 import { useTagEditorContext } from '@/contexts';
 
 /**
@@ -27,32 +28,23 @@ export const TagEditorSearchBar: React.FC = () => {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      searchInputRef.current?.focus();
-    }, 100);
-  }, []);
+    if (!searchInputRef.current) return;
+    searchInputRef.current?.focus();
+  }, [searchInputRef]);
 
   return (
-    <div className="relative">
-      <div className="flex gap-2">
-        <div className="relative flex-1">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <TagIcon className="h-5 w-5 icon-color-default" aria-hidden="true" />
-          </div>
-          <input
-            ref={searchInputRef}
-            type="text"
-            value={newTagName}
-            onChange={e => setNewTagName(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Enter new tag name..."
-            className="w-full h-10 pl-10 pr-3 py-1.5 input-search-bar"
-          />
-        </div>
+    <SearchBarComponent
+      inputRef={searchInputRef}
+      value={newTagName}
+      placeholder="Enter new tag name..."
+      onInputChange={e => setNewTagName(e.target.value)}
+      onInputKeyDown={handleKeyDown}
+      icon={<TagIcon className="h-5 w-5 icon-color-default" aria-hidden="true" />}
+      buttons={
         <button onClick={handleAddTag} className="px-4 py-1.5 button-search-bar">
           Add
         </button>
-      </div>
-    </div>
+      }
+    />
   );
 };

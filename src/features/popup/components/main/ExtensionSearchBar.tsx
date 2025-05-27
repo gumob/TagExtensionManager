@@ -1,7 +1,8 @@
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
-import React, { FC } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 
+import { SearchBarComponent } from '@/components';
 import { useExtensionContext } from '@/contexts';
 
 /**
@@ -20,7 +21,7 @@ const ExtensionSearchBar: FC<ExtensionSearchBarProps> = () => {
    * The extensions and filtered extensions.
    */
   const { searchQuery, setSearchQuery } = useExtensionContext();
-
+  const searchInputRef = useRef<HTMLInputElement>(null);
   /**
    * The handle search.
    */
@@ -28,24 +29,24 @@ const ExtensionSearchBar: FC<ExtensionSearchBarProps> = () => {
     setSearchQuery(e.target.value);
   };
 
+  useEffect(() => {
+    if (!searchInputRef.current) return;
+    searchInputRef.current?.focus();
+  }, [searchInputRef]);
+
   /**
    * The ExtensionSearchBar component.
    *
    * @returns The ExtensionSearchBar component.
    */
   return (
-    <div className="relative">
-      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-        <MagnifyingGlassIcon className="h-5 w-5 icon-color-default" aria-hidden="true" />
-      </div>
-      <input
-        type="text"
-        placeholder="Search extensions..."
-        value={searchQuery}
-        onChange={handleSearch}
-        className="w-full h-10 pl-10 px-4 input-search-bar"
-      />
-    </div>
+    <SearchBarComponent
+      inputRef={searchInputRef}
+      value={searchQuery}
+      placeholder="Search extensions..."
+      onInputChange={handleSearch}
+      icon={<MagnifyingGlassIcon className="h-5 w-5 icon-color-default" aria-hidden="true" />}
+    />
   );
 };
 
