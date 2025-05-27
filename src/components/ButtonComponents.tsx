@@ -1,12 +1,12 @@
 import React from 'react';
 
-interface ButtonXLargeComponentProps {
+interface XLargeButtonComponentProps {
   className?: string;
   onClick: () => void;
   children?: React.ReactNode;
 }
 
-export const ButtonXLargeComponent: React.FC<ButtonXLargeComponentProps> = ({
+export const XLargeButtonComponent: React.FC<XLargeButtonComponentProps> = ({
   className = 'bg-zinc-600 dark:bg-zinc-500 hover:bg-zinc-300 dark:hover:bg-zinc-600',
   onClick,
   children,
@@ -21,35 +21,35 @@ export const ButtonXLargeComponent: React.FC<ButtonXLargeComponentProps> = ({
   );
 };
 
-export const AddButtonComponent: React.FC<ButtonXLargeComponentProps> = ({ onClick }) => {
+export const AddButtonComponent: React.FC<XLargeButtonComponentProps> = ({ onClick }) => {
   return (
-    <ButtonXLargeComponent
+    <XLargeButtonComponent
       className="bg-zinc-600 dark:bg-zinc-500 hover:bg-zinc-300 dark:hover:bg-zinc-600"
       onClick={onClick}
     >
       Add
-    </ButtonXLargeComponent>
+    </XLargeButtonComponent>
   );
 };
 
-export const DeleteButtonComponent: React.FC<ButtonXLargeComponentProps> = ({ onClick }) => {
+export const DeleteButtonComponent: React.FC<XLargeButtonComponentProps> = ({ onClick }) => {
   return (
-    <ButtonXLargeComponent
+    <XLargeButtonComponent
       className="bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-500"
       onClick={onClick}
     >
       Delete
-    </ButtonXLargeComponent>
+    </XLargeButtonComponent>
   );
 };
 
-export const CancelButtonComponent: React.FC<ButtonXLargeComponentProps> = ({ onClick }) => {
+export const CancelButtonComponent: React.FC<XLargeButtonComponentProps> = ({ onClick }) => {
   return (
-    <ButtonXLargeComponent
+    <XLargeButtonComponent
       className="bg-zinc-400 dark:bg-zinc-600 hover:bg-zinc-500 dark:hover:bg-zinc-500"
       onClick={onClick}
     >
       Cancel
-    </ButtonXLargeComponent>
+    </XLargeButtonComponent>
   );
 };
