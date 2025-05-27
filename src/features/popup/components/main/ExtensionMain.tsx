@@ -18,19 +18,11 @@ export const ExtensionMain: React.FC = () => {
    */
   return (
     <main className="h-screen flex flex-col overflow-hidden">
-      <div className="container mx-auto flex flex-col h-full">
-        <div className="flex-none px-4 pt-4 pb-0">
-          <div className="flex justify-between items-center mb-3">
-            <ExtensionHeader />
-          </div>
-
-          <div className="mb-3">
-            <ExtensionTagList />
-          </div>
-
-          <div className="mb-3">
-            <ExtensionSearchBar />
-          </div>
+      <div className="container mx-auto flex flex-col h-full gap-3">
+        <div className="flex-none px-4 pt-4 pb-0 flex flex-col gap-3">
+          <ExtensionHeader />
+          <ExtensionTagList />
+          <ExtensionSearchBar />
         </div>
 
         <div className="flex-1 overflow-y-auto">

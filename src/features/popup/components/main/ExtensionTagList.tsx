@@ -22,7 +22,7 @@ export const ExtensionTagList: React.FC<ExtensionTagListProps> = ({}: ExtensionT
   /**
    * The tag store.
    */
-  const { tags, extensionTags } = useTagStore();
+  const { tags } = useTagStore();
 
   /**
    * The ExtensionTagList component.
@@ -31,7 +31,7 @@ export const ExtensionTagList: React.FC<ExtensionTagListProps> = ({}: ExtensionT
    */
   return (
     <>
-      <div className="flex flex-wrap gap-1 mb-1">
+      <div className="flex flex-wrap gap-1">
         <ExtensionTagMetrics />
         <ExtensionTagListEditButton />
       </div>

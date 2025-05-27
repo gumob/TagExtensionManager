@@ -23,7 +23,7 @@ export const ExtensionHeader: React.FC = () => {
   };
 
   return (
-    <>
+    <div className="flex justify-between items-center">
       <h1 className="text-header">Clean Extension Manager</h1>
       <div className="flex items-center gap-1">
         <button
@@ -50,6 +50,6 @@ export const ExtensionHeader: React.FC = () => {
           className="hidden"
         />
       </div>
-    </>
+    </div>
   );
 };
