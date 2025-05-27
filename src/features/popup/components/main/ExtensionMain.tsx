@@ -19,7 +19,7 @@ export const ExtensionMain: React.FC = () => {
   return (
     <main className="h-screen flex flex-col overflow-hidden">
       <div className="container mx-auto flex flex-col h-full gap-3">
-        <div className="flex-none px-4 pt-4 pb-0 flex flex-col gap-3">
+        <div className="flex flex-col gap-3 px-4 pt-4 pb-0">
           <ExtensionHeader />
           <ExtensionTagList />
           <ExtensionSearchBar />
