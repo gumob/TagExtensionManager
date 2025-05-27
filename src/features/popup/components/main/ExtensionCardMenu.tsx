@@ -11,7 +11,12 @@ import {
 
 import { useState } from 'react';
 
-import { DialogComponent, MenuItemComponent } from '@/components';
+import {
+  CancelButtonComponent,
+  DeleteButtonComponent,
+  DialogComponent,
+  MenuItemComponent,
+} from '@/components';
 import { useExtensionContext } from '@/contexts';
 import { TagSelectorMain } from '@/features/popup/components/selector';
 import { ExtensionModel } from '@/models';
@@ -157,12 +162,8 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
         <Dialog.Title className="text-header">{`Uninstall "${extension.name}"?`}</Dialog.Title>
 
         <div className="mt-6 flex justify-end gap-2">
-          <button onClick={() => setIsUninstallDialogOpen(false)} className="dialog-cancel-button">
-            Cancel
-          </button>
-          <button onClick={handleConfirmUninstall} className="dialog-delete-button">
-            Delete
-          </button>
+          <CancelButtonComponent onClick={() => setIsUninstallDialogOpen(false)} />
+          <DeleteButtonComponent onClick={handleConfirmUninstall} />
         </div>
       </DialogComponent>
 

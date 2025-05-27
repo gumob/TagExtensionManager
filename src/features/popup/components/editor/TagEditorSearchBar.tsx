@@ -2,7 +2,7 @@ import { TagIcon } from '@heroicons/react/24/outline';
 
 import { useEffect, useRef, useState } from 'react';
 
-import { SearchBarComponent } from '@/components';
+import { AddButtonComponent, SearchBarComponent } from '@/components';
 import { useTagEditorContext } from '@/contexts';
 
 /**
@@ -40,11 +40,7 @@ export const TagEditorSearchBar: React.FC = () => {
       onInputChange={e => setNewTagName(e.target.value)}
       onInputKeyDown={handleKeyDown}
       icon={<TagIcon className="h-5 w-5 icon-color-default" aria-hidden="true" />}
-      buttons={
-        <button onClick={handleAddTag} className="px-4 py-1.5 button-search-bar">
-          Add
-        </button>
-      }
+      buttons={<AddButtonComponent onClick={handleAddTag} />}
     />
   );
 };
