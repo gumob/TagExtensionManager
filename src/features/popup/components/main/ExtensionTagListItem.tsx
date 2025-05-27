@@ -47,7 +47,7 @@ export const ExtensionTagListItem: React.FC<ExtensionTagListItemProps> = ({
   return (
     <button
       onClick={() => setVisibleTagId(isSelected ? null : tag.id)}
-      className={`px-3 py-1 text-2xs font-medium rounded-full transition-colors ${
+      className={`px-3 py-1 text-2xs font-medium rounded-full transition-opacity ${
         isSelected
           ? 'bg-chip-default'
           : visibleTagId === null

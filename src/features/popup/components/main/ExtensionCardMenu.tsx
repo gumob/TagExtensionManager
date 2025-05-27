@@ -118,7 +118,7 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
             <MenuItems
               ref={refs.setFloating}
               style={floatingStyles}
-              className="w-36 z-[100] bg-zinc-50 dark:bg-zinc-700 rounded-lg shadow-xl shadow-zinc-300 dark:shadow-zinc-900 ring-1 ring-black ring-opacity-5 focus:outline-none"
+              className="w-36 z-[100] bg-zinc-50 dark:bg-zinc-700 rounded-lg shadow-xl shadow-zinc-300 dark:shadow-zinc-900 focus:outline-none ring-1 ring-black ring-opacity-5"
             >
               <div className="py-1">
                 <MenuItemComponent onClick={() => setIsTagSelectorOpen(true)}>

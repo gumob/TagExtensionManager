@@ -144,7 +144,7 @@ export const TagEditorListItem: React.FC<TagEditorListItemProps> = React.memo(
                       }
                     }}
                     size={Math.max(editingTagName.length, 1)}
-                    className="px-1 py-0.5 rounded-sm bg-chip-default focus:bg-zinc-100 dark:focus:bg-zinc-600"
+                    className="px-1 py-0.5 rounded-sm focus:outline-none"
                   />
                 ) : (
                   <button

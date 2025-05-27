@@ -140,7 +140,7 @@ export const ExtensionCard: React.FC<ExtensionCardProps> = ({ extension }) => {
             disabled={extension.locked}
             className={`${
               extension.enabled ? 'bg-green-500' : 'bg-zinc-300 dark:bg-zinc-600'
-            } relative inline-flex h-4 w-7 items-center rounded-full transition-colors focus:outline-none ${
+            } relative inline-flex h-4 w-7 items-center rounded-full focus:outline-none transition-opacity ${
               extension.locked ? 'opacity-50 cursor-not-allowed' : ''
             }`}
           >
