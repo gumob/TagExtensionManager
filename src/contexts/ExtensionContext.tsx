@@ -170,14 +170,11 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
       setIsLoading(true);
       await loadExtensions();
 
-      logger.debug('🧯🔄 Extensions refreshed successfully', {
-        group: 'ExtensionProvider',
-        persist: true,
-      });
+      logger.debug('Extensions refreshed successfully');
 
       return storedExtensions;
     } catch (error) {
-      console.error('🧯🛑 Failed to refresh extensions', error);
+      logger.error('Failed to refresh extensions', error);
       throw error;
     } finally {
       if (isSubscribed.current) {
@@ -238,10 +235,7 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
   const handleExtensionStateChange = useCallback(
     (info: chrome.management.ExtensionInfo) => {
       if (!isSubscribed.current) return;
-      logger.debug(`🧯🫱 Extension state changed: ${info.name}`, {
-        group: 'ExtensionProvider',
-        persist: true,
-      });
+      logger.debug(`Extension state changed: ${info.name}`);
       refreshExtensions();
     },
     [refreshExtensions]
@@ -254,10 +248,7 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
   const handleExtensionUninstalled = useCallback(
     (id: string) => {
       if (!isSubscribed.current) return;
-      logger.debug(`🧯🫱 Extension uninstalled: ${id}`, {
-        group: 'ExtensionProvider',
-        persist: true,
-      });
+      logger.debug(`Extension uninstalled: ${id}`);
       refreshExtensions();
     },
     [refreshExtensions]
@@ -270,10 +261,7 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
   const handleExtensionUpdate = useCallback(
     (details: chrome.runtime.InstalledDetails) => {
       if (!isSubscribed.current || details.reason !== 'update') return;
-      logger.debug(`🧯🫱 Extension updated: ${details.id}`, {
-        group: 'ExtensionProvider',
-        persist: true,
-      });
+      logger.debug(`Extension updated: ${details.id}`);
       // refreshExtensions();
     },
     [refreshExtensions]
@@ -290,27 +278,21 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
   useEffect(() => {
     /** Initialize extensions */
     const initialize = async () => {
-      logger.debug('🧯🌱 Initializing ExtensionProvider', {
-        group: 'ExtensionProvider',
-        persist: true,
-      });
+      logger.debug('Initializing ExtensionProvider');
       try {
         /* Initialize stores in sequence */
         await useExtensionStore.getState().initialize();
         await useTagStore.getState().initialize();
         isInitialized.current = true;
       } catch (error) {
-        console.error('🧯🛑 Failed to initialize extensions', error);
+        logger.error('Failed to initialize extensions', error);
       }
     };
     if (!isInitialized.current) initialize();
 
     /** Subscribe listeners */
     if (!isSubscribed.current) {
-      logger.debug('🧯🌱 Subscribing listeners', {
-        group: 'ExtensionProvider',
-        persist: true,
-      });
+      logger.debug('Subscribing listeners');
       chrome.management.onEnabled.addListener(handleExtensionStateChange);
       chrome.management.onDisabled.addListener(handleExtensionStateChange);
       chrome.management.onInstalled.addListener(handleExtensionStateChange);
@@ -321,10 +303,7 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
 
     /** Unsubscribe listeners */
     return () => {
-      logger.debug('🧯🗑️ Deinitializing ExtensionProvider', {
-        group: 'ExtensionProvider',
-        persist: true,
-      });
+      logger.debug('Deinitializing ExtensionProvider');
       chrome.management.onEnabled.removeListener(handleExtensionStateChange);
       chrome.management.onDisabled.removeListener(handleExtensionStateChange);
       chrome.management.onInstalled.removeListener(handleExtensionStateChange);

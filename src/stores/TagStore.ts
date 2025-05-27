@@ -57,10 +57,7 @@ export const useTagStore = create<TagStore>()(
       initialize: async () => {
         try {
           set({ isLoading: true });
-          logger.debug('🏷🏪🌱 Initializing tag store', {
-            group: 'TagStore',
-            persist: true,
-          });
+          logger.debug('Initializing tag store');
 
           /** Get the storage instance */
           const storedData = (
@@ -69,10 +66,7 @@ export const useTagStore = create<TagStore>()(
 
           /** If the stored data exists, load the tags and extension tags */
           if (storedData?.tags && storedData?.extensionTags) {
-            logger.debug('🏷🏪🌱 Loading tags from storage', {
-              group: 'TagStore',
-              persist: true,
-            });
+            logger.debug('Loading tags from storage');
 
             const loadedData = {
               tags: storedData.tags.map((tag: any) => ({
@@ -97,7 +91,7 @@ export const useTagStore = create<TagStore>()(
             });
           }
         } catch (error) {
-          console.error('🏷🏪🛑 Failed to load tags', error);
+          logger.error('Failed to load tags', error);
           set({ isLoading: false });
         }
       },

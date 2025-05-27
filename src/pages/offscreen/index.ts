@@ -1,6 +1,7 @@
 /**
  * Offscreen document
  */
+import { logger } from '@/utils';
 
 /**
  * The function that logs to the background.
@@ -11,22 +12,22 @@ const logToBackground = (message: string) => {
   try {
     chrome.runtime.sendMessage({ type: 'OFFSCREEN_DEBUG', message }, response => {
       if (chrome.runtime.lastError) {
-        console.error('Failed to send log:', chrome.runtime.lastError);
+        logger.error('Failed to send log:', chrome.runtime.lastError);
       }
     });
   } catch (error) {
-    console.error('Failed to send log:', error);
+    logger.error('Failed to send log:', error);
   }
 };
 const errorToBackground = (message: string, error: any) => {
   try {
     chrome.runtime.sendMessage({ type: 'OFFSCREEN_ERROR', message, error }, response => {
       if (chrome.runtime.lastError) {
-        console.error('Failed to send error:', chrome.runtime.lastError);
+        logger.error('Failed to send error:', chrome.runtime.lastError);
       }
     });
   } catch (error) {
-    console.error('Failed to send error:', error);
+    logger.error('Failed to send error:', error);
   }
 };
 

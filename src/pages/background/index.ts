@@ -21,12 +21,9 @@ const createOffscreenDocument = async () => {
       ['MATCH_MEDIA' as chrome.offscreen.Reason],
       'Detect system color scheme changes'
     );
-    logger.debug('🔙🌱 Offscreen document created successfully', {
-      group: 'Background',
-      persist: true,
-    });
+    logger.debug('Offscreen document created successfully');
   } catch (error) {
-    console.error('🔙🛑 Failed to initialize extensions', error);
+    logger.error('Failed to initialize extensions', error);
   }
 };
 
@@ -34,10 +31,7 @@ const createOffscreenDocument = async () => {
  * Initialize background script
  */
 const initialize = async () => {
-  logger.debug('🔙🌱 Initializing background script', {
-    group: 'Background',
-    persist: true,
-  });
+  logger.debug('Initializing background script');
 
   /**
    * Listen for theme changes from offscreen document
@@ -52,20 +46,14 @@ const initialize = async () => {
        * Keep service worker active
        */
       case 'PING':
-        logger.debug('🔙�� Received PING', {
-          group: 'Background',
-          persist: true,
-        });
+        logger.debug('Received PING');
         sendResponse({ success: true });
         return true;
       /**
        * Theme detection from popup
        */
       case 'COLOR_SCHEME_CHANGED':
-        logger.debug('🔙🫱 Color scheme changed', {
-          group: 'Background',
-          persist: true,
-        });
+        logger.debug('Color scheme changed');
         updateExtensionIcon(message.isDarkMode);
         sendResponse({ success: true });
         return true;
@@ -73,17 +61,14 @@ const initialize = async () => {
        * Debug messages
        */
       case 'OFFSCREEN_DEBUG':
-        logger.debug(`🖥🐛 ${message.message}`, {
-          group: 'Offscreen',
-          persist: true,
-        });
+        logger.debug(message.message);
         sendResponse({ success: true });
         return true;
       /**
        * Error messages
        */
       case 'OFFSCREEN_ERROR':
-        console.error(`🖥🔴 ${message.message}`, message.error);
+        logger.error(message.message, message.error);
         sendResponse({ success: true });
         return true;
       default:
@@ -107,10 +92,7 @@ const initialize = async () => {
  * Listen for extension installation
  */
 chrome.runtime.onInstalled.addListener(async details => {
-  logger.debug('🔙🫱 Extension installed', {
-    group: 'Background',
-    persist: true,
-  });
+  logger.debug('Extension installed');
   await initialize();
 });
 
@@ -118,9 +100,6 @@ chrome.runtime.onInstalled.addListener(async details => {
  * Listen for extension startup
  */
 chrome.runtime.onStartup.addListener(async () => {
-  logger.debug('🔙🫱 Extension started', {
-    group: 'Background',
-    persist: true,
-  });
+  logger.debug('Extension started');
   await initialize();
 });

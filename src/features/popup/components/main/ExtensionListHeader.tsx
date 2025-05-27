@@ -1,6 +1,7 @@
 import { DefaultBackgroundButton } from '@/components';
 import { useExtensionContext } from '@/contexts';
 import { ExtensionModel, TagModel } from '@/models';
+import { logger } from '@/utils';
 
 /**
  * The props for the ExtensionListHeader component.
@@ -41,7 +42,7 @@ export const ExtensionListHeader: React.FC<ExtensionListHeaderProps> = ({
     /** Toggle all extensions simultaneously */
     const togglePromises = unlockedExtensions.map(ext => toggleEnabled(ext.id, enabled));
     Promise.all(togglePromises).catch(error => {
-      console.warn('Failed to toggle extensions:', error);
+      logger.warn('Failed to toggle extensions:', error);
     });
   };
 

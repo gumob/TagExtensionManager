@@ -23,18 +23,12 @@ const isBackgroundScriptReady = async (): Promise<boolean> => {
  */
 export const detectTheme = async () => {
   const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  logger.debug('🧰🎨 Theme detected', {
-    group: 'themeDetector',
-    persist: true,
-  });
+  logger.debug('Theme detected');
 
   // バックグラウンドスクリプトの起動を確認
   const isReady = await isBackgroundScriptReady();
   if (!isReady) {
-    logger.warn('🧰🎨 Background script is not ready, skipping theme detection', {
-      group: 'themeDetector',
-      persist: true,
-    });
+    logger.warn('Background script is not ready, skipping theme detection');
     return;
   }
 
@@ -45,7 +39,7 @@ export const detectTheme = async () => {
       isDarkMode: isDarkMode,
     });
   } catch (error) {
-    console.error('🧰🛑 Failed to send theme detection message', error);
+    logger.error('Failed to send theme detection message', error);
   }
 };
 
@@ -54,10 +48,7 @@ export const detectTheme = async () => {
  * @param isDarkMode - Whether the color scheme is dark
  */
 export const updateExtensionIcon = async (isDarkMode: boolean) => {
-  logger.debug('🧰🎨 Updating extension icon', {
-    group: 'background',
-    persist: true,
-  });
+  logger.debug('Updating extension icon');
 
   try {
     const iconPath = isDarkMode ? '/icons/dark/' : '/icons/light/';
@@ -68,11 +59,8 @@ export const updateExtensionIcon = async (isDarkMode: boolean) => {
         128: `${iconPath}icon128.png`,
       },
     });
-    logger.debug('🧰🎨 Icon updated', {
-      group: 'background',
-      persist: true,
-    });
+    logger.debug('Icon updated');
   } catch (error) {
-    console.error('🧰🛑 Failed to update extension icon', error);
+    logger.error('Failed to update extension icon', error);
   }
 };

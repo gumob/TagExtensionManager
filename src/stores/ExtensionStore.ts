@@ -54,10 +54,7 @@ export const useExtensionStore = create<ExtensionStore>()(
       loadExtensions: async () => {
         try {
           set({ isLoading: true });
-          logger.debug('🧯🏪🌱 Loading extensions from storage', {
-            group: 'ExtensionStore',
-            persist: true,
-          });
+          logger.debug('Loading extensions from storage');
 
           /** Get the storage instance */
           const storedData = (
@@ -90,7 +87,7 @@ export const useExtensionStore = create<ExtensionStore>()(
             isLoading: false,
           });
         } catch (error) {
-          console.error('🧯🏪🛑 Failed to load extensions', error);
+          logger.error('Failed to load extensions', error);
           set({ isLoading: false });
         }
       },

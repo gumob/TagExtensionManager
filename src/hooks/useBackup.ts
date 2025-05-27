@@ -63,7 +63,7 @@ export const useBackup = () => {
       }
       return date.toISOString();
     } catch (error) {
-      console.error('📁🛑 Failed to initialize extensions', error);
+      logger.error('Failed to initialize extensions', error);
       return new Date().toISOString();
     }
   };
@@ -167,12 +167,9 @@ export const useBackup = () => {
       a.click();
       URL.revokeObjectURL(url);
 
-      logger.info('📁✅ Successfully exported profile', {
-        group: 'useBackup',
-        persist: true,
-      });
+      logger.info('Successfully exported profile');
     } catch (error) {
-      console.error('📁🛑 Failed to export profile', error);
+      logger.error('Failed to export profile', error);
       throw error;
     }
   };
@@ -214,11 +211,7 @@ export const useBackup = () => {
            */
           if (profiles.version !== BACKUP_VERSION) {
             logger.warn(
-              `📁⚠️ Backup file version (${profiles.version}) differs from current version (${BACKUP_VERSION})`,
-              {
-                group: 'useBackup',
-                persist: true,
-              }
+              `Backup file version (${profiles.version}) differs from current version (${BACKUP_VERSION})`
             );
           }
 
@@ -274,18 +267,12 @@ export const useBackup = () => {
            */
           const filteredOutCount = profiles.extensions.length - filteredExtensions.length;
           if (filteredOutCount > 0) {
-            logger.info(`📁ℹ️ Filtered out ${filteredOutCount} non-installed extensions`, {
-              group: 'useBackup',
-              persist: true,
-            });
+            logger.info(`Filtered out ${filteredOutCount} non-installed extensions`);
           }
 
-          logger.info('📁✅ Successfully imported profile', {
-            group: 'useBackup',
-            persist: true,
-          });
+          logger.info('Successfully imported profile');
         } catch (error) {
-          console.error('📁🛑 Failed to import profile', error);
+          logger.error('Failed to import profile', error);
           throw error;
         }
       };
@@ -295,7 +282,7 @@ export const useBackup = () => {
        */
       reader.readAsText(file);
     } catch (error) {
-      console.error('📁🛑 Failed to import profile', error);
+      logger.error('Failed to import profile', error);
       throw error;
     }
   };
