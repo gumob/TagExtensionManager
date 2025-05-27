@@ -1,5 +1,5 @@
 import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/react';
-import { Menu, MenuItems } from '@headlessui/react';
+import { Menu, MenuButton, MenuItems } from '@headlessui/react';
 import {
   ArchiveBoxXMarkIcon,
   Cog6ToothIcon,
@@ -108,12 +108,12 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
       <Menu>
         {({ close }) => (
           <>
-            <Menu.Button
+            <MenuButton
               ref={buttonRef}
               className="p-1 text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 rounded-lg focus:outline-none transition-colors"
             >
               <EllipsisVerticalIcon className="w-5 h-5" />
-            </Menu.Button>
+            </MenuButton>
 
             <MenuItems
               ref={refs.setFloating}
