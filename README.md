@@ -1,6 +1,6 @@
 # Tag Extension Manager
 
-A tool for efficiently managing Chrome extensions. Group multiple extensions with tags and easily enable/disable them based on your needs.
+A Chrome Extension for efficiently managing Chrome extensions. Group multiple extensions with tags and easily enable/disable them based on your needs.
 
 <div class="grid" markdown>
 
@@ -116,6 +116,10 @@ pnpm build
 # Development build
 pnpm dev
 ```
+
+## 🔒 Privacy
+
+This extension is designed with privacy in mind. We do not collect any personal information, and all data is stored locally on your device. For detailed information about how we handle your data and the permissions we use, please refer to our [Privacy Policy](./PRIVACY.md).
 
 ## 📝 License
 
