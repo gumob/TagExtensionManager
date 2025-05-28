@@ -79,6 +79,12 @@ A Chrome Extension for efficiently managing Chrome extensions. Group multiple ex
 7. Click "Load unpacked"
 8. Select the `dist/dev` folder in the downloaded directory
 
+### Using Fastlane
+
+```bash
+bundle exec fastlane
+```
+
 ### Project Structure
 
 For detailed project structure, please refer to [DIRECTORYSTRUCTURE.md](./DIRECTORYSTRUCTURE.md).

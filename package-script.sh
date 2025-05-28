@@ -14,8 +14,6 @@ local option_list=(
 	"pnpm clean-install-modules"
 	"pnpm outdated"
 	"corepack upgrade"
-	" "
-	"convert icon svg to png"
 )
 
 local selected_option=$(printf "%s\n" "${option_list[@]}" | fzf --ansi --prompt="Select a job to execute > ")
