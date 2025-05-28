@@ -109,11 +109,30 @@ lane :create_package do
 end
 
 desc "Create release"
-lane :release do |options|
-  type = options[:type] || 'patch'
+lane :release do
+  # Show version selection dialog
+  version_type = UI.select(
+    "How would you like to update the version?",
+    [
+      "Major version (e.g. 1.0.0 -> 2.0.0)",
+      "Minor version (e.g. 1.0.0 -> 1.1.0)",
+      "Patch version (e.g. 1.0.0 -> 1.0.1)",
+      "No version change"
+    ]
+  )
 
-  # Update version
-  bump_version(type: type)
+  # Map selection to version type
+  version_type = case version_type
+    when "Major version (e.g. 1.0.0 -> 2.0.0)" then "major"
+    when "Minor version (e.g. 1.0.0 -> 1.1.0)" then "minor"
+    when "Patch version (e.g. 1.0.0 -> 1.0.1)" then "patch"
+    when "No version change" then "never"
+  end
+
+  # Update version if not "never"
+  if version_type != "never"
+    bump_version(type: version_type)
+  end
 
   # Check format
   format_check
@@ -135,7 +154,13 @@ lane :release do |options|
 
   # Confirm before committing
   unless UI.confirm("Do you want to commit and tag version #{version}?")
-    UI.user_error!("Release cancelled by user")
+    UI.important("Release cancelled by user")
+    next
+  end
+
+  unless UI.confirm("Are you sure you want to release version #{version}?")
+    UI.important("Release cancelled by user")
+    next
   end
 
   sh("git add package.json manifest.json")
