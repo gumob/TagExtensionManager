@@ -64,8 +64,8 @@ const config: Configuration = {
       ],
     }),
   ],
-  devtool: isDev ? 'source-map' : false,
-  // devtool: isDev ? 'inline-source-map' : false,
+  // devtool: isDev ? 'source-map' : false,
+  devtool: isDev ? 'inline-source-map' : false,
   optimization: {
     minimize: !isDev,
   },

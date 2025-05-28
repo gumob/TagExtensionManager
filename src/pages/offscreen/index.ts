@@ -7,7 +7,7 @@ logger.debug('Initializing offscreen document');
  */
 const sendThemeStatus = () => {
   const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  logger.debug(`isDarkMode: ${isDarkMode}`);
+  logger.debug('isDarkMode', isDarkMode);
   try {
     chrome.runtime.sendMessage({ type: 'COLOR_SCHEME_CHANGED', isDarkMode }, response => {
       if (chrome.runtime.lastError) {
@@ -29,7 +29,7 @@ const sendThemeStatus = () => {
  * The function that sets the media query and logs the initial state.
  */
 const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-logger.debug(`Initial media query state: ${mediaQuery.matches}`);
+logger.debug('Initial media query state:', mediaQuery.matches);
 
 /**
  * The function that sends the initial theme status.
@@ -43,7 +43,7 @@ setTimeout(() => {
  * The function that listens for theme changes.
  */
 const handleThemeChange = (event: MediaQueryListEvent) => {
-  logger.debug(`Theme change detected: ${event.matches ? 'dark' : 'light'}`);
+  logger.debug('Theme change detected:', event.matches ? 'dark' : 'light');
   sendThemeStatus();
 };
 

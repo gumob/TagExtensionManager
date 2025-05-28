@@ -235,7 +235,7 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
   const handleExtensionStateChange = useCallback(
     (info: chrome.management.ExtensionInfo) => {
       if (!isSubscribed.current) return;
-      logger.debug(`Extension state changed: ${info.name}`);
+      logger.debug('Extension state changed', info.name);
       refreshExtensions();
     },
     [refreshExtensions]
@@ -248,7 +248,7 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
   const handleExtensionUninstalled = useCallback(
     (id: string) => {
       if (!isSubscribed.current) return;
-      logger.debug(`Extension uninstalled: ${id}`);
+      logger.debug('Extension uninstalled', id);
       refreshExtensions();
     },
     [refreshExtensions]
@@ -261,7 +261,7 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
   const handleExtensionUpdate = useCallback(
     (details: chrome.runtime.InstalledDetails) => {
       if (!isSubscribed.current || details.reason !== 'update') return;
-      logger.debug(`Extension updated: ${details.id}`);
+      logger.debug('Extension updated', details.id);
       // refreshExtensions();
     },
     [refreshExtensions]
