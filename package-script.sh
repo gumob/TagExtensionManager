@@ -9,14 +9,7 @@ if ! command -v fzf &>/dev/null; then
 fi
 
 local option_list=(
-	"dev"
-	"build"
-	" "
-	"pnpm format-check"
-	"pnpm format-fix"
-	"pnpm eslint-check"
-	"pnpm eslint-fix"
-	"pnpm stylelint-fix"
+	"fastlane"
 	" "
 	"pnpm clean-install-modules"
 	"pnpm outdated"
@@ -28,14 +21,11 @@ local option_list=(
 local selected_option=$(printf "%s\n" "${option_list[@]}" | fzf --ansi --prompt="Select a job to execute > ")
 
 case "$selected_option" in
-"build")
-	pnpm build
-	;;
-"dev")
-	pnpm dev
+"fastlane")
+	bundle exec fastlane
 	;;
 "pnpm clean-install-modules")
-	rm -rf node_modules && pnpm clean-install-modules
+	rm -rf node_modules && pnpm clean-install-modules && bundle install
 	;;
 pnpm*)
 	eval $selected_option

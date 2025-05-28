@@ -1,0 +1,126 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+desc "Build extension in development mode"
+lane :build_dev do
+  sh("pnpm run dev")
+end
+
+desc "Build extension for production"
+lane :build do
+  sh("pnpm run build")
+end
+
+desc "Check format with prettier"
+lane :format_check do
+  sh("pnpm format-check")
+end
+
+desc "Fix format with prettier"
+lane :format_fix do
+  sh("pnpm format-fix")
+end
+
+desc "Check eslint"
+lane :eslint_check do
+  sh("pnpm eslint-check")
+end
+
+desc "Fix eslint"
+lane :eslint_fix do
+  sh("pnpm eslint-fix")
+end
+
+desc "Run type check"
+lane :type_check do
+  sh("pnpm type-check")
+end
+
+desc "Bump version number"
+lane :bump_version do |options|
+  type = options[:type] # major, minor, patch
+  unless ['major', 'minor', 'patch'].include?(type)
+    UI.user_error!("Version type must be major, minor, or patch")
+  end
+
+  # Read package.json and manifest.json
+  package_json = JSON.parse(File.read("../package.json"))
+  manifest_json = JSON.parse(File.read("../manifest.json"))
+
+  # Update version
+  current_version = package_json["version"]
+  major, minor, patch = current_version.split('.')
+  new_version = case type
+    when 'major'
+      "#{major.to_i + 1}.0.0"
+    when 'minor'
+      "#{major}.#{minor.to_i + 1}.0"
+    when 'patch'
+      "#{major}.#{minor}.#{patch.to_i + 1}"
+  end
+
+  # Update files
+  package_json["version"] = new_version
+  manifest_json["version"] = new_version
+
+  File.write("../package.json", JSON.pretty_generate(package_json))
+  File.write("../manifest.json", JSON.pretty_generate(manifest_json))
+
+  UI.success("Version bumped to #{new_version}")
+  UI.message("Please run the following commands to complete the release:")
+  UI.message("1. git add package.json manifest.json")
+  UI.message("2. git commit -m \"chore: bump version to #{new_version}\"")
+  UI.message("3. git tag -a v#{new_version} -m \"Release v#{new_version}\"")
+  UI.message("4. git push && git push --tags")
+end
+
+desc "Package extension"
+lane :package do
+  # Check if dist/prod directory exists
+  unless File.directory?("../dist/prod")
+    UI.user_error!("dist/prod directory not found. Please run build first.")
+  end
+
+  # Get version from package.json
+  package_json = JSON.parse(File.read("../package.json"))
+  version = package_json["version"]
+  zip_file_name = "tag-extension-manager-#{version}.zip"
+
+  # Create ZIP file
+  Dir.chdir("../dist/prod") do
+    sh("zip -r ../../#{zip_file_name} .", log: false)
+  end
+  UI.success("Successfully created #{zip_file_name}")
+end
+
+desc "Create release"
+lane :release do |options|
+  type = options[:type] || 'patch'
+
+  # Update version
+  bump_version(type: type)
+
+  # Build
+  build
+
+  # Package
+  package
+
+  # Git commit and tag
+  version = JSON.parse(File.read("../package.json"))["version"]
+  sh("git add package.json manifest.json")
+  sh("git commit -m \"chore: bump version to #{version}\"")
+  sh("git tag -a v#{version} -m \"Release v#{version}\"")
+  sh("git push && git push --tags")
+
+  UI.success("Release completed successfully!")
+end

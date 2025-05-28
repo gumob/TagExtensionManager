@@ -1,0 +1,49 @@
+name: Release Chrome Extension
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Clean dist directory
+        run: rm -rf dist
+
+      - name: Code quality checks
+        run: |
+          pnpm run format-check
+          pnpm run eslint-check
+          pnpm run type-check
+
+      - name: Build extension
+        run: pnpm run build
+
+      - name: Package extension
+        run: pnpm run package
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: tag-extension-manager-*.zip
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
