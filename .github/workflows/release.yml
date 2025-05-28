@@ -11,6 +11,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Get version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -61,32 +65,27 @@ jobs:
             exit 1
           fi
 
-          # Get version from package.json
-          VERSION=$(node -p "require('./package.json').version")
-          ZIP_FILE_NAME="tag-extension-manager-${VERSION}.zip"
-
           # Remove existing zip file
           rm -f tag-extension-manager-*.zip
 
           # Create ZIP file
           cd dist/prod
-          zip -r "../../${ZIP_FILE_NAME}" .
+          zip -r "../../tag-extension-manager-${VERSION}.zip" .
           cd ../..
 
-          echo "Successfully created ${ZIP_FILE_NAME}"
+          echo "Successfully created tag-extension-manager-${VERSION}.zip"
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
           name: extension-build
-          path: |
-            tag-extension-manager-*.zip
+          path: tag-extension-manager-${VERSION}.zip
 
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          files: tag-extension-manager-*.zip
+          files: tag-extension-manager-${VERSION}.zip
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -97,9 +96,9 @@ jobs:
       - name: Upload to Chrome Web Store
         uses: mobilefirstllc/cws-publish@latest
         with:
-          action: 'upload' # one of: upload, publish, testers
+          action: 'publish' # one of: upload, publish, testers
           client_id: ${{ secrets.CLIENT_ID }}
           client_secret: ${{ secrets.CLIENT_SECRET }}
           refresh_token: ${{ secrets.REFRESH_TOKEN }}
           extension_id: ${{ secrets.EXTENSION_ID }}
-          zip_file: 'tag-extension-manager-*.zip'
+          zip_file: tag-extension-manager-${VERSION}.zip
