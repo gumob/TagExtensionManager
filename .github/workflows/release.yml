@@ -21,6 +21,7 @@ jobs:
         with:
           version: 8
 
+      # @Reference: https://zenn.dev/link/comments/ab5ad0d93dac67
       - name: Get pnpm store directory
         shell: bash
         run: |
@@ -90,12 +91,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # @Reference: https://github.com/MobileFirstLLC/cws-publish
+      # @Reference: https://github.com/fregante/chrome-webstore-upload
+      # @Reference: https://github.com/fregante/chrome-webstore-upload-keys
       - name: Upload to Chrome Web Store
         uses: mobilefirstllc/cws-publish@latest
         with:
           action: 'upload' # one of: upload, publish, testers
-          client_id: ${{ secrets.CLIENT }}
-          client_secret: ${{ secrets.SECRET }}
-          refresh_token: ${{ secrets.TOKEN }}
-          extension_id: '32-CHAR EXTENSION ID'
-          zip_file: 'ZIP FILE PATH'
+          client_id: ${{ secrets.CLIENT_ID }}
+          client_secret: ${{ secrets.CLIENT_SECRET }}
+          refresh_token: ${{ secrets.REFRESH_TOKEN }}
+          extension_id: ${{ secrets.EXTENSION_ID }}
+          zip_file: 'tag-extension-manager-*.zip'
