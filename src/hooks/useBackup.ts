@@ -1,12 +1,10 @@
 import { useExtensionContext } from '@/contexts';
 import { TagModel } from '@/models';
-import { useExtensionStore, useTagStore } from '@/stores';
+import {
+  useExtensionStore,
+  useTagStore,
+} from '@/stores';
 import { logger } from '@/utils';
-
-/**
- * Current version of the backup file format
- */
-const BACKUP_VERSION = '1.0.0';
 
 /**
  * Interface for the backup file structure
@@ -69,6 +67,19 @@ export const useBackup = () => {
   };
 
   /**
+   * Get the current version from manifest.json
+   * @returns The current version
+   */
+  const getBackupVersion = (): string => {
+    try {
+      return chrome.runtime.getManifest().version;
+    } catch (error) {
+      logger.error('Failed to get version from manifest', error);
+      return '0.0.1'; // Fallback version
+    }
+  };
+
+  /**
    * Validates the backup data structure
    * @param data - The backup data to validate
    * @returns Whether the data is valid
@@ -118,13 +129,14 @@ export const useBackup = () => {
        */
       const { tags, extensionTags } = exportTags();
       const { extensions: storedExtensions } = useExtensionStore.getState();
+      const backupVersion = getBackupVersion();
 
       /**
        * Create a profile object containing only necessary extension data
        * and convert dates to ISO format
        */
       const profiles: BackupData = {
-        version: BACKUP_VERSION,
+        version: backupVersion,
         tags: tags.map(tag => ({
           ...tag,
           createdAt: convertToISOString(tag.createdAt),
@@ -167,7 +179,7 @@ export const useBackup = () => {
       a.click();
       URL.revokeObjectURL(url);
 
-      logger.info('Successfully exported profile');
+      logger.info(`Successfully exported profile ${backupVersion}`);
     } catch (error) {
       logger.error('Failed to export profile', error);
       throw error;
@@ -209,9 +221,10 @@ export const useBackup = () => {
           /**
            * Check version compatibility
            */
-          if (profiles.version !== BACKUP_VERSION) {
+          const backupVersion = getBackupVersion();
+          if (profiles.version !== backupVersion) {
             logger.warn(
-              `Backup file version (${profiles.version}) differs from current version (${BACKUP_VERSION})`
+              `Backup file version (${profiles.version}) differs from current version (${backupVersion})`
             );
           }
 

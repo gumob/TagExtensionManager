@@ -20,6 +20,12 @@ lane :build do
   sh("pnpm run build")
 end
 
+desc "Build extension and create package"
+lane :build_and_package do
+  build
+  create_package
+end
+
 desc "Check format with prettier"
 lane :format_check do
   sh("pnpm format-check")
@@ -83,8 +89,8 @@ lane :bump_version do |options|
   UI.message("4. git push && git push --tags")
 end
 
-desc "Package extension"
-lane :package do
+desc "Create extension package"
+lane :create_package do
   # Check if dist/prod directory exists
   unless File.directory?("../dist/prod")
     UI.user_error!("dist/prod directory not found. Please run build first.")
@@ -117,6 +123,12 @@ lane :release do |options|
 
   # Git commit and tag
   version = JSON.parse(File.read("../package.json"))["version"]
+
+  # Confirm before committing
+  unless UI.confirm("Do you want to commit and tag version #{version}?")
+    UI.user_error!("Release cancelled by user")
+  end
+
   sh("git add package.json manifest.json")
   sh("git commit -m \"chore: bump version to #{version}\"")
   sh("git tag -a v#{version} -m \"Release v#{version}\"")
