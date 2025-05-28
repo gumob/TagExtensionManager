@@ -21,8 +21,24 @@ jobs:
         with:
           version: 8
 
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
       - name: Install dependencies
         run: pnpm install
+
+      - name: Security audit
+        run: pnpm audit
 
       - name: Clean dist directory
         run: rm -rf dist
@@ -58,6 +74,13 @@ jobs:
 
           echo "Successfully created ${ZIP_FILE_NAME}"
 
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: extension-build
+          path: |
+            tag-extension-manager-*.zip
+
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@v1
@@ -66,3 +89,12 @@ jobs:
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload to Chrome Web Store
+        uses: tanepiper/chrome-extension-upload@v1.0.0
+        with:
+          file-path: tag-extension-manager-*.zip
+          extension-id: ${{ secrets.CHROME_EXTENSION_ID }}
+          client-id: ${{ secrets.CHROME_CLIENT_ID }}
+          client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
+          refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
