@@ -2,11 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { useDrag, useDrop } from 'react-dnd';
 
+import { TagIcon, XMarkIcon } from '@heroicons/react/24/outline';
+
 import { CancelButtonComponent, DefaultBackgroundDiv, DeleteButtonComponent, DialogHeader, DialogRoot } from '@/components';
 import { useTagEditorContext } from '@/contexts';
 import { TagModel } from '@/models';
-
-import { TagIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
 /**
  * The props for the TagEditorListItem component.

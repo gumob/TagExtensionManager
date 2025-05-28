@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+import { TagIcon } from '@heroicons/react/24/outline';
+
 import { AddButtonComponent, SearchBarComponent } from '@/components';
 import { useTagEditorContext } from '@/contexts';
-
-import { TagIcon } from '@heroicons/react/24/outline';
 
 /**
  * The TagEditorSearchBar component.

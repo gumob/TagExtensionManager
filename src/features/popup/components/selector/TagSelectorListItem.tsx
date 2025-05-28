@@ -1,11 +1,11 @@
 import React from 'react';
 
+import { TagIcon } from '@heroicons/react/24/outline';
+import { TagIcon as TagSolidIcon } from '@heroicons/react/24/solid';
+
 import { DefaultBackgroundButton } from '@/components';
 import { useTagSelectorContext } from '@/contexts';
 import { TagModel } from '@/models';
-
-import { TagIcon } from '@heroicons/react/24/outline';
-import { TagIcon as TagSolidIcon } from '@heroicons/react/24/solid';
 
 interface TagSelectorListItemProps {
   tag: TagModel;

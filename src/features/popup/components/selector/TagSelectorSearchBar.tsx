@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+
 import { SearchBarComponent } from '@/components';
 import { useTagSelectorContext } from '@/contexts';
-
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 /**
  * The TagSelectorSearchBar component.

@@ -1,11 +1,11 @@
 import React from 'react';
 
+import { TagIcon } from '@heroicons/react/24/outline';
+
 import { DefaultBackgroundButton } from '@/components';
 import { useExtensionContext } from '@/contexts';
 import { TagModel } from '@/models';
 import { useTagStore } from '@/stores';
-
-import { TagIcon } from '@heroicons/react/24/outline';
 
 /**
  * The props for the ExtensionTagListItem component.

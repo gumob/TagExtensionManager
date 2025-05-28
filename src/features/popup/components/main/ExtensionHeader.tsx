@@ -1,9 +1,9 @@
 import React, { useRef } from 'react';
 
+import { ArrowDownTrayIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline';
+
 import { DefaultBackgroundButton } from '@/components';
 import { useBackup } from '@/hooks';
-
-import { ArrowDownTrayIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline';
 
 /**
  * The component for managing profile export/import.
