@@ -28,6 +28,7 @@ import { logger } from '@/utils';
  * @property isLoading - The is loading.
  */
 interface ExtensionContextValue {
+  allExtensions: ExtensionModel[];
   filteredExtensions: ExtensionModel[];
   taggedExtensions: Record<string, ExtensionModel[]>;
   untaggedExtensions: ExtensionModel[];
@@ -99,6 +100,13 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
   /*******************************************************
    * Memoized Values
    *******************************************************/
+
+  const allExtensions: ExtensionModel[] = useMemo(() => {
+    return storedExtensions.map(ext => ({
+      ...ext,
+      tags: extensionTags.filter(tag => tag.extensionId === ext.id),
+    }));
+  }, [storedExtensions, extensionTags]);
 
   /**
    * Memoized filtered extensions based on search query.
@@ -319,6 +327,7 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
 
   const value = useMemo(
     () => ({
+      allExtensions,
       filteredExtensions,
       taggedExtensions,
       untaggedExtensions,
@@ -335,6 +344,7 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
       isLoading,
     }),
     [
+      allExtensions,
       filteredExtensions,
       taggedExtensions,
       untaggedExtensions,

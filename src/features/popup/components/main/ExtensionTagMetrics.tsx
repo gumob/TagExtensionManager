@@ -19,17 +19,17 @@ export const ExtensionTagMetrics: FC<ExtensionTagMetricsProps> = () => {
   /**
    * The extensions context.
    */
-  const { filteredExtensions, setVisibleTagId } = useExtensionContext();
+  const { allExtensions, setVisibleTagId } = useExtensionContext();
 
   /**
    * The total number of extensions.
    */
-  const total = filteredExtensions.length;
+  const total = allExtensions.length;
 
   /**
    * The number of enabled extensions.
    */
-  const enabled = filteredExtensions.filter(ext => ext.enabled).length;
+  const enabled = allExtensions.filter(ext => ext.enabled).length;
 
   /**
    * The number of disabled extensions.
