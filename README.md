@@ -119,7 +119,7 @@ pnpm dev
 
 ## 🔒 Privacy
 
-This extension is designed with privacy in mind. We do not collect any personal information, and all data is stored locally on your device. For detailed information about how we handle your data and the permissions we use, please refer to our [Privacy Policy](./PRIVACY.md).
+We respect your privacy. All data is stored locally on your device. See our [Privacy Policy](./PRIVACY.md) for details.
 
 ## 📝 License
 
