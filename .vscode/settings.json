@@ -16,7 +16,6 @@
   "prettier.configPath": "prettier.config.js",
   "prettier.requireConfig": true,
   "prettier.useEditorConfig": false,
-  "prettier.resolveGlobalModules": true,
   "[ignore]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
   }
