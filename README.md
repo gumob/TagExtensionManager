@@ -1,20 +1,33 @@
 # Tag Extension Manager
 
-A tool for efficiently managing Chrome extensions. Group multiple extensions and easily enable/disable them based on your needs.
+A tool for efficiently managing Chrome extensions. Group multiple extensions with tags and easily enable/disable them based on your needs.
 
-## 🚀 Features
+## Features
 
-- Extension group management
-- One-click group switching
-- Customizable group settings
-- Keyboard shortcut support
-- Dark mode support
+### Core Features
 
-## 📦 Installation
+- Intuitive tag-based extension management
+- One-click tag switching
+- Quick search by extension name
+- Bulk enable/disable extensions by tag
+- Individual tag toggle
+- Tag management (create, delete, rename)
+- Extension lock feature
+- Modern and polished design
+- Dark/Light mode support
+
+### Extension Management
+
+- View extension details
+- Uninstall extensions
+- Open extension options page
+- Import/Export tagged extensions
+
+## Installation
 
 ### From Chrome Web Store
 
-1. Visit [Chrome Web Store](https://chrome.google.com/webstore/detail/extension-manager/...)
+1. Visit [Chrome Web Store](https://chrome.google.com/webstore/detail/tag-extension-manager/...)
 2. Click "Add to Chrome"
 3. Click "Add Extension" in the confirmation dialog
 
@@ -26,14 +39,7 @@ A tool for efficiently managing Chrome extensions. Group multiple extensions and
 4. Click "Load unpacked"
 5. Select the downloaded folder
 
-## 💻 Usage
-
-1. Click the extension icon to open the popup
-2. Click "Create New Group"
-3. Enter a group name and select extensions to manage
-4. To switch groups, select the desired group from the popup
-
-## 🛠️ For Developers
+## For Developers
 
 ### Development Setup
 
@@ -46,8 +52,8 @@ A tool for efficiently managing Chrome extensions. Group multiple extensions and
 2. Clone the repository
 
    ```bash
-   git clone https://github.com/yourusername/ExtensionManager.git
-   cd ExtensionManager
+   git clone https://github.com/gumob/TagExtensionManager.git
+   cd TagExtensionManager
    ```
 
 3. Install dependencies
@@ -57,9 +63,15 @@ A tool for efficiently managing Chrome extensions. Group multiple extensions and
    ```
 
 4. Start development server
+
    ```bash
    pnpm dev
    ```
+
+5. Open `chrome://extensions` in Chrome
+6. Enable "Developer mode" in the top right
+7. Click "Load unpacked"
+8. Select the `dist/dev` folder in the downloaded directory
 
 ### Project Structure
 
@@ -96,21 +108,9 @@ For detailed technology stack information, please refer to [TECHNOLOGSTACK.md](.
 pnpm build
 
 # Development build
-pnpm build:dev
+pnpm dev
 ```
 
 ## 📝 License
 
 This project is licensed under the [MIT License](./LICENSE).
-
-## 🤝 Contributing
-
-1. Fork this repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📮 Contact
-
-For bug reports and feature requests, please use [Issues](https://github.com/yourusername/ExtensionManager/issues).
