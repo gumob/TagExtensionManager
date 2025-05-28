@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useTagEditorContext } from '@/contexts';
 import { TagEditorListItem } from '@/features/popup/components/editor';
 

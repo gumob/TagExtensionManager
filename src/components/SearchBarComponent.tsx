@@ -1,4 +1,4 @@
-import { ChangeEventHandler, KeyboardEventHandler } from 'react';
+import React, { ChangeEventHandler, KeyboardEventHandler } from 'react';
 
 interface SearchBarComponentProps {
   inputRef?: React.RefObject<HTMLInputElement>;

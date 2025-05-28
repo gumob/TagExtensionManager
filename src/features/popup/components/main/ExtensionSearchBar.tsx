@@ -1,14 +1,9 @@
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
-import React, { FC, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { SearchBarComponent } from '@/components';
 import { useExtensionContext } from '@/contexts';
-
-/**
- * The props for the ExtensionSearchBar component.
- */
-interface ExtensionSearchBarProps {}
 
 /**
  * The ExtensionSearchBar component.
@@ -16,7 +11,7 @@ interface ExtensionSearchBarProps {}
  * @param onSearch - The callback to search for extensions.
  * @returns The ExtensionSearchBar component.
  */
-const ExtensionSearchBar: FC<ExtensionSearchBarProps> = () => {
+const ExtensionSearchBar: React.FC = () => {
   /**
    * The extensions and filtered extensions.
    */

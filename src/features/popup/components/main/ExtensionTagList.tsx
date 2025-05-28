@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useExtensionContext } from '@/contexts';
 import {
   ExtensionTagListEditButton,
@@ -6,14 +8,12 @@ import {
 } from '@/features/popup/components/main';
 import { useTagStore } from '@/stores';
 
-type ExtensionTagListProps = {};
-
 /**
  * The props for the ExtensionTagList component.
  *
  * @param extensions - The extensions to display.
  */
-export const ExtensionTagList: React.FC<ExtensionTagListProps> = ({}: ExtensionTagListProps) => {
+export const ExtensionTagList: React.FC = () => {
   /**
    * The extensions and filtered extensions.
    */

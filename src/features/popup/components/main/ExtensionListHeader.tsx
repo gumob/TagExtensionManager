@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { DefaultBackgroundButton } from '@/components';
 import { useExtensionContext } from '@/contexts';
 import { ExtensionModel, TagModel } from '@/models';

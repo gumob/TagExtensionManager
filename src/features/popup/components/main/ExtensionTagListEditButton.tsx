@@ -1,6 +1,6 @@
 import { PencilIcon } from 'lucide-react';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import { DefaultBackgroundButton } from '@/components';
 import { TagEditorMain } from '@/features/popup/components/editor';

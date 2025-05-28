@@ -1,6 +1,8 @@
 // import { TagIcon } from 'lucide-react';
 import { TagIcon } from '@heroicons/react/24/outline';
 
+import React from 'react';
+
 import { DefaultBackgroundButton } from '@/components';
 import { useExtensionContext } from '@/contexts';
 import { TagModel } from '@/models';

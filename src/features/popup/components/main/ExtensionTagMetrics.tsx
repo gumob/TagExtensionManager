@@ -1,21 +1,16 @@
 import { TagsIcon, ToggleLeftIcon, ToggleRightIcon } from 'lucide-react';
 
-import { FC } from 'react';
+import React from 'react';
 
 import { DefaultBackgroundButton } from '@/components';
 import { useExtensionContext } from '@/contexts';
-
-/**
- * The props for the ExtensionTagMetrics component.
- */
-interface ExtensionTagMetricsProps {}
 
 /**
  * The ExtensionTagMetrics component.
  *
  * @returns The ExtensionTagMetrics component.
  */
-export const ExtensionTagMetrics: FC<ExtensionTagMetricsProps> = () => {
+export const ExtensionTagMetrics: React.FC = () => {
   /**
    * The extensions context.
    */

@@ -1,7 +1,7 @@
 import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
-import { Fragment } from 'react';
+import React, { Fragment } from 'react';
 
 interface DialogRootProps {
   isOpen: boolean;

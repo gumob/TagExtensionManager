@@ -1,12 +1,3 @@
-import { Switch } from '@headlessui/react';
-import { LockClosedIcon } from '@heroicons/react/24/outline';
-
-import { useEffect, useRef, useState } from 'react';
-
-import { useExtensionContext } from '@/contexts';
-import { ExtensionCardMenu } from '@/features/popup/components/main';
-import { ExtensionModel } from '@/models';
-
 /**
  * Extension card props.
  *
@@ -14,6 +5,15 @@ import { ExtensionModel } from '@/models';
  * @param onToggle - The callback to toggle the extension.
  * @param onSettingsClick - The callback to open the settings page.
  */
+import { Switch } from '@headlessui/react';
+import { LockClosedIcon } from '@heroicons/react/24/outline';
+
+import React, { useEffect, useRef, useState } from 'react';
+
+import { useExtensionContext } from '@/contexts';
+import { ExtensionCardMenu } from '@/features/popup/components/main';
+import { ExtensionModel } from '@/models';
+
 interface ExtensionCardProps {
   extension: ExtensionModel;
 }

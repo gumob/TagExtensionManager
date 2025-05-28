@@ -1,6 +1,6 @@
 import { ArrowDownTrayIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline';
 
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 
 import { DefaultBackgroundButton } from '@/components';
 import { useBackup } from '@/hooks';

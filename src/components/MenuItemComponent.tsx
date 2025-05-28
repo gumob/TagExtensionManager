@@ -1,5 +1,7 @@
 import { MenuItem } from '@headlessui/react';
 
+import React from 'react';
+
 interface MenuItemComponentProps {
   className?: string;
   onClick: () => void;

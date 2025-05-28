@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { DialogHeader, DialogRoot } from '@/components';
 import { TagSelectorProvider } from '@/contexts';
 import { TagSelectorList, TagSelectorSearchBar } from '@/features/popup/components/selector';

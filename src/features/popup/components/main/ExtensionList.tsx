@@ -8,13 +8,7 @@ import { useTagStore } from '@/stores';
  * The component for displaying a list of extensions.
  * @returns
  */
-interface ExtensionListProps {}
-
-/**
- * The component for displaying a list of extensions.
- * @returns
- */
-export const ExtensionList: React.FC<ExtensionListProps> = ({}: ExtensionListProps) => {
+export const ExtensionList: React.FC = () => {
   /*******************************************************
    * State Management
    *******************************************************/
