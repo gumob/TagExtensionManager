@@ -28,12 +28,12 @@ end
 
 desc "Check format with prettier"
 lane :format_check do
-  sh("pnpm format-check")
+  sh("pnpm prettier-check")
 end
 
 desc "Fix format with prettier"
 lane :format_fix do
-  sh("pnpm format-fix")
+  sh("pnpm prettier-fix")
 end
 
 desc "Check eslint"

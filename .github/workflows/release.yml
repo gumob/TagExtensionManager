@@ -50,7 +50,7 @@ jobs:
 
       - name: Code quality checks
         run: |
-          pnpm run format-check
+          pnpm run prettier-check
           pnpm run eslint-check
           pnpm run type-check
 
