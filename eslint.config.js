@@ -69,7 +69,7 @@ export default [
     },
     rules: {
       ...tseslint.configs.recommended.rules,
-      'no-unused-vars': 'warn',
+      'no-unused-vars': 'off',
       'no-empty': 'warn',
       'no-prototype-builtins': 'off',
       'no-constant-binary-expression': 'off',
