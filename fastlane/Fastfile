@@ -46,6 +46,11 @@ lane :eslint_fix do
   sh("pnpm eslint-fix")
 end
 
+desc "Check security"
+lane :security_check do
+  sh("pnpm audit --audit-level high")
+end
+
 desc "Run type check"
 lane :type_check do
   sh("pnpm type-check")
@@ -147,6 +152,9 @@ lane :release do
 
   # Check type
   type_check
+
+  # Check security
+  security_check
 
   # Build
   build
