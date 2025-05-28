@@ -2,6 +2,9 @@
 
 A tool for efficiently managing Chrome extensions. Group multiple extensions with tags and easily enable/disable them based on your needs.
 
+<image style="width: 48%; padding-right: 2%;" src="https://raw.githubusercontent.com/gumob/TagExtensionManager/refs/heads/develop/screenshot-dark.webp?token=GHSAT0AAAAAADDMOB2NN3KRHUF5VFYE7NOI2BWQFNQ">
+<image style="width: 48%;" src="https://raw.githubusercontent.com/gumob/TagExtensionManager/refs/heads/develop/screenshot-light.webp?token=GHSAT0AAAAAADDMOB2MZV2BJXLOCWL3RBD22BWQFVQ">
+
 ## Features
 
 ### Core Features
@@ -11,7 +14,7 @@ A tool for efficiently managing Chrome extensions. Group multiple extensions wit
 - Quick search by extension name
 - Bulk enable/disable extensions by tag
 - Individual tag toggle
-- Tag management (create, delete, rename)
+- Tag management (create, delete, rename, reorder)
 - Extension lock feature
 - Modern and polished design
 - Dark/Light mode support
