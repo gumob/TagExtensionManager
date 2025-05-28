@@ -124,6 +124,9 @@ lane :create_package do
   version = package_json["version"]
   zip_file_name = "tag-extension-manager-#{version}.zip"
 
+  # Remove existing zip file
+  sh("rm -f ../tag-extension-manager-*.zip")
+
   # Create ZIP file
   Dir.chdir("../dist/prod") do
     sh("zip -r ../../#{zip_file_name} .", log: false)
