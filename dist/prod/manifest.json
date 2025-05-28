@@ -1,10 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "Clean Extension Manager",
+  "name": "Tag Extension Manager",
   "version": "1.0.0",
   "description": "A Chrome extension to manage other extensions",
   "permissions": ["management", "storage", "tabs", "scripting", "activeTab", "offscreen"],
-  "host_permissions": ["<all_urls>"],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
