@@ -37,7 +37,26 @@ jobs:
         run: pnpm run build
 
       - name: Package extension
-        run: pnpm run package
+        run: |
+          # Check if dist/prod directory exists
+          if [ ! -d "dist/prod" ]; then
+            echo "::error::dist/prod directory not found. Please run build first."
+            exit 1
+          fi
+
+          # Get version from package.json
+          VERSION=$(node -p "require('./package.json').version")
+          ZIP_FILE_NAME="tag-extension-manager-${VERSION}.zip"
+
+          # Remove existing zip file
+          rm -f tag-extension-manager-*.zip
+
+          # Create ZIP file
+          cd dist/prod
+          zip -r "../../${ZIP_FILE_NAME}" .
+          cd ../..
+
+          echo "Successfully created ${ZIP_FILE_NAME}"
 
       - name: Create Release
         id: create_release
