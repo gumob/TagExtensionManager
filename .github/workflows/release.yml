@@ -91,10 +91,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload to Chrome Web Store
-        uses: tanepiper/chrome-extension-upload@v1.0.0
+        uses: mobilefirstllc/cws-publish@latest
         with:
-          file-path: tag-extension-manager-*.zip
-          extension-id: ${{ secrets.CHROME_EXTENSION_ID }}
-          client-id: ${{ secrets.CHROME_CLIENT_ID }}
-          client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
-          refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
+          action: 'upload' # one of: upload, publish, testers
+          client_id: ${{ secrets.CLIENT }}
+          client_secret: ${{ secrets.SECRET }}
+          refresh_token: ${{ secrets.TOKEN }}
+          extension_id: '32-CHAR EXTENSION ID'
+          zip_file: 'ZIP FILE PATH'
