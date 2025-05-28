@@ -5,13 +5,21 @@ Please follow the directory structure below for implementation:
 ```
 /
 ├── src/                          # Source directory
-│   ├── background/               # Background script
-│   ├── components/               # UI Components
+│   ├── api/                      # API related implementations
+│   ├── components/               # Shared UI Components
+│   ├── constants/                # Constant values and configurations
+│   ├── contexts/                 # React Context providers
+│   ├── features/                 # Feature-specific implementations
+│   │   └── popup/                # Popup feature specific components
+│   │       └── components/       # Popup specific UI components
 │   ├── hooks/                    # Custom React hooks
-│   ├── offscreen/                # Offscreen document
-│   ├── popup/                    # Popup UI
-│   ├── services/                 # Business logic services
-│   ├── stores/                   # State management
+│   ├── mappers/                  # Data transformation utilities
+│   ├── models/                   # Data models and interfaces
+│   ├── pages/                    # Page implementations
+│   │   ├── background/           # Background script
+│   │   ├── offscreen/            # Offscreen document
+│   │   └── popup/                # Popup page
+│   ├── stores/                   # State management (Zustand)
 │   ├── styles/                   # Global styles
 │   ├── types/                    # TypeScript type definitions
 │   └── utils/                    # Utility functions
@@ -39,13 +47,20 @@ Please follow the directory structure below for implementation:
 ### Directory Descriptions
 
 #### Source Code (`src/`)
-- `background/`: Background script implementation
-- `components/`: UI component implementations
+- `api/`: API related implementations and services
+- `components/`: Shared UI component implementations
+- `constants/`: Constant values and configuration definitions
+- `contexts/`: React Context providers and implementations
+- `features/`: Feature-specific implementations
+  - `popup/`: Popup feature specific components and logic
 - `hooks/`: Custom React hooks
-- `offscreen/`: Offscreen document implementation
-- `popup/`: Popup UI implementation
-- `services/`: Business logic and service implementations
-- `stores/`: State management implementations
+- `mappers/`: Data transformation and mapping utilities
+- `models/`: Data models and interfaces
+- `pages/`: Page implementations
+  - `background/`: Background script implementation
+  - `offscreen/`: Offscreen document implementation
+  - `popup/`: Popup page implementation
+- `stores/`: State management implementations (Zustand)
 - `styles/`: Global style definitions
 - `types/`: TypeScript type definitions
 - `utils/`: General utility functions
