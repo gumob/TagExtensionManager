@@ -1,8 +1,7 @@
-import globals from 'globals';
-
 import js from '@eslint/js';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsparser from '@typescript-eslint/parser';
+import globals from 'globals';
 
 export default [
   js.configs.recommended,
@@ -85,7 +84,7 @@ export default [
       'valid-typeof': 'off',
       'getter-return': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-unused-vars': 'off',
     },
     ignores: [
       'node_modules/**',
@@ -94,7 +93,9 @@ export default [
       'dist/**',
       'out/**',
       'build/**',
-      'glancebrief.user.js',
+      'fastlane/**',
+      'log/**',
+      'public/**',
     ],
   },
 ];
