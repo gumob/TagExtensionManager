@@ -56,7 +56,7 @@ export const XLargeButtonComponent: React.FC<XLargeButtonComponentProps> = ({
   return (
     <button
       onClick={onClick}
-      className={`h-10 px-3 py-2 text-sm font-medium rounded-full text-zinc-100 focus:outline-none transition-colors ${className}`}
+      className={`h-10 px-3 py-2 text-lg font-medium rounded-full text-zinc-100 focus:outline-none transition-colors ${className}`}
     >
       {children}
     </button>

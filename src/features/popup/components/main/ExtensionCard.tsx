@@ -117,12 +117,12 @@ export const ExtensionCard: React.FC<ExtensionCardProps> = ({ extension }) => {
         />
         <div className="flex-1 min-w-0">
           <h3
-            className={`text-2xs select-none font-medium truncate transition-opacity ${!extension.enabled ? 'opacity-30' : ''}`}
+            className={`text-sm select-none font-medium truncate transition-opacity ${!extension.enabled ? 'opacity-30' : ''}`}
           >
             {extension.name}
           </h3>
           <p
-            className={`text-3xs text-zinc-500 dark:text-zinc-400 select-none transition-opacity ${!extension.enabled ? 'opacity-50' : ''}`}
+            className={`text-xs text-zinc-500 dark:text-zinc-400 select-none transition-opacity ${!extension.enabled ? 'opacity-50' : ''}`}
           >
             {extension.version}
           </p>

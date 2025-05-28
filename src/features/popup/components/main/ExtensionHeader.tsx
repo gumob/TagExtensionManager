@@ -25,7 +25,7 @@ export const ExtensionHeader: React.FC = () => {
 
   return (
     <div className="flex justify-between items-center">
-      <h1 className="text-lg font-bold">Clean Extension Manager</h1>
+      <h1 className="text-xl font-bold">Clean Extension Manager</h1>
       <div className="flex items-center gap-1">
         <DefaultBackgroundButton
           onClick={exportFile}
@@ -33,7 +33,7 @@ export const ExtensionHeader: React.FC = () => {
           title="Export Profile"
         >
           <ArrowDownTrayIcon className="w-3 h-3 inline-flex mr-1" />
-          <span className="text-2xs">Export</span>
+          <span className="text-sm">Export</span>
         </DefaultBackgroundButton>
         <DefaultBackgroundButton
           onClick={() => fileInputRef.current?.click()}
@@ -41,7 +41,7 @@ export const ExtensionHeader: React.FC = () => {
           title="Import Profile"
         >
           <ArrowUpTrayIcon className="w-3 h-3 inline-flex mr-1" />
-          <span className="text-2xs">Import</span>
+          <span className="text-sm">Import</span>
         </DefaultBackgroundButton>
         <input
           ref={fileInputRef}

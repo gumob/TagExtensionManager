@@ -15,7 +15,7 @@ export const MenuItemComponent: React.FC<MenuItemComponentProps> = ({
     <MenuItem>
       <button
         onClick={onClick}
-        className={`block w-full text-left px-3 py-2 text-2xs text-zinc-700 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-600 focus:outline-none transition-colors ${className}`}
+        className={`block w-full text-left px-3 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-600 focus:outline-none transition-colors ${className}`}
       >
         <span className="flex items-center gap-2">{children}</span>
       </button>

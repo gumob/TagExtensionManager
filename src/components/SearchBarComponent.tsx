@@ -23,7 +23,7 @@ export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
     <div className="relative">
       <div className="flex gap-2">
         <div className="relative flex-1">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400 dark:text-zinc-600">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400 dark:text-zinc-500">
             {icon}
           </div>
           <input

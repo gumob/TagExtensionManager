@@ -124,47 +124,40 @@ export const TagEditorListItem: React.FC<TagEditorListItemProps> = React.memo(
         }`}
         style={{ width: 'fit-content' }}
       >
-        <div className="flex items-center gap-1">
-          <DefaultBackgroundDiv className="flex items-center gap-1 px-2 py-1.5 rounded-full text-xs font-medium">
-            <div className="flex items-center gap-1">
-              <div className="cursor-grab active:cursor-grabbing touch-none select-none">
-                <TagIcon className="w-4 h-4" />
-              </div>
-              <div>
-                {editingTagId === tag.id ? (
-                  <input
-                    ref={inputRef}
-                    type="text"
-                    value={editingTagName}
-                    onChange={e => changeTagName(tag.id, e.target.value, false)}
-                    onBlur={() => changeTagName(tag.id, editingTagName, true)}
-                    onKeyDown={e => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault();
-                        changeTagName(tag.id, editingTagName, true);
-                      }
-                    }}
-                    size={Math.max(editingTagName.length, 1)}
-                    className="px-1 py-0.5 rounded-sm focus:outline-none"
-                  />
-                ) : (
-                  <button
-                    onClick={() => startEditing(tag.id, tag.name)}
-                    className="select-none px-1 py-0.5"
-                  >
-                    {tag.name}
-                  </button>
-                )}
-              </div>
-              <button
-                onClick={() => deleteTag(tag.id)}
-                className="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-300"
-              >
-                <XMarkIcon className="w-4 h-4" />
+        <DefaultBackgroundDiv className="flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium">
+          <div className="cursor-grab active:cursor-grabbing touch-none select-none">
+            <TagIcon className="w-3 h-3" />
+          </div>
+          <div>
+            {editingTagId === tag.id ? (
+              <input
+                ref={inputRef}
+                type="text"
+                value={editingTagName}
+                onChange={e => changeTagName(tag.id, e.target.value, false)}
+                onBlur={() => changeTagName(tag.id, editingTagName, true)}
+                onKeyDown={e => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    changeTagName(tag.id, editingTagName, true);
+                  }
+                }}
+                size={Math.max(editingTagName.length, 1)}
+                className="rounded-sm focus:outline-none bg-transparent"
+              />
+            ) : (
+              <button onClick={() => startEditing(tag.id, tag.name)} className="select-none">
+                {tag.name}
               </button>
-            </div>
-          </DefaultBackgroundDiv>
-        </div>
+            )}
+          </div>
+          <button
+            onClick={() => deleteTag(tag.id)}
+            className="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-300"
+          >
+            <XMarkIcon className="w-4 h-4" />
+          </button>
+        </DefaultBackgroundDiv>
       </div>
     );
   }

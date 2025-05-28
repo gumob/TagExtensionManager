@@ -63,7 +63,7 @@ interface DialogHeaderProps {
 export const DialogHeader: React.FC<DialogHeaderProps> = ({ title, onClose }) => {
   return (
     <div className="flex items-center justify-between">
-      <h2 className="text-lg font-bold">{title}</h2>
+      <h2 className="text-xl font-bold">{title}</h2>
       {onClose && (
         <button onClick={onClose} className="dialog-close-button">
           <XMarkIcon className="h-6 w-6" />

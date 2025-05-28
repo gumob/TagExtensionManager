@@ -54,19 +54,19 @@ export const ExtensionListHeader: React.FC<ExtensionListHeaderProps> = ({
   return (
     <div className="flex items-center justify-between p-1">
       <div className="flex items-center gap-2">
-        <h3 className="text-xs font-semibold">{tag.name}</h3>
+        <h3 className="text-base font-semibold">{tag.name}</h3>
       </div>
       <div className="flex items-center gap-2">
         <div className="flex">
           <DefaultBackgroundButton
             onClick={() => handleToggle(true)}
-            className={`ps-3 pe-2 py-1 text-2xs font-medium rounded-l-full mr-[1px]`}
+            className={`ps-3 pe-2 py-1 text-sm font-medium rounded-l-full mr-[1px]`}
           >
             Enable All
           </DefaultBackgroundButton>
           <DefaultBackgroundButton
             onClick={() => handleToggle(false)}
-            className={`ps-2 pe-3 py-1 text-2xs font-medium rounded-r-full`}
+            className={`ps-2 pe-3 py-1 text-sm font-medium rounded-r-full`}
           >
             Disable All
           </DefaultBackgroundButton>
