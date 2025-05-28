@@ -1,4 +1,3 @@
-// import { TagIcon } from 'lucide-react';
 import { TagIcon } from '@heroicons/react/24/outline';
 
 import React from 'react';
@@ -51,9 +50,7 @@ export const ExtensionTagListItem: React.FC<ExtensionTagListItemProps> = ({
   return (
     <DefaultBackgroundButton
       onClick={() => setVisibleTagId(isSelected ? null : tag.id)}
-      className={`flex items-center gap-1 px-3 py-1 text-sm font-medium rounded-full transition-opacity ${
-        isSelected ? '' : visibleTagId === null ? '' : 'opacity-50'
-      }`}
+      className={`flex items-center gap-1 px-3 py-1 text-sm font-medium rounded-full transition-opacity ${isSelected ? '' : visibleTagId === null ? '' : 'opacity-50'}`}
     >
       <TagIcon className="w-3 h-3" />
       <span className="text-sm">{tag.name}</span>

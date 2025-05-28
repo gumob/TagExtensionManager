@@ -1,9 +1,6 @@
 import { useExtensionContext } from '@/contexts';
 import { TagModel } from '@/models';
-import {
-  useExtensionStore,
-  useTagStore,
-} from '@/stores';
+import { useExtensionStore, useTagStore } from '@/stores';
 import { logger } from '@/utils';
 
 /**

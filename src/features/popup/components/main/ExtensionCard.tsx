@@ -1,10 +1,3 @@
-/**
- * Extension card props.
- *
- * @param extension - The extension to display.
- * @param onToggle - The callback to toggle the extension.
- * @param onSettingsClick - The callback to open the settings page.
- */
 import { Switch } from '@headlessui/react';
 import { LockClosedIcon } from '@heroicons/react/24/outline';
 
@@ -13,6 +6,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useExtensionContext } from '@/contexts';
 import { ExtensionCardMenu } from '@/features/popup/components/main';
 import { ExtensionModel } from '@/models';
+
+/**
+ * Extension card props.
+ *
+ * @param extension - The extension to display.
+ * @param onToggle - The callback to toggle the extension.
+ * @param onSettingsClick - The callback to open the settings page.
+ */
 
 interface ExtensionCardProps {
   extension: ExtensionModel;
@@ -98,9 +99,7 @@ export const ExtensionCard: React.FC<ExtensionCardProps> = ({ extension }) => {
    */
   return (
     <div
-      className={`rounded-xl px-3 py-2 ${
-        extension.enabled && hasOptionsPage ? 'cursor-pointer' : ''
-      } ${
+      className={`rounded-xl px-3 py-2 ${extension.enabled && hasOptionsPage ? 'cursor-pointer' : ''} ${
         isHovered && extension.enabled && hasOptionsPage
           ? 'bg-zinc-50 dark:bg-zinc-600'
           : 'bg-white dark:bg-zinc-700'
@@ -138,16 +137,12 @@ export const ExtensionCard: React.FC<ExtensionCardProps> = ({ extension }) => {
             checked={extension.enabled}
             onChange={async checked => toggleEnabled(extension.id, checked)}
             disabled={extension.locked}
-            className={`${
-              extension.enabled ? 'bg-green-500' : 'bg-zinc-300 dark:bg-zinc-600'
-            } relative inline-flex h-4 w-7 items-center rounded-full focus:outline-none transition-opacity ${
+            className={`${extension.enabled ? 'bg-green-500' : 'bg-zinc-300 dark:bg-zinc-600'} relative inline-flex h-4 w-7 items-center rounded-full focus:outline-none transition-opacity ${
               extension.locked ? 'opacity-50 cursor-not-allowed' : ''
             }`}
           >
             <span
-              className={`${
-                extension.enabled ? 'translate-x-4' : 'translate-x-0.5'
-              } inline-block h-2.5 w-2.5 transform rounded-full bg-white transition-transform`}
+              className={`${extension.enabled ? 'translate-x-4' : 'translate-x-0.5'} inline-block h-2.5 w-2.5 transform rounded-full bg-white transition-transform`}
             />
           </Switch>
           <div className="relative">
