@@ -1,6 +1,6 @@
-import { MenuItem } from '@headlessui/react';
-
 import React from 'react';
+
+import { MenuItem } from '@headlessui/react';
 
 interface MenuItemComponentProps {
   className?: string;
@@ -8,11 +8,7 @@ interface MenuItemComponentProps {
   children: React.ReactNode;
 }
 
-export const MenuItemComponent: React.FC<MenuItemComponentProps> = ({
-  className = '',
-  onClick,
-  children,
-}) => {
+export const MenuItemComponent: React.FC<MenuItemComponentProps> = ({ className = '', onClick, children }) => {
   return (
     <MenuItem>
       <button

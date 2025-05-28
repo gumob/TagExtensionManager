@@ -35,9 +35,7 @@ export class ChromeAPI {
    * @param key - The key.
    * @returns The value.
    */
-  public async getLocalStorage(
-    keys?: string | string[] | { [key: string]: any } | null
-  ): Promise<{ [key: string]: any }> {
+  public async getLocalStorage(keys?: string | string[] | { [key: string]: any } | null): Promise<{ [key: string]: any }> {
     try {
       const result = await chrome.storage.local.get(keys);
       return result;
@@ -95,7 +93,10 @@ export class ChromeAPI {
    */
   public async getCurrentTab(): Promise<chrome.tabs.Tab | null> {
     try {
-      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      const [tab] = await chrome.tabs.query({
+        active: true,
+        currentWindow: true,
+      });
       return tab || null;
     } catch (error) {
       logger.warn('Failed to get current tab', error);
@@ -170,9 +171,7 @@ export class ChromeAPI {
    * The function that adds a message listener.
    * @param callback - The callback.
    */
-  public addMessageListener(
-    callback: (message: Message, sender: chrome.runtime.MessageSender) => void
-  ): void {
+  public addMessageListener(callback: (message: Message, sender: chrome.runtime.MessageSender) => void): void {
     chrome.runtime.onMessage.addListener(callback);
   }
 
@@ -300,11 +299,7 @@ export class ChromeAPI {
    * @param reasons - The reasons.
    * @param justification - The justification.
    */
-  public async createOffscreenDocument(
-    url: string,
-    reasons: chrome.offscreen.Reason[],
-    justification: string
-  ): Promise<void> {
+  public async createOffscreenDocument(url: string, reasons: chrome.offscreen.Reason[], justification: string): Promise<void> {
     try {
       await chrome.offscreen.createDocument({
         url,

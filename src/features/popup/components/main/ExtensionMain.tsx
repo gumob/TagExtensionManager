@@ -1,11 +1,6 @@
 import React from 'react';
 
-import {
-  ExtensionHeader,
-  ExtensionList,
-  ExtensionSearchBar,
-  ExtensionTagList,
-} from '@/features/popup/components/main';
+import { ExtensionHeader, ExtensionList, ExtensionSearchBar, ExtensionTagList } from '@/features/popup/components/main';
 
 /**
  * The component for managing extensions.

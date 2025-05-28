@@ -60,9 +60,7 @@ export const useTagStore = create<TagStore>()(
           logger.debug('Initializing tag store');
 
           /** Get the storage instance */
-          const storedData = (
-            await useTagStore.persist.getOptions().storage?.getItem(STORAGE_KEYS.TAGS)
-          )?.state;
+          const storedData = (await useTagStore.persist.getOptions().storage?.getItem(STORAGE_KEYS.TAGS))?.state;
 
           /** If the stored data exists, load the tags and extension tags */
           if (storedData?.tags && storedData?.extensionTags) {
@@ -203,16 +201,12 @@ export const useTagStore = create<TagStore>()(
        */
       addTagToExtension: (extensionId: string, tagId: string) => {
         const { extensionTags } = get();
-        const existingExtensionTag = extensionTags.find(
-          extTag => extTag.extensionId === extensionId
-        );
+        const existingExtensionTag = extensionTags.find(extTag => extTag.extensionId === extensionId);
         let updatedExtensionTags;
         if (existingExtensionTag) {
           if (!existingExtensionTag.tagIds.includes(tagId)) {
             updatedExtensionTags = extensionTags.map(extTag =>
-              extTag.extensionId === extensionId
-                ? { ...extTag, tagIds: [...extTag.tagIds, tagId] }
-                : extTag
+              extTag.extensionId === extensionId ? { ...extTag, tagIds: [...extTag.tagIds, tagId] } : extTag
             );
             set({ extensionTags: updatedExtensionTags });
           }
@@ -234,9 +228,7 @@ export const useTagStore = create<TagStore>()(
       removeTagFromExtension: (extensionId: string, tagId: string) => {
         const { extensionTags } = get();
         const updatedExtensionTags = extensionTags.map(extTag =>
-          extTag.extensionId === extensionId
-            ? { ...extTag, tagIds: extTag.tagIds.filter(id => id !== tagId) }
-            : extTag
+          extTag.extensionId === extensionId ? { ...extTag, tagIds: extTag.tagIds.filter(id => id !== tagId) } : extTag
         );
         set({ extensionTags: updatedExtensionTags });
       },

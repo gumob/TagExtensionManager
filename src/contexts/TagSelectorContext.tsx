@@ -55,19 +55,13 @@ interface TagSelectorProviderProps {
  * @param children - The children to render.
  * @returns The TagSelectorProvider component.
  */
-export const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
-  extension,
-  children,
-}) => {
+export const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({ extension, children }) => {
   const { tags, extensionTags, addTagToExtension, removeTagFromExtension } = useTagStore();
 
   /**
    * Current tag ids.
    */
-  const currentTagIds = useMemo(
-    () => extensionTags.find(extTag => extTag.extensionId === extension.id)?.tagIds ?? [],
-    [extension.id, extensionTags]
-  );
+  const currentTagIds = useMemo(() => extensionTags.find(extTag => extTag.extensionId === extension.id)?.tagIds ?? [], [extension.id, extensionTags]);
 
   /**
    * The search query.
@@ -77,10 +71,7 @@ export const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
   /**
    * The filtered tags.
    */
-  const filteredTags = useMemo(
-    () => tags.filter(tag => tag.name.toLowerCase().includes(searchQuery.toLowerCase())),
-    [tags, searchQuery]
-  );
+  const filteredTags = useMemo(() => tags.filter(tag => tag.name.toLowerCase().includes(searchQuery.toLowerCase())), [tags, searchQuery]);
 
   /**
    * The handle tag click.
@@ -88,9 +79,7 @@ export const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
   const selectTag = useCallback(
     (tagId: string) => {
       /** The new current tag ids. */
-      const newCurrentTagIds = currentTagIds.includes(tagId)
-        ? currentTagIds.filter(id => id !== tagId)
-        : [...currentTagIds, tagId];
+      const newCurrentTagIds = currentTagIds.includes(tagId) ? currentTagIds.filter(id => id !== tagId) : [...currentTagIds, tagId];
 
       /** Add new tags */
       newCurrentTagIds.forEach(tagId => {

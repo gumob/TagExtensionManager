@@ -40,10 +40,7 @@ export const findOptimalIcon = (icons: chrome.management.IconInfo[] | undefined)
  * @param storedExtensions - Current extensions from the store
  * @returns Formatted extension data for our app
  */
-export const mapExtensionInfoToExtensionModel = (
-  ext: chrome.management.ExtensionInfo,
-  storedExtensions: ExtensionModel[] = []
-): ExtensionModel => {
+export const mapExtensionInfoToExtensionModel = (ext: chrome.management.ExtensionInfo, storedExtensions: ExtensionModel[] = []): ExtensionModel => {
   const storedExtension = storedExtensions.find(e => e.id === ext.id);
   const isLocked = storedExtension?.locked ?? false;
 

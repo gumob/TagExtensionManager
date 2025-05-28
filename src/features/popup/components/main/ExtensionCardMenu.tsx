@@ -1,27 +1,16 @@
-import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/react';
-import { Menu, MenuButton, MenuItems, Transition } from '@headlessui/react';
-import {
-  ArchiveBoxXMarkIcon,
-  Cog6ToothIcon,
-  EllipsisVerticalIcon,
-  LockClosedIcon,
-  LockOpenIcon,
-  TagIcon,
-} from '@heroicons/react/24/outline';
-
 import React, { useState } from 'react';
 
-import {
-  CancelButtonComponent,
-  DeleteButtonComponent,
-  DialogHeader,
-  DialogRoot,
-  MenuItemComponent,
-} from '@/components';
+import { CancelButtonComponent, DeleteButtonComponent, DialogHeader, DialogRoot, MenuItemComponent } from '@/components';
 import { useExtensionContext } from '@/contexts';
 import { TagSelectorMain } from '@/features/popup/components/selector';
 import { ExtensionModel } from '@/models';
 import { useExtensionStore } from '@/stores';
+
+import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/react';
+
+import { Menu, MenuButton, MenuItems, Transition } from '@headlessui/react';
+
+import { ArchiveBoxXMarkIcon, Cog6ToothIcon, EllipsisVerticalIcon, LockClosedIcon, LockOpenIcon, TagIcon } from '@heroicons/react/24/outline';
 
 /**
  * Extension menu props.
@@ -149,10 +138,7 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
                       <Cog6ToothIcon className="w-4 h-4" />
                       Manage Extension
                     </MenuItemComponent>
-                    <MenuItemComponent
-                      className="!text-red-600 dark:!text-red-400"
-                      onClick={handleUninstallClick}
-                    >
+                    <MenuItemComponent className="!text-red-600 dark:!text-red-400" onClick={handleUninstallClick}>
                       <ArchiveBoxXMarkIcon className="w-4 h-4" />
                       Uninstall Extension
                     </MenuItemComponent>
@@ -164,16 +150,10 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
         )}
       </Menu>
 
-      <DialogRoot
-        isOpen={isUninstallDialogOpen}
-        onClose={() => setIsUninstallDialogOpen(false)}
-        width="max-w-sm"
-      >
+      <DialogRoot isOpen={isUninstallDialogOpen} onClose={() => setIsUninstallDialogOpen(false)} width="max-w-sm">
         <div className="flex flex-col gap-4">
           <DialogHeader title="Uninstall Extension" />
-          <div className="flex ">
-            Are you sure to uninstall "{extension.name}"? This action cannot be undone.
-          </div>
+          <div className="flex ">Are you sure to uninstall "{extension.name}"? This action cannot be undone.</div>
           <div className="flex justify-end gap-2">
             <CancelButtonComponent onClick={() => setIsUninstallDialogOpen(false)} />
             <DeleteButtonComponent onClick={handleConfirmUninstall} />
@@ -181,11 +161,7 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
         </div>
       </DialogRoot>
 
-      <TagSelectorMain
-        extension={extension}
-        isOpen={isTagSelectorOpen}
-        onClose={() => setIsTagSelectorOpen(false)}
-      />
+      <TagSelectorMain extension={extension} isOpen={isTagSelectorOpen} onClose={() => setIsTagSelectorOpen(false)} />
     </>
   );
 };

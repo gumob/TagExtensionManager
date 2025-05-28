@@ -9,8 +9,7 @@ const createLogger = (loggerType: 'tslog' | 'consola') => {
      */
     return new Logger({
       name: 'CEM',
-      prettyLogTemplate:
-        '{{hh}}:{{MM}}:{{ss}}:{{ms}} {{logLevelName}} [{{name}}][{{fileNameWithLine}}] ',
+      prettyLogTemplate: '{{hh}}:{{MM}}:{{ss}}:{{ms}} {{logLevelName}} [{{name}}][{{fileNameWithLine}}] ',
       type: 'pretty',
       minLevel: process.env.NODE_ENV === 'development' ? 0 : 2, // 0: debug, 2: info
     });

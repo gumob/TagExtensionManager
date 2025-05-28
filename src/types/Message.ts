@@ -1,12 +1,7 @@
 /**
  * The message type for Chrome extension messaging.
  */
-export type MessageType =
-  | 'GET_PROFILE'
-  | 'SET_PROFILE'
-  | 'GET_TAGS'
-  | 'SET_TAGS'
-  | 'COLOR_SCHEME_CHANGED';
+export type MessageType = 'GET_PROFILE' | 'SET_PROFILE' | 'GET_TAGS' | 'SET_TAGS' | 'COLOR_SCHEME_CHANGED';
 
 /**
  * The message interface for Chrome extension messaging.

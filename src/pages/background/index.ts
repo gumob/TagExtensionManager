@@ -16,11 +16,7 @@ const createOffscreenDocument = async () => {
     }
 
     /** Create new document */
-    await chromeAPI.createOffscreenDocument(
-      'offscreen.html',
-      ['MATCH_MEDIA' as chrome.offscreen.Reason],
-      'Detect system color scheme changes'
-    );
+    await chromeAPI.createOffscreenDocument('offscreen.html', ['MATCH_MEDIA' as chrome.offscreen.Reason], 'Detect system color scheme changes');
     logger.debug('Offscreen document created successfully');
   } catch (error) {
     logger.error('Failed to initialize extensions', error);
@@ -36,11 +32,7 @@ const initialize = async () => {
   /**
    * Listen for theme changes from offscreen document
    */
-  const handleColorSchemeChange = (
-    message: any,
-    sender: chrome.runtime.MessageSender,
-    sendResponse: (response: any) => void
-  ) => {
+  const handleColorSchemeChange = (message: any, sender: chrome.runtime.MessageSender, sendResponse: (response: any) => void) => {
     switch (message.type) {
       /**
        * Keep service worker active

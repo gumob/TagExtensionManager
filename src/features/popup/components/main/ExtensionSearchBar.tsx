@@ -1,9 +1,9 @@
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-
 import React, { useEffect, useRef } from 'react';
 
 import { SearchBarComponent } from '@/components';
 import { useExtensionContext } from '@/contexts';
+
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 /**
  * The ExtensionSearchBar component.

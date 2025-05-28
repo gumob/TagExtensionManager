@@ -101,8 +101,7 @@ export const useBackup = () => {
 
     /** Validate extensions */
     for (const ext of data.extensions) {
-      if (!ext.id || typeof ext.enabled !== 'boolean' || typeof ext.locked !== 'boolean')
-        return false;
+      if (!ext.id || typeof ext.enabled !== 'boolean' || typeof ext.locked !== 'boolean') return false;
     }
 
     return true;
@@ -220,9 +219,7 @@ export const useBackup = () => {
            */
           const backupVersion = getBackupVersion();
           if (profiles.version !== backupVersion) {
-            logger.warn(
-              `Backup file version (${profiles.version}) differs from current version (${backupVersion})`
-            );
+            logger.warn(`Backup file version (${profiles.version}) differs from current version (${backupVersion})`);
           }
 
           /**
@@ -248,9 +245,7 @@ export const useBackup = () => {
               };
             });
 
-          const filteredExtensionTags = profiles.extensionTags.filter((extTag: any) =>
-            installedExtensionIds.has(extTag.extensionId)
-          );
+          const filteredExtensionTags = profiles.extensionTags.filter((extTag: any) => installedExtensionIds.has(extTag.extensionId));
 
           /**
            * Convert dates to Date objects before importing

@@ -1,12 +1,4 @@
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import { chromeAPI } from '@/api';
 import { ExtensionModel } from '@/models';
@@ -71,12 +63,7 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
    * State Management
    *******************************************************/
 
-  const {
-    loadExtensions,
-    extensions: storedExtensions,
-    toggleEnabled: toggleEnabledStore,
-    toggleLock: toggleLockStore,
-  } = useExtensionStore();
+  const { loadExtensions, extensions: storedExtensions, toggleEnabled: toggleEnabledStore, toggleLock: toggleLockStore } = useExtensionStore();
   const [searchQuery, setSearchQuery] = useState('');
 
   const { tags, extensionTags } = useTagStore();
@@ -120,15 +107,11 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
       const isVisible = (() => {
         if (visibleTagId === null) return true;
         if (visibleTagId === 'untagged') {
-          return !extensionTags.find(
-            extTag => extTag.extensionId === ext.id && extTag.tagIds.length > 0
-          );
+          return !extensionTags.find(extTag => extTag.extensionId === ext.id && extTag.tagIds.length > 0);
         }
         if (visibleTagId === 'enabled') return ext.enabled;
         if (visibleTagId === 'disabled') return !ext.enabled;
-        return extensionTags.find(
-          extTag => extTag.extensionId === ext.id && extTag.tagIds.includes(visibleTagId)
-        );
+        return extensionTags.find(extTag => extTag.extensionId === ext.id && extTag.tagIds.includes(visibleTagId));
       })();
 
       return isTextMatch && isVisible;
@@ -143,9 +126,7 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
       taggedExtensions: tags.reduce(
         (acc, tag) => {
           const tagExtensions = filteredExtensions.filter(extension =>
-            extensionTags.find(
-              extTag => extTag.extensionId === extension.id && extTag.tagIds.includes(tag.id)
-            )
+            extensionTags.find(extTag => extTag.extensionId === extension.id && extTag.tagIds.includes(tag.id))
           );
           if (tagExtensions.length > 0) {
             acc[tag.id] = tagExtensions;
@@ -155,10 +136,7 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
         {} as Record<string, ExtensionModel[]>
       ),
       untaggedExtensions: filteredExtensions.filter(
-        extension =>
-          !extensionTags.find(
-            extTag => extTag.extensionId === extension.id && extTag.tagIds.length > 0
-          )
+        extension => !extensionTags.find(extTag => extTag.extensionId === extension.id && extTag.tagIds.length > 0)
       ),
     };
   }, [filteredExtensions]);

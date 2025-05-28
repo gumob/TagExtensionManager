@@ -1,11 +1,11 @@
-import { TagIcon } from '@heroicons/react/24/outline';
-
 import React from 'react';
 
 import { DefaultBackgroundButton } from '@/components';
 import { useExtensionContext } from '@/contexts';
 import { TagModel } from '@/models';
 import { useTagStore } from '@/stores';
+
+import { TagIcon } from '@heroicons/react/24/outline';
 
 /**
  * The props for the ExtensionTagListItem component.
@@ -24,9 +24,7 @@ interface ExtensionTagListItemProps {
  * @param extensionCount - The number of extensions with the tag.
  * @returns The ExtensionTagListItem component.
  */
-export const ExtensionTagListItem: React.FC<ExtensionTagListItemProps> = ({
-  tag,
-}: ExtensionTagListItemProps) => {
+export const ExtensionTagListItem: React.FC<ExtensionTagListItemProps> = ({ tag }: ExtensionTagListItemProps) => {
   /**
    * The tag store.
    */
@@ -36,10 +34,7 @@ export const ExtensionTagListItem: React.FC<ExtensionTagListItemProps> = ({
   /**
    * The count of extensions with the tag.
    */
-  const count =
-    tag.id === 'untagged'
-      ? (untaggedExtensions.length ?? 0)
-      : extensionTags.filter(extTag => extTag.tagIds.includes(tag.id)).length;
+  const count = tag.id === 'untagged' ? (untaggedExtensions.length ?? 0) : extensionTags.filter(extTag => extTag.tagIds.includes(tag.id)).length;
   const isSelected = visibleTagId === tag.id;
 
   /**

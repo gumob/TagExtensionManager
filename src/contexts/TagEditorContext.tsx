@@ -69,13 +69,7 @@ interface TagEditorProviderProps {
  * @returns The TagEditorProvider component.
  */
 export const TagEditorProvider: React.FC<TagEditorProviderProps> = ({ children }) => {
-  const {
-    tags,
-    addTag: addTagToStore,
-    updateTag,
-    deleteTag: deleteTagOnStore,
-    reorderTags,
-  } = useTagStore();
+  const { tags, addTag: addTagToStore, updateTag, deleteTag: deleteTagOnStore, reorderTags } = useTagStore();
 
   /**
    * The max tag name length.
@@ -221,16 +215,7 @@ export const TagEditorProvider: React.FC<TagEditorProviderProps> = ({ children }
       addTag,
       startEditing,
     }),
-    [
-      sortedTags,
-      editingTagId,
-      editingTagName,
-      moveTag,
-      changeTagName,
-      deleteTag,
-      addTag,
-      startEditing,
-    ]
+    [sortedTags, editingTagId, editingTagName, moveTag, changeTagName, deleteTag, addTag, startEditing]
   );
 
   return <TagEditorContext.Provider value={value}>{children}</TagEditorContext.Provider>;

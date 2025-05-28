@@ -7,15 +7,7 @@ declare namespace chrome.offscreen {
   /**
    * The reason type.
    */
-  type Reason =
-    | 'AUDIO_PLAYBACK'
-    | 'BLOBS'
-    | 'CLIPBOARD'
-    | 'DOM_PARSER'
-    | 'DOM_SCRAPING'
-    | 'IFRAME_SCRIPTING'
-    | 'TESTING'
-    | 'WORKERS';
+  type Reason = 'AUDIO_PLAYBACK' | 'BLOBS' | 'CLIPBOARD' | 'DOM_PARSER' | 'DOM_SCRAPING' | 'IFRAME_SCRIPTING' | 'TESTING' | 'WORKERS';
 
   /**
    * The create document options type.

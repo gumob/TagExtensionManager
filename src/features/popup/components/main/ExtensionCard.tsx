@@ -1,11 +1,12 @@
-import { Switch } from '@headlessui/react';
-import { LockClosedIcon } from '@heroicons/react/24/outline';
-
 import React, { useEffect, useRef, useState } from 'react';
 
 import { useExtensionContext } from '@/contexts';
 import { ExtensionCardMenu } from '@/features/popup/components/main';
 import { ExtensionModel } from '@/models';
+
+import { Switch } from '@headlessui/react';
+
+import { LockClosedIcon } from '@heroicons/react/24/outline';
 
 /**
  * Extension card props.
@@ -100,29 +101,17 @@ export const ExtensionCard: React.FC<ExtensionCardProps> = ({ extension }) => {
   return (
     <div
       className={`rounded-xl px-3 py-2 ${extension.enabled && hasOptionsPage ? 'cursor-pointer' : ''} ${
-        isHovered && extension.enabled && hasOptionsPage
-          ? 'bg-zinc-50 dark:bg-zinc-600'
-          : 'bg-white dark:bg-zinc-700'
+        isHovered && extension.enabled && hasOptionsPage ? 'bg-zinc-50 dark:bg-zinc-600' : 'bg-white dark:bg-zinc-700'
       } transition-colors`}
       onClick={handleCardClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className="flex items-center gap-2">
-        <img
-          src={extension.iconUrl}
-          alt={extension.name}
-          className={`w-6 h-6 rounded transition-opacity ${!extension.enabled ? 'opacity-30' : ''}`}
-        />
+        <img src={extension.iconUrl} alt={extension.name} className={`w-6 h-6 rounded transition-opacity ${!extension.enabled ? 'opacity-30' : ''}`} />
         <div className="flex-1 min-w-0">
-          <h3
-            className={`text-sm select-none font-medium truncate transition-opacity ${!extension.enabled ? 'opacity-30' : ''}`}
-          >
-            {extension.name}
-          </h3>
-          <p
-            className={`text-xs text-zinc-500 dark:text-zinc-400 select-none transition-opacity ${!extension.enabled ? 'opacity-50' : ''}`}
-          >
+          <h3 className={`text-sm select-none font-medium truncate transition-opacity ${!extension.enabled ? 'opacity-30' : ''}`}>{extension.name}</h3>
+          <p className={`text-xs text-zinc-500 dark:text-zinc-400 select-none transition-opacity ${!extension.enabled ? 'opacity-50' : ''}`}>
             {extension.version}
           </p>
         </div>

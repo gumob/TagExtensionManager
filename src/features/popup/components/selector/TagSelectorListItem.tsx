@@ -1,11 +1,11 @@
-import { TagIcon } from '@heroicons/react/24/outline';
-import { TagIcon as TagSolidIcon } from '@heroicons/react/24/solid';
-
 import React from 'react';
 
 import { DefaultBackgroundButton } from '@/components';
 import { useTagSelectorContext } from '@/contexts';
 import { TagModel } from '@/models';
+
+import { TagIcon } from '@heroicons/react/24/outline';
+import { TagIcon as TagSolidIcon } from '@heroicons/react/24/solid';
 
 interface TagSelectorListItemProps {
   tag: TagModel;
@@ -20,11 +20,7 @@ export const TagSelectorListItem: React.FC<TagSelectorListItemProps> = ({ tag })
         currentTagIds.includes(tag.id) ? '' : 'opacity-50 hover:opacity-100'
       } flex items-center gap-1`}
     >
-      {currentTagIds.includes(tag.id) ? (
-        <TagSolidIcon className="w-3 h-3" />
-      ) : (
-        <TagIcon className="w-3 h-3" />
-      )}
+      {currentTagIds.includes(tag.id) ? <TagSolidIcon className="w-3 h-3" /> : <TagIcon className="w-3 h-3" />}
       <span className="">{tag.name}</span>
     </DefaultBackgroundButton>
   );

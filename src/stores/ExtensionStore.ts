@@ -57,9 +57,7 @@ export const useExtensionStore = create<ExtensionStore>()(
           logger.debug('Loading extensions from storage');
 
           /** Get the storage instance */
-          const storedData = (
-            await useExtensionStore.persist.getOptions().storage?.getItem(STORAGE_KEYS.EXTENSIONS)
-          )?.state;
+          const storedData = (await useExtensionStore.persist.getOptions().storage?.getItem(STORAGE_KEYS.EXTENSIONS))?.state;
           const storedExtensions = storedData?.extensions ?? [];
 
           /** Get the local extensions */
@@ -157,7 +155,11 @@ export const useExtensionStore = create<ExtensionStore>()(
           extensions: extensions.extensions.map(ext => {
             const importedExt = importedExtensions.find(imp => imp.id === ext.id);
             return importedExt
-              ? { ...ext, enabled: importedExt.enabled, locked: importedExt.locked }
+              ? {
+                  ...ext,
+                  enabled: importedExt.enabled,
+                  locked: importedExt.locked,
+                }
               : ext;
           }),
         })),

@@ -1,7 +1,8 @@
-import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react';
-import { XMarkIcon } from '@heroicons/react/24/outline';
-
 import React, { Fragment } from 'react';
+
+import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react';
+
+import { XMarkIcon } from '@heroicons/react/24/outline';
 
 interface DialogRootProps {
   isOpen: boolean;
@@ -10,12 +11,7 @@ interface DialogRootProps {
   children: React.ReactNode;
 }
 
-export const DialogRoot: React.FC<DialogRootProps> = ({
-  isOpen,
-  onClose,
-  width = 'max-w-md',
-  children,
-}) => {
+export const DialogRoot: React.FC<DialogRootProps> = ({ isOpen, onClose, width = 'max-w-md', children }) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={onClose}>

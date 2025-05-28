@@ -39,33 +39,29 @@ export const ExtensionList: React.FC = () => {
       ))}
 
       {/* Untagged Extensions */}
-      {(visibleTagId === null ||
-        visibleTagId === 'untagged' ||
-        visibleTagId === 'enabled' ||
-        visibleTagId === 'disabled') &&
-        untaggedExtensions.length > 0 && (
-          <div className="space-y-2">
-            {/* Header */}
-            <ExtensionListHeader
-              tag={{
-                id: 'untagged',
-                name: 'Untagged',
-                order: -1,
-                createdAt: new Date(),
-                updatedAt: new Date(),
-              }}
-              extensions={untaggedExtensions}
-            />
-            {/* Extensions */}
-            <div className="grid grid-cols-2 gap-2">
-              {untaggedExtensions
-                .sort((a, b) => a.name.localeCompare(b.name))
-                .map(extension => (
-                  <ExtensionCard key={extension.id} extension={extension} />
-                ))}
-            </div>
+      {(visibleTagId === null || visibleTagId === 'untagged' || visibleTagId === 'enabled' || visibleTagId === 'disabled') && untaggedExtensions.length > 0 && (
+        <div className="space-y-2">
+          {/* Header */}
+          <ExtensionListHeader
+            tag={{
+              id: 'untagged',
+              name: 'Untagged',
+              order: -1,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+            }}
+            extensions={untaggedExtensions}
+          />
+          {/* Extensions */}
+          <div className="grid grid-cols-2 gap-2">
+            {untaggedExtensions
+              .sort((a, b) => a.name.localeCompare(b.name))
+              .map(extension => (
+                <ExtensionCard key={extension.id} extension={extension} />
+              ))}
           </div>
-        )}
+        </div>
+      )}
     </div>
   );
 };
