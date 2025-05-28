@@ -2,8 +2,11 @@
 
 A tool for efficiently managing Chrome extensions. Group multiple extensions with tags and easily enable/disable them based on your needs.
 
-![Dark Mode](https://raw.githubusercontent.com/gumob/TagExtensionManager/refs/heads/develop/screenshot-dark.webp?token=GHSAT0AAAAAADDMOB2NN3KRHUF5VFYE7NOI2BWQFNQ)
-![Light Mode](https://raw.githubusercontent.com/gumob/TagExtensionManager/refs/heads/develop/screenshot-light.webp?token=GHSAT0AAAAAADDMOB2MZV2BJXLOCWL3RBD22BWQFVQ)
+<div class="grid" markdown>
+
+![Screenshot](screenshot.webp)
+
+</div>
 
 ## Features
 
