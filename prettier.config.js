@@ -12,5 +12,4 @@ export default {
   importOrder: ['^react$', '^react-(.*)$', '^@/(.*)$', '^[./]'],
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
-  ignorePatterns: ['node_modules', '.pnp', '.pnp.js', 'dist', 'out', 'build'],
 };
