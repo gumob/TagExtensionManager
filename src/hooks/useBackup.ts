@@ -149,7 +149,7 @@ export const useBackup = () => {
 
       /**
        * Generate filename with current timestamp
-       * Format: CleanExtensionManager-YYYYMMDD-HHMM.json
+       * Format: TagExtensionManager-YYYYMMDD-HHMM.json
        */
       const now = new Date();
       const timestamp =
@@ -159,7 +159,7 @@ export const useBackup = () => {
         '-' +
         now.getHours().toString().padStart(2, '0') +
         now.getMinutes().toString().padStart(2, '0');
-      a.download = `CleanExtensionManager-${timestamp}.json`;
+      a.download = `TagExtensionManager-${timestamp}.json`;
 
       /**
        * Trigger download and cleanup
