@@ -115,11 +115,20 @@ lane :release do |options|
   # Update version
   bump_version(type: type)
 
+  # Check format
+  format_check
+
+  # Check eslint
+  eslint_check
+
+  # Check type
+  type_check
+
   # Build
   build
 
   # Package
-  package
+  create_package
 
   # Git commit and tag
   version = JSON.parse(File.read("../package.json"))["version"]
