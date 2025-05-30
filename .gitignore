@@ -38,3 +38,6 @@ yarn-error.log*
 
 # dev build number (local only)
 .dev_build_number
+
+*.zip
+fastlane/report.xml
