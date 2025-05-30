@@ -1,7 +1,4 @@
-import {
-  Message,
-  MessageResponse,
-} from '@/types';
+import { Message, MessageResponse } from '@/types';
 import { logger } from '@/utils';
 
 /**

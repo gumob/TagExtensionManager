@@ -27,8 +27,8 @@ The extension requires the following permissions to function:
 
 - `management`: To manage other Chrome extensions, including enabling/disabling them and accessing their information for tag-based organization.
 - `storage`: To save your preferences and settings locally on the device. No data is transmitted to external servers.
-- `tabs`: To open extension options pages when requested by the user, allowing direct access to extension settings.
-- `scripting`: To detect system color scheme changes in the background, ensuring the extension's appearance matches the user's system preferences. It is also used to interact with web pages when necessary for extension management functionality.
+  <!-- - `tabs`: To open extension options pages when requested by the user, allowing direct access to extension settings. -->
+  <!-- - `scripting`: To detect system color scheme changes in the background, ensuring the extension's appearance matches the user's system preferences. It is also used to interact with web pages when necessary for extension management functionality. -->
 - `activeTab`: To access the current tab when detecting system color scheme changes and for extension management operations. This ensures proper theme synchronization across the extension.
 - `offscreen`: To detect system color scheme changes for theme synchronization, ensuring the extension's appearance matches the user's system preferences.
 
