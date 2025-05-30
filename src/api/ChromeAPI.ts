@@ -1,4 +1,7 @@
-import { Message, MessageResponse } from '@/types';
+import {
+  Message,
+  MessageResponse,
+} from '@/types';
 import { logger } from '@/utils';
 
 /**
@@ -109,20 +112,8 @@ export class ChromeAPI {
    * @param extensionId - The extension id.
    * @returns The created tab.
    */
-  public async createTab(extensionId: string): Promise<chrome.tabs.Tab> {
+  public async createTab(url: string): Promise<chrome.tabs.Tab> {
     try {
-      const browser = navigator.userAgent.toLowerCase();
-      let baseUrl = 'chrome://extensions';
-      if (browser.includes('brave')) {
-        baseUrl = 'brave://extensions';
-      } else if (browser.includes('edg')) {
-        baseUrl = 'edge://extensions';
-      } else if (browser.includes('opera')) {
-        baseUrl = 'opera://extensions';
-      } else if (browser.includes('vivaldi')) {
-        baseUrl = 'vivaldi://extensions';
-      }
-      const url = `${baseUrl}/?id=${extensionId}`;
       return await chrome.tabs.create({ url, active: true });
     } catch (error) {
       logger.warn('Failed to create tab', error);

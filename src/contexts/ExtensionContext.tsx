@@ -1,8 +1,19 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import { chromeAPI } from '@/api';
 import { ExtensionModel } from '@/models';
-import { useExtensionStore, useTagStore } from '@/stores';
+import {
+  useExtensionStore,
+  useTagStore,
+} from '@/stores';
 import { logger } from '@/utils';
 
 /**
@@ -185,9 +196,21 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
     [toggleLockStore]
   );
 
-  const openExtensionPage = useCallback(async (id: string) => {
+  const openExtensionPage = useCallback(async (extensionId: string) => {
     if (!isSubscribed.current) return;
-    await chromeAPI.createTab(id);
+    const browser = navigator.userAgent.toLowerCase();
+    let baseUrl = 'chrome://extensions';
+    if (browser.includes('brave')) {
+      baseUrl = 'brave://extensions';
+    } else if (browser.includes('edg')) {
+      baseUrl = 'edge://extensions';
+    } else if (browser.includes('opera')) {
+      baseUrl = 'opera://extensions';
+    } else if (browser.includes('vivaldi')) {
+      baseUrl = 'vivaldi://extensions';
+    }
+    const url = `${baseUrl}/?id=${extensionId}`;
+    await chromeAPI.createTab(url);
   }, []);
 
   const openOptionsPage = useCallback(
