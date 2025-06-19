@@ -1,14 +1,8 @@
-<meta name="google-site-verification" content="gLUGE2UhIhE-EYnfYZpvaf_oGg4FzKssw6yavnvBtT8" />
-
-# Tag Extension Manager
+# [Tag Extension Manager](https://github.com/gumob/TagExtensionManager)
 
 A Chrome Extension for efficiently managing Chrome extensions. Group multiple extensions with tags and easily enable/disable them based on your needs.
 
-<div class="grid" markdown>
-
-![Screenshot](screenshot.webp)
-
-</div>
+<img src="screenshot.webp">
 
 ## Features
 
