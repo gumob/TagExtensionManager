@@ -1,3 +1,5 @@
+<meta name="google-site-verification" content="gLUGE2UhIhE-EYnfYZpvaf_oGg4FzKssw6yavnvBtT8" />
+
 # Tag Extension Manager
 
 A Chrome Extension for efficiently managing Chrome extensions. Group multiple extensions with tags and easily enable/disable them based on your needs.
