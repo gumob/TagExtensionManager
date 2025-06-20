@@ -19,7 +19,6 @@ Please follow the directory structure below for implementation:
 │   │   ├── ServiceWorker.ts      # ServiceWorker script
 │   │   ├── Offscreen.ts          # Offscreen document
 │   │   └── Options.tsx           # Option page
-│   │   └── Popup.tsx             # Popup page
 │   ├── stores/                   # State management (Zustand)
 │   ├── styles/                   # Global styles
 │   ├── types/                    # TypeScript type definitions
