@@ -1,9 +1,17 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: ['./src/**/*.{js,jsx,ts,tsx}', './public/**/*.html'],
   darkMode: 'media',
   theme: {
     extend: {
+      screens: {
+        xs: '32rem',
+        sm: '38rem',
+        md: '48rem',
+        lg: '64rem',
+        xl: '80rem',
+        '2xl': '96rem',
+      },
       fontSize: {
         xs: '0.5rem', // 8px
         sm: '0.625rem', // 10px

@@ -31,7 +31,7 @@ export const ExtensionList: React.FC = () => {
           {/* Header */}
           <ExtensionListHeader tag={tags.find(t => t.id === tagId)!} extensions={tagExtensions} />
           {/* Extensions */}
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-2">
             {tagExtensions
               .sort((a, b) => a.name.localeCompare(b.name))
               .map(extension => (
