@@ -45,7 +45,7 @@ const initialize = async () => {
         sendResponse({ success: true });
         return true;
       /**
-       * Theme detection from popup
+       * Theme detection from options
        */
       case 'COLOR_SCHEME_CHANGED':
         logger.debug('Color scheme changed');

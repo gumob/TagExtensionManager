@@ -13,7 +13,7 @@ const isDev = process.env.NODE_ENV === 'development';
 const config: Configuration = {
   mode: isDev ? 'development' : 'production',
   entry: {
-    popup: './src/pages/Popup.tsx',
+    // popup: './src/pages/Popup.tsx',
     options: {
       import: './src/pages/Options.tsx',
       filename: 'options.js',
@@ -61,11 +61,11 @@ const config: Configuration = {
     new MiniCssExtractPlugin({
       filename: 'globals.css',
     }),
-    new HtmlWebpackPlugin({
-      template: './public/popup.html',
-      filename: 'popup.html',
-      chunks: ['popup'],
-    }),
+    // new HtmlWebpackPlugin({
+    //   template: './public/popup.html',
+    //   filename: 'popup.html',
+    //   chunks: ['popup'],
+    // }),
     new HtmlWebpackPlugin({
       template: './public/options.html',
       filename: 'options.html',
