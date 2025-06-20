@@ -10,15 +10,16 @@ Please follow the directory structure below for implementation:
 │   ├── constants/                # Constant values and configurations
 │   ├── contexts/                 # React Context providers
 │   ├── features/                 # Feature-specific implementations
-│   │   └── popup/                # Popup feature specific components
-│   │       └── components/       # Popup specific UI components
+│   │   └── options/              # Option feature specific components
+│   │       └── components/       # Option specific UI components
 │   ├── hooks/                    # Custom React hooks
 │   ├── mappers/                  # Data transformation utilities
 │   ├── models/                   # Data models and interfaces
 │   ├── pages/                    # Page implementations
-│   │   ├── background/           # Background script
-│   │   ├── offscreen/            # Offscreen document
-│   │   └── popup/                # Popup page
+│   │   ├── ServiceWorker.ts      # ServiceWorker script
+│   │   ├── Offscreen.ts          # Offscreen document
+│   │   └── Options.tsx           # Option page
+│   │   └── Popup.tsx             # Popup page
 │   ├── stores/                   # State management (Zustand)
 │   ├── styles/                   # Global styles
 │   ├── types/                    # TypeScript type definitions
@@ -52,14 +53,14 @@ Please follow the directory structure below for implementation:
 - `constants/`: Constant values and configuration definitions
 - `contexts/`: React Context providers and implementations
 - `features/`: Feature-specific implementations
-  - `popup/`: Popup feature specific components and logic
+  - `options/`: Option feature specific components and logic
 - `hooks/`: Custom React hooks
 - `mappers/`: Data transformation and mapping utilities
 - `models/`: Data models and interfaces
 - `pages/`: Page implementations
   - `background/`: Background script implementation
   - `offscreen/`: Offscreen document implementation
-  - `popup/`: Popup page implementation
+  - `options/`: Option page implementation
 - `stores/`: State management implementations (Zustand)
 - `styles/`: Global style definitions
 - `types/`: TypeScript type definitions

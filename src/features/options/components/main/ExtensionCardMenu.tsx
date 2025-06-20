@@ -1,14 +1,37 @@
 import React, { useState } from 'react';
 
-import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/react';
-import { Menu, MenuButton, MenuItems, Transition } from '@headlessui/react';
-import { ArchiveBoxXMarkIcon, Cog6ToothIcon, EllipsisVerticalIcon, LockClosedIcon, LockOpenIcon, TagIcon } from '@heroicons/react/24/outline';
-
-import { CancelButtonComponent, DeleteButtonComponent, DialogHeader, DialogRoot, MenuItemComponent } from '@/components';
+import {
+  CancelButtonComponent,
+  DeleteButtonComponent,
+  DialogHeader,
+  DialogRoot,
+  MenuItemComponent,
+} from '@/components';
 import { useExtensionContext } from '@/contexts';
-import { TagSelectorMain } from '@/features/popup/components/selector';
+import { TagSelectorMain } from '@/features/options/components/selector';
 import { ExtensionModel } from '@/models';
 import { useExtensionStore } from '@/stores';
+import {
+  autoUpdate,
+  flip,
+  offset,
+  shift,
+  useFloating,
+} from '@floating-ui/react';
+import {
+  Menu,
+  MenuButton,
+  MenuItems,
+  Transition,
+} from '@headlessui/react';
+import {
+  ArchiveBoxXMarkIcon,
+  Cog6ToothIcon,
+  EllipsisVerticalIcon,
+  LockClosedIcon,
+  LockOpenIcon,
+  TagIcon,
+} from '@heroicons/react/24/outline';
 
 /**
  * Extension menu props.

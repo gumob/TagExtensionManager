@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useTagSelectorContext } from '@/contexts';
-import { TagSelectorListItem } from '@/features/popup/components/selector';
+import { TagSelectorListItem } from '@/features/options/components/selector';
 
 /**
  * The TagSelectorList component.

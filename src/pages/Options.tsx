@@ -9,19 +9,18 @@ import { createRoot } from 'react-dom/client';
 import { Toaster } from 'react-hot-toast';
 
 import { ExtensionProvider } from '@/contexts';
-import { ExtensionMain } from '@/features/popup/components/main';
+import { ExtensionMain } from '@/features/options/components/main';
 import {
   detectTheme,
   logger,
 } from '@/utils';
 
 /**
- * The main component for the options page.
+ * The main component for the extension manager.
  * @returns
  */
 const Options: React.FC = () => {
   const isInitialized = useRef(false);
-
   /**
    * Setup color scheme listener.
    */
@@ -30,7 +29,7 @@ const Options: React.FC = () => {
       if (isInitialized.current) return;
       isInitialized.current = true;
 
-      logger.debug('📄⌥', '[Options.tsx]', '[useEffect]', 'Initializing options document');
+      logger.debug('Initializing options document');
       await detectTheme();
     };
 
@@ -38,7 +37,7 @@ const Options: React.FC = () => {
 
     return () => {
       isInitialized.current = false;
-      logger.debug('📄⌥', '[Options.tsx]', '[useEffect]', 'Deinitializing options document');
+      logger.debug('Deinitializing options document');
     };
   }, []);
 
@@ -60,6 +59,19 @@ const Options: React.FC = () => {
   );
 };
 
-// Create root and render
-const root = createRoot(document.getElementById('root')!);
-root.render(<Options />);
+/**
+ * The container element.
+ */
+const container = document.getElementById('root');
+
+/**
+ * The root element.
+ */
+if (container) {
+  const root = createRoot(container);
+  root.render(
+    <React.StrictMode>
+      <Options />
+    </React.StrictMode>
+  );
+}

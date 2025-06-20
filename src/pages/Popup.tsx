@@ -1,12 +1,19 @@
-import React, { useEffect, useRef } from 'react';
+import '@/styles/globals.css';
+
+import React, {
+  useEffect,
+  useRef,
+} from 'react';
 
 import { createRoot } from 'react-dom/client';
 import { Toaster } from 'react-hot-toast';
 
 import { ExtensionProvider } from '@/contexts';
-import { ExtensionMain } from '@/features/popup/components/main';
-import '@/styles/globals.css';
-import { detectTheme, logger } from '@/utils';
+import { ExtensionMain } from '@/features/options/components/main';
+import {
+  detectTheme,
+  logger,
+} from '@/utils';
 
 /**
  * The main component for the extension manager.

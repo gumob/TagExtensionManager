@@ -1,9 +1,9 @@
-import { PencilIcon } from 'lucide-react';
-
 import React, { useState } from 'react';
 
+import { PencilIcon } from 'lucide-react';
+
 import { DefaultBackgroundButton } from '@/components';
-import { TagEditorMain } from '@/features/popup/components/editor';
+import { TagEditorMain } from '@/features/options/components/editor';
 
 /**
  * The ExtensionTagListEditButton component.

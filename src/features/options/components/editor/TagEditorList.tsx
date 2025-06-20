@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useTagEditorContext } from '@/contexts';
-import { TagEditorListItem } from '@/features/popup/components/editor';
+import { TagEditorListItem } from '@/features/options/components/editor';
 
 export const TagEditorList: React.FC = () => {
   const { sortedTags } = useTagEditorContext();

@@ -1,8 +1,14 @@
 import React from 'react';
 
-import { DialogHeader, DialogRoot } from '@/components';
+import {
+  DialogHeader,
+  DialogRoot,
+} from '@/components';
 import { TagSelectorProvider } from '@/contexts';
-import { TagSelectorList, TagSelectorSearchBar } from '@/features/popup/components/selector';
+import {
+  TagSelectorList,
+  TagSelectorSearchBar,
+} from '@/features/options/components/selector';
 import { ExtensionModel } from '@/models';
 
 /**

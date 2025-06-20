@@ -1,11 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
-
-import { Switch } from '@headlessui/react';
-import { LockClosedIcon } from '@heroicons/react/24/outline';
+import React, {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { useExtensionContext } from '@/contexts';
-import { ExtensionCardMenu } from '@/features/popup/components/main';
+import { ExtensionCardMenu } from '@/features/options/components/main';
 import { ExtensionModel } from '@/models';
+import { Switch } from '@headlessui/react';
+import { LockClosedIcon } from '@heroicons/react/24/outline';
 
 /**
  * Extension card props.
