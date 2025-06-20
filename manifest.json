@@ -3,7 +3,7 @@
   "name": "Tag Extension Manager",
   "version": "0.0.1",
   "description": "A free and open-source Chrome extension to manage other extensions",
-  "permissions": ["management", "storage", "activeTab", "offscreen"],
+  "permissions": ["management", "storage", "activeTab", "offscreen", "sidePanel"],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
