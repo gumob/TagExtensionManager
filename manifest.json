@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Tag Extension Manager",
   "version": "0.0.1",
-  "description": "A Chrome extension to manage other extensions",
+  "description": "A free and open-source Chrome extension to manage other extensions",
   "permissions": ["management", "storage", "activeTab", "offscreen"],
   "action": {
     "default_popup": "popup.html",
@@ -18,7 +18,11 @@
     "128": "icons/color/icon128.png"
   },
   "background": {
-    "service_worker": "background.js",
+    "service_worker": "service-worker.js",
     "type": "module"
+  },
+  "options_page": "options.html",
+  "side_panel": {
+    "default_path": "options.html"
   }
 }

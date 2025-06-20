@@ -1,4 +1,6 @@
 import CopyPlugin from 'copy-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import type { Configuration } from 'webpack';
@@ -11,11 +13,16 @@ const isDev = process.env.NODE_ENV === 'development';
 const config: Configuration = {
   mode: isDev ? 'development' : 'production',
   entry: {
-    popup: './src/pages/popup/index.tsx',
-    background: './src/pages/background/index.ts',
-    offscreen: './src/pages/offscreen/index.ts',
+    popup: './src/pages/Popup.tsx',
+    options: {
+      import: './src/pages/Options.tsx',
+      filename: 'options.js',
+    },
+    'service-worker': './src/pages/ServiceWorker.ts',
+    offscreen: './src/pages/Offscreen.ts',
   },
   output: {
+    publicPath: '',
     path: path.resolve(__dirname, isDev ? 'dist/dev' : 'dist/prod'),
     filename: '[name].js',
     clean: true,
@@ -51,21 +58,39 @@ const config: Configuration = {
     },
   },
   plugins: [
+    new MiniCssExtractPlugin({
+      filename: 'globals.css',
+    }),
+    new HtmlWebpackPlugin({
+      template: './public/popup.html',
+      filename: 'popup.html',
+      chunks: ['popup'],
+    }),
+    new HtmlWebpackPlugin({
+      template: './public/options.html',
+      filename: 'options.html',
+      chunks: ['options'],
+    }),
+    new HtmlWebpackPlugin({
+      template: './public/offscreen.html',
+      filename: 'offscreen.html',
+      chunks: ['offscreen'],
+    }),
     new CopyPlugin({
       patterns: [
         {
           from: 'public',
           to: '.',
           globOptions: {
-            ignore: ['**/*.sketch'],
+            ignore: ['**/*.sketch', '**/*.html'],
           },
         },
         { from: 'manifest.json', to: '.' },
       ],
     }),
   ],
-  // devtool: isDev ? 'source-map' : false,
-  devtool: isDev ? 'inline-source-map' : false,
+  // devtool: isDev ? 'inline-source-map' : false,
+  devtool: isDev ? 'source-map' : false,
   optimization: {
     minimize: !isDev,
   },
