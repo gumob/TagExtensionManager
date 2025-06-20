@@ -4,6 +4,7 @@ export default {
   darkMode: 'media',
   theme: {
     extend: {
+      /** Reference: https://tailwindcss.com/docs/responsive-design */
       screens: {
         xs: '32rem',
         sm: '38rem',
