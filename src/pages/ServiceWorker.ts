@@ -1,5 +1,8 @@
 import { chromeAPI } from '@/api';
-import { logger, updateExtensionIcon } from '@/utils';
+import {
+  logger,
+  updateExtensionIcon,
+} from '@/utils';
 
 /**
  * Background script
@@ -85,6 +88,10 @@ const initialize = async () => {
  */
 chrome.runtime.onInstalled.addListener(async details => {
   logger.debug('Extension installed');
+
+  /** Open side panel on action click */
+  await chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true });
+
   await initialize();
 });
 

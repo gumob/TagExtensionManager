@@ -5,7 +5,6 @@
   "description": "A free and open-source Chrome extension to manage other extensions",
   "permissions": ["management", "storage", "activeTab", "offscreen", "sidePanel"],
   "action": {
-    "default_popup": "popup.html",
     "default_icon": {
       "16": "icons/color/icon16.png",
       "48": "icons/color/icon48.png",
