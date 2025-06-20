@@ -1,19 +1,12 @@
-import '@/styles/globals.css';
-
-import React, {
-  useEffect,
-  useRef,
-} from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { createRoot } from 'react-dom/client';
 import { Toaster } from 'react-hot-toast';
 
 import { ExtensionProvider } from '@/contexts';
 import { ExtensionMain } from '@/features/options/components/main';
-import {
-  detectTheme,
-  logger,
-} from '@/utils';
+import '@/styles/globals.css';
+import { detectTheme, logger } from '@/utils';
 
 /**
  * The main component for the extension manager.
@@ -70,8 +63,8 @@ const container = document.getElementById('root');
 if (container) {
   const root = createRoot(container);
   root.render(
-    <React.StrictMode>
-      <Options />
-    </React.StrictMode>
+    // <React.StrictMode>
+    <Options />
+    // </React.StrictMode>
   );
 }

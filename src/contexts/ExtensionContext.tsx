@@ -76,7 +76,7 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
   /**
    * The is loading.
    */
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   /**
    * Refs for managing component lifecycle and preventing stale closures
@@ -278,12 +278,16 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
     const initialize = async () => {
       logger.debug('Initializing ExtensionProvider');
       try {
+        /* Initialize stores in parallel */
+        // await Promise.all([useExtensionStore.getState().initialize(), useTagStore.getState().initialize()]);
         /* Initialize stores in sequence */
         await useExtensionStore.getState().initialize();
         await useTagStore.getState().initialize();
         isInitialized.current = true;
       } catch (error) {
         logger.error('Failed to initialize extensions', error);
+      } finally {
+        setIsLoading(false);
       }
     };
     if (!isInitialized.current) initialize();
