@@ -33,6 +33,7 @@ body {
 /* Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px; /* 水平スクロールバーの高さを設定 */
 }
 
 ::-webkit-scrollbar-track {
@@ -45,6 +46,25 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover-color);
+  opacity: 0.8;
+}
+
+/* 水平スクロールバー専用のスタイル */
+::-webkit-scrollbar:horizontal {
+  height: 6px;
+}
+
+::-webkit-scrollbar-track:horizontal {
+  background: var(--scrollbar-track-color);
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+  background: var(--scrollbar-thumb-color);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:horizontal:hover {
   background: var(--scrollbar-thumb-hover-color);
   opacity: 0.8;
 }
