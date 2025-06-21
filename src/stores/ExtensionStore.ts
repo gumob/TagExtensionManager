@@ -45,6 +45,8 @@ export const useExtensionStore = create<ExtensionStore>()(
        * The function that initializes the extension store by loading the extensions from Chrome storage
        */
       initialize: async () => {
+        /** Wait for Zustand persist to restore data first */
+        await new Promise(resolve => setTimeout(resolve, 500));
         await get().loadExtensions();
       },
 
@@ -57,8 +59,8 @@ export const useExtensionStore = create<ExtensionStore>()(
           logger.debug('Loading extensions from storage');
 
           /** Get the storage instance */
-          const storedData = (await useExtensionStore.persist.getOptions().storage?.getItem(STORAGE_KEYS.EXTENSIONS))?.state;
-          const storedExtensions = storedData?.extensions ?? [];
+          const storedData = await useExtensionStore.persist.getOptions().storage?.getItem(STORAGE_KEYS.EXTENSIONS);
+          const storedExtensions = storedData?.state?.extensions ?? [];
 
           /** Get the local extensions */
           const localExtensions = (await chromeAPI.getAllExtensions())
