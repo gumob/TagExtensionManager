@@ -240,6 +240,19 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
   );
 
   /**
+   * Event handlers for extension state changes.
+   * Implemented as stable callbacks to prevent unnecessary re-renders.
+   */
+  const handleExtensionInstalled = useCallback(
+    (info: chrome.management.ExtensionInfo) => {
+      if (!isSubscribed.current) return;
+      logger.debug('Extension installed', info.name);
+      refreshExtensions();
+    },
+    [refreshExtensions]
+  );
+
+  /**
    * Handle the extension uninstalled event.
    * @param id
    */
@@ -295,9 +308,9 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
     /** Subscribe listeners */
     if (!isSubscribed.current) {
       logger.debug('Subscribing listeners');
-      chrome.management.onEnabled.addListener(handleExtensionStateChange);
-      chrome.management.onDisabled.addListener(handleExtensionStateChange);
-      chrome.management.onInstalled.addListener(handleExtensionStateChange);
+      // chrome.management.onEnabled.addListener(handleExtensionStateChange);
+      // chrome.management.onDisabled.addListener(handleExtensionStateChange);
+      chrome.management.onInstalled.addListener(handleExtensionInstalled);
       chrome.management.onUninstalled.addListener(handleExtensionUninstalled);
       chrome.runtime.onInstalled.addListener(handleExtensionUpdate);
       isSubscribed.current = true;
@@ -306,9 +319,9 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
     /** Unsubscribe listeners */
     return () => {
       logger.debug('Deinitializing ExtensionProvider');
-      chrome.management.onEnabled.removeListener(handleExtensionStateChange);
-      chrome.management.onDisabled.removeListener(handleExtensionStateChange);
-      chrome.management.onInstalled.removeListener(handleExtensionStateChange);
+      // chrome.management.onEnabled.removeListener(handleExtensionStateChange);
+      // chrome.management.onDisabled.removeListener(handleExtensionStateChange);
+      chrome.management.onInstalled.removeListener(handleExtensionInstalled);
       chrome.management.onUninstalled.removeListener(handleExtensionUninstalled);
       chrome.runtime.onInstalled.removeListener(handleExtensionUpdate);
       isSubscribed.current = false;
