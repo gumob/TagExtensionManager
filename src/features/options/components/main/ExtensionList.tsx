@@ -20,6 +20,12 @@ export const ExtensionList: React.FC = () => {
   const { tags } = useTagStore();
 
   /*******************************************************
+   * Side Effects
+   *******************************************************/
+
+  const gridCss = 'grid xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-2 auto-cols-fr';
+
+  /*******************************************************
    * Render the component
    *******************************************************/
 
@@ -31,7 +37,7 @@ export const ExtensionList: React.FC = () => {
           {/* Header */}
           <ExtensionListHeader tag={tags.find(t => t.id === tagId)!} extensions={tagExtensions} />
           {/* Extensions */}
-          <div className="grid xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-2">
+          <div className={gridCss}>
             {tagExtensions
               .sort((a, b) => a.name.localeCompare(b.name))
               .map(extension => (
@@ -56,7 +62,7 @@ export const ExtensionList: React.FC = () => {
             extensions={untaggedExtensions}
           />
           {/* Extensions */}
-          <div className="grid grid-cols-2 gap-2">
+          <div className={gridCss}>
             {untaggedExtensions
               .sort((a, b) => a.name.localeCompare(b.name))
               .map(extension => (
