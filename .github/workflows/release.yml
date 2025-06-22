@@ -154,14 +154,44 @@ jobs:
             exit 1
           fi
 
+      - name: Validate OAuth2 credentials
+        run: |
+          echo "🔐 Validating OAuth2 credentials..."
+
+          # Test OAuth2 token refresh
+          RESPONSE=$(curl -s -X POST \
+            -H "Content-Type: application/x-www-form-urlencoded" \
+            -d "client_id=${{ secrets.CHROME_CLIENT_ID }}" \
+            -d "client_secret=${{ secrets.CHROME_CLIENT_SECRET }}" \
+            -d "refresh_token=${{ secrets.CHROME_REFRESH_TOKEN }}" \
+            -d "grant_type=refresh_token" \
+            "https://oauth2.googleapis.com/token")
+
+          echo "OAuth2 Response: $RESPONSE"
+
+          # Check if response contains access_token
+          if echo "$RESPONSE" | grep -q "access_token"; then
+            echo "✅ OAuth2 credentials are valid"
+          else
+            echo "❌ OAuth2 credentials are invalid"
+            echo "   Please check your credentials in Google Cloud Console"
+            echo "   Response: $RESPONSE"
+            exit 1
+          fi
+
       - name: Upload to Chrome Web Store
         run: |
-          npx chrome-webstore-upload-cli@3 upload --auto-publish --source tag-extension-manager-${{ env.VERSION }}.zip
+          echo "📤 Uploading to Chrome Web Store..."
+          echo "Extension ID: ${{ secrets.CHROME_EXTENSION_ID }}"
+          echo "Source file: tag-extension-manager-${{ env.VERSION }}.zip"
+
+          # Upload with detailed error handling
+          npx chrome-webstore-upload-cli@2 upload --auto-publish --source tag-extension-manager-${{ env.VERSION }}.zip
         env:
           CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
           REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
-          EXTENSION_ID: mcnibmkpimlpgnlgkkhpgabkhdgngmca
+          EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
         continue-on-error: true
 
       - name: Check Chrome Web Store upload result
@@ -171,9 +201,31 @@ jobs:
             echo "✅ Chrome Web Store upload completed successfully"
           else
             echo "⚠️ Chrome Web Store upload failed, but workflow continued"
-            echo "Please check the following:"
-            echo "1. CHROME_CLIENT_ID, CHROME_CLIENT_SECRET, CHROME_REFRESH_TOKEN are correctly set"
-            echo "2. EXTENSION_ID matches your Chrome Web Store extension"
-            echo "3. Extension is in the correct state for publishing"
-            echo "4. API permissions are properly configured"
+            echo ""
+            echo "🔍 Troubleshooting Guide:"
+            echo "1. Verify OAuth2 credentials in Google Cloud Console:"
+            echo "   - Go to https://console.cloud.google.com/"
+            echo "   - Navigate to APIs & Services > Credentials"
+            echo "   - Check if OAuth2 client is properly configured"
+            echo ""
+            echo "2. Verify Chrome Web Store API is enabled:"
+            echo "   - Go to https://console.cloud.google.com/"
+            echo "   - Navigate to APIs & Services > Library"
+            echo "   - Search for 'Chrome Web Store API' and enable it"
+            echo ""
+            echo "3. Check Extension ID:"
+            echo "   - Current ID: mcnibmkpimlpgnlpgnlgkkhpgabkhdgngmca"
+            echo "   - Verify this matches your Chrome Web Store extension"
+            echo ""
+            echo "4. Verify Chrome Web Store Developer Account:"
+            echo "   - Go to https://chrome.google.com/webstore/devconsole/"
+            echo "   - Ensure account is properly set up and verified"
+            echo ""
+            echo "5. Check API permissions:"
+            echo "   - Ensure your OAuth2 client has the following scopes:"
+            echo "     * https://www.googleapis.com/auth/chromewebstore"
+            echo ""
+            echo "6. Verify refresh token:"
+            echo "   - Refresh tokens can expire"
+            echo "   - Generate a new one if necessary"
           fi
