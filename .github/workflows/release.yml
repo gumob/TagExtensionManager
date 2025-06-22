@@ -181,10 +181,10 @@ jobs:
 
           # Debug: Check all secrets
           echo "🔍 Debug: Checking secrets..."
-          echo "  - CHROME_CLIENT_ID: $([ -n "${{ secrets.CHROME_CLIENT_ID }}" ] && echo "Set (${#CHROME_CLIENT_ID} chars)" || echo "Not set")"
-          echo "  - CHROME_CLIENT_SECRET: $([ -n "${{ secrets.CHROME_CLIENT_SECRET }}" ] && echo "Set (${#CHROME_CLIENT_SECRET} chars)" || echo "Not set")"
-          echo "  - CHROME_REFRESH_TOKEN: $([ -n "${{ secrets.CHROME_REFRESH_TOKEN }}" ] && echo "Set (${#CHROME_REFRESH_TOKEN} chars)" || echo "Not set")"
-          echo "  - CHROME_EXTENSION_ID: $([ -n "${{ secrets.CHROME_EXTENSION_ID }}" ] && echo "Set (${#CHROME_EXTENSION_ID} chars)" || echo "Not set")"
+          echo "  - CHROME_CLIENT_ID: $([ -n "${{ secrets.CHROME_CLIENT_ID }}" ] && echo "Set ($(echo -n "${{ secrets.CHROME_CLIENT_ID }}" | wc -c) chars)" || echo "Not set")"
+          echo "  - CHROME_CLIENT_SECRET: $([ -n "${{ secrets.CHROME_CLIENT_SECRET }}" ] && echo "Set ($(echo -n "${{ secrets.CHROME_CLIENT_SECRET }}" | wc -c) chars)" || echo "Not set")"
+          echo "  - CHROME_REFRESH_TOKEN: $([ -n "${{ secrets.CHROME_REFRESH_TOKEN }}" ] && echo "Set ($(echo -n "${{ secrets.CHROME_REFRESH_TOKEN }}" | wc -c) chars)" || echo "Not set")"
+          echo "  - CHROME_EXTENSION_ID: $([ -n "${{ secrets.CHROME_EXTENSION_ID }}" ] && echo "Set ($(echo -n "${{ secrets.CHROME_EXTENSION_ID }}" | wc -c) chars)" || echo "Not set")"
 
           # Validate Extension ID
           EXTENSION_ID="${{ secrets.CHROME_EXTENSION_ID }}"
