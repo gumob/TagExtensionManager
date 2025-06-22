@@ -37,7 +37,7 @@ A Chrome Extension for efficiently managing Chrome extensions. Group multiple ex
 2. Click "Add to Chrome"
 3. Click "Add Extension" in the confirmation dialog
 
-### Development Version
+### Install locally
 
 1. Download [release version](https://github.com/gumob/TagExtensionManager/releases) and upzip
 2. Open `chrome://extensions` in Chrome
