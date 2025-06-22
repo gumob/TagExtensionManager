@@ -213,7 +213,7 @@ jobs:
             # Test Chrome Web Store API access with the token
             echo "🧪 Testing Chrome Web Store API access..."
             API_RESPONSE=$(curl -s -H "Authorization: Bearer $ACCESS_TOKEN" \
-              "https://www.googleapis.com/chromewebstore/v1.1/items/${{ secrets.CHROME_EXTENSION_ID }}")
+              "https://www.googleapis.com/chromewebstore/v1.1/items/$EXTENSION_ID?projection=DRAFT")
 
             if echo "$API_RESPONSE" | grep -q "error"; then
               echo "❌ Chrome Web Store API access failed"
@@ -224,6 +224,7 @@ jobs:
               echo "  2. Chrome Web Store API not enabled"
               echo "  3. Insufficient OAuth2 scopes"
               echo "  4. Account permissions issue"
+              echo "  5. Missing required API parameters (projection)"
               echo ""
               echo "📋 Required OAuth2 Scopes:"
               echo "   - https://www.googleapis.com/auth/chromewebstore"
@@ -233,6 +234,7 @@ jobs:
               echo "   2. Enable Chrome Web Store API in Google Cloud Console"
               echo "   3. Check OAuth2 client scopes"
               echo "   4. Verify developer account permissions"
+              echo "   5. Ensure API request includes required parameters"
               exit 1
             else
               echo "✅ Chrome Web Store API access successful"
@@ -308,17 +310,28 @@ jobs:
           # Test Chrome Web Store API access
           echo "🧪 Testing Chrome Web Store API access..."
           API_RESPONSE=$(curl -s -H "Authorization: Bearer $ACCESS_TOKEN" \
-            "https://www.googleapis.com/chromewebstore/v1.1/items/$EXTENSION_ID")
+            "https://www.googleapis.com/chromewebstore/v1.1/items/$EXTENSION_ID?projection=DRAFT")
 
           if echo "$API_RESPONSE" | grep -q "error"; then
             echo "❌ Chrome Web Store API access failed"
             echo "  Response: $API_RESPONSE"
             echo ""
-            echo "🔍 Common causes:"
+            echo "🔍 This indicates one of the following issues:"
             echo "  1. Extension ID mismatch"
-            echo "  2. Insufficient permissions"
-            echo "  3. Chrome Web Store API not enabled"
-            echo "  4. Account not verified"
+            echo "  2. Chrome Web Store API not enabled"
+            echo "  3. Insufficient OAuth2 scopes"
+            echo "  4. Account permissions issue"
+            echo "  5. Missing required API parameters (projection)"
+            echo ""
+            echo "📋 Required OAuth2 Scopes:"
+            echo "   - https://www.googleapis.com/auth/chromewebstore"
+            echo ""
+            echo "🔧 Next Steps:"
+            echo "   1. Verify extension ID in Chrome Web Store Developer Console"
+            echo "   2. Enable Chrome Web Store API in Google Cloud Console"
+            echo "   3. Check OAuth2 client scopes"
+            echo "   4. Verify developer account permissions"
+            echo "   5. Ensure API request includes required parameters"
             exit 1
           else
             echo "✅ Chrome Web Store API access successful"
