@@ -103,22 +103,22 @@ jobs:
           echo "🔍 Checking Chrome Web Store configuration..."
 
           # Check if Client ID is set
-          if [ -n "${{ secrets.CLIENT_ID }}" ]; then
-            echo "✅ Client ID: ${{ secrets.CLIENT_ID }}"
+          if [ -n "${{ secrets.CHROME_CLIENT_ID }}" ]; then
+            echo "✅ Client ID: ${{ secrets.CHROME_CLIENT_ID }}"
           else
             echo "❌ Client ID: Not set"
           fi
 
           # Check if Client Secret is set
-          if [ -n "${{ secrets.CLIENT_SECRET }}" ]; then
-            echo "✅ Client Secret: ${{ secrets.CLIENT_SECRET }}"
+          if [ -n "${{ secrets.CHROME_CLIENT_SECRET }}" ]; then
+            echo "✅ Client Secret: ${{ secrets.CHROME_CLIENT_SECRET }}"
           else
             echo "❌ Client Secret: Not set"
           fi
 
           # Check if Refresh Token is set
-          if [ -n "${{ secrets.REFRESH_TOKEN }}" ]; then
-            echo "✅ Refresh Token: ${{ secrets.REFRESH_TOKEN }}"
+          if [ -n "${{ secrets.CHROME_REFRESH_TOKEN }}" ]; then
+            echo "✅ Refresh Token: ${{ secrets.CHROME_REFRESH_TOKEN }}"
           else
             echo "❌ Refresh Token: Not set"
           fi
@@ -142,7 +142,7 @@ jobs:
           echo "🧪 Testing Chrome Web Store API connection..."
 
           # Test API connection using curl
-          if [ -n "${{ secrets.CLIENT_ID }}" ] && [ -n "${{ secrets.CLIENT_SECRET }}" ] && [ -n "${{ secrets.REFRESH_TOKEN }}" ]; then
+          if [ -n "${{ secrets.CHROME_CLIENT_ID }}" ] && [ -n "${{ secrets.CHROME_CLIENT_SECRET }}" ] && [ -n "${{ secrets.CHROME_REFRESH_TOKEN }}" ]; then
             echo "✅ All required secrets are set"
 
             # Note: This is a basic test - actual API calls require proper OAuth2 flow
@@ -150,7 +150,7 @@ jobs:
             echo "   Please verify your credentials in Chrome Web Store Developer Dashboard"
           else
             echo "❌ Missing required secrets"
-            echo "   Please check CLIENT_ID, CLIENT_SECRET, and REFRESH_TOKEN"
+            echo "   Please check CHROME_CLIENT_ID, CHROME_CLIENT_SECRET, and CHROME_REFRESH_TOKEN"
             exit 1
           fi
 
@@ -159,9 +159,9 @@ jobs:
         continue-on-error: true
         with:
           action: 'publish' # one of: upload, publish, testers
-          client_id: ${{ secrets.CLIENT_ID }}
-          client_secret: ${{ secrets.CLIENT_SECRET }}
-          refresh_token: ${{ secrets.REFRESH_TOKEN }}
+          client_id: ${{ secrets.CHROME_CLIENT_ID }}
+          client_secret: ${{ secrets.CHROME_CLIENT_SECRET }}
+          refresh_token: ${{ secrets.CHROME_REFRESH_TOKEN }}
           extension_id: mcnibmkpimlpgnlgkkhpgabkhdgngmca
           zip_file: tag-extension-manager-${{ env.VERSION }}.zip
 
@@ -173,7 +173,7 @@ jobs:
           else
             echo "⚠️ Chrome Web Store upload failed, but workflow continued"
             echo "Please check the following:"
-            echo "1. CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN are correctly set"
+            echo "1. CHROME_CLIENT_ID, CHROME_CLIENT_SECRET, CHROME_REFRESH_TOKEN are correctly set"
             echo "2. EXTENSION_ID matches your Chrome Web Store extension"
             echo "3. Extension is in the correct state for publishing"
             echo "4. API permissions are properly configured"
