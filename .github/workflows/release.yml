@@ -98,11 +98,24 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Check Chrome Web Store credentials
+        run: |
+          if [ -z "${{ secrets.CLIENT_ID }}" ] || [ -z "${{ secrets.CLIENT_SECRET }}" ] || [ -z "${{ secrets.REFRESH_TOKEN }}" ] || [ -z "${{ secrets.EXTENSION_ID }}" ]; then
+            echo "secrets.CLIENT_ID: ${{ secrets.CLIENT_ID }}"
+            echo "secrets.CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}"
+            echo "secrets.REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}"
+            echo "secrets.EXTENSION_ID: ${{ secrets.EXTENSION_ID }}"
+            echo "::warning::Chrome Web Store credentials are not properly configured. Skipping upload to Chrome Web Store."
+            exit 0
+          fi
+          echo "Chrome Web Store credentials are configured."
+
       # @Reference: https://github.com/MobileFirstLLC/cws-publish
       # @Reference: https://github.com/fregante/chrome-webstore-upload
       # @Reference: https://github.com/fregante/chrome-webstore-upload-keys
       - name: Upload to Chrome Web Store
         uses: mobilefirstllc/cws-publish@latest
+        # continue-on-error: true
         with:
           action: 'publish' # one of: upload, publish, testers
           client_id: ${{ secrets.CLIENT_ID }}
