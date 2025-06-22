@@ -35,11 +35,11 @@ A Chrome Extension for efficiently managing Chrome extensions. Group multiple ex
 
 ### Development Version
 
-1. Clone or download this repository
+1. Download [release version](https://github.com/gumob/TagExtensionManager/releases) and upzip
 2. Open `chrome://extensions` in Chrome
 3. Enable "Developer mode" in the top right
 4. Click "Load unpacked"
-5. Select the downloaded folder
+5. Select the unzipped folder
 
 ## For Developers
 
