@@ -3,7 +3,7 @@ name: Release Chrome Extension
 on:
   push:
     tags:
-      - 'v*'
+      - 'v*.*.*'
 
 # Add permissions for GitHub release creation
 permissions:
