@@ -141,7 +141,7 @@ lane :bump_version do
   UI.success("Version bumped to #{new_version}")
   UI.message("Please run the following commands to complete the release:")
   UI.message("1. git add ../package.json ../manifest.json")
-  UI.message("2. git commit -m \"chore: bump version to #{new_version}\"")
+  UI.message("2. git commit -m \"feat: bump version to #{new_version}\"")
   UI.message("3. git tag -a v#{new_version} -m \"Release v#{new_version}\"")
   UI.message("4. git push && git push --tags")
 end
