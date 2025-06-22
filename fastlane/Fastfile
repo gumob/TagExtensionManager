@@ -140,7 +140,7 @@ lane :bump_version do
 
   UI.success("Version bumped to #{new_version}")
   UI.message("Please run the following commands to complete the release:")
-  UI.message("1. git add package.json manifest.json")
+  UI.message("1. git add ../package.json ../manifest.json")
   UI.message("2. git commit -m \"chore: bump version to #{new_version}\"")
   UI.message("3. git tag -a v#{new_version} -m \"Release v#{new_version}\"")
   UI.message("4. git push && git push --tags")
@@ -168,6 +168,36 @@ lane :create_package do
     sh("zip -r ../../#{zip_file_name} .", log: false)
   end
   UI.success("Successfully created #{zip_file_name}")
+end
+
+desc "Merge develop branch to main"
+lane :merge_to_main do
+  UI.important("Merging develop branch to main...")
+
+  unless UI.confirm("Do you want to merge develop branch to main?")
+    UI.important("Merge to main cancelled by user")
+    next
+  end
+
+  # Switch to main branch
+  sh("git checkout main")
+  UI.success("Switched to main branch")
+
+  # Pull latest changes
+  sh("git pull origin main")
+  UI.success("Pulled latest changes from main")
+
+  # Merge develop branch
+  sh("git merge develop")
+  UI.success("Merged develop branch to main")
+
+  # Push to main
+  sh("git push origin main")
+  UI.success("Pushed changes to main branch")
+
+  # Switch back to develop
+  sh("git checkout develop")
+  UI.success("Switched back to develop branch")
 end
 
 desc "Create release"
@@ -209,38 +239,13 @@ lane :release do
     next
   end
 
-  sh("git add package.json manifest.json")
+  sh("git add ../package.json ../manifest.json")
   sh("git commit -m \"chore: bump version to #{version}\"")
   sh("git tag -a v#{version} -m \"Release v#{version}\"")
   sh("git push && git push --tags")
 
   # Merge develop to main
-  UI.important("Merging develop branch to main...")
-
-  unless UI.confirm("Do you want to merge develop branch to main?")
-    UI.important("Merge to main cancelled by user")
-    next
-  end
-
-  # Switch to main branch
-  sh("git checkout main")
-  UI.success("Switched to main branch")
-
-  # Pull latest changes
-  sh("git pull origin main")
-  UI.success("Pulled latest changes from main")
-
-  # Merge develop branch
-  sh("git merge develop")
-  UI.success("Merged develop branch to main")
-
-  # Push to main
-  sh("git push origin main")
-  UI.success("Pushed changes to main branch")
-
-  # Switch back to develop
-  sh("git checkout develop")
-  UI.success("Switched back to develop branch")
+  merge_to_main
 
   UI.success("Release completed successfully!")
 end
