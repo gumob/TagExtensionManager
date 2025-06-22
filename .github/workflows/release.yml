@@ -155,7 +155,7 @@ jobs:
           EXTENSION_ID="${{ secrets.CHROME_EXTENSION_ID }}"
 
           # Test API connection using curl
-          if [ -n "$CLIENT_ID" ] && [ -n "$CLIENT_SECRET" ] && [ -n "$REFRESH_TOKEN" ] && [ -n "$EXTENSION_ID" ]; then
+          if [ -n "$CLIENT_ID" ] && [ -n "$CLIENT_SECRET" ] && [ -n "$REFRESH_TOKEN" ] && [ -n "${{ secrets.CHROME_EXTENSION_ID }}" ]; then
             echo "✅ All required secrets are set"
             echo "  - Client ID length: ${#CLIENT_ID}"
             echo "  - Client Secret length: ${#CLIENT_SECRET}"
@@ -170,7 +170,7 @@ jobs:
             echo "  - Client ID: $([ -n "$CLIENT_ID" ] && echo "Set" || echo "Not set")"
             echo "  - Client Secret: $([ -n "$CLIENT_SECRET" ] && echo "Set" || echo "Not set")"
             echo "  - Refresh Token: $([ -n "$REFRESH_TOKEN" ] && echo "Set" || echo "Not set")"
-            echo "  - Extension ID: $([ -n "$EXTENSION_ID" ] && echo "Set" || echo "Not set")"
+            echo "  - Extension ID: $([ -n "${{ secrets.CHROME_EXTENSION_ID }}" ] && echo "Set" || echo "Not set")"
             echo "   Please check CHROME_CLIENT_ID, CHROME_CLIENT_SECRET, CHROME_REFRESH_TOKEN, and CHROME_EXTENSION_ID"
             exit 1
           fi
@@ -188,7 +188,7 @@ jobs:
 
           # Validate Extension ID
           EXTENSION_ID="${{ secrets.CHROME_EXTENSION_ID }}"
-          if [ -z "$EXTENSION_ID" ]; then
+          if [ -z "${{ secrets.CHROME_EXTENSION_ID }}" ]; then
             echo "❌ Extension ID is not set"
             echo "   Please set CHROME_EXTENSION_ID secret in GitHub repository settings"
             echo "   Go to Settings > Secrets and variables > Actions"
@@ -202,9 +202,9 @@ jobs:
           fi
 
           # Validate Extension ID format (should be 32 characters, alphanumeric)
-          if [[ ! "$EXTENSION_ID" =~ ^[a-zA-Z0-9]{32}$ ]]; then
+          if [[ ! "${{ secrets.CHROME_EXTENSION_ID }}" =~ ^[a-zA-Z0-9]{32}$ ]]; then
             echo "❌ Extension ID format is invalid"
-            echo "   Current Extension ID: '$EXTENSION_ID'"
+            echo "   Current Extension ID: '${{ secrets.CHROME_EXTENSION_ID }}'"
             echo "   Expected format: 32 alphanumeric characters"
             echo "   Length: ${#EXTENSION_ID} characters"
             echo ""
@@ -216,7 +216,7 @@ jobs:
             exit 1
           fi
 
-          echo "✅ Extension ID: $EXTENSION_ID (valid format)"
+          echo "✅ Extension ID: ${{ secrets.CHROME_EXTENSION_ID }} (valid format)"
 
           # Test OAuth2 token refresh
           RESPONSE=$(curl -s -X POST \
@@ -251,7 +251,7 @@ jobs:
 
             # Test Chrome Web Store API access with the token
             echo "🧪 Testing Chrome Web Store API access..."
-            API_URL="https://www.googleapis.com/chromewebstore/v1.1/items/$EXTENSION_ID?projection=DRAFT"
+            API_URL="https://www.googleapis.com/chromewebstore/v1.1/items/${{ secrets.CHROME_EXTENSION_ID }}?projection=DRAFT"
             echo "  📡 API URL: $API_URL"
             API_RESPONSE=$(curl -s -H "Authorization: Bearer $ACCESS_TOKEN" "$API_URL")
 
@@ -268,7 +268,7 @@ jobs:
                 echo "   2. Extension does not exist in Chrome Web Store"
                 echo "   3. Extension ID format is invalid"
                 echo ""
-                echo "📋 Current Extension ID: $EXTENSION_ID"
+                echo "📋 Current Extension ID: ${{ secrets.CHROME_EXTENSION_ID }}"
                 echo "🔧 Troubleshooting Steps:"
                 echo "   1. Verify Extension ID in Chrome Web Store Developer Console"
                 echo "   2. Check that the extension exists and is published"
@@ -331,7 +331,7 @@ jobs:
           EXTENSION_ID="${{ secrets.CHROME_EXTENSION_ID }}"
 
           # Validate Extension ID
-          if [ -z "$EXTENSION_ID" ]; then
+          if [ -z "${{ secrets.CHROME_EXTENSION_ID }}" ]; then
             echo "❌ Extension ID is not set"
             echo "   Please set CHROME_EXTENSION_ID secret in GitHub repository settings"
             echo "   Go to Settings > Secrets and variables > Actions"
@@ -339,9 +339,9 @@ jobs:
           fi
 
           # Validate Extension ID format (should be 32 characters, alphanumeric)
-          if [[ ! "$EXTENSION_ID" =~ ^[a-zA-Z0-9]{32}$ ]]; then
+          if [[ ! "${{ secrets.CHROME_EXTENSION_ID }}" =~ ^[a-zA-Z0-9]{32}$ ]]; then
             echo "❌ Extension ID format is invalid"
-            echo "   Current Extension ID: '$EXTENSION_ID'"
+            echo "   Current Extension ID: '${{ secrets.CHROME_EXTENSION_ID }}'"
             echo "   Expected format: 32 alphanumeric characters"
             echo "   Length: ${#EXTENSION_ID} characters"
             echo ""
@@ -358,7 +358,7 @@ jobs:
           echo "  - Client ID length: ${#CLIENT_ID}"
           echo "  - Client Secret length: ${#CLIENT_SECRET}"
           echo "  - Refresh Token length: ${#REFRESH_TOKEN}"
-          echo "  - Extension ID: $EXTENSION_ID"
+          echo "  - Extension ID: ${{ secrets.CHROME_EXTENSION_ID }}"
           echo "  - File size: $(ls -lh tag-extension-manager-${{ env.VERSION }}.zip | awk '{print $5}')"
 
           # Test OAuth2 token before upload
@@ -390,7 +390,7 @@ jobs:
 
           # Test Chrome Web Store API access
           echo "🧪 Testing Chrome Web Store API access..."
-          API_URL="https://www.googleapis.com/chromewebstore/v1.1/items/$EXTENSION_ID?projection=DRAFT"
+          API_URL="https://www.googleapis.com/chromewebstore/v1.1/items/${{ secrets.CHROME_EXTENSION_ID }}?projection=DRAFT"
           echo "  📡 API URL: $API_URL"
           API_RESPONSE=$(curl -s -H "Authorization: Bearer $ACCESS_TOKEN" "$API_URL")
 
@@ -407,7 +407,7 @@ jobs:
               echo "   2. Extension does not exist in Chrome Web Store"
               echo "   3. Extension ID format is invalid"
               echo ""
-              echo "📋 Current Extension ID: $EXTENSION_ID"
+              echo "📋 Current Extension ID: ${{ secrets.CHROME_EXTENSION_ID }}"
               echo "🔧 Troubleshooting Steps:"
               echo "   1. Verify Extension ID in Chrome Web Store Developer Console"
               echo "   2. Check that the extension exists and is published"
