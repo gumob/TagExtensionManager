@@ -1,6 +1,6 @@
 {
   "name": "extension-manager",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "A Chrome extension to manage other extensions",
   "type": "module",
   "scripts": {
@@ -20,7 +20,7 @@
     "typescript",
     "react"
   ],
-  "author": "",
+  "author": "Kojiro Futamura",
   "license": "MIT",
   "dependencies": {
     "@floating-ui/react": "^0.27",
