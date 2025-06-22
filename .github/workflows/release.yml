@@ -155,15 +155,14 @@ jobs:
           fi
 
       - name: Upload to Chrome Web Store
-        uses: mobilefirstllc/cws-publish@latest
+        run: |
+          npx chrome-webstore-upload-cli@2 upload --auto-publish --source tag-extension-manager-${{ env.VERSION }}.zip
+        env:
+          CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
+          EXTENSION_ID: mcnibmkpimlpgnlgkkhpgabkhdgngmca
         continue-on-error: true
-        with:
-          action: 'publish' # one of: upload, publish, testers
-          client_id: ${{ secrets.CHROME_CLIENT_ID }}
-          client_secret: ${{ secrets.CHROME_CLIENT_SECRET }}
-          refresh_token: ${{ secrets.CHROME_REFRESH_TOKEN }}
-          extension_id: mcnibmkpimlpgnlgkkhpgabkhdgngmca
-          zip_file: tag-extension-manager-${{ env.VERSION }}.zip
 
       - name: Check Chrome Web Store upload result
         if: always()
