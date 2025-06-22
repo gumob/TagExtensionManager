@@ -101,6 +101,14 @@ Bump version number
 
 Create extension package
 
+### merge_to_main
+
+```sh
+[bundle exec] fastlane merge_to_main
+```
+
+Merge develop branch to main
+
 ### release
 
 ```sh
