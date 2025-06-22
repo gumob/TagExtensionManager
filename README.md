@@ -1,3 +1,9 @@
+![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/mcnibmkpimlpgnlgkkhpgabkhdgngmca?style=flat&label=Chrome%20Extension)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Open Source](https://img.shields.io/badge/Open%20Source-Yes-blue.svg)](https://github.com/gumob/TagExtensionManager)
+
+<a class="github-button" href="https://github.com/sponsors/gumob" data-color-scheme="no-preference: light; light: light; dark: dark;" data-icon="octicon-heart" data-size="large" aria-label="Sponsor @gumob on GitHub">Sponsor</a>
+
 # [Tag Extension Manager](https://github.com/gumob/TagExtensionManager)
 
 A Chrome Extension for efficiently managing Chrome extensions. Group multiple extensions with tags and easily enable/disable them based on your needs.
