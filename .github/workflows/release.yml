@@ -194,14 +194,21 @@ jobs:
           if echo "$RESPONSE" | grep -q "access_token"; then
             echo "✅ OAuth2 credentials are valid"
 
-            # Extract and validate access token
-            ACCESS_TOKEN=$(echo "$RESPONSE" | grep -o '"access_token":"[^"]*"' | cut -d'"' -f4)
-            TOKEN_TYPE=$(echo "$RESPONSE" | grep -o '"token_type":"[^"]*"' | cut -d'"' -f4)
-            EXPIRES_IN=$(echo "$RESPONSE" | grep -o '"expires_in":[0-9]*' | cut -d':' -f2)
+            # Extract and validate access token using jq for proper JSON parsing
+            ACCESS_TOKEN=$(echo "$RESPONSE" | jq -r '.access_token // empty')
+            TOKEN_TYPE=$(echo "$RESPONSE" | jq -r '.token_type // empty')
+            EXPIRES_IN=$(echo "$RESPONSE" | jq -r '.expires_in // empty')
 
             echo "  - Token Type: $TOKEN_TYPE"
             echo "  - Expires In: $EXPIRES_IN seconds"
             echo "  - Token Length: ${#ACCESS_TOKEN} characters"
+
+            # Validate that access token was extracted successfully
+            if [ -z "$ACCESS_TOKEN" ]; then
+              echo "❌ Failed to extract access token from response"
+              echo "   Response: $RESPONSE"
+              exit 1
+            fi
 
             # Test Chrome Web Store API access with the token
             echo "🧪 Testing Chrome Web Store API access..."
@@ -257,6 +264,12 @@ jobs:
           echo "Extension ID: ${{ secrets.CHROME_EXTENSION_ID }}"
           echo "Source file: tag-extension-manager-${{ env.VERSION }}.zip"
 
+          # Set environment variables for debugging
+          CLIENT_ID="${{ secrets.CHROME_CLIENT_ID }}"
+          CLIENT_SECRET="${{ secrets.CHROME_CLIENT_SECRET }}"
+          REFRESH_TOKEN="${{ secrets.CHROME_REFRESH_TOKEN }}"
+          EXTENSION_ID="${{ secrets.CHROME_EXTENSION_ID }}"
+
           # Enhanced debugging and error handling
           echo "🔍 Debug Information:"
           echo "  - Client ID length: ${#CLIENT_ID}"
@@ -277,8 +290,15 @@ jobs:
 
           if echo "$TOKEN_RESPONSE" | grep -q "access_token"; then
             echo "✅ OAuth2 token obtained successfully"
-            ACCESS_TOKEN=$(echo "$TOKEN_RESPONSE" | grep -o '"access_token":"[^"]*"' | cut -d'"' -f4)
+            ACCESS_TOKEN=$(echo "$TOKEN_RESPONSE" | jq -r '.access_token // empty')
             echo "  - Token length: ${#ACCESS_TOKEN}"
+            
+            # Validate that access token was extracted successfully
+            if [ -z "$ACCESS_TOKEN" ]; then
+              echo "❌ Failed to extract access token from response"
+              echo "  Response: $TOKEN_RESPONSE"
+              exit 1
+            fi
           else
             echo "❌ Failed to obtain OAuth2 token"
             echo "  Response: $TOKEN_RESPONSE"
