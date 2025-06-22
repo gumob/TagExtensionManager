@@ -64,7 +64,7 @@ importers:
         specifier: ^5.2
         version: 5.2.2(prettier@3.5.3)
       '@types/chrome':
-        specifier: ^0.0.326
+        specifier: ^0.0
         version: 0.0.326
       '@types/html-webpack-plugin':
         specifier: ^3.2
@@ -76,7 +76,7 @@ importers:
         specifier: ^18.3
         version: 18.3.23
       '@types/react-dom':
-        specifier: ^18.2
+        specifier: ^18.3
         version: 18.3.7(@types/react@18.3.23)
       '@types/uuid':
         specifier: ^10.0
