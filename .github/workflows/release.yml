@@ -101,7 +101,6 @@ jobs:
       - name: Debug Chrome Web Store configuration
         run: |
           echo "🔍 Checking Chrome Web Store configuration..."
-          echo "Extension ID: ${{ secrets.EXTENSION_ID }}"
           echo "Client ID: ${{ secrets.CLIENT_ID }}"
           echo "Client Secret: [HIDDEN]"
           echo "Refresh Token: [HIDDEN]"
@@ -140,11 +139,11 @@ jobs:
         uses: mobilefirstllc/cws-publish@latest
         continue-on-error: true
         with:
-          action: 'publish' # one of: upload, publish, testers
+          action: 'upload' # one of: upload, publish, testers
           client_id: ${{ secrets.CLIENT_ID }}
           client_secret: ${{ secrets.CLIENT_SECRET }}
           refresh_token: ${{ secrets.REFRESH_TOKEN }}
-          extension_id: ${{ secrets.EXTENSION_ID }}
+          extension_id: mcnibmkpimlpgnlgkkhpgabkhdgngmca
           zip_file: tag-extension-manager-${{ env.VERSION }}.zip
 
       - name: Check Chrome Web Store upload result
