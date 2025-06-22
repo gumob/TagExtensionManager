@@ -172,10 +172,61 @@ jobs:
           # Check if response contains access_token
           if echo "$RESPONSE" | grep -q "access_token"; then
             echo "✅ OAuth2 credentials are valid"
+
+            # Extract and validate access token
+            ACCESS_TOKEN=$(echo "$RESPONSE" | grep -o '"access_token":"[^"]*"' | cut -d'"' -f4)
+            TOKEN_TYPE=$(echo "$RESPONSE" | grep -o '"token_type":"[^"]*"' | cut -d'"' -f4)
+            EXPIRES_IN=$(echo "$RESPONSE" | grep -o '"expires_in":[0-9]*' | cut -d':' -f2)
+
+            echo "  - Token Type: $TOKEN_TYPE"
+            echo "  - Expires In: $EXPIRES_IN seconds"
+            echo "  - Token Length: ${#ACCESS_TOKEN} characters"
+
+            # Test Chrome Web Store API access with the token
+            echo "🧪 Testing Chrome Web Store API access..."
+            API_RESPONSE=$(curl -s -H "Authorization: Bearer $ACCESS_TOKEN" \
+              "https://www.googleapis.com/chromewebstore/v1.1/items/${{ secrets.CHROME_EXTENSION_ID }}")
+
+            if echo "$API_RESPONSE" | grep -q "error"; then
+              echo "❌ Chrome Web Store API access failed"
+              echo "  Response: $API_RESPONSE"
+              echo ""
+              echo "🔍 This indicates one of the following issues:"
+              echo "  1. Extension ID mismatch"
+              echo "  2. Chrome Web Store API not enabled"
+              echo "  3. Insufficient OAuth2 scopes"
+              echo "  4. Account permissions issue"
+              echo ""
+              echo "📋 Required OAuth2 Scopes:"
+              echo "   - https://www.googleapis.com/auth/chromewebstore"
+              echo ""
+              echo "🔧 Next Steps:"
+              echo "   1. Verify extension ID in Chrome Web Store Developer Console"
+              echo "   2. Enable Chrome Web Store API in Google Cloud Console"
+              echo "   3. Check OAuth2 client scopes"
+              echo "   4. Verify developer account permissions"
+              exit 1
+            else
+              echo "✅ Chrome Web Store API access successful"
+              echo "  Extension details retrieved successfully"
+            fi
+
           else
             echo "❌ OAuth2 credentials are invalid"
             echo "   Please check your credentials in Google Cloud Console"
             echo "   Response: $RESPONSE"
+            echo ""
+            echo "🔍 Common OAuth2 Issues:"
+            echo "  1. Invalid client_id or client_secret"
+            echo "  2. Expired or invalid refresh_token"
+            echo "  3. OAuth2 client not properly configured"
+            echo "  4. Missing required scopes"
+            echo ""
+            echo "🔧 Troubleshooting:"
+            echo "   1. Regenerate OAuth2 credentials in Google Cloud Console"
+            echo "   2. Ensure refresh token is valid and not expired"
+            echo "   3. Verify OAuth2 client has correct scopes"
+            echo "   4. Check that OAuth2 client is configured for web application"
             exit 1
           fi
 
@@ -185,8 +236,88 @@ jobs:
           echo "Extension ID: ${{ secrets.CHROME_EXTENSION_ID }}"
           echo "Source file: tag-extension-manager-${{ env.VERSION }}.zip"
 
-          # Upload with detailed error handling
-          npx chrome-webstore-upload-cli@2 upload --auto-publish --source tag-extension-manager-${{ env.VERSION }}.zip
+          # Enhanced debugging and error handling
+          echo "🔍 Debug Information:"
+          echo "  - Client ID length: ${#CLIENT_ID}"
+          echo "  - Client Secret length: ${#CLIENT_SECRET}"
+          echo "  - Refresh Token length: ${#REFRESH_TOKEN}"
+          echo "  - Extension ID: $EXTENSION_ID"
+          echo "  - File size: $(ls -lh tag-extension-manager-${{ env.VERSION }}.zip | awk '{print $5}')"
+
+          # Test OAuth2 token before upload
+          echo "🔐 Testing OAuth2 token..."
+          TOKEN_RESPONSE=$(curl -s -X POST \
+            -H "Content-Type: application/x-www-form-urlencoded" \
+            -d "client_id=$CLIENT_ID" \
+            -d "client_secret=$CLIENT_SECRET" \
+            -d "refresh_token=$REFRESH_TOKEN" \
+            -d "grant_type=refresh_token" \
+            "https://oauth2.googleapis.com/token")
+
+          if echo "$TOKEN_RESPONSE" | grep -q "access_token"; then
+            echo "✅ OAuth2 token obtained successfully"
+            ACCESS_TOKEN=$(echo "$TOKEN_RESPONSE" | grep -o '"access_token":"[^"]*"' | cut -d'"' -f4)
+            echo "  - Token length: ${#ACCESS_TOKEN}"
+          else
+            echo "❌ Failed to obtain OAuth2 token"
+            echo "  Response: $TOKEN_RESPONSE"
+            exit 1
+          fi
+
+          # Test Chrome Web Store API access
+          echo "🧪 Testing Chrome Web Store API access..."
+          API_RESPONSE=$(curl -s -H "Authorization: Bearer $ACCESS_TOKEN" \
+            "https://www.googleapis.com/chromewebstore/v1.1/items/$EXTENSION_ID")
+
+          if echo "$API_RESPONSE" | grep -q "error"; then
+            echo "❌ Chrome Web Store API access failed"
+            echo "  Response: $API_RESPONSE"
+            echo ""
+            echo "🔍 Common causes:"
+            echo "  1. Extension ID mismatch"
+            echo "  2. Insufficient permissions"
+            echo "  3. Chrome Web Store API not enabled"
+            echo "  4. Account not verified"
+            exit 1
+          else
+            echo "✅ Chrome Web Store API access successful"
+          fi
+
+          # Upload with enhanced error handling
+          echo "📤 Starting upload..."
+          UPLOAD_OUTPUT=$(npx chrome-webstore-upload-cli@2 upload --auto-publish --source tag-extension-manager-${{ env.VERSION }}.zip 2>&1)
+          UPLOAD_EXIT_CODE=$?
+
+          echo "Upload Output:"
+          echo "$UPLOAD_OUTPUT"
+
+          if [ $UPLOAD_EXIT_CODE -eq 0 ]; then
+            echo "✅ Upload completed successfully"
+          else
+            echo "❌ Upload failed with exit code: $UPLOAD_EXIT_CODE"
+
+            # Analyze error response
+            if echo "$UPLOAD_OUTPUT" | grep -q "403"; then
+              echo ""
+              echo "🔍 403 Forbidden Error Analysis:"
+              echo "   This error typically indicates:"
+              echo "   1. OAuth2 scope insufficient"
+              echo "   2. Extension ID mismatch"
+              echo "   3. Account permissions issue"
+              echo "   4. Chrome Web Store API not enabled"
+              echo ""
+              echo "📋 Required OAuth2 Scopes:"
+              echo "   - https://www.googleapis.com/auth/chromewebstore"
+              echo ""
+              echo "🔧 Troubleshooting Steps:"
+              echo "   1. Verify OAuth2 client has correct scopes"
+              echo "   2. Enable Chrome Web Store API in Google Cloud Console"
+              echo "   3. Check extension ID matches Chrome Web Store"
+              echo "   4. Verify developer account permissions"
+            fi
+            
+            exit $UPLOAD_EXIT_CODE
+          fi
         env:
           CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
@@ -202,30 +333,72 @@ jobs:
           else
             echo "⚠️ Chrome Web Store upload failed, but workflow continued"
             echo ""
-            echo "🔍 Troubleshooting Guide:"
-            echo "1. Verify OAuth2 credentials in Google Cloud Console:"
+            echo "🔍 Detailed Troubleshooting Guide:"
+            echo ""
+            echo "1. OAuth2 Configuration Issues:"
             echo "   - Go to https://console.cloud.google.com/"
             echo "   - Navigate to APIs & Services > Credentials"
-            echo "   - Check if OAuth2 client is properly configured"
+            echo "   - Verify OAuth2 client is configured as 'Web application'"
+            echo "   - Check that authorized redirect URIs include:"
+            echo "     * http://localhost:8080"
+            echo "     * https://your-domain.com (if applicable)"
             echo ""
-            echo "2. Verify Chrome Web Store API is enabled:"
-            echo "   - Go to https://console.cloud.google.com/"
-            echo "   - Navigate to APIs & Services > Library"
-            echo "   - Search for 'Chrome Web Store API' and enable it"
-            echo ""
-            echo "3. Check Extension ID:"
-            echo "   - Current ID: mcnibmkpimlpgnlpgnlgkkhpgabkhdgngmca"
-            echo "   - Verify this matches your Chrome Web Store extension"
-            echo ""
-            echo "4. Verify Chrome Web Store Developer Account:"
-            echo "   - Go to https://chrome.google.com/webstore/devconsole/"
-            echo "   - Ensure account is properly set up and verified"
-            echo ""
-            echo "5. Check API permissions:"
+            echo "2. OAuth2 Scopes Configuration:"
             echo "   - Ensure your OAuth2 client has the following scopes:"
             echo "     * https://www.googleapis.com/auth/chromewebstore"
+            echo "   - Add scopes in Google Cloud Console > APIs & Services > OAuth consent screen"
             echo ""
-            echo "6. Verify refresh token:"
-            echo "   - Refresh tokens can expire"
-            echo "   - Generate a new one if necessary"
+            echo "3. Chrome Web Store API Enablement:"
+            echo "   - Go to https://console.cloud.google.com/"
+            echo "   - Navigate to APIs & Services > Library"
+            echo "   - Search for 'Chrome Web Store API'"
+            echo "   - Click 'Enable' if not already enabled"
+            echo ""
+            echo "4. Extension ID Verification:"
+            echo "   - Current ID: ${{ secrets.CHROME_EXTENSION_ID }}"
+            echo "   - Go to https://chrome.google.com/webstore/devconsole/"
+            echo "   - Verify this ID matches your extension"
+            echo "   - Extension ID is found in the URL when editing your extension"
+            echo ""
+            echo "5. Chrome Web Store Developer Account:"
+            echo "   - Go to https://chrome.google.com/webstore/devconsole/"
+            echo "   - Ensure account is properly set up and verified"
+            echo "   - Check that you have publishing permissions"
+            echo "   - Verify account is not suspended or restricted"
+            echo ""
+            echo "6. Refresh Token Issues:"
+            echo "   - Refresh tokens can expire or become invalid"
+            echo "   - Generate a new refresh token using OAuth2 flow:"
+            echo "     * Use Google OAuth2 Playground: https://developers.google.com/oauthplayground/"
+            echo "     * Set up OAuth2 client credentials"
+            echo "     * Select Chrome Web Store API v1.1"
+            echo "     * Exchange authorization code for refresh token"
+            echo ""
+            echo "7. Common 403 Forbidden Causes:"
+            echo "   - Extension ID mismatch between manifest and Chrome Web Store"
+            echo "   - OAuth2 client not configured for web application"
+            echo "   - Missing or incorrect OAuth2 scopes"
+            echo "   - Chrome Web Store API not enabled"
+            echo "   - Account permissions insufficient"
+            echo "   - Extension not published or draft status"
+            echo ""
+            echo "8. Debugging Steps:"
+            echo "   - Check the detailed error messages above"
+            echo "   - Verify all environment variables are set correctly"
+            echo "   - Test OAuth2 flow manually using curl commands"
+            echo "   - Check Google Cloud Console logs for API errors"
+            echo ""
+            echo "9. Alternative Upload Methods:"
+            echo "   - Use Chrome Web Store Developer Console for manual upload"
+            echo "   - Consider using different upload tools:"
+            echo "     * chrome-webstore-upload (npm package)"
+            echo "     * cws-publish (GitHub Action)"
+            echo ""
+            echo "10. Support Resources:"
+            echo "    - Chrome Web Store API Documentation:"
+            echo "      https://developer.chrome.com/docs/webstore/api/"
+            echo "    - Google Cloud Console Help:"
+            echo "      https://cloud.google.com/apis/docs/getting-started"
+            echo "    - OAuth2 Documentation:"
+            echo "      https://developers.google.com/identity/protocols/oauth2"
           fi
