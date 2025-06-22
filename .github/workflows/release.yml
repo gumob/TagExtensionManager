@@ -101,9 +101,28 @@ jobs:
       - name: Debug Chrome Web Store configuration
         run: |
           echo "🔍 Checking Chrome Web Store configuration..."
-          echo "Client ID: ${{ secrets.CLIENT_ID }}"
-          echo "Client Secret: [HIDDEN]"
-          echo "Refresh Token: [HIDDEN]"
+
+          # Check if Client ID is set
+          if [ -n "${{ secrets.CLIENT_ID }}" ]; then
+            echo "✅ Client ID: ${{ secrets.CLIENT_ID }}"
+          else
+            echo "❌ Client ID: Not set"
+          fi
+
+          # Check if Client Secret is set
+          if [ -n "${{ secrets.CLIENT_SECRET }}" ]; then
+            echo "✅ Client Secret: ${{ secrets.CLIENT_SECRET }}"
+          else
+            echo "❌ Client Secret: Not set"
+          fi
+
+          # Check if Refresh Token is set
+          if [ -n "${{ secrets.REFRESH_TOKEN }}" ]; then
+            echo "✅ Refresh Token: ${{ secrets.REFRESH_TOKEN }}"
+          else
+            echo "❌ Refresh Token: Not set"
+          fi
+
           echo "Zip file: tag-extension-manager-${{ env.VERSION }}.zip"
 
           # Check if zip file exists
@@ -139,7 +158,7 @@ jobs:
         uses: mobilefirstllc/cws-publish@latest
         continue-on-error: true
         with:
-          action: 'upload' # one of: upload, publish, testers
+          action: 'publish' # one of: upload, publish, testers
           client_id: ${{ secrets.CLIENT_ID }}
           client_secret: ${{ secrets.CLIENT_SECRET }}
           refresh_token: ${{ secrets.REFRESH_TOKEN }}
