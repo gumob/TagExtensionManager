@@ -104,7 +104,6 @@ lane :bump_version do
     when "Patch version (e.g. 1.0.0 -> 1.0.1)" then "patch"
     when "Minor version (e.g. 1.0.0 -> 1.1.0)" then "minor"
     when "Major version (e.g. 1.0.0 -> 2.0.0)" then "major"
-    else "never"
   end
 
   # If version is not changed, exit
