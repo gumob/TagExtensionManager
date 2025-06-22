@@ -1,8 +1,5 @@
 import { chromeAPI } from '@/api';
-import {
-  logger,
-  updateExtensionIcon,
-} from '@/utils';
+import { logger, updateExtensionIcon } from '@/utils';
 
 /**
  * Background script

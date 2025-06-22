@@ -1,12 +1,7 @@
 import React from 'react';
 
 import { useExtensionContext } from '@/contexts';
-import {
-  ExtensionHeader,
-  ExtensionList,
-  ExtensionSearchBar,
-  ExtensionTagList,
-} from '@/features/options/components/main';
+import { ExtensionHeader, ExtensionList, ExtensionSearchBar, ExtensionTagList } from '@/features/options/components/main';
 
 /**
  * Simple loading spinner component

@@ -1,23 +1,8 @@
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import { chromeAPI } from '@/api';
-import {
-  ExtensionModel,
-  TagExtensionMapModel,
-  TagModel,
-} from '@/models';
-import {
-  useExtensionStore,
-  useTagStore,
-} from '@/stores';
+import { ExtensionModel, TagExtensionMapModel, TagModel } from '@/models';
+import { useExtensionStore, useTagStore } from '@/stores';
 import { logger } from '@/utils';
 
 /**

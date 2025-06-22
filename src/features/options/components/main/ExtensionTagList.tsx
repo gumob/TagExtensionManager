@@ -1,11 +1,7 @@
 import React from 'react';
 
 import { useExtensionContext } from '@/contexts';
-import {
-  ExtensionTagListEditButton,
-  ExtensionTagListItem,
-  ExtensionTagMetrics,
-} from '@/features/options/components/main';
+import { ExtensionTagListEditButton, ExtensionTagListItem, ExtensionTagMetrics } from '@/features/options/components/main';
 import { useTagStore } from '@/stores';
 
 /**
