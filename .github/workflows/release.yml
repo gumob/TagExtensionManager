@@ -104,21 +104,21 @@ jobs:
 
           # Check if Client ID is set
           if [ -n "${{ secrets.CHROME_CLIENT_ID }}" ]; then
-            echo "✅ Client ID: ${{ secrets.CHROME_CLIENT_ID }}"
+            echo "✅ Client ID: ***
           else
             echo "❌ Client ID: Not set"
           fi
 
           # Check if Client Secret is set
           if [ -n "${{ secrets.CHROME_CLIENT_SECRET }}" ]; then
-            echo "✅ Client Secret: ${{ secrets.CHROME_CLIENT_SECRET }}"
+            echo "✅ Client Secret: ***
           else
             echo "❌ Client Secret: Not set"
           fi
 
           # Check if Refresh Token is set
           if [ -n "${{ secrets.CHROME_REFRESH_TOKEN }}" ]; then
-            echo "✅ Refresh Token: ${{ secrets.CHROME_REFRESH_TOKEN }}"
+            echo "✅ Refresh Token: ***
           else
             echo "❌ Refresh Token: Not set"
           fi
