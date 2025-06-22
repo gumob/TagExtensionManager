@@ -179,6 +179,45 @@ jobs:
         run: |
           echo "🔐 Validating OAuth2 credentials..."
 
+          # Debug: Check all secrets
+          echo "🔍 Debug: Checking secrets..."
+          echo "  - CHROME_CLIENT_ID: $([ -n "${{ secrets.CHROME_CLIENT_ID }}" ] && echo "Set (${#CHROME_CLIENT_ID} chars)" || echo "Not set")"
+          echo "  - CHROME_CLIENT_SECRET: $([ -n "${{ secrets.CHROME_CLIENT_SECRET }}" ] && echo "Set (${#CHROME_CLIENT_SECRET} chars)" || echo "Not set")"
+          echo "  - CHROME_REFRESH_TOKEN: $([ -n "${{ secrets.CHROME_REFRESH_TOKEN }}" ] && echo "Set (${#CHROME_REFRESH_TOKEN} chars)" || echo "Not set")"
+          echo "  - CHROME_EXTENSION_ID: $([ -n "${{ secrets.CHROME_EXTENSION_ID }}" ] && echo "Set (${#CHROME_EXTENSION_ID} chars)" || echo "Not set")"
+
+          # Validate Extension ID
+          EXTENSION_ID="${{ secrets.CHROME_EXTENSION_ID }}"
+          if [ -z "$EXTENSION_ID" ]; then
+            echo "❌ Extension ID is not set"
+            echo "   Please set CHROME_EXTENSION_ID secret in GitHub repository settings"
+            echo "   Go to Settings > Secrets and variables > Actions"
+            echo ""
+            echo "🔧 How to set Extension ID:"
+            echo "   1. Go to https://chrome.google.com/webstore/devconsole/"
+            echo "   2. Find your extension"
+            echo "   3. Copy the Extension ID from the URL"
+            echo "   4. Add it as CHROME_EXTENSION_ID secret in GitHub"
+            exit 1
+          fi
+
+          # Validate Extension ID format (should be 32 characters, alphanumeric)
+          if [[ ! "$EXTENSION_ID" =~ ^[a-zA-Z0-9]{32}$ ]]; then
+            echo "❌ Extension ID format is invalid"
+            echo "   Current Extension ID: '$EXTENSION_ID'"
+            echo "   Expected format: 32 alphanumeric characters"
+            echo "   Length: ${#EXTENSION_ID} characters"
+            echo ""
+            echo "🔧 How to get correct Extension ID:"
+            echo "   1. Go to https://chrome.google.com/webstore/devconsole/"
+            echo "   2. Find your extension"
+            echo "   3. Copy the Extension ID from the URL (32 characters)"
+            echo "   4. Update CHROME_EXTENSION_ID secret in GitHub"
+            exit 1
+          fi
+
+          echo "✅ Extension ID: $EXTENSION_ID (valid format)"
+
           # Test OAuth2 token refresh
           RESPONSE=$(curl -s -X POST \
             -H "Content-Type: application/x-www-form-urlencoded" \
@@ -212,29 +251,48 @@ jobs:
 
             # Test Chrome Web Store API access with the token
             echo "🧪 Testing Chrome Web Store API access..."
-            API_RESPONSE=$(curl -s -H "Authorization: Bearer $ACCESS_TOKEN" \
-              "https://www.googleapis.com/chromewebstore/v1.1/items/$EXTENSION_ID?projection=DRAFT")
+            API_URL="https://www.googleapis.com/chromewebstore/v1.1/items/$EXTENSION_ID?projection=DRAFT"
+            echo "  📡 API URL: $API_URL"
+            API_RESPONSE=$(curl -s -H "Authorization: Bearer $ACCESS_TOKEN" "$API_URL")
 
             if echo "$API_RESPONSE" | grep -q "error"; then
               echo "❌ Chrome Web Store API access failed"
               echo "  Response: $API_RESPONSE"
               echo ""
-              echo "🔍 This indicates one of the following issues:"
-              echo "  1. Extension ID mismatch"
-              echo "  2. Chrome Web Store API not enabled"
-              echo "  3. Insufficient OAuth2 scopes"
-              echo "  4. Account permissions issue"
-              echo "  5. Missing required API parameters (projection)"
-              echo ""
-              echo "📋 Required OAuth2 Scopes:"
-              echo "   - https://www.googleapis.com/auth/chromewebstore"
-              echo ""
-              echo "🔧 Next Steps:"
-              echo "   1. Verify extension ID in Chrome Web Store Developer Console"
-              echo "   2. Enable Chrome Web Store API in Google Cloud Console"
-              echo "   3. Check OAuth2 client scopes"
-              echo "   4. Verify developer account permissions"
-              echo "   5. Ensure API request includes required parameters"
+              
+              # Check for specific error types
+              if echo "$API_RESPONSE" | grep -q "404"; then
+                echo "🔍 404 Not Found Error Analysis:"
+                echo "   This error typically indicates:"
+                echo "   1. Extension ID is incorrect or not set"
+                echo "   2. Extension does not exist in Chrome Web Store"
+                echo "   3. Extension ID format is invalid"
+                echo ""
+                echo "📋 Current Extension ID: $EXTENSION_ID"
+                echo "🔧 Troubleshooting Steps:"
+                echo "   1. Verify Extension ID in Chrome Web Store Developer Console"
+                echo "   2. Check that the extension exists and is published"
+                echo "   3. Ensure Extension ID matches exactly (case-sensitive)"
+                echo "   4. Go to https://chrome.google.com/webstore/devconsole/"
+                echo "   5. Find your extension and copy the correct Extension ID"
+              else
+                echo "🔍 This indicates one of the following issues:"
+                echo "  1. Extension ID mismatch"
+                echo "  2. Chrome Web Store API not enabled"
+                echo "  3. Insufficient OAuth2 scopes"
+                echo "  4. Account permissions issue"
+                echo "  5. Missing required API parameters (projection)"
+                echo ""
+                echo "📋 Required OAuth2 Scopes:"
+                echo "   - https://www.googleapis.com/auth/chromewebstore"
+                echo ""
+                echo "🔧 Next Steps:"
+                echo "   1. Verify extension id in Chrome Web Store Developer Console"
+                echo "   2. Enable Chrome Web Store API in Google Cloud Console"
+                echo "   3. Check OAuth2 client scopes"
+                echo "   4. Verify developer account permissions"
+                echo "   5. Ensure API request includes required parameters"
+              fi
               exit 1
             else
               echo "✅ Chrome Web Store API access successful"
@@ -271,6 +329,29 @@ jobs:
           CLIENT_SECRET="${{ secrets.CHROME_CLIENT_SECRET }}"
           REFRESH_TOKEN="${{ secrets.CHROME_REFRESH_TOKEN }}"
           EXTENSION_ID="${{ secrets.CHROME_EXTENSION_ID }}"
+
+          # Validate Extension ID
+          if [ -z "$EXTENSION_ID" ]; then
+            echo "❌ Extension ID is not set"
+            echo "   Please set CHROME_EXTENSION_ID secret in GitHub repository settings"
+            echo "   Go to Settings > Secrets and variables > Actions"
+            exit 1
+          fi
+
+          # Validate Extension ID format (should be 32 characters, alphanumeric)
+          if [[ ! "$EXTENSION_ID" =~ ^[a-zA-Z0-9]{32}$ ]]; then
+            echo "❌ Extension ID format is invalid"
+            echo "   Current Extension ID: '$EXTENSION_ID'"
+            echo "   Expected format: 32 alphanumeric characters"
+            echo "   Length: ${#EXTENSION_ID} characters"
+            echo ""
+            echo "🔧 How to get correct Extension ID:"
+            echo "   1. Go to https://chrome.google.com/webstore/devconsole/"
+            echo "   2. Find your extension"
+            echo "   3. Copy the Extension ID from the URL (32 characters)"
+            echo "   4. Update CHROME_EXTENSION_ID secret in GitHub"
+            exit 1
+          fi
 
           # Enhanced debugging and error handling
           echo "🔍 Debug Information:"
@@ -309,29 +390,48 @@ jobs:
 
           # Test Chrome Web Store API access
           echo "🧪 Testing Chrome Web Store API access..."
-          API_RESPONSE=$(curl -s -H "Authorization: Bearer $ACCESS_TOKEN" \
-            "https://www.googleapis.com/chromewebstore/v1.1/items/$EXTENSION_ID?projection=DRAFT")
+          API_URL="https://www.googleapis.com/chromewebstore/v1.1/items/$EXTENSION_ID?projection=DRAFT"
+          echo "  📡 API URL: $API_URL"
+          API_RESPONSE=$(curl -s -H "Authorization: Bearer $ACCESS_TOKEN" "$API_URL")
 
           if echo "$API_RESPONSE" | grep -q "error"; then
             echo "❌ Chrome Web Store API access failed"
             echo "  Response: $API_RESPONSE"
             echo ""
-            echo "🔍 This indicates one of the following issues:"
-            echo "  1. Extension ID mismatch"
-            echo "  2. Chrome Web Store API not enabled"
-            echo "  3. Insufficient OAuth2 scopes"
-            echo "  4. Account permissions issue"
-            echo "  5. Missing required API parameters (projection)"
-            echo ""
-            echo "📋 Required OAuth2 Scopes:"
-            echo "   - https://www.googleapis.com/auth/chromewebstore"
-            echo ""
-            echo "🔧 Next Steps:"
-            echo "   1. Verify extension ID in Chrome Web Store Developer Console"
-            echo "   2. Enable Chrome Web Store API in Google Cloud Console"
-            echo "   3. Check OAuth2 client scopes"
-            echo "   4. Verify developer account permissions"
-            echo "   5. Ensure API request includes required parameters"
+            
+            # Check for specific error types
+            if echo "$API_RESPONSE" | grep -q "404"; then
+              echo "🔍 404 Not Found Error Analysis:"
+              echo "   This error typically indicates:"
+              echo "   1. Extension ID is incorrect or not set"
+              echo "   2. Extension does not exist in Chrome Web Store"
+              echo "   3. Extension ID format is invalid"
+              echo ""
+              echo "📋 Current Extension ID: $EXTENSION_ID"
+              echo "🔧 Troubleshooting Steps:"
+              echo "   1. Verify Extension ID in Chrome Web Store Developer Console"
+              echo "   2. Check that the extension exists and is published"
+              echo "   3. Ensure Extension ID matches exactly (case-sensitive)"
+              echo "   4. Go to https://chrome.google.com/webstore/devconsole/"
+              echo "   5. Find your extension and copy the correct Extension ID"
+            else
+              echo "🔍 This indicates one of the following issues:"
+              echo "  1. Extension ID mismatch"
+              echo "  2. Chrome Web Store API not enabled"
+              echo "  3. Insufficient OAuth2 scopes"
+              echo "  4. Account permissions issue"
+              echo "  5. Missing required API parameters (projection)"
+              echo ""
+              echo "📋 Required OAuth2 Scopes:"
+              echo "   - https://www.googleapis.com/auth/chromewebstore"
+              echo ""
+              echo "🔧 Next Steps:"
+              echo "   1. Verify extension id in Chrome Web Store Developer Console"
+              echo "   2. Enable Chrome Web Store API in Google Cloud Console"
+              echo "   3. Check OAuth2 client scopes"
+              echo "   4. Verify developer account permissions"
+              echo "   5. Ensure API request includes required parameters"
+            fi
             exit 1
           else
             echo "✅ Chrome Web Store API access successful"
