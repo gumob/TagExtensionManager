@@ -10,54 +10,83 @@
 #     https://docs.fastlane.tools/plugins/available-plugins
 #
 
+# Helper method to ensure we're on develop branch
+def ensure_develop_branch
+  current_branch = sh("git branch --show-current", log: false).strip
+
+  if current_branch != "develop"
+    UI.important("Current branch is '#{current_branch}', but 'develop' is required.")
+
+    unless UI.confirm("Do you want to switch to the develop branch?")
+      UI.user_error!("Operation cancelled. Please switch to develop branch manually.")
+    end
+
+    sh("git checkout develop")
+    UI.success("Switched to develop branch")
+  else
+    UI.success("Already on develop branch")
+  end
+end
+
 desc "Build extension in development mode"
 lane :build_dev do
+  ensure_develop_branch
   sh("pnpm run dev")
 end
 
 desc "Build extension for production"
 lane :build do
+  ensure_develop_branch
   sh("pnpm run build")
 end
 
 desc "Build extension and create package"
 lane :build_and_package do
+  ensure_develop_branch
   build
   create_package
 end
 
 desc "Check format with prettier"
 lane :format_check do
+  ensure_develop_branch
   sh("pnpm prettier-check")
 end
 
 desc "Fix format with prettier"
 lane :format_fix do
+  ensure_develop_branch
   sh("pnpm prettier-fix")
 end
 
 desc "Check eslint"
 lane :eslint_check do
+  ensure_develop_branch
   sh("pnpm eslint-check")
 end
 
 desc "Fix eslint"
 lane :eslint_fix do
+  ensure_develop_branch
   sh("pnpm eslint-fix")
 end
 
 desc "Check security"
 lane :security_check do
+  ensure_develop_branch
   sh("pnpm audit --audit-level high")
 end
 
 desc "Run type check"
 lane :type_check do
+  ensure_develop_branch
   sh("pnpm type-check")
 end
 
 desc "Bump version number"
 lane :bump_version do
+  ensure_develop_branch
+
   # Show version selection dialog
   version_type = UI.select(
     "How would you like to update the version?",
@@ -119,6 +148,8 @@ end
 
 desc "Create extension package"
 lane :create_package do
+  ensure_develop_branch
+
   # Check if dist/prod directory exists
   unless File.directory?("../dist/prod")
     UI.user_error!("dist/prod directory not found. Please run build first.")
@@ -141,6 +172,8 @@ end
 
 desc "Create release"
 lane :release do
+  ensure_develop_branch
+
   # Update version if not "never"
   bump_version()
 
@@ -180,6 +213,34 @@ lane :release do
   sh("git commit -m \"chore: bump version to #{version}\"")
   sh("git tag -a v#{version} -m \"Release v#{version}\"")
   sh("git push && git push --tags")
+
+  # Merge develop to main
+  UI.important("Merging develop branch to main...")
+
+  unless UI.confirm("Do you want to merge develop branch to main?")
+    UI.important("Merge to main cancelled by user")
+    next
+  end
+
+  # Switch to main branch
+  sh("git checkout main")
+  UI.success("Switched to main branch")
+
+  # Pull latest changes
+  sh("git pull origin main")
+  UI.success("Pulled latest changes from main")
+
+  # Merge develop branch
+  sh("git merge develop")
+  UI.success("Merged develop branch to main")
+
+  # Push to main
+  sh("git push origin main")
+  UI.success("Pushed changes to main branch")
+
+  # Switch back to develop
+  sh("git checkout develop")
+  UI.success("Switched back to develop branch")
 
   UI.success("Release completed successfully!")
 end
