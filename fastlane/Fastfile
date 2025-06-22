@@ -249,8 +249,23 @@ lane :release do
     next
   end
 
-  sh("git add ../package.json ../manifest.json")
-  sh("git commit -m \"feat: bump version to #{version}\"")
+  # Check if there are changes to commit
+  git_status = sh("git status --porcelain ../package.json ../manifest.json", log: false).strip
+
+  if git_status.empty?
+    UI.important("No changes detected in package.json or manifest.json. Skipping commit.")
+  else
+    UI.message("Changes detected:")
+    UI.message(git_status)
+
+    sh("git add ../package.json ../manifest.json")
+    sh("git commit -m \"feat: bump version to #{version}\"")
+  end
+
+  # Delete existing tag if it exists
+  sh("git tag -d v#{version} 2>/dev/null || true")
+  sh("git push origin :refs/tags/v#{version} 2>/dev/null || true")
+
   sh("git tag -a v#{version} -m \"Release v#{version}\"")
   sh("git push && git push --tags")
 
