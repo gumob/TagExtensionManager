@@ -1,8 +1,23 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import { chromeAPI } from '@/api';
-import { ExtensionModel } from '@/models';
-import { useExtensionStore, useTagStore } from '@/stores';
+import {
+  ExtensionModel,
+  TagExtensionMapModel,
+  TagModel,
+} from '@/models';
+import {
+  useExtensionStore,
+  useTagStore,
+} from '@/stores';
 import { logger } from '@/utils';
 
 /**
@@ -100,18 +115,23 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
    */
   const filteredExtensions: ExtensionModel[] = useMemo(() => {
     return storedExtensions.filter(ext => {
-      const isNameMatch = ext.name.toLowerCase().includes(searchQuery.toLowerCase());
-      const isDescriptionMatch = ext.description.toLowerCase().includes(searchQuery.toLowerCase());
-      const isTextMatch = isNameMatch || isDescriptionMatch;
+      const isNameMatch: boolean = ext.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const isDescriptionMatch: boolean = ext.description.toLowerCase().includes(searchQuery.toLowerCase());
+      const isTextMatch: boolean = isNameMatch || isDescriptionMatch;
 
       const isVisible = (() => {
+        /** If no tag is selected, all extensions are visible */
         if (visibleTagId === null) return true;
+        /** If the tag is untagged, the extension is visible if it has no tags */
         if (visibleTagId === 'untagged') {
-          return !extensionTags.find(extTag => extTag.extensionId === ext.id && extTag.tagIds.length > 0);
+          return !extensionTags.find((extTag: TagExtensionMapModel) => extTag.extensionId === ext.id && extTag.tagIds.length > 0);
         }
+        /** If the tag is enabled, the extension is visible if it is enabled */
         if (visibleTagId === 'enabled') return ext.enabled;
+        /** If the tag is disabled, the extension is visible if it is disabled */
         if (visibleTagId === 'disabled') return !ext.enabled;
-        return extensionTags.find(extTag => extTag.extensionId === ext.id && extTag.tagIds.includes(visibleTagId));
+        /** If the tag is a specific tag, the extension is visible if it has the tag */
+        return extensionTags.find((extTag: TagExtensionMapModel) => extTag.extensionId === ext.id && extTag.tagIds.includes(visibleTagId));
       })();
 
       return isTextMatch && isVisible;
@@ -124,10 +144,24 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
   }>(() => {
     return {
       taggedExtensions: tags.reduce(
-        (acc, tag) => {
-          const tagExtensions = filteredExtensions.filter(extension =>
-            extensionTags.find(extTag => extTag.extensionId === extension.id && extTag.tagIds.includes(tag.id))
-          );
+        (acc: Record<string, ExtensionModel[]>, tag: TagModel) => {
+          const tagExtensions: ExtensionModel[] = filteredExtensions.filter((extension: ExtensionModel) => {
+            /** If the extension has the tag, return true */
+            return extensionTags.find((extTag: TagExtensionMapModel) => {
+              /** If the extension has the tag, return true */
+              const isTagMatch = extTag.extensionId === extension.id && extTag.tagIds.includes(tag.id);
+              /** If the tag is visible, return true */
+              const isVisibleTagMatch = (() => {
+                if (visibleTagId === null) return true;
+                if (visibleTagId === tag.id) return true;
+                if (visibleTagId === 'enabled') return extension.enabled;
+                if (visibleTagId === 'disabled') return !extension.enabled;
+                return false;
+              })();
+              return isTagMatch && isVisibleTagMatch;
+            });
+          });
+          /** If the tag has extensions, add them to the accumulator */
           if (tagExtensions.length > 0) {
             acc[tag.id] = tagExtensions;
           }
@@ -136,7 +170,7 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
         {} as Record<string, ExtensionModel[]>
       ),
       untaggedExtensions: filteredExtensions.filter(
-        extension => !extensionTags.find(extTag => extTag.extensionId === extension.id && extTag.tagIds.length > 0)
+        (extension: ExtensionModel) => !extensionTags.find((extTag: TagExtensionMapModel) => extTag.extensionId === extension.id && extTag.tagIds.length > 0)
       ),
     };
   }, [filteredExtensions]);
