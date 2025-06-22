@@ -240,7 +240,7 @@ lane :release do
   end
 
   sh("git add ../package.json ../manifest.json")
-  sh("git commit -m \"chore: bump version to #{version}\"")
+  sh("git commit -m \"feat: bump version to #{version}\"")
   sh("git tag -a v#{version} -m \"Release v#{version}\"")
   sh("git push && git push --tags")
 
