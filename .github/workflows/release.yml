@@ -75,10 +75,10 @@ jobs:
 
           # Create ZIP file
           cd dist/prod
-          zip -r "../../tag-extension-manager-${VERSION}.zip" .
+          zip -r "../../tag-extension-manager-${{ env.VERSION }}.zip" .
           cd ../..
 
-          echo "Successfully created tag-extension-manager-${VERSION}.zip"
+          echo "Successfully created tag-extension-manager-${{ env.VERSION }}.zip"
 
           # Verify the file was created
           ls -la tag-extension-manager-*.zip
@@ -109,4 +109,4 @@ jobs:
           client_secret: ${{ secrets.CLIENT_SECRET }}
           refresh_token: ${{ secrets.REFRESH_TOKEN }}
           extension_id: ${{ secrets.EXTENSION_ID }}
-          zip_file: tag-extension-manager-*.zip
+          zip_file: tag-extension-manager-${{ env.VERSION }}.zip
