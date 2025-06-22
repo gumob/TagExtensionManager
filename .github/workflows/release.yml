@@ -100,11 +100,11 @@ jobs:
 
       - name: Check Chrome Web Store credentials
         run: |
+          echo "secrets.CLIENT_ID: ${{ secrets.CLIENT_ID }}"
+          echo "secrets.CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}"
+          echo "secrets.REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}"
+          echo "secrets.EXTENSION_ID: ${{ secrets.EXTENSION_ID }}"
           if [ -z "${{ secrets.CLIENT_ID }}" ] || [ -z "${{ secrets.CLIENT_SECRET }}" ] || [ -z "${{ secrets.REFRESH_TOKEN }}" ] || [ -z "${{ secrets.EXTENSION_ID }}" ]; then
-            echo "secrets.CLIENT_ID: ${{ secrets.CLIENT_ID }}"
-            echo "secrets.CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}"
-            echo "secrets.REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}"
-            echo "secrets.EXTENSION_ID: ${{ secrets.EXTENSION_ID }}"
             echo "::warning::Chrome Web Store credentials are not properly configured. Skipping upload to Chrome Web Store."
             exit 0
           fi
