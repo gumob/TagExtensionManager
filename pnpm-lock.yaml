@@ -34,7 +34,7 @@ importers:
         version: 18.3.1
       react-dnd:
         specifier: ^16.0
-        version: 16.0.1(@types/node@20.17.47)(@types/react@18.3.23)(react@18.3.1)
+        version: 16.0.1(@types/node@20.19.1)(@types/react@18.3.23)(react@18.3.1)
       react-dnd-html5-backend:
         specifier: ^16.0
         version: 16.0.1
@@ -62,7 +62,7 @@ importers:
         version: 9.29.0
       '@trivago/prettier-plugin-sort-imports':
         specifier: ^5.2
-        version: 5.2.2(prettier@3.5.3)
+        version: 5.2.2(prettier@3.6.0)
       '@types/chrome':
         specifier: ^0.0
         version: 0.0.326
@@ -70,8 +70,8 @@ importers:
         specifier: ^3.2
         version: 3.2.9
       '@types/node':
-        specifier: ^20.17
-        version: 20.17.47
+        specifier: ^20.19.1
+        version: 20.19.1
       '@types/react':
         specifier: ^18.3
         version: 18.3.23
@@ -124,20 +124,20 @@ importers:
         specifier: ^8.1
         version: 8.1.1(postcss@8.5.6)(typescript@5.8.3)(webpack@5.99.9)
       prettier:
-        specifier: ^3.5
-        version: 3.5.3
+        specifier: ^3.6.0
+        version: 3.6.0
       style-loader:
         specifier: ^4.0
         version: 4.0.0(webpack@5.99.9)
       tailwindcss:
         specifier: 3.4.1
-        version: 3.4.1(ts-node@10.9.2(@types/node@20.17.47)(typescript@5.8.3))
+        version: 3.4.1(ts-node@10.9.2(@types/node@20.19.1)(typescript@5.8.3))
       ts-loader:
         specifier: ^9.5
         version: 9.5.2(typescript@5.8.3)(webpack@5.99.9)
       ts-node:
         specifier: ^10.9
-        version: 10.9.2(@types/node@20.17.47)(typescript@5.8.3)
+        version: 10.9.2(@types/node@20.19.1)(typescript@5.8.3)
       typescript:
         specifier: ^5.8
         version: 5.8.3
@@ -479,8 +479,8 @@ packages:
   '@types/json5@0.0.29':
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
 
-  '@types/node@20.17.47':
-    resolution: {integrity: sha512-3dLX0Upo1v7RvUimvxLeXqwrfyKxUINk0EAM83swP2mlSUcwV73sZy8XhNz8bcZ3VbsfQyC/y6jRdL5tgCNpDQ==}
+  '@types/node@20.19.1':
+    resolution: {integrity: sha512-jJD50LtlD2dodAEO653i3YF04NWak6jN3ky+Ri3Em3mGR39/glWiboM/IePaRbgwSfqM1TpGXfAg8ohn/4dTgA==}
 
   '@types/prop-types@15.7.14':
     resolution: {integrity: sha512-gNMvNH49DJ7OJYv+KAKn0Xp45p8PLl6zo2YnvDIbTd4J6MER2BmWN49TG7n9LvkyihINxeKW8+3bfS2yDC9dzQ==}
@@ -1935,8 +1935,8 @@ packages:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
 
-  prettier@3.5.3:
-    resolution: {integrity: sha512-QQtaxnoDJeAkDvDKWCLiwIXkTgRhwYDEQCghU9Z6q03iyek/rxRh/2lC3HB7P8sWT2xC/y5JDctPLBIGzHKbhw==}
+  prettier@3.6.0:
+    resolution: {integrity: sha512-ujSB9uXHJKzM/2GBuE0hBOUgC77CN3Bnpqa+g80bkv3T3A93wL/xlzDATHhnhkzifz/UE2SNOvmbTz5hSkDlHw==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -2331,8 +2331,8 @@ packages:
     resolution: {integrity: sha512-nWJ91DjeOkej/TA8pXQ3myruKpKEYgqvpw9lz4OPHj/NWFNluYrjbz9j01CJ8yKQd2g4jFoOkINCTW2I5LEEyw==}
     engines: {node: '>= 0.4'}
 
-  undici-types@6.19.8:
-    resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
+  undici-types@6.21.0:
+    resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
 
   update-browserslist-db@1.1.3:
     resolution: {integrity: sha512-UxhIZQ+QInVdunkDAaiazvvT/+fXL5Osr0JZlJulepYu6Jd7qJtDZjlur0emRlT71EN3ScPoE7gvsuIKKNavKw==}
@@ -2757,7 +2757,7 @@ snapshots:
 
   '@tanstack/virtual-core@3.13.10': {}
 
-  '@trivago/prettier-plugin-sort-imports@5.2.2(prettier@3.5.3)':
+  '@trivago/prettier-plugin-sort-imports@5.2.2(prettier@3.6.0)':
     dependencies:
       '@babel/generator': 7.27.1
       '@babel/parser': 7.27.2
@@ -2765,7 +2765,7 @@ snapshots:
       '@babel/types': 7.27.1
       javascript-natural-sort: 0.7.1
       lodash: 4.17.21
-      prettier: 3.5.3
+      prettier: 3.6.0
     transitivePeerDependencies:
       - supports-color
 
@@ -2784,7 +2784,7 @@ snapshots:
 
   '@types/clean-css@4.2.11':
     dependencies:
-      '@types/node': 20.17.47
+      '@types/node': 20.19.1
       source-map: 0.6.1
 
   '@types/eslint-scope@3.7.7':
@@ -2825,9 +2825,9 @@ snapshots:
 
   '@types/json5@0.0.29': {}
 
-  '@types/node@20.17.47':
+  '@types/node@20.19.1':
     dependencies:
-      undici-types: 6.19.8
+      undici-types: 6.21.0
 
   '@types/prop-types@15.7.14': {}
 
@@ -2858,13 +2858,13 @@ snapshots:
 
   '@types/webpack-sources@3.2.3':
     dependencies:
-      '@types/node': 20.17.47
+      '@types/node': 20.19.1
       '@types/source-list-map': 0.1.6
       source-map: 0.7.4
 
   '@types/webpack@4.41.40':
     dependencies:
-      '@types/node': 20.17.47
+      '@types/node': 20.19.1
       '@types/tapable': 1.0.12
       '@types/uglify-js': 3.17.5
       '@types/webpack-sources': 3.2.3
@@ -4098,7 +4098,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 20.17.47
+      '@types/node': 20.19.1
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -4375,13 +4375,13 @@ snapshots:
       camelcase-css: 2.0.1
       postcss: 8.5.6
 
-  postcss-load-config@4.0.2(postcss@8.5.6)(ts-node@10.9.2(@types/node@20.17.47)(typescript@5.8.3)):
+  postcss-load-config@4.0.2(postcss@8.5.6)(ts-node@10.9.2(@types/node@20.19.1)(typescript@5.8.3)):
     dependencies:
       lilconfig: 3.1.3
       yaml: 2.8.0
     optionalDependencies:
       postcss: 8.5.6
-      ts-node: 10.9.2(@types/node@20.17.47)(typescript@5.8.3)
+      ts-node: 10.9.2(@types/node@20.19.1)(typescript@5.8.3)
 
   postcss-loader@8.1.1(postcss@8.5.6)(typescript@5.8.3)(webpack@5.99.9):
     dependencies:
@@ -4440,7 +4440,7 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier@3.5.3: {}
+  prettier@3.6.0: {}
 
   pretty-error@4.0.0:
     dependencies:
@@ -4459,7 +4459,7 @@ snapshots:
     dependencies:
       dnd-core: 16.0.1
 
-  react-dnd@16.0.1(@types/node@20.17.47)(@types/react@18.3.23)(react@18.3.1):
+  react-dnd@16.0.1(@types/node@20.19.1)(@types/react@18.3.23)(react@18.3.1):
     dependencies:
       '@react-dnd/invariant': 4.0.2
       '@react-dnd/shallowequal': 4.0.2
@@ -4468,7 +4468,7 @@ snapshots:
       hoist-non-react-statics: 3.3.2
       react: 18.3.1
     optionalDependencies:
-      '@types/node': 20.17.47
+      '@types/node': 20.19.1
       '@types/react': 18.3.23
 
   react-dom@18.3.1(react@18.3.1):
@@ -4760,7 +4760,7 @@ snapshots:
 
   tabbable@6.2.0: {}
 
-  tailwindcss@3.4.1(ts-node@10.9.2(@types/node@20.17.47)(typescript@5.8.3)):
+  tailwindcss@3.4.1(ts-node@10.9.2(@types/node@20.19.1)(typescript@5.8.3)):
     dependencies:
       '@alloc/quick-lru': 5.2.0
       arg: 5.0.2
@@ -4779,7 +4779,7 @@ snapshots:
       postcss: 8.5.6
       postcss-import: 15.1.0(postcss@8.5.6)
       postcss-js: 4.0.1(postcss@8.5.6)
-      postcss-load-config: 4.0.2(postcss@8.5.6)(ts-node@10.9.2(@types/node@20.17.47)(typescript@5.8.3))
+      postcss-load-config: 4.0.2(postcss@8.5.6)(ts-node@10.9.2(@types/node@20.19.1)(typescript@5.8.3))
       postcss-nested: 6.2.0(postcss@8.5.6)
       postcss-selector-parser: 6.1.2
       resolve: 1.22.10
@@ -4838,14 +4838,14 @@ snapshots:
       typescript: 5.8.3
       webpack: 5.99.9(webpack-cli@6.0.1)
 
-  ts-node@10.9.2(@types/node@20.17.47)(typescript@5.8.3):
+  ts-node@10.9.2(@types/node@20.19.1)(typescript@5.8.3):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
-      '@types/node': 20.17.47
+      '@types/node': 20.19.1
       acorn: 8.14.1
       acorn-walk: 8.3.4
       arg: 4.1.3
@@ -4913,7 +4913,7 @@ snapshots:
       has-symbols: 1.1.0
       which-boxed-primitive: 1.1.1
 
-  undici-types@6.19.8: {}
+  undici-types@6.21.0: {}
 
   update-browserslist-db@1.1.3(browserslist@4.24.5):
     dependencies:
