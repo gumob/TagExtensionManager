@@ -49,14 +49,15 @@ export const detectTheme = async () => {
  */
 export const updateExtensionIcon = async (isDarkMode: boolean) => {
   logger.debug('Updating extension icon');
+  const postfix = process.env.NODE_ENV === 'development' ? '-dev' : '';
 
   try {
     const iconPath = isDarkMode ? '/icons/dark/' : '/icons/light/';
     await chromeAPI.setIcon({
       path: {
-        16: `${iconPath}icon16.png`,
-        48: `${iconPath}icon48.png`,
-        128: `${iconPath}icon128.png`,
+        16: `${iconPath}icon16${postfix}.png`,
+        48: `${iconPath}icon48${postfix}.png`,
+        128: `${iconPath}icon128${postfix}.png`,
       },
     });
     logger.debug('Icon updated');
