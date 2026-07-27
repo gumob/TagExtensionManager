@@ -1,8 +1,8 @@
 ![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/mcnibmkpimlpgnlgkkhpgabkhdgngmca?style=flat&label=Chrome%20Extension)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Open Source](https://img.shields.io/badge/Open%20Source-Yes-blue.svg)](https://github.com/gumob/TagExtensionManager)
+[![Open Source](https://img.shields.io/badge/Open%20Source-Yes-blue.svg)](https://github.com/futamura/TagExtensionManager)
 
-# [Tag Extension Manager](https://github.com/gumob/TagExtensionManager)
+# [Tag Extension Manager](https://github.com/futamura/TagExtensionManager)
 
 A Chrome Extension for efficiently managing Chrome extensions. Group multiple extensions with tags and easily enable/disable them based on your needs.
 
@@ -39,7 +39,7 @@ A Chrome Extension for efficiently managing Chrome extensions. Group multiple ex
 
 ### Install locally
 
-1. Download [release version](https://github.com/gumob/TagExtensionManager/releases) and unzip
+1. Download [release version](https://github.com/futamura/TagExtensionManager/releases) and unzip
 2. Open `chrome://extensions` in Chrome
 3. Enable "Developer mode" in the top right
 4. Click "Load unpacked"
@@ -58,7 +58,7 @@ A Chrome Extension for efficiently managing Chrome extensions. Group multiple ex
 2. Clone the repository
 
    ```bash
-   git clone https://github.com/gumob/TagExtensionManager.git
+   git clone https://github.com/futamura/TagExtensionManager.git
    cd TagExtensionManager
    ```
 
