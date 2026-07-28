@@ -26,7 +26,6 @@
     "@floating-ui/react": "^0.27.20",
     "@headlessui/react": "^2.2.10",
     "@heroicons/react": "^2.2.0",
-    "@plasmohq/storage": "^1.15.0",
     "@types/react-window": "^1.8.8",
     "consola": "^3.4.2",
     "lucide-react": "^0.511.0",
