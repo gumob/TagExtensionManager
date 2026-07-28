@@ -53,6 +53,19 @@ webpack のエントリーポイントは 3 つ (`webpack.config.ts` で定義�
 - 明示的に指示された範囲を超えた変更をしない。必要と考える場合はまず提案し、承認後に実装する。
 - ファイル配置は `DIRECTORYSTRUCTURE.md` に従う。
 
+## コミットゲート
+
+コミット前に以下をすべて通過させること。失敗が残る状態でコミットしない。
+
+- `pnpm type-check`
+- `pnpm eslint-check`
+- `pnpm prettier-check`
+
+ソースコード (`src/`、`webpack.config.ts` 等) に触れた場合は `pnpm build` の成功も確認する。ドキュメントのみの変更ならチェック不要。
+
 ## ブランチ
 
-`main` = 本番、`develop` = 開発 (ブランチは `develop` から切る)。機能開発: `feature/<name>`、バグ修正: `fix/<description>`。
+- `main` = 本番、`develop` = 開発。どちらのブランチ上でも直接作業しない。
+- 作業時は `develop` から Conventional Branch 準拠のブランチを切る。機能開発: `feature/<name>`、バグ修正: `fix/<description>`。
+- 作業完了後、作業ブランチを `develop` にマージする。
+- `develop` → `main` はリリースフロー (fastlane `release` lane / `merge_to_main`) 経由のみ。直接マージしない。
