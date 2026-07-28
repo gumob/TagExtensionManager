@@ -2,9 +2,9 @@
 
 ## Core Technologies
 
-- TypeScript: ^5.8.3
-- Node.js: ^20.17.47
-- React: ^18.2.0
+- TypeScript: ^5.9.3
+- Node.js: 20 (managed via mise)
+- React: ^18.3.1
 
 ## Frontend
 
@@ -19,35 +19,35 @@
 
 ### Code Quality
 
-- ESLint: ^9.27.0
-- Prettier: ^3.5.3
-- TypeScript ESLint Parser: ^8.32.1
+- ESLint: ^9.39.5
+- Prettier: ^3.9.6
+- TypeScript ESLint Parser: ^8.65.0
 
 ### Build System
 
-- Webpack: ^5.99.8
-- pnpm: 10.11.0
+- Webpack: ^5.109.1
+- pnpm: 10.12.1
 
 ### Styling
 
-- Tailwind CSS: ^3.4.1
-- PostCSS: ^8.5.3
-- Autoprefixer: ^10.4.21
+- Tailwind CSS: 3.4.1
+- PostCSS: ^8.5.23
+- Autoprefixer: ^10.5.4
 
 ### Type Definitions
 
-- @types/node: ^20.17.47
-- @types/react: ^18.2.55
-- @types/react-dom: ^18.2.19
-- @types/chrome: ^0.0.260
+- @types/node: ^20.19.43
+- @types/react: ^18.3.31
+- @types/react-dom: ^18.3.7
+- @types/chrome: ^0.0.329
 
 ## Dependencies
 
-- @plasmohq/storage: ^1.3.0 (Chrome Extension Storage)
-- zustand: ^5.0.4 (State Management)
-- uuid: ^11.1.0
-- react-hot-toast: ^2.5.2 (Notifications)
-- tslog: ^4.9.3 (Logging)
+- zustand: ^5.0.14 (State Management)
+- uuid: ^11.1.1
+- react-hot-toast: ^2.6.0 (Notifications)
+- tslog: ^4.11.0 (Logging)
+- consola: ^3.4.2 (Logging)
 
 ## Development Environment
 
