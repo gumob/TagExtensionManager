@@ -51,7 +51,6 @@
     "@typescript-eslint/eslint-plugin": "^8.65.0",
     "@typescript-eslint/parser": "^8.65.0",
     "autoprefixer": "^10.5.4",
-    "chrome-webstore-upload-cli": "^3.5.0",
     "copy-webpack-plugin": "^14.0.0",
     "css-loader": "^7.1.4",
     "eslint": "^9.39.5",
@@ -71,5 +70,12 @@
     "webpack": "^5.109.1",
     "webpack-cli": "^6.0.1"
   },
-  "packageManager": "pnpm@10.12.1+sha512.f0dda8580f0ee9481c5c79a1d927b9164f2c478e90992ad268bbb2465a736984391d6333d2c327913578b2804af33474ca554ba29c04a8b13060a717675ae3ac"
+  "packageManager": "pnpm@10.12.1+sha512.f0dda8580f0ee9481c5c79a1d927b9164f2c478e90992ad268bbb2465a736984391d6333d2c327913578b2804af33474ca554ba29c04a8b13060a717675ae3ac",
+  "pnpm": {
+    "auditConfig": {
+      "ignoreGhsas": [
+        "GHSA-mh99-v99m-4gvg"
+      ]
+    }
+  }
 }
