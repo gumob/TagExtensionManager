@@ -21,6 +21,11 @@ pnpm prettier-check   # フォーマットチェック (自動修正は pnpm pre
 
 Fastlane (`bundle exec fastlane <lane>`) がリリース作業をラップする。各 lane は `develop` ブランチでの実行を強制する。`release` lane はフルパイプラインを実行する: バージョンアップ、品質チェック、ビルド、zip パッケージング、git タグ、`develop` → `main` マージ。`v*.*.*` タグの push で `.github/workflows/release.yml` が起動し、ビルド → GitHub Release 作成 → Chrome Web Store アップロードを行う。
 
+リリース時の注意点:
+
+- `release` lane は対話式 (バージョン種別の選択、確認プロンプト複数) のため、非対話環境では実行できない。
+- CI の Chrome Web Store アップロード step は `continue-on-error: true`。workflow が成功しても CWS へ反映されていない可能性があるため、リリース後は CWS Developer Console で要確認。
+
 `package.json` と `manifest.json` のバージョンは常に同期させること (fastlane `bump_version` が両方を更新する)。
 
 ## アーキテクチャ
