@@ -6,7 +6,6 @@ import { ArchiveBoxXMarkIcon, Cog6ToothIcon, EllipsisVerticalIcon, LockClosedIco
 
 import { CancelButtonComponent, DeleteButtonComponent, DialogHeader, DialogRoot, MenuItemComponent } from '@/components';
 import { useExtensionContext } from '@/contexts';
-import { TagSelectorMain } from '@/features/options/components/selector';
 import { ExtensionModel } from '@/models';
 import { useExtensionStore } from '@/stores';
 
@@ -32,12 +31,7 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
   /**
    * The use extension store.
    */
-  const { uninstallExtension, openExtensionPage } = useExtensionContext();
-
-  /**
-   * The tag selector open state.
-   */
-  const [isTagSelectorOpen, setIsTagSelectorOpen] = useState(false);
+  const { uninstallExtension, openExtensionPage, openTagSelector } = useExtensionContext();
 
   /**
    * The toggle lock function.
@@ -115,7 +109,7 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
               >
                 <MenuItems className="bg-zinc-50 dark:bg-zinc-700 rounded-lg shadow-xl shadow-zinc-300 dark:shadow-zinc-900 focus:outline-none ring-1 ring-black ring-opacity-5">
                   <div className="py-1">
-                    <MenuItemComponent onClick={() => setIsTagSelectorOpen(true)}>
+                    <MenuItemComponent onClick={() => openTagSelector(extension)}>
                       <TagIcon className="w-4 h-4" />
                       Manage Tags
                     </MenuItemComponent>
@@ -158,8 +152,6 @@ export const ExtensionCardMenu: React.FC<ExtensionCardMenuProps> = ({ extension,
           </div>
         </div>
       </DialogRoot>
-
-      <TagSelectorMain extension={extension} isOpen={isTagSelectorOpen} onClose={() => setIsTagSelectorOpen(false)} />
     </>
   );
 };

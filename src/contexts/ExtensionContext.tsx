@@ -35,6 +35,10 @@ interface ExtensionContextValue {
   setVisibleTagId: (tagId: string | null) => void;
   refreshExtensions: () => Promise<ExtensionModel[] | undefined>;
   isLoading: boolean;
+  tagSelectorExtension: ExtensionModel | null;
+  isTagSelectorOpen: boolean;
+  openTagSelector: (extension: ExtensionModel) => void;
+  closeTagSelector: () => void;
 }
 
 /**
@@ -77,6 +81,20 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
    * The is loading.
    */
   const [isLoading, setIsLoading] = useState(true);
+
+  /**
+   * The extension targeted by the tag selector dialog.
+   * Kept at the provider level so the dialog survives ExtensionCard unmounts
+   * caused by list regrouping when tags are toggled.
+   */
+  const [tagSelectorExtension, setTagSelectorExtension] = useState<ExtensionModel | null>(null);
+
+  /**
+   * Whether the tag selector dialog is open.
+   * Separated from the target extension so the closing transition can play
+   * while the target is still rendered.
+   */
+  const [isTagSelectorOpen, setIsTagSelectorOpen] = useState(false);
 
   /**
    * Refs for managing component lifecycle and preventing stale closures
@@ -241,6 +259,22 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
     [refreshExtensions]
   );
 
+  /**
+   * Open the tag selector dialog for the given extension.
+   */
+  const openTagSelector = useCallback((extension: ExtensionModel) => {
+    setTagSelectorExtension(extension);
+    setIsTagSelectorOpen(true);
+  }, []);
+
+  /**
+   * Close the tag selector dialog.
+   * The target extension is kept so the closing transition can play.
+   */
+  const closeTagSelector = useCallback(() => {
+    setIsTagSelectorOpen(false);
+  }, []);
+
   /*******************************************************
    * Event Handlers
    *******************************************************/
@@ -368,6 +402,10 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
       setVisibleTagId,
       refreshExtensions,
       isLoading,
+      tagSelectorExtension,
+      isTagSelectorOpen,
+      openTagSelector,
+      closeTagSelector,
     }),
     [
       allExtensions,
@@ -383,6 +421,10 @@ export const ExtensionProvider: React.FC<ExtensionProviderProps> = ({ children }
       visibleTagId,
       refreshExtensions,
       isLoading,
+      tagSelectorExtension,
+      isTagSelectorOpen,
+      openTagSelector,
+      closeTagSelector,
     ]
   );
 

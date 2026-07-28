@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useExtensionContext } from '@/contexts';
 import { ExtensionHeader, ExtensionList, ExtensionSearchBar, ExtensionTagList } from '@/features/options/components/main';
+import { TagSelectorMain } from '@/features/options/components/selector';
 
 /**
  * Simple loading spinner component
@@ -22,7 +23,7 @@ const Spinner: React.FC = () => (
  * @returns
  */
 export const ExtensionMain: React.FC = () => {
-  const { isLoading } = useExtensionContext();
+  const { isLoading, tagSelectorExtension, isTagSelectorOpen, closeTagSelector } = useExtensionContext();
 
   /**
    * The main component.
@@ -50,6 +51,12 @@ export const ExtensionMain: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/*
+       * Rendered here instead of inside ExtensionCard so the dialog survives
+       * card unmounts caused by list regrouping when tags are toggled.
+       */}
+      {tagSelectorExtension && <TagSelectorMain extension={tagSelectorExtension} isOpen={isTagSelectorOpen} onClose={closeTagSelector} />}
     </main>
   );
 };
