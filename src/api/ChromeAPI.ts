@@ -163,6 +163,14 @@ export class ChromeAPI {
     chrome.runtime.onMessage.addListener(callback);
   }
 
+  /**
+   * The function that gets this extension's own id.
+   * @returns The extension id.
+   */
+  public getSelfId(): string {
+    return chrome.runtime.id;
+  }
+
   /************************************************
    * Action API
    ************************************************/

@@ -1,4 +1,5 @@
 export * from './ExtensionTagMetrics';
+export * from './ExtensionToggleAllButtons';
 export * from './ExtensionTagList';
 export * from './ExtensionTagListEditButton';
 export * from './ExtensionTagListItem';

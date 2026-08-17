@@ -1,9 +1,8 @@
 import React from 'react';
 
 import { DefaultBackgroundButton } from '@/components';
-import { useExtensionContext } from '@/contexts';
+import { useBulkToggle } from '@/hooks';
 import { ExtensionModel, TagModel } from '@/models';
-import { logger } from '@/utils';
 
 /**
  * The props for the ExtensionListHeader component.
@@ -30,23 +29,9 @@ export const ExtensionListHeader: React.FC<ExtensionListHeaderProps> = ({
   // onToggle,
 }: ExtensionListHeaderProps) => {
   /**
-   * The use extension context.
+   * The bulk toggle hook.
    */
-  const { toggleEnabled } = useExtensionContext();
-
-  /**
-   * The handle toggle.
-   */
-  const handleToggle = (enabled: boolean) => {
-    /** Filter the unlocked extensions */
-    const unlockedExtensions = extensions.filter(ext => !ext.locked);
-
-    /** Toggle all extensions simultaneously */
-    const togglePromises = unlockedExtensions.map(ext => toggleEnabled(ext.id, enabled));
-    Promise.all(togglePromises).catch(error => {
-      logger.warn('Failed to toggle extensions:', error);
-    });
-  };
+  const { bulkToggle } = useBulkToggle();
 
   /**
    * The ExtensionListHeader component.
@@ -60,11 +45,11 @@ export const ExtensionListHeader: React.FC<ExtensionListHeaderProps> = ({
       </div>
       <div className="flex items-center gap-2">
         <div className="flex">
-          <DefaultBackgroundButton onClick={() => handleToggle(true)} className={`ps-3 pe-2 py-1 text-sm font-medium rounded-l-full mr-[1px]`}>
-            Enable All
+          <DefaultBackgroundButton onClick={() => bulkToggle(extensions, true)} className={`ps-3 pe-2 py-1 text-sm font-medium rounded-l-full mr-[1px]`}>
+            Enable
           </DefaultBackgroundButton>
-          <DefaultBackgroundButton onClick={() => handleToggle(false)} className={`ps-2 pe-3 py-1 text-sm font-medium rounded-r-full`}>
-            Disable All
+          <DefaultBackgroundButton onClick={() => bulkToggle(extensions, false)} className={`ps-2 pe-3 py-1 text-sm font-medium rounded-r-full`}>
+            Disable
           </DefaultBackgroundButton>
         </div>
       </div>

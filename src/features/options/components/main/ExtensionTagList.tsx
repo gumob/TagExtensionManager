@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useExtensionContext } from '@/contexts';
-import { ExtensionTagListEditButton, ExtensionTagListItem, ExtensionTagMetrics } from '@/features/options/components/main';
+import { ExtensionTagListEditButton, ExtensionTagListItem, ExtensionTagMetrics, ExtensionToggleAllButtons } from '@/features/options/components/main';
 import { useTagStore } from '@/stores';
 
 /**
@@ -27,8 +27,14 @@ export const ExtensionTagList: React.FC = () => {
    */
   return (
     <>
+      {/*
+       * Global scope row: state metrics followed by whole-list bulk actions.
+       * All chips share one wrapping flex row so they sit on a single line on
+       * wide layouts and fold chip-by-chip on narrow side panels.
+       */}
       <div className="flex flex-wrap gap-1">
         <ExtensionTagMetrics />
+        <ExtensionToggleAllButtons />
         <ExtensionTagListEditButton />
       </div>
       <div className="flex flex-wrap gap-1">
