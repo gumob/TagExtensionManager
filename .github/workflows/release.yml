@@ -97,6 +97,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload to Chrome Web Store
+        id: cws_upload
         run: |
           # Set environment variables for debugging
           CLIENT_ID="${{ secrets.CHROME_CLIENT_ID }}"
@@ -260,7 +261,7 @@ jobs:
       - name: Check Chrome Web Store upload result
         if: always()
         run: |
-          if [ "${{ job.status }}" == "success" ]; then
+          if [ "${{ steps.cws_upload.outcome }}" == "success" ]; then
             echo "✅ Chrome Web Store upload completed successfully"
           else
             echo "⚠️ Chrome Web Store upload failed, but workflow continued"
@@ -333,4 +334,8 @@ jobs:
             echo "      https://cloud.google.com/apis/docs/getting-started"
             echo "    - OAuth2 Documentation:"
             echo "      https://developers.google.com/identity/protocols/oauth2"
+
+            # Fail the workflow so a missed upload is visible; the GitHub
+            # Release itself is already created in an earlier step.
+            exit 1
           fi
